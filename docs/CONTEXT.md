@@ -17,6 +17,7 @@ UI/UX **закрито концептуально**:
 - Pre-workout flow
 - In-workout зона (вся)
 - Import flow (acquire → validate → reconcile → preview → land)
+- History (list + detail без фільтрів/експорту в MVP)
 
 **Зафіксовано**: формат програм для імпорту/експорту, технічні і продуктові рішення.
 
@@ -28,7 +29,7 @@ UI/UX **закрито концептуально**:
 
 | Файл | Зміст |
 |------|-------|
-| `gym-tracker-spec.md` | UI/UX. Navigation, Pre-workout, In-workout зони, custom numpad, set actions, completion, суперсети |
+| `gym-tracker-spec.md` | UI/UX. Navigation, Pre-workout, In-workout, Import, History зони, custom numpad, set actions, completion, суперсети |
 | `gym-tracker-tech.md` | Технічні і продуктові рішення — платформа, storage, юніти, локалізація, монетизація, дистрибуція |
 | `gym-tracker-program-format.md` | JSON-формат програм для імпорту/експорту — повна специфікація з валідацією і прикладами |
 
@@ -108,12 +109,11 @@ UI/UX **закрито концептуально**:
 
 ## Що далі — план роботи
 
-Чотири зони лишилось:
+Три зони лишилось:
 
-1. **Історія тренувань** — список + деталь (фільтри, пошук, navigation в past workout)
-2. **Programs tab** — список програм, program detail screen, switch active flow (частково випливає з Today + Import)
-3. **Редактор програм** — CRUD вправ/сетів/груп (винесено у v1.1, можна не закривати в MVP-фазі)
-4. **Profile + edge cases** — exercise database UI, settings, onboarding bundled-content, +зачеплені побіжно edge cases
+1. **Programs tab** — список програм, program detail screen, switch active flow (частково випливає з Today + Import)
+2. **Редактор програм** — CRUD вправ/сетів/груп (винесено у v1.1, можна не закривати в MVP-фазі)
+3. **Profile + edge cases** — exercise database UI, settings, onboarding bundled-content, +зачеплені побіжно edge cases
 
 Edge cases що зачепили побіжно і треба закрити: редагування completed сета мід-тренування, pause/resume workout, skip exercise, failed reps, auto-scroll override, reordering мід-тренуванням.
 

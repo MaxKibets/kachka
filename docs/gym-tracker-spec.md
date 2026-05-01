@@ -2,9 +2,9 @@
 
 > Трекер тренувань у спортзалі для React Native (iOS + Android). Поточна програма, створення / імпорт / експорт програм, детальне логування прогресу під час тренування.
 
-**Status**: navigation + pre-workout + in-workout + import зони готові концептуально. Відкритий список — у §10.
+**Status**: navigation + pre-workout + in-workout + import + history зони готові концептуально. Відкритий список — у §10.
 
-**Версія**: v0.3 · додано Import flow
+**Версія**: v0.4 · додано History
 
 ---
 
@@ -519,7 +519,6 @@ flowchart TD
 
 Наступні зони чекають дизайну:
 
-- **Історія / прогрес** — minimum viable: список тренувань з фільтрами + деталь тренування; v2: графіки прогресу, тенденції, PR timeline
 - **Редактор програм** — CRUD вправ / сетів / груп; винесено у v1.1, не блокує MVP
 - **Exercise database UI** — пошук, фільтри, кастомні вправи. Сама db живе в Profile
 - **Settings** — units (lb пізніше), language override, theme, RPE on/off, notifications, backup/restore, delete data
@@ -765,7 +764,81 @@ Counter `Continue (N left)` показує скільки лишилось unres
 
 ---
 
-## 12. Свідомо відкладено в v2 / пізніше
+## 12. History
+
+> Перегляд минулих тренувань. Минулі тренування — read-only факт. MVP мінімальний: список + detail без фільтрів і експорту (винесено в §13).
+
+### 12.1 Огляд
+
+History — окремий bottom tab (`Today · Programs · History · Profile`). Стек з двох екранів:
+
+- *List* — хронологічна стрічка завершених тренувань
+- *Detail* — read-only знімок одного тренування
+
+Без topbar actions, без filter, без search, без export — все це переноситься в v2. Ціль MVP: бачити що я робив, у простій timeline-формі.
+
+### 12.2 Список тренувань
+
+- *Структура*: flat хронологічна стрічка, найновіше зверху, infinite scroll з lazy loading
+- *Sticky section headers*: при скролі зверху приклеюється label поточного тижня/місяця (`This week`, `Last week`, `April`). Це візуальна пунктуація в flat list, не зміна структури
+- *Topbar*: заголовок `History`, без actions, без back-кнопки (це root-екран таба)
+
+Row (medium density), два рядки:
+
+```
+[Date · Workout name]                    [Duration]
+[N sets · Volume kg]
+```
+
+- *Date format*: relative для останніх 7 днів (`Today`, `Yesterday`, `Mon`), absolute далі (`28 Apr 2026`)
+- *Volume*: `sum(weight × reps)` по робочих сетах, warmups виключаються (узгоджено з §8.4)
+- *Bodyweight*: вправи без weight дають 0 у внеску до volume (user weight в profile у MVP не зберігається)
+
+Tap на рядок → push detail screen.
+
+### 12.3 Detail screen
+
+Read-only знімок тренування. Жодних actions редагування.
+
+*Header* (sticky):
+- Back-кнопка
+- Назва workout-у
+- Підзаголовок: дата (повна) + duration
+
+*Body* — full snapshot:
+- Усі вправи в порядку виконання
+- Для кожного сета: номер (або `W` для warmup), `weight × reps`, RPE (якщо було), маркер нотатки
+- Replaced exercises показуються в тому вигляді в якому виконувались (факт), без посилання на оригінальну вправу з програми
+- Workout note (якщо була залогована при completion)
+
+*Суперсети* — group rendering як у in-workout, але read-only:
+- Group header: label `Superset` + `N rounds`
+- Список вправ у групі, сети показуються по раундах
+
+*Без actions*: немає edit, repeat workout, export — все в §13.
+
+### 12.4 Empty state
+
+Юзер ніколи не завершив тренування → центрований stack:
+
+- Проста іконка (стиль ілюстрації — TBD з візуальним стилем)
+- Title: `No workouts yet`
+- Subtitle: `Complete your first workout to see it here.`
+
+Bottom tab bar лишається. Без CTA — Today вже доступний в табах.
+
+### 12.5 Що потрапляє в History
+
+| Подія | Поведінка |
+|-------|-----------|
+| Юзер натиснув `Save to history` на completion screen | Додається в History з тими сетами що залогував |
+| Завершено з partial-completed (не всі заплановані сети) | Додається з логованими сетами, відсутні просто не показуються |
+| Юзер натиснув `Discard workout` | Не зберігається в History |
+| Replaced exercise мід-тренування | У History показується замінена вправа, з її логованими сетами |
+
+---
+
+## 13. Свідомо відкладено в v2 / пізніше
 
 - AMRAP та time-based циркуляри
 - Drop sets, rest-pause, cluster sets
@@ -780,10 +853,15 @@ Counter `Continue (N left)` показує скільки лишилось unres
 - Streak counters і motivational gamification
 - Editor програм у MVP (winесено у v1.1)
 - Mini-bar / minimize active workout (modal full takeover в MVP)
+- History filter (period + program + exercise) і search по нотатках
+- History export — Markdown single workout + filtered period (use case: LLM-чат для корекції наступних програм)
+- PR badges на сетах у History detail
+- Графіки прогресу, тенденції по вправах, PR timeline
+- Repeat / fork workout з History (перетинається з freestyle)
 
 ---
 
-## 13. Список зафіксованих рішень
+## 14. Список зафіксованих рішень
 
 Швидкий чеклист того що вже визначено:
 
@@ -838,3 +916,18 @@ Counter `Continue (N left)` показує скільки лишилось unres
 - [x] Imported = read-only до editor v1.1, як bundled
 - [x] Deep link під активним тренуванням → queue + банер
 - [x] Multi-language програми — exerciseId mapping
+
+**History**
+- [x] Bottom tab `History`, root-екран без topbar actions
+- [x] Flat хронологічна стрічка, найновіше зверху, infinite scroll
+- [x] Sticky section headers (week / month) при скролі
+- [x] Row medium density: дата + назва + duration / N sets + volume kg
+- [x] Date format: relative для останніх 7 днів, absolute далі
+- [x] Tap → detail (read-only full snapshot)
+- [x] Detail header: back + назва + дата + duration. Без actions
+- [x] Detail body: усі вправи з усіма сетами, group rendering для суперсетів
+- [x] Replaced exercises показуються як виконувались (факт)
+- [x] Volume в row — `sum(weight × reps)`, warmups виключені (= §8.4)
+- [x] Discarded workouts не зберігаються; partial-completed зберігаються з логованими сетами
+- [x] Empty state: текст + проста іконка
+- [x] Filter / search / export / PR badges / графіки — у v2
