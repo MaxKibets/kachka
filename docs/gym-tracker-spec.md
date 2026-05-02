@@ -1,10 +1,10 @@
 # Gym Tracker · UI/UX Specification
 
-> Трекер тренувань у спортзалі для React Native (iOS + Android). Поточна програма, створення / імпорт / експорт програм, детальне логування прогресу під час тренування.
+> Трекер тренувань у спортзалі для React Native (iOS + Android). v1 — ad-hoc workouts: побудова → виконання → логування в історію. Програми, імпорт/експорт, deep linking — у v2.
 
-**Status**: navigation + pre-workout + in-workout + import + history зони готові концептуально. Відкритий список — у §10.
+**Status**: v1 scope locked — ad-hoc workouts. Programs / import / deep linking — deferred to v2.
 
-**Версія**: v0.4 · додано History
+**Версія**: v0.5 · drop programs from v1, add ad-hoc workout builder + supersets ad-hoc
 
 ---
 
@@ -13,7 +13,8 @@
 - React Native, кросплатформенний (iOS + Android)
 - Цільовий контекст — людина в спортзалі: одна рука, потіє, 5–15 секундні взаємодії між сетами, 15–30 циклів "глянув → залогував → відклав" за тренування
 - Власна візуальна мова, не клонуємо Hevy / Strong / Boostcamp
-- MVP-філософія: суперсети — це фішка і must-have, AMRAP / drop sets / cluster — відкладено в v2
+- MVP-філософія: суперсети — must-have, AMRAP / drop sets / cluster — у v2
+- v1 ціль: найшвидший спосіб залогувати тренування. Структура планується ad-hoc на старті або клонуванням з історії
 
 З цього випливають базові обмеження для in-workout UI:
 
@@ -29,16 +30,15 @@
 
 ### 2.1 Top-level каркас
 
-4 bottom tabs:
+3 bottom tabs:
 
 | Tab | Зміст |
 |-----|-------|
-| **Today** | Активне тренування дня з активної програми + старт. Empty state коли нема активної |
-| **Programs** | Список юзерських програм, активна, browse/import, перегляд деталей |
-| **History** | Минулі тренування хронологічно, деталь, фільтри |
+| **Today** | Старт тренування: Repeat last / Choose from history / Start blank. Banner при in-progress workout-і |
+| **History** | Минулі тренування хронологічно, деталь |
 | **Profile** | Settings, exercise database, backup/restore, delete data, about |
 
-Exercise database живе всередині Profile (а не як окремий 5-й таб). Profile — generic hub для усього що не workout / programs / history.
+Exercise database живе всередині Profile (а не як окремий 4-й таб). Profile — generic hub для усього що не workout / history.
 
 ### 2.2 Active workout — modal full takeover
 
@@ -48,15 +48,12 @@ In-workout екран — modal поверх tab navigator. Tab bar ховаєт
 
 - Максимальний фокус, нема відволікань
 - Простіша архітектура, менше edge cases
-- Втрачаємо швидкий перегляд exercise db / history з-під тренування — але `prev` колонка і replace exercise picker уже покривають 80% таких потреб inline
 
 App backgrounded → state preserved → при поверненні відкривається на тому ж місці. Старт нового workout-у при активному → prompt "Finish or discard current first".
 
-### 2.3 One active program at a time
+### 2.3 Workout Builder — modal pre-workout
 
-Юзер має максимум одну активну програму. Switch — у Programs табі. Today показує контекст саме активної.
-
-**Per-program pointer** — кожна програма пам'ятає свій `nextWorkoutPointer`. Switch між програмами не обнуляє прогрес: "PPL → 5/3/1" → пізніше "5/3/1 → PPL" повертає до того ж workout-у в PPL. Невелика ціна по storage за помітно кращий UX.
+Pre-workout екран де юзер збирає список вправ і груп — теж modal overlay над Tab Navigator. Деталі — §4.
 
 ### 2.4 Дерево навігації
 
@@ -66,208 +63,290 @@ flowchart TB
     App --> Onb[Onboarding<br/>one-shot first launch]
     App --> Main[Main]
     Main --> TabNav[Tab Navigator]
+    Main --> Builder[Workout Builder<br/>modal overlay]
     Main --> Modal[Active Workout<br/>modal overlay]
 
     TabNav --> Today[Today]
-    TabNav --> Programs[Programs Stack]
     TabNav --> History[History Stack]
     TabNav --> Profile[Profile Stack]
 
-    Programs --> P1[Programs list]
-    Programs --> P2[Program detail]
-    Programs --> P3[Import flow]
-    Programs --> P4[Editor — v1.1]
-
     History --> H1[History list]
     History --> H2[Workout detail]
+    Today --> CFH[Choose from history list]
 
     Profile --> Pr1[Settings]
     Profile --> Pr2[Exercise db]
     Profile --> Pr3[Backup / Restore]
     Profile --> Pr4[About]
 
+    Builder --> B1[Build screen — exercises + supersets]
+    Builder --> B2[Exercise picker]
+    Builder --> B3[Superset partner picker]
+    Builder --> B4[Superset config sheet]
+
     Modal --> M1[Workout screen]
     Modal --> M2[Sheets: numpad / set actions / exercise actions]
-    Modal --> M3[Replace exercise picker]
+    Modal --> M3[Superset partner picker]
     Modal --> M4[Completion screen]
 ```
 
-Today — single screen без stack. Решта табів мають свої стеки.
+Today — single screen без stack. Workout Builder і Active Workout — modals. Решта табів мають свої стеки.
 
 ---
 
-## 3. Pre-workout flow
+## 3. Pre-workout flow (Today)
 
-### 3.1 Перша програма — bundled + import
+### 3.1 Today — три режими
 
-В MVP:
+Today має три можливі стани:
 
-- 2–3 готові bundled програми зашиті в застосунок (контент — окрема робота)
-- Import через deep link / file / paste
-- Editor — у v1.1 (не блокує MVP)
+**(a) Has history, no in-progress workout** — основний flow. Картка "Repeat last" + посилання `Choose from history` і `Start blank`.
 
-Bundled програми read-only до v1.1. Юзер що хоче замінити вправу робить це через `Replace exercise` мід-тренування. Коли з'явиться editor — bundled можна форкнути і редагувати копію.
+**(b) No history (first launch)** — empty state. Один CTA "Start your first workout".
 
-Чому не editor у MVP: editor — велика робота сама по собі (CRUD сетів / груп / днів / тижнів, exercise picker, валідація), а bundled покриває "ввімкнув і тренуйся" сценарій.
+**(c) In-progress workout exists** — banner зверху "In-progress · Resume / Discard" + основний flow під ним.
 
-### 3.2 Linear progression
-
-Програма — лінійна послідовність workout-ів через всі тижні. Активна програма має `nextWorkoutPointer` що інкрементиться після завершення тренування.
-
-```mermaid
-flowchart LR
-    W1P[W1: Push] --> W1Pl[W1: Pull]
-    W1Pl --> W1L[W1: Legs]
-    W1L --> W2P[W2: Push]
-    W2P --> W2Pl[W2: Pull]
-```
-
-- Today показує `program.workouts[nextWorkoutPointer]`
-- Юзер пропустив 3 дні → next workout той самий, що й був
-- Тиждень у форматі — організаційна одиниця, не календарний тиждень
-- Програма не диктує "Push в понеділок". Юзер тренується тоді коли тренується
-
-Calendar-based scheduling — свідомо не робимо. Реалістично юзери пропускають дні, мандрують, хворіють — linear модель толерує це натуральніше.
-
-### 3.3 Today — shape
-
-Today — expanded preview наступного тренування з sticky `Start workout` внизу.
+#### 3.1.a Has history
 
 ```
 ┌─────────────────────────┐
-│ Today              ⋯    │  top bar
+│ Today              ⋯    │
 ├─────────────────────────┤
-│                         │
-│  Push day               │  heading
-│  Week 1 · Workout 3/12  │  context
 │                         │
 │  ┌───────────────────┐  │
-│  │ In-progress       │  │  banner (only if applicable)
-│  │ Resume · Discard  │  │
+│  │ Last workout      │  │
+│  │ Push Day · 5d ago │  │
+│  │                   │  │
+│  │ Bench, Pull-ups,  │  │
+│  │ Push-ups, Squat   │  │
+│  │                   │  │
+│  │ [ Repeat last ]   │  │
 │  └───────────────────┘  │
 │                         │
-│  Bench press         ⌄  │  exercise (collapsed)
-│  4 sets · 8 · RPE 7-8   │
+│  Or                     │
+│  > Choose from history  │
+│  > Start blank workout  │
 │                         │
-│  ─ Superset · 3 rounds  │  group label
-│  A1 Pull-ups         ⌄  │
-│  A2 Incline push-ups ⌄  │
-│                         │
-│  Squat               ⌄  │
-│  3 × [6-8] · RPE 8      │
-├─────────────────────────┤
-│  [  Start workout  ]    │  sticky bottom
 └─────────────────────────┘
 ```
 
-`⋯` меню top bar:
+- **Repeat last** card показує summary останнього завершеного тренування: назва, відносна дата (`5d ago`, `2 weeks ago`), one-liner списку вправ.
+- **Choose from history** — тап → list з усіма завершеними тренуваннями (chronological). Тап на тренування → клонується. Корисно для split routines (PPL, upper/lower) — юзер обирає "last upper day".
+- **Start blank workout** — тап → Workout Builder з пустим списком + Quick-add chips.
 
-- Switch program → Programs tab
-- Skip this workout → інкрементить pointer без логування (з confirmation)
-- View program details → перегляд активної програми
+#### 3.1.b No history (first launch)
 
-### 3.4 Today — density
+```
+┌─────────────────────────┐
+│ Today              ⋯    │
+├─────────────────────────┤
+│                         │
+│         💪              │
+│                         │
+│  Start your first       │
+│  workout                │
+│                         │
+│  Build it from scratch  │
+│  or pick from suggested │
+│  exercises              │
+│                         │
+│  [ Start workout ]      │
+│                         │
+└─────────────────────────┘
+```
 
-Minimal. Без streak counters, без last-workout summary cards, без motivation accents:
+CTA → Workout Builder з пустим списком. Quick-add chips (§4.2) видимі зверху — юзер бачить 7 знайомих вправ і починає одним тапом.
 
-- Streak push до тренування "щоб не зламати streak" — антипатерн для health-aware tracker-а. Юзер може бути травмований і має відпочити
-- Last workout summary дублює History tab і додає шум на головному екрані
-- Progress bar активної програми — нічого не дає юзеру в момент перед тренуванням
+#### 3.1.c In-progress workout
 
-Якщо в реальному використанні стане очевидно що чогось бракує — додамо в v1.x.
+Banner над основним вмістом (накладається поверх режиму (a) або (b)):
 
-### 3.5 Exercise preview — one-liner + expand
+```
+┌─────────────────────────┐
+│ Today              ⋯    │
+├─────────────────────────┤
+│  ┌───────────────────┐  │
+│  │ In-progress       │  │
+│  │ Push Day          │  │
+│  │ Resume · Discard  │  │
+│  └───────────────────┘  │
+│                         │
+│  ... основний flow ...  │
+└─────────────────────────┘
+```
 
-За замовчуванням кожна вправа в списку — одно-рядковий summary. Тап розкриває повний список сетів (read-only, без редагування).
+- Resume → Active workout modal відкривається на збереженому state
+- Discard → workout прибирається з confirmation
 
-Формати one-liner:
+Свідомо НЕ auto-resume: ризик попасти в забуте старе тренування одразу при відкритті.
 
-| Випадок | Приклад |
-|---------|---------|
-| Усі сети однакові | `Bench press · 4 sets · 8 reps · RPE 7-8` |
-| Reps range | `Squat · 3 × [6-8] · RPE 8` |
-| Mixed sets | `Bench press · 4 sets, mixed` |
-| Bodyweight | `Pull-ups · 3 sets · [6-10]` (без kg) |
+### 3.2 Repeat last — клонування
 
-Експанд показує таблицю по сетах: `№ | reps | rpe`. Без `prev` (це in-workout концепт, не preview).
+Тап на "Repeat last" виконує:
 
-Для груп: заголовок групи (`Superset · 3 rounds`) + вкладені вправи з префіксами A1/A2/A3.
+1. Створює новий workout з ID (UUID v4) і поточною датою-часом
+2. Копіює `name` з джерела
+3. Копіює структуру: вправи в тому ж порядку, групи з тими ж rounds + rest, set count і таргети (reps + RPE)
+4. **НЕ копіює залоговані значення** (kg, фактичні reps). Поля порожні
+5. Прив'язує `prev` для кожного сета — значення з джерела клонування
+6. Відкриває Workout Builder з заповненим списком — юзер може коригувати перш ніж стартувати
 
-### 3.6 Onboarding — straight to picker
+Юзер бачить готовий workout, може щось додати/прибрати/відредагувати, і стартує.
+
+### 3.3 Choose from history
+
+Окремий screen зі списком завершених тренувань (хронологічно). Те саме рендеринг що History list (§10.2). Тап на тренування → клонується (як §3.2) → відкривається Workout Builder.
+
+`prev`-значення в клонованому workout-і беруться з обраного джерела, а не з найостаннього такого ж workout-у. Свідомо — юзер обрав цей конкретний день як точку відліку.
+
+### 3.4 Start blank — Workout Builder
+
+Тап → Workout Builder з пустим списком. Quick-add chips видимі зверху для швидкого старту. Можна також через "+ Add exercise" викликати full exercise picker.
+
+Деталі builder-а — у §4.
+
+### 3.5 Onboarding
 
 Перший запуск:
 
 1. App launches
-2. Pick your first program screen — bundled list + `Import from file/link`
-3. Tap → Today заповнено → юзер може стартувати
+2. Today screen → empty state (3.1.b)
+3. Тап "Start workout" → Workout Builder з chips
 
 Без welcome screens, без feature tour, без вибору мови (auto-detect з locale), без вибору юнітів (kg в MVP). Onboarding — функціональний, не маркетинговий.
 
-### 3.7 Empty state — Today без активної програми
+### 3.6 Top-bar `⋯` меню Today
 
-Коли немає активної (юзер видалив, на старті без вибраної):
-
-```
-┌─────────────────────────┐
-│ Today                   │
-├─────────────────────────┤
-│                         │
-│         ◯               │  simple illustration
-│                         │
-│   No active program     │
-│                         │
-│ Pick one to start       │
-│ tracking your workouts  │
-│                         │
-│  [ Browse programs ]    │  primary → Programs tab
-│                         │
-└─────────────────────────┘
-```
-
-Browse programs button веде в Programs tab, focused state на picker.
-
-### 3.8 Crash restoration — banner
-
-Якщо застосунок закрили мід-тренування (kill, crash, force-quit), при відкритті:
-
-- Юзер landить на Today як завжди
-- На Today показується banner "In-progress workout · Resume · Discard"
-- Resume → modal active workout відкривається з збереженим state
-- Discard → workout прибирається (з confirmation)
-
-Свідомо НЕ auto-resume: ризик попасти в забуте старе тренування одразу при відкритті. Banner — explicit choice, мінімальна friction (один tap до Resume).
-
-### 3.9 Switch active program
-
-Flow:
-
-1. Programs tab → список, поточна active має бейдж `Active`
-2. Тап на іншу → program detail screen
-3. Primary `Set as active` → активується, повертає на Today
-
-Без destructive confirmation — це не deletion. Switch назад завжди можливий, кожна програма зберігає свій pointer.
-
-### 3.10 Deep link import landing
-
-`gymtracker://import?routine=...`:
-
-- Відкриває застосунок → Programs tab → Import flow з payload-ом з URL
-- Деталі Import flow і conflict resolution — окрема зона (наступна після цієї)
-- Edge: deep link під час активного тренування — пайлоад queue-ується, banner "Import received" показується після фінішу. Деталь TBD до моменту реалізації
+- Exercise database → Profile/Exercise db
+- Settings → Profile/Settings
 
 ---
 
-## 4. Архітектура in-workout екрана
+## 4. Workout Builder
 
-### 4.1 Три зони
+> Pre-workout екран де юзер збирає список вправ перед стартом тренування. Точки входу: Start blank (§3.4), Repeat last (§3.2), Choose from history (§3.3).
+
+### 4.1 Структура екрана
+
+```
+┌─────────────────────────┐
+│ ← Build workout         │  modal header
+├─────────────────────────┤
+│  Workout name           │  editable text
+│  Push Day               │
+├─────────────────────────┤
+│                         │
+│  Quick add:             │
+│  [Squat][Bench][Dead]   │  chips (popular exercises)
+│  [Row][OHP][Pull-up]    │
+│  [Curl]                 │
+│                         │
+│  ─ Exercises ──────     │
+│                         │
+│  Bench press        ⋮   │
+│   4 × 8 · RPE 7-8       │
+│                         │
+│  ┌── A · Superset ──┐   │  group block
+│  │ 3 rounds · 2:00  │   │
+│  │ A1 Pull-ups   ⋮  │   │
+│  │  [6-10]          │   │
+│  │ A2 Push-ups   ⋮  │   │
+│  │  [10-15]         │   │
+│  └─────────────── ⋮ ┘   │  group menu
+│                         │
+│  + Add exercise         │
+│                         │
+├─────────────────────────┤
+│  [   Start workout   ]  │  sticky bottom
+└─────────────────────────┘
+```
+
+- **Header**: back button, screen title `Build workout`. Свайп вниз закриває (з confirmation якщо щось змінено).
+- **Workout name**: editable inline. При Repeat last / Choose from history заповнено з джерела. При Start blank — auto `Workout · 2026-05-02`, юзер може переписати.
+- **Quick add chips**: 7 popular exercises (§4.2). Тап додає вправу з default-сетами.
+- **Exercises list**: вправи + групи в порядку виконання. Кожна вправа — секція з one-liner summary і `⋮`-меню.
+- **+ Add exercise**: відкриває exercise picker (повний список + пошук + custom).
+- **Start workout** sticky button: запускає Active Workout modal. Disabled поки список порожній.
+
+### 4.2 Quick-add chips
+
+Зашитий у v1 список з 7 вправ (powerlifting + базовий комплекс):
+
+| EN | UK |
+|---|---|
+| Squat | Присідання |
+| Bench Press | Жим лежачи |
+| Deadlift | Станова тяга |
+| Barbell Row | Тяга штанги в нахилі |
+| Overhead Press | Жим стоячи |
+| Pull-up | Підтягування |
+| Bicep Curl | Згинання на біцепс |
+
+- Чіпи видимі завжди (постійний UX, не онбординг)
+- Локалізовані з системного exercise database через `exerciseId`
+- Тап → додає вправу з default-сетами в кінець списку
+- Без локального ranking-у в v1 (можливе майбутнє покращення — зараз чіпи статичні)
+
+### 4.3 Default sets для нової вправи
+
+Коли вправа додається через Quick-add або через picker — автоматично створюється 3 сети з `reps: 8`, без RPE, без warmup. Юзер може коригувати в `⋮`-меню вправи.
+
+Bodyweight вправи (з системної db `isBodyweight: true`) додаються без kg-поля.
+
+### 4.4 Меню вправи `⋮` (у Builder)
+
+| Action | Result |
+|---|---|
+| Edit sets | Sheet з list-ом сетів. Кожен сет — `reps` (single або range) + опц. `rpe` + warmup toggle + delete. + Add set |
+| Add to superset | Multi-select picker з інших standalone-вправ → config sheet (rounds, rest) → створює групу. §6 |
+| Move up / Move down | Перемістити в списку |
+| Remove exercise | Видалити вправу з confirmation |
+| Add note | Per-exercise note — author hint що показується в Active workout |
+
+### 4.5 Меню групи `⋮` (у Builder)
+
+| Action | Result |
+|---|---|
+| Edit rounds / rest | Sheet з rounds (2-10) і restBetweenRounds |
+| Add exercise to group | Picker → додає до групи (до ліміту 5) |
+| Remove exercise from group | З confirmation. Якщо лишається 1 — auto-ungroup |
+| Reorder inside | Drag handles в межах групи |
+| Move group up / down | Як одне ціле |
+| Ungroup | Розпадається на флет-вправи в тому ж порядку |
+
+### 4.6 Reorder зовнішнього списку
+
+Drag handle на правому краю кожної секції (вправи або групи). Drag перемикає порядок. Групи рухаються цілком.
+
+### 4.7 Empty list
+
+Якщо список порожній:
+
+```
+  No exercises yet
+  Tap a chip above or "+ Add exercise"
+```
+
+Start workout button disabled.
+
+### 4.8 Discard / save для пізніше
+
+- Закрити builder без старту → confirmation "Discard workout setup?". Підтвердити — все втрачається.
+- "Save as draft" свідомо не робимо в v1: додає state-management без чіткої цінності. Юзер з готовим планом стартує одразу.
+
+---
+
+## 5. Архітектура in-workout екрана
+
+### 5.1 Три зони
 
 | Зона | Поведінка |
-|------|-----------|
+|---|---|
 | Top bar | Фіксований. Назва тренування, прогрес `3 of 5`, час сесії, close + меню |
 | Scroll list | Список вправ і груп. Скролиться вертикально. Активна позиція auto-scroll-иться у видиму зону |
 | Bottom bar | Фіксований. Два режими: `idle` (порожній) або `rest` (countdown з контекстом) |
 
-### 4.2 Картка вправи
+### 5.2 Картка вправи
 
 Кожна вправа в списку — це секція з:
 
@@ -278,46 +357,162 @@ Flow:
 Колонки таблиці:
 
 | Колонка | Призначення |
-|---------|-------------|
+|---|---|
 | `№` | Номер сета. Тапабельний — відкриває set actions sheet |
-| `prev` | Результат цього сета з минулого тренування. Не таргет, а бенчмарк "що побити". Формат `60×5` (вага×повтори) |
-| `kg` | Поточна вага. Якщо в програмі задано ціль — показується ghost-text-ом. Інакше прочерк |
+| `prev` | Результат цього сета з минулого тренування (з джерела клонування або з найостаннього виконання цього сета взагалі). Не таргет, бенчмарк "що побити". Формат `60×5` |
+| `kg` | Поточна вага. Якщо в Builder-і / клоні задано таргет — показується ghost-text-ом. Інакше прочерк |
 | `reps` | Повтори. Аналогічно до kg |
 | `✓` | Чекбокс закриття сета. Тап = save + advance cursor + start rest timer |
 
-### 4.3 Стани сета
+### 5.3 Стани сета
 
 | Стан | Візуальне представлення |
-|------|--------------------------|
+|---|---|
 | Completed | Muted text + green ✓ |
 | Active | Info bg highlight + bold номер + editable kg/reps |
 | Next (cued) | Тонка info-кольорова бічна планка + info-tinted номер |
 | Pending | Звичайний muted text |
 
-### 4.4 Завершені вправи
+### 5.4 Завершені вправи
 
 Завершена вправа схлопується до однорядкового підсумку (`Bench press · 3 sets done` + green ✓). Не зникає, можна розгорнути назад тапом.
 
+### 5.5 Editing мід-tworkout
+
+Active workout — це повний editor поверх початкової структури.
+
+| Action | Тригер | Поведінка |
+|---|---|---|
+| Add set | Кнопка `+ add set` в кінці таблиці сетів вправи | Новий пендінг сет з тими ж target-ами що останній |
+| Remove set | Set actions sheet → Delete | З confirmation |
+| Add exercise (в кінець) | Top bar `⋯` → Add exercise → picker | Default 3×8 сети |
+| Insert exercise after current | Per-exercise `⋯` → Insert after | Додається після поточної вправи |
+| Remove exercise | Per-exercise `⋯` → Remove | З confirmation. Якщо вправа має залоговані сети — попередження |
+| Skip exercise | Per-exercise `⋯` → Skip | Soft-варіант: вправа лишається в структурі, помічена `Skipped` |
+| Reorder | Drag handle на правому краю секції | Cursor лишається на тому ж сеті який був активним |
+| Add to superset | Per-exercise `⋯` → Add to superset | §6 (з constraint: 0 залогованих сетів у кандидатах) |
+| Edit superset | Group `⋯` | §6.7 |
+| Ungroup | Group `⋯` → Ungroup | Завжди дозволено. §6.7 |
+
+**Replace exercise** свідомо відкладено в v2 (в v1 вирішується через Remove + Insert after).
+
+### 5.6 Skip exercise
+
+Per-exercise `⋯` → Skip → exercise помічена `Skipped`, без видалення з структури:
+
+- Залоговані сети (якщо були) лишаються у вправі
+- Незалоговані сети не йдуть в volume і PR
+- Cursor пропускає вправу
+- У History зберігається з тими сетами що залогували (Skipped marker не потрапляє в History — там просто факт, скільки сетів зробив)
+- Корисно якщо юзер хоче зберегти вправу в структурі для майбутнього clone
+
+Для повного видалення — Remove (різниця: Skip зберігає вправу, Remove забирає з структури).
+
+### 5.7 Failed reps (нуль повторів)
+
+Якщо юзер не зміг зробити жодного повторення:
+
+- `reps: 0` дозволено в numpad-і
+- Сет вважається завершеним (`✓` загорається)
+- У volume не йде (0 × вага = 0)
+- У PR detection не входить
+- У History показується як `0 reps` явно
+
+Альтернатива "пропустити сет без логування" — set actions → Delete.
+
+### 5.8 Auto-scroll override
+
+Coли юзер свідомо скролить до іншої вправи (manual scroll), auto-scroll-логіка призупиняється для поточної сесії. Закриття сета все одно робить save + cursor advance, але viewport не стрибає назад до cursor-а. Юзер може прокрутити до cursor-а manually або потягнути pull-to-cursor (свайп вниз з топу).
+
+UX pull-to-cursor — TBD до моменту реалізації, базова логіка зафіксована.
+
 ---
 
-## 5. Суперсети / групи вправ
+## 6. Суперсети / групи вправ
 
-### 5.1 Зафіксовано в MVP
+### 6.1 Зафіксовано в MVP
 
 - Тільки **alternating** режим (не AMRAP, не time-based)
-- Усі вправи групи мають однакову кількість раундів — уневен заборонено в редакторі
+- Усі вправи групи мають однакову кількість раундів — уневен заборонено
 - 2–5 вправ на групу
+- 2-10 раундів на групу
 - Один rest-таймер на групу: `restBetweenRounds`
 - Без rest всередині раунду — курсор стрибає миттєво з A1 на A2
+- Можна створювати pre-workout (у Builder) і мід-tworkout (у Active workout)
+- **Constraint мід-tworkout**: усі кандидати-вправи мають 0 залогованих сетів
 
-### 5.2 Структура групи у списку
+### 6.2 Створення групи
 
-- Лейбл-заголовок: `Superset · round X of Y`
+Однаковий flow на pre і mid:
+
+1. Per-exercise `⋮`-меню → "Add to superset"
+2. Якщо вправа вже в групі — додає партнера до неї (skip step 3)
+3. Якщо вправа standalone — відкривається multi-select picker з інших standalone-вправ списку (де applicable: 0 залогованих сетів якщо мід-tworkout). Юзер обирає 1+ партнерів
+4. Bottom sheet — config: rounds (default 3), restBetweenRounds (default 2:00). Confirm
+5. Група створюється на місці першої з вправ-учасниць (по позиції в списку)
+
+UI picker партнерів:
+
+```
+┌─────────────────────────┐
+│ ← Group with        [×] │
+├─────────────────────────┤
+│  ☐ Pull-ups             │
+│  ☐ Push-ups             │
+│  ☑ Bicep curls          │
+│  ⊘ Squat                │  disabled з reason
+│    Already started      │
+│  ⊘ Calf raise           │  disabled
+│    In another superset  │
+│                         │
+│  1 selected             │
+│  [    Configure    ]    │
+└─────────────────────────┘
+```
+
+Disabled-вправи показуються з причиною ("Already started" якщо є залоговані сети, "In another superset" якщо вже в групі).
+
+Config sheet:
+
+```
+┌─────────────────────────┐
+│ Superset config         │
+├─────────────────────────┤
+│  Rounds       [ 3 ]     │
+│  Rest         [2:00]    │
+│                         │
+│  [   Create group   ]   │
+└─────────────────────────┘
+```
+
+### 6.3 Color-coded letter labels
+
+Кожна група в межах одного workout-у отримує літеру і колір. A · колір 1, B · колір 2, C · колір 3. Якщо більше 3 груп (рідко) — кольори ротаційно повторюються, літери продовжуються.
+
+Лейбл відображається в Builder, Active workout і History detail:
+
+```
+A · Superset · Round 2 of 3
+●●○ (round indicators)
+```
+
+Вправи всередині групи мають префікс `A1 · Pull-ups`, `A2 · Push-ups`.
+
+Колір застосовується до:
+- Group header background tint
+- Бічна вертикальна планка з'єднує вправи групи
+- Set indicators у bottom rest bar (`A · Rest 2:00`)
+
+Конкретні кольори — TBD з візуальним стилем.
+
+### 6.4 Структура групи у списку
+
+- Лейбл-заголовок: `A · Superset · round X of Y`
 - Точки-індикатори раундів: `● ○ ○`
-- Бічна вертикальна планка info-кольору з'єднує вправи групи
+- Бічна вертикальна планка кольору групи з'єднує вправи групи
 - Кожна вправа всередині групи має префікс `A1`, `A2`, `A3` біля назви
 
-### 5.3 Cursor cycling
+### 6.5 Cursor cycling
 
 ```mermaid
 flowchart LR
@@ -331,7 +526,7 @@ flowchart LR
 
 Курсор стрибає всередині раунду без паузи (миттєвий перехід між картками A1 → A2). Після останньої вправи раунду — стартує rest-таймер. Лічильник раундів зростає тільки коли всі вправи раунду закриті.
 
-### 5.4 Bottom bar state machine
+### 6.6 Bottom bar state machine
 
 ```mermaid
 stateDiagram-v2
@@ -344,19 +539,32 @@ stateDiagram-v2
     Rest --> Rest: tap plus 15s
 ```
 
-Лейбл rest-таймера показує контекст: `between rounds 2:00` для груп, `rest 1:30` для звичайних вправ.
+Лейбл rest-таймера показує контекст: `A · Rest 2:00` для груп (з letter color), `Rest 1:30` для звичайних вправ.
 
-### 5.5 Відкладено в v2
+### 6.7 Edit мід-tworkout
+
+Group `⋮`-меню в Active workout:
+
+| Action | Constraint |
+|---|---|
+| Edit rounds | Збільшити завжди можна. Зменшити — тільки до значення ≥ current completed rounds |
+| Edit rest | Без обмежень |
+| Add exercise to group | Кандидат має 0 залогованих сетів. Group розмір ≤ 5 |
+| Remove exercise from group | Якщо група лишається з 1 вправою — auto-ungroup. Confirmation якщо у вправи залоговані сети |
+| Ungroup | Завжди дозволено. Логовані сети залишаються прив'язані до своїх вправ; round numbers стають sequential set numbers |
+
+### 6.8 Відкладено в v2
 
 - AMRAP / time-based циркуляри (rounds replaced by timer)
 - Уневен сети в групі (різна кількість раундів для вправ)
 - Drop sets, rest-pause, cluster sets
+- Mid-workout grouping для вправ із залогованими сетами
 
 ---
 
-## 6. Логування одного сета
+## 7. Логування одного сета
 
-### 6.1 Три швидкісні тіри
+### 7.1 Три швидкісні тіри
 
 Реальний юзер у ~90% випадків робить те саме що минулого разу або з мінімальною корекцією. Дизайн оптимізує саме під цей сценарій.
 
@@ -373,7 +581,7 @@ flowchart TD
     Type --> Save2[Tap Save — 5 or more taps]
 ```
 
-### 6.2 Custom numpad (bottom sheet)
+### 7.2 Custom numpad (bottom sheet)
 
 Чому власний, не системний: системна клавіатура займає ~50% екрана і ховає контекст вправи; немає gym-специфічних шорткатів `+2.5` / `+5`; decimal separator залежить від локалі і плутає; не оптимізована під одноруку роботу.
 
@@ -385,7 +593,7 @@ flowchart TD
 4. 3×4 numpad: цифри `0–9`, decimal `.`, backspace
 5. Primary button `Save set` знизу — фіксований, доступний великим пальцем
 
-### 6.3 Tap-to-edit поведінка
+### 7.3 Tap-to-edit поведінка
 
 Коли юзер тапає поле з prefilled значенням:
 
@@ -394,40 +602,40 @@ flowchart TD
 - Можна одразу починати набирати — нове число замінює старе
 - Юзер не втрачає референс що там було
 
-### 6.4 Bodyweight вправи
+### 7.4 Bodyweight вправи
 
 Підтягування, віджимання тощо — kg-поле зайве або опціональне:
 
-- На рівні вправи в редакторі помітка `bodyweight: true`
+- На рівні вправи в db помітка `isBodyweight: true`
 - Під час тренування показується тільки reps-поле
 - Опціональне додаткове поле `+extra weight` для тих хто вішає блін на пояс
 
-### 6.5 Decimal separator
+### 7.5 Decimal separator
 
 - Локаль користувача визначає чи показуємо `.` чи `,` на numpad-і
 - Внутрішньо завжди point
-- Це треба пам'ятати в редакторі програми і в експорт-форматі
+- Це треба пам'ятати в експорт-форматі
 
 ---
 
-## 7. Меню дій з сетом
+## 8. Меню дій з сетом
 
-### 7.1 Тригер
+### 8.1 Тригер
 
 - **Primary**: тап на номер сета (лівий стовпчик таблиці)
 - **Secondary**: long-press на рядку
 - Окрему `⋯` іконку НЕ додаємо — забере місце в щільній таблиці і нічого нового не дасть
 
-### 7.2 Зміст MVP
+### 8.2 Зміст MVP
 
 | Action | Type | Notes |
-|--------|------|-------|
+|---|---|---|
 | Mark as warmup | Toggle | Виключає сет з volume і PR |
 | RPE | Picker 1–10 | Опціонально, ховається в settings якщо юзер не використовує |
 | Add note | Text input | Системна клавіатура (рідкісна дія, economy of attention важить більше за швидкість) |
 | Delete set | Destructive | З confirmation |
 
-### 7.3 Візуальні маркери на рядку
+### 8.3 Візуальні маркери на рядку
 
 Після конфігурації сет показує мінімальні бейджі:
 
@@ -437,23 +645,11 @@ flowchart TD
 
 Без захаращення основного флоу — читається з одного погляду.
 
-### 7.4 Replace exercise
-
-Окремий action, живе в меню вправи (іконка `⋯` біля назви):
-
-- Replace exercise → exercise picker з пошуком
-- Skip exercise
-- Add another set
-- Add exercise note
-- Remove exercise
-
-При replace — старі сети витираються (це інша вправа, не та сама зі зміненим обладнанням).
-
 ---
 
-## 8. Завершення тренування
+## 9. Завершення тренування
 
-### 8.1 Flow
+### 9.1 Flow
 
 ```mermaid
 flowchart TD
@@ -473,311 +669,42 @@ flowchart TD
     Confirm -->|No| Summary
 ```
 
-### 8.2 Зміст completion screen
+### 9.2 Зміст completion screen
 
 - Назва тренування + дата + duration
 - Stats grid (4 картки): `Volume`, `Sets`, `Duration`, `Personal records`
 - PR card візуально виділена info-кольором — єдиний motivational accent на екрані
 - Workout note (textarea, опціональна)
-- Exercise summary (collapsible, показує per-exercise sets count і marker `◆` для PR)
+- Exercise summary (collapsible, показує per-exercise sets count і marker `◆` для PR; групи з letter labels)
 - Primary button: `Save to history`
 - Secondary text button: `Discard workout` (з confirmation)
 
-### 8.3 PR detection — MVP
+### 9.3 PR detection — MVP
 
 Якщо в певному rep-діапазоні юзер вперше підняв таку вагу — це PR. Маленький `◆` біля назви вправи в summary і на картці stats.
 
 Повноцінна логіка (1RM estimation з формулами Epley / Brzycki, e1RM tracking) — пізніше.
 
-### 8.4 Volume metric
+### 9.4 Volume metric
 
 `sum(weight × reps)` по робочих сетах (warmups виключаються). Не ідеальна метрика тренувального стресу, але стандартна — юзери звикли.
 
 ---
 
-## 9. Глосарій
-
-| Термін | Визначення |
-|--------|------------|
-| Set | Один підхід однієї вправи |
-| Round / cycle | Один прохід через всі вправи групи |
-| Superset | Група вправ що виконуються alternating |
-| `prev` | Результат цього сета з попереднього тренування |
-| target | Задана ціль для сета (опціонально, з програми) |
-| PR | Personal record, максимальна вага в певному rep-діапазоні |
-| RPE | Rate of perceived exertion, 1–10, суб'єктивна важкість |
-| RIR | Reps in reserve, скільки ще повторів міг зробити (інверсія RPE) |
-| Volume | `weight × reps` сума, метрика об'єму тренування |
-| Bodyweight | Вправа де власна вага достатня (підтягування, віджимання) |
-| Active program | Поточна обрана програма. Максимум одна на юзера |
-| Pointer | Індекс наступного workout-у в active program (linear progression) |
-| Bundled program | Готова програма зашита в застосунок з коробки (read-only до v1.1) |
-
----
-
-## 10. Що ще не вирішено
-
-Наступні зони чекають дизайну:
-
-- **Редактор програм** — CRUD вправ / сетів / груп; винесено у v1.1, не блокує MVP
-- **Exercise database UI** — пошук, фільтри, кастомні вправи. Сама db живе в Profile
-- **Settings** — units (lb пізніше), language override, theme, RPE on/off, notifications, backup/restore, delete data
-- **Bundled programs** — який список (2-3 шт), контент, переклади. Окрема робота
-- **Модель даних** — формальна схема `Program → Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ)
-- **Візуальний стиль** — типографіка, кольори, density, motion (свідомо відкладено до завершення структури)
-
-Edge cases що зачепили побіжно і треба закрити:
-- Редагування completed сета мід-тренування
-- Pause/resume workout (background → foreground логіка)
-- Skip exercise (повністю пропустити в активному workout-і)
-- Failed reps (нуль повторів — як логуємо)
-- Auto-scroll override (юзер свідомо хоче подивитись іншу вправу)
-- Reordering вправ мід-тренуванням
-
----
-
-## 11. Import flow
-
-> JSON-формат описано у `gym-tracker-program-format.md`. Тут — UI/UX імпорту: як юзер acquir-ить файл, як reconcile конфлікти вправ і як програма потрапляє в список.
-
-### 11.1 Огляд
-
-```mermaid
-flowchart TD
-    Start[Programs → Import]
-    DL[Deep link gymtracker://import?...]
-    Start --> FP[File picker]
-    DL --> Read
-    FP --> Read[Read JSON]
-    Read --> JSON{Parse}
-    JSON -->|fail| ErrJ["Couldn't read file"]
-    JSON -->|ok| Validate{Schema + structure}
-    Validate -->|fail| ErrV["File has issues"]
-    Validate -->|ok| Auto[Auto-resolve exact matches silently]
-    Auto --> Has{Unresolved?}
-    Has -->|no| Preview
-    Has -->|yes| Reconcile[Reconcile batch list<br/>hard gate]
-    Reconcile --> Preview[Preview full structure]
-    Preview --> Action{Action}
-    Action -->|Save| Land[Saved to programs]
-    Action -->|Save & activate| LandA[Saved + active]
-    Action -->|Cancel| Drop[Programs tab]
-    ErrJ --> Drop
-    ErrV --> Drop
-```
-
-П'ять фаз: **Acquire** → **Validate** → **Reconcile** → **Preview** → **Land**.
-
-### 11.2 Entry points (Acquire)
-
-Два джерела payload-у в MVP:
-
-| Entry | Як виглядає |
-|-------|-------------|
-| File picker | `Programs tab → Import` → системний file picker (Files / Documents) → юзер обирає `.json` |
-| Deep link | `gymtracker://import?routine=<base64>` (custom scheme) або https universal link → застосунок відкривається на Programs tab з payload-ом |
-
-Paste у textarea, share sheet з інших app — відкладено в v1.x. Якщо в реальному використанні стане очевидно що бракує — додамо.
-
-**Deep link під час активного тренування** — payload в queue, банер `Import received` показується на Today поряд з `In-progress workout` banner. Юзер сам запускає коли готовий.
-
-### 11.3 Validate — dead-end errors
-
-Розрізняємо три типи помилок, всі — dead-end з Cancel:
-
-| Помилка | UI повідомлення |
-|---------|-----------------|
-| JSON syntax error | `Couldn't read file` — файл пошкоджений |
-| Schema/structure invalid (з §9 формату) | `File has issues` — попроси автора пофіксити |
-| `schemaVersion` newer than supported | `Update Gym Tracker to import this program` |
-
-Деталі помилок не показуємо. Юзер не може фіксити чужий файл — деталі лише вантажать. Автор може перевірити свій формат через документацію.
-
-```
-┌─────────────────────────┐
-│ ← Import                │
-├─────────────────────────┤
-│                         │
-│         ⚠               │
-│                         │
-│   File has issues       │
-│                         │
-│   This program file     │
-│   has structural        │
-│   problems. Ask the     │
-│   author to check it.   │
-│                         │
-│      [ Cancel ]         │
-└─────────────────────────┘
-```
-
-### 11.4 Reconcile — batch list
-
-Auto-resolve проходить exact matches silently. На екран потрапляють тільки **unresolved** вправи. Якщо unresolved немає — Reconcile пропускається, юзер landить одразу в Preview.
-
-#### 11.4.1 Структура екрана
-
-```
-┌────────────────────────────┐
-│ ← Import                   │
-│ PPL Beginner               │
-│ 11 matched · 3 to resolve  │
-├────────────────────────────┤
-│                            │
-│ DID YOU MEAN? (2)          │
-│ [ Use all suggested ]      │
-│                            │
-│ ┌────────────────────────┐ │
-│ │ "Pullups"              │ │
-│ │ → Pull-ups             │ │
-│ │ [Use this]  [Other ▾]  │ │
-│ └────────────────────────┘ │
-│                            │
-│ ┌────────────────────────┐ │
-│ │ "Bench Press"          │ │
-│ │ → Bench press          │ │
-│ │ [Use this]  [Other ▾]  │ │
-│ └────────────────────────┘ │
-│                            │
-│ NOT IN LIBRARY (1)         │
-│                            │
-│ ┌────────────────────────┐ │
-│ │ "Cable woodchopper"    │ │
-│ │ [Create custom] [Pick▾]│ │
-│ └────────────────────────┘ │
-│                            │
-├────────────────────────────┤
-│ [   Continue (1 left)  ]   │
-└────────────────────────────┘
-```
-
-Дві секції за типом конфлікту:
-
-- **Did you mean?** — fuzzy match знайдено (Levenshtein ≤ 2 або substring, з §8 формату). Primary дія — confirm запропонованого
-- **Not in library** — exact + fuzzy match не знайдено. Primary дія — створити кастомну вправу
-
-Counter `Continue (N left)` показує скільки лишилось unresolved. Кнопка disabled до 0.
-
-#### 11.4.2 Інтеракції
-
-| Дія | Результат |
-|-----|-----------|
-| `Use this` (fuzzy) | Зматчити з запропонованою. Рядок схлопується до `"Pullups" → Pull-ups ✓` з кнопкою `Change` |
-| `Other ▾` (fuzzy) | Відкриває exercise picker — той самий що в `Replace exercise` мід-тренування (§7.4) |
-| `Create custom` (no-match) | Створює нову кастомну вправу з оригінальною назвою. Permanent у exercise db |
-| `Pick ▾` (no-match) | Exercise picker — якщо вправа існує під іншою назвою, можна знайти |
-| `Use all suggested` | Bulk: усі fuzzy match-и підтверджуються одним тапом. Для впевнених юзерів |
-| `Change` (на resolved) | Перерезолвити — повертає рядок у unresolved стан |
-
-**Унікальні назви, не позиції.** Якщо `Bench press` зустрічається в JSON 5 разів — це один рядок у списку, юзер резолвить раз. Маппінг застосовується до всіх входжень.
-
-**Picker reuse.** `Other ▾` і `Pick ▾` відкривають той самий exercise picker що `Replace exercise` мід-тренування — пошук + список + bottom action `+ Create new`.
-
-**Custom exercise — permanent.** Створена при імпорті йде в exercise db назавжди. Юзер може видалити пізніше через Profile → Exercise database.
-
-#### 11.4.3 Hard gate
-
-`Continue` недоступний доки є unresolved. `Cancel` — єдиний альтернативний exit. Програма завжди потрапляє в Preview уже валідною — без placeholder-ів і без дірок.
-
-### 11.5 Preview
-
-#### 11.5.1 Структура
-
-```
-┌─────────────────────────┐
-│ ← Import                │
-├─────────────────────────┤
-│                         │
-│  PPL Beginner           │
-│  by Andriy              │
-│                         │
-│  Push/Pull/Legs split,  │
-│  3 weeks of progression │
-│  + 1 deload week        │
-│                         │
-│  Beginner · 3×/week     │
-│  4 weeks · 12 workouts  │
-│  87 sets · 14 exercises │
-│                         │
-│  ✓ All exercises matched│
-│  3 resolved manually  > │
-│                         │
-│  ─ Workouts ─────────   │
-│                         │
-│  W1 · Push day      ⌄   │
-│   Bench press · 4×8     │
-│   Superset · 3 rounds   │
-│    A1 Pull-ups · [6-10] │
-│    A2 Push-ups · [10-15]│
-│   Squat · 3 × [6-8]     │
-│                         │
-│  W1 · Pull day      ⌄   │
-│  W1 · Leg day       ⌄   │
-│  W2 · Push day      ⌄   │
-│  ...                    │
-│                         │
-├─────────────────────────┤
-│  [      Save      ]     │
-│  [ Save & activate ]    │
-└─────────────────────────┘
-```
-
-#### 11.5.2 Зміст блоків
-
-- **Header** — назва, автор (якщо є), description
-- **Stats** — level, frequency, totalWeeks, total workouts, total sets, total unique exercises
-- **Resolution summary** — `✓ All exercises matched · N resolved manually`. Клікабельний → відкриває список усіх mapping-ів (включно з exact matches що пройшли silently). Юзер може `Change` будь-який і повернутись у preview
-- **Workouts** — повний список усіх workout-ів зі всіх тижнів. One-liner default (як в Today §3.5), expand на тап показує таблицю сетів. Read-only прев'ю
-
-#### 11.5.3 Decoupling
-
-Імпортована програма — окрема юзерська копія, не лінкована до source-у. Якщо автор оновить JSON — у юзера лишиться стара версія. Якщо юзер хоче нову — імпортує заново (це створить ще одну копію, дублікати назв допускаються).
-
-#### 11.5.4 Що НЕ робимо в Preview
-
-- **Edit before saving** — імпортована програма зберігається як є. Якщо юзер хоче змінити — `Cancel` і просить автора пофіксити, або імпортує і редагує в editor (v1.1)
-
-### 11.6 Land
-
-Дві кнопки:
-
-| Кнопка | Поведінка |
-|--------|-----------|
-| `Save` | Програма у списку, не активна. Useful для колекціонування / порівняння |
-| `Save & activate` | Програма у списку + active. Today оновлюється на її перший workout |
-
-Якщо вже є active — `Save & activate` свопає її без destructive confirmation (per §3.9). Pointer попередньої програми зберігається на майбутній switch back.
-
-**Duplicate names allowed** без friction. Програми ідентифікуються по UUID, name — display only. Якщо юзер хоче перейменувати — через editor (v1.1).
-
-**Imported = read-only до v1.1**, як bundled (§3.1). Replace exercise inline мід-тренування доступний (§7.4).
-
-### 11.7 Edge cases
-
-| Кейс | Поведінка |
-|------|-----------|
-| Cancel на будь-якій фазі | Modal закривається, повернення на Programs tab. Reconcile state не зберігається |
-| Multi-language програма | Системні вправи зберігаються по `exerciseId`, відображаються в локалі юзера. Юзерський текст (program/workout names, descriptions, notes) — as is, без перекладу |
-| Deep link під активним тренуванням | Payload в queue, банер `Import received` на Today поряд з in-progress banner |
-| `schemaVersion` newer than supported | Dead-end "Update Gym Tracker to import this program" |
-| Custom exercise з тією ж назвою що системна (case-insensitive) | Exact match — auto-resolve до системної. Юзер не отримує duplicate |
-
----
-
-## 12. History
+## 10. History
 
 > Перегляд минулих тренувань. Минулі тренування — read-only факт. MVP мінімальний: список + detail без фільтрів і експорту (винесено в §13).
 
-### 12.1 Огляд
+### 10.1 Огляд
 
-History — окремий bottom tab (`Today · Programs · History · Profile`). Стек з двох екранів:
+History — окремий bottom tab (`Today · History · Profile`). Стек з двох екранів:
 
 - *List* — хронологічна стрічка завершених тренувань
 - *Detail* — read-only знімок одного тренування
 
 Без topbar actions, без filter, без search, без export — все це переноситься в v2. Ціль MVP: бачити що я робив, у простій timeline-формі.
 
-### 12.2 Список тренувань
+### 10.2 Список тренувань
 
 - *Структура*: flat хронологічна стрічка, найновіше зверху, infinite scroll з lazy loading
 - *Sticky section headers*: при скролі зверху приклеюється label поточного тижня/місяця (`This week`, `Last week`, `April`). Це візуальна пунктуація в flat list, не зміна структури
@@ -791,12 +718,12 @@ Row (medium density), два рядки:
 ```
 
 - *Date format*: relative для останніх 7 днів (`Today`, `Yesterday`, `Mon`), absolute далі (`28 Apr 2026`)
-- *Volume*: `sum(weight × reps)` по робочих сетах, warmups виключаються (узгоджено з §8.4)
-- *Bodyweight*: вправи без weight дають 0 у внеску до volume (user weight в profile у MVP не зберігається)
+- *Volume*: `sum(weight × reps)` по робочих сетах, warmups виключаються (узгоджено з §9.4)
+- *Bodyweight*: вправи без weight дають 0 у внеску до volume
 
 Tap на рядок → push detail screen.
 
-### 12.3 Detail screen
+### 10.3 Detail screen
 
 Read-only знімок тренування. Жодних actions редагування.
 
@@ -808,16 +735,17 @@ Read-only знімок тренування. Жодних actions редагув
 *Body* — full snapshot:
 - Усі вправи в порядку виконання
 - Для кожного сета: номер (або `W` для warmup), `weight × reps`, RPE (якщо було), маркер нотатки
-- Replaced exercises показуються в тому вигляді в якому виконувались (факт), без посилання на оригінальну вправу з програми
 - Workout note (якщо була залогована при completion)
 
 *Суперсети* — group rendering як у in-workout, але read-only:
-- Group header: label `Superset` + `N rounds`
-- Список вправ у групі, сети показуються по раундах
+- Group header: letter label (`A · Superset · 3 rounds`)
+- Список вправ у групі з префіксами A1/A2/A3
+- Сети показуються по раундах
+- Letter color консистентний з тим як був у workout-і
 
-*Без actions*: немає edit, repeat workout, export — все в §13.
+*Без actions*: немає edit, repeat workout from this entry, export — все в §13.
 
-### 12.4 Empty state
+### 10.4 Empty state
 
 Юзер ніколи не завершив тренування → центрований stack:
 
@@ -827,107 +755,148 @@ Read-only знімок тренування. Жодних actions редагув
 
 Bottom tab bar лишається. Без CTA — Today вже доступний в табах.
 
-### 12.5 Що потрапляє в History
+### 10.5 Що потрапляє в History
 
 | Подія | Поведінка |
-|-------|-----------|
+|---|---|
 | Юзер натиснув `Save to history` на completion screen | Додається в History з тими сетами що залогував |
 | Завершено з partial-completed (не всі заплановані сети) | Додається з логованими сетами, відсутні просто не показуються |
 | Юзер натиснув `Discard workout` | Не зберігається в History |
-| Replaced exercise мід-тренування | У History показується замінена вправа, з її логованими сетами |
+| Skipped exercise мід-tworkout | Зберігається з тими сетами що залогувалися (якщо були) |
+
+---
+
+## 11. Глосарій
+
+| Термін | Визначення |
+|---|---|
+| Set | Один підхід однієї вправи |
+| Round / cycle | Один прохід через всі вправи групи |
+| Superset | Група вправ що виконуються alternating |
+| `prev` | Результат цього сета з попереднього виконання (з джерела клонування або з найостаннього тренування з цією вправою) |
+| target | Задана ціль для сета (опціонально, з clone-джерела) |
+| PR | Personal record, максимальна вага в певному rep-діапазоні |
+| RPE | Rate of perceived exertion, 1–10, суб'єктивна важкість |
+| RIR | Reps in reserve, скільки ще повторів міг зробити (інверсія RPE) |
+| Volume | `weight × reps` сума, метрика об'єму тренування |
+| Bodyweight | Вправа де власна вага достатня (підтягування, віджимання) |
+| Workout | Одна тренувальна сесія: список вправ і груп виконаний послідовно |
+| Workout Builder | Pre-workout екран де юзер збирає список перед стартом |
+| Quick-add chips | Швидкі кнопки додавання популярних вправ у Builder |
+| Repeat last | Клонування найостаннього завершеного workout-у |
+| Choose from history | Список з усіма завершеними workout-ами для клонування |
+| Letter label | Літера + колір для розрізнення кількох супер-сетів в одному workout-і (A, B, C) |
+
+---
+
+## 12. Що ще не вирішено
+
+- **Settings** — units (lb пізніше), language override, theme, RPE on/off, notifications, backup/restore, delete data
+- **Exercise database UI** — пошук, фільтри, кастомні вправи, видалення. Сама db живе в Profile
+- **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ)
+- **Візуальний стиль** — типографіка, кольори (включно з letter-colors для груп), density, motion (свідомо відкладено до завершення структури)
+- **Auto-scroll override детальна поведінка** — pull-to-cursor UI
 
 ---
 
 ## 13. Свідомо відкладено в v2 / пізніше
 
+**Програмний шар**
+- Bundled programs / custom programs / program editor
+- Linear progression, pointer-based scheduling
+- One active program at a time
+- Програмний JSON-формат (gym-tracker-program-format.md — заморожений)
+
+**Імпорт / шаринг**
+- Import flow (file picker, conflict resolution, preview, land)
+- Deep linking (gymtracker://import)
+- Universal links / App Links
+- Export програми / single workout (включно з Markdown для LLM-чатів)
+
+**Тренувальні механіки**
 - AMRAP та time-based циркуляри
 - Drop sets, rest-pause, cluster sets
 - Уневен сети в групі
 - 1RM / e1RM estimation і tracking
+- Replace exercise мід-tworkout (в v1 = Remove + Insert after)
+
+**UX полегшення**
+- Mid-workout grouping для вправ із залогованими сетами
+- Save as draft у Workout Builder
+- Mini-bar / minimize active workout
+- PR badges на сетах у History detail
+- History filter (period + exercise) і search
+- History export (Markdown single workout / period)
+- Quick-add chips ranked by usage (зараз статичні)
+
+**Інші зони**
 - Соціальні фічі (sharing, friends, feed)
 - Wearable integration (Apple Watch, Wear OS)
 - Voice input для логування
-- Plate calculator (calculate which plates to load on the bar)
-- Freestyle workout (без програми) — потребує окремої моделі і entry points
-- Calendar-based scheduling (прив'язка днів тижня до workout-ів)
+- Plate calculator
+- Calendar-based scheduling
 - Streak counters і motivational gamification
-- Editor програм у MVP (winесено у v1.1)
-- Mini-bar / minimize active workout (modal full takeover в MVP)
-- History filter (period + program + exercise) і search по нотатках
-- History export — Markdown single workout + filtered period (use case: LLM-чат для корекції наступних програм)
-- PR badges на сетах у History detail
 - Графіки прогресу, тенденції по вправах, PR timeline
-- Repeat / fork workout з History (перетинається з freestyle)
 
 ---
 
 ## 14. Список зафіксованих рішень
 
-Швидкий чеклист того що вже визначено:
+**Скоуп v1**
+- [x] v1 = ad-hoc workouts (build / execute / log to history)
+- [x] Програми / import / deep linking → v2
+- [x] 3 bottom tabs: Today · History · Profile
 
-**Навігація / IA**
-- [x] 4 bottom tabs: Today · Programs · History · Profile
-- [x] Active workout — modal full takeover, без mini-bar
-- [x] One active program at a time
-- [x] Per-program pointer (state preserved при switch)
-- [x] Exercise database — всередині Profile
+**Today / Pre-workout**
+- [x] Three modes: has history / first launch / in-progress
+- [x] Repeat last як primary CTA
+- [x] Choose from history для split routines
+- [x] Start blank → Workout Builder
+- [x] Onboarding — straight to empty Today, без welcome screens
+- [x] Crash restoration — banner на Today (Resume / Discard)
 
-**Pre-workout**
-- [x] Перша програма — bundled (2-3) + import. Editor у v1.1
-- [x] Linear progression, pointer-based
-- [x] Today shape — expanded preview list + sticky Start
-- [x] Today density — minimal (без streak, без summary cards)
-- [x] Exercise preview — one-liner default, expand на тап
-- [x] Onboarding — straight to picker, без welcome screens
-- [x] Empty state — `No active program` + Browse programs CTA
-- [x] Crash restoration — banner на Today (Resume / Discard), не auto-resume
-- [x] Switch active program — без destructive confirmation
-- [x] Deep link import → Programs → Import flow
+**Workout Builder**
+- [x] Modal overlay над Tab Navigator
+- [x] Quick-add chips: Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl
+- [x] Default sets для нової вправи: 3 × 8
+- [x] Editable workout name (з джерела при clone, auto-name при blank)
+- [x] Reorder через drag, supersets через action menu
+- [x] Start workout button disabled поки список порожній
 
 **In-workout**
-- [x] Список вправ дня — скрол, не карусель
-- [x] Сети з опціональною ціллю — ghost text у полях
-- [x] Суперсети потрібні в MVP, alternating only
-- [x] Один rest-таймер на групу (`restBetweenRounds`)
-- [x] Без rest всередині суперсет-раунду
-- [x] AMRAP — у v2
-- [x] Уневен сети в групі — заборонені в редакторі
+- [x] Список вправ — скрол, не карусель
+- [x] Сети з опц. ціллю — ghost text (з clone-джерела)
 - [x] Custom numpad замість системної клавіатури
 - [x] Quick-adjust кнопки на numpad-і (`±2.5`, `±5`)
 - [x] Tap на номер сета → set actions sheet
 - [x] Set actions: warmup toggle, RPE 1–10, note, delete
-- [x] Replace exercise — окреме меню вправи
-- [x] Completion screen з 4 stats cards + note + summary
-- [x] PR detection — простий MVP-варіант
+- [x] Active workout = full editor: add/remove set, add/insert/remove exercise, reorder
+- [x] Skip exercise — soft remove що зберігає структуру для clone
+- [x] Failed reps (0 reps) — дозволено, save + green ✓, не йде в volume і PR
+- [x] Auto-scroll призупиняється при manual scroll
 
-**Import flow**
-- [x] Entry points: file picker + deep link (paste / share sheet — v1.x)
-- [x] Validate: dead-end errors без деталей (3 типи: JSON, structure, schemaVersion)
-- [x] Reconcile: batch list, дві секції (Did you mean? + Not in library)
-- [x] Auto-resolve exact matches silently
-- [x] Hard gate — Continue до 0 unresolved
-- [x] Унікальні назви, не позиції; bulk `Use all suggested`
-- [x] Picker reuse з Replace exercise (§7.4); custom exercise = permanent
-- [x] Preview: повна структура з expand-абельними workout-ами
-- [x] Resolution summary клікабельна, перерезолв через Change
-- [x] Decoupling: imported = окрема юзерська копія, не лінкована до source
-- [x] Land: дві кнопки `Save` / `Save & activate`
-- [x] Duplicate names allowed
-- [x] Imported = read-only до editor v1.1, як bundled
-- [x] Deep link під активним тренуванням → queue + банер
-- [x] Multi-language програми — exerciseId mapping
+**Суперсети**
+- [x] Must-have в v1
+- [x] Тільки alternating, 2-5 вправ, 2-10 раундів, один rest на групу
+- [x] Створення pre-workout і мід-tworkout (з constraint: 0 залогованих сетів у кандидатах)
+- [x] UI створення: per-exercise `⋮` → Add to superset → multi-select picker → config sheet
+- [x] Color-coded letter labels (A/B/C з ротацією кольорів)
+- [x] Edit rounds (constrained), rest, add/remove exercise (під те ж обмеження)
+- [x] Ungroup завжди можливий, логовані сети лишаються прив'язані до своїх вправ
+- [x] AMRAP / уневен / time-based — у v2
+
+**Завершення**
+- [x] Completion screen з 4 stats cards + note + summary
+- [x] PR detection — простий MVP-варіант (вперше така вага в rep-діапазоні)
+- [x] Volume = `sum(weight × reps)`, warmups виключені
 
 **History**
 - [x] Bottom tab `History`, root-екран без topbar actions
 - [x] Flat хронологічна стрічка, найновіше зверху, infinite scroll
 - [x] Sticky section headers (week / month) при скролі
-- [x] Row medium density: дата + назва + duration / N sets + volume kg
-- [x] Date format: relative для останніх 7 днів, absolute далі
 - [x] Tap → detail (read-only full snapshot)
-- [x] Detail header: back + назва + дата + duration. Без actions
-- [x] Detail body: усі вправи з усіма сетами, group rendering для суперсетів
-- [x] Replaced exercises показуються як виконувались (факт)
-- [x] Volume в row — `sum(weight × reps)`, warmups виключені (= §8.4)
-- [x] Discarded workouts не зберігаються; partial-completed зберігаються з логованими сетами
+- [x] Detail body: усі вправи з усіма сетами, group rendering для суперсетів з letter labels
+- [x] Volume в row — `sum(weight × reps)`, warmups виключені
+- [x] Discarded workouts не зберігаються; partial-completed зберігаються
 - [x] Empty state: текст + проста іконка
 - [x] Filter / search / export / PR badges / графіки — у v2
