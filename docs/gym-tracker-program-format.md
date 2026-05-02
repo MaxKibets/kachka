@@ -1,10 +1,12 @@
 # Gym Tracker · Program Format
 
-> JSON-формат для імпорту/експорту програм. Один формат обслуговує: ручний імпорт, шаринг між юзерами, бекап, ШІ-генерацію (v2). UI/UX — у `gym-tracker-spec.md`. Технічні вимоги — у `gym-tracker-tech.md`.
+> ⚠️ **Status: Frozen — deferred to v2.** Програмний шар повністю винесений з v1. v1 застосунок працює з ad-hoc workout-ами (див. `gym-tracker-spec.md`), без поняття "програма". Цей документ зберігається як reference для майбутнього v2 — формат уже спроектований і не потребує перепродумування коли програми повернуться. UI імпорту також відкладено у v2.
 
-**Статус**: v1 формат зафіксовано на рівні полів і правил. UI імпорту і conflict resolution — окрема робота.
+> JSON-формат для імпорту/експорту програм. Один формат обслуговує: ручний імпорт, шаринг між юзерами, бекап, ШІ-генерацію. Технічні вимоги — у `gym-tracker-tech.md`.
 
-**Версія**: v0.1 · `schemaVersion: 1`
+**Статус**: формат зафіксовано на рівні полів і правил. UI імпорту і conflict resolution — окрема робота. Імплементація — v2.
+
+**Версія**: v0.1 · `schemaVersion: 1` · frozen
 
 ---
 
@@ -385,7 +387,7 @@ UI цього флоу — окрема робота, не у форматі. П
 
 ## 12. Відкриті питання
 
-UI імпорту, conflict resolution, validation feedback, deep link landing, multi-language програми і edit після import — закрито в `gym-tracker-spec.md` §11 (Import flow).
+UI імпорту, conflict resolution, validation feedback, deep link landing, multi-language програми і edit після import — були спроектовані разом з v0.4 spec-у. Поточний spec (v0.5) ці зони не містить — програмний шар відкладено у v2.
 
 Лишаються:
 
