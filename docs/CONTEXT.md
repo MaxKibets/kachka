@@ -12,28 +12,31 @@ React Native (iOS + Android) трекер тренувань у спортзал
 
 ## Поточний стан
 
-UI/UX **закрито концептуально**:
-- Navigation / IA
-- Pre-workout flow
-- In-workout зона (вся)
-- Import flow (acquire → validate → reconcile → preview → land)
-- History (list + detail без фільтрів/експорту в MVP)
+**v1 scope locked: ad-hoc workouts.** Юзер створює тренування на льоту або клонує з історії, виконує, логує в історію. Програмний шар повністю відкладено у v2.
 
-**Зафіксовано**: формат програм для імпорту/експорту, технічні і продуктові рішення.
+UI/UX **закрито концептуально** для v1:
+- Navigation / IA (3 tabs: Today · History · Profile)
+- Today flow (Repeat last / Choose from history / Start blank)
+- Workout Builder (pre-workout list + Quick-add chips + supersets)
+- In-workout зона (вся, включно з editing мід-tworkout)
+- Суперсети ad-hoc з color-coded letter labels
+- History (list + detail без фільтрів/експорту)
 
-Лишається опрацювати решту UI зон (див. "Що далі" нижче).
+**Зафіксовано**: технічні і продуктові рішення. Програмний JSON-формат також зафіксований на рівні полів — заморожений, повертається у v2.
+
+Лишається опрацювати: Settings, Exercise database UI, формальну модель даних, візуальний стиль.
 
 ## Документація проєкту
 
 Три md-файли в проєкті, треба читати їх як єдине ціле:
 
-| Файл | Зміст |
-|------|-------|
-| `gym-tracker-spec.md` | UI/UX. Navigation, Pre-workout, In-workout, Import, History зони, custom numpad, set actions, completion, суперсети |
-| `gym-tracker-tech.md` | Технічні і продуктові рішення — платформа, storage, юніти, локалізація, монетизація, дистрибуція |
-| `gym-tracker-program-format.md` | JSON-формат програм для імпорту/експорту — повна специфікація з валідацією і прикладами |
+| Файл | Зміст | Status |
+|------|-------|--------|
+| `gym-tracker-spec.md` | UI/UX v1 — Navigation, Today, Workout Builder, In-workout, Суперсети, History | Active |
+| `gym-tracker-tech.md` | Технічні і продуктові рішення — платформа, storage, юніти, локалізація, монетизація, дистрибуція | Active |
+| `gym-tracker-program-format.md` | JSON-формат програм для імпорту/експорту | **Frozen — v2** |
 
-**Перед будь-якою відповіддю — прочитати всі три.** Вони пов'язані крос-посиланнями, рішення в одному часто впливає на інші.
+**Перед будь-якою відповіддю — прочитати spec і tech.** Program format читати тільки якщо запит явно стосується v2 / шарингу / імпорту.
 
 ## Найважливіші зафіксовані рішення
 
@@ -43,38 +46,47 @@ UI/UX **закрито концептуально**:
 - Юзер у залі, потіє, одна рука, 5–15с на сет, 15–30 циклів за тренування. UI оптимізує саме під цей сценарій
 - Темна тема обов'язкова, великі тач-таргети, мінімум тапів
 
-**Навігація / IA**
-- 4 bottom tabs: Today · Programs · History · Profile
+**Скоуп v1**
+- v1 = ad-hoc workouts (build / execute / log to history)
+- Програми / import / deep linking → v2
+- 3 bottom tabs: Today · History · Profile
 - Active workout — modal full takeover (без mini-bar)
-- One active program at a time, per-program pointer
+- Workout Builder — modal pre-workout
 - Exercise database — всередині Profile
 
-**Pre-workout flow**
-- Перша програма: bundled (2-3) + import. Editor у v1.1
-- Linear progression, pointer-based (не календарний)
-- Today shape — expanded preview list з sticky `Start workout`
-- Today density — minimal (без streak, без summary cards)
-- Exercise preview — one-liner default, expand на тап
-- Onboarding — straight to picker, без welcome screens
-- Crash restoration — banner на Today (Resume / Discard)
+**Today flow**
+- 3 режими: has history (Repeat last + Choose from history + Start blank) / first launch (single CTA) / in-progress (banner)
+- Repeat last — primary CTA, клонує структуру + назву + targets, prev = з джерела клонування
+- Choose from history — список усіх завершених для split routines
+- Crash restoration — banner на Today (Resume / Discard), не auto-resume
+
+**Workout Builder**
+- Quick-add chips: 7 popular exercises (Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl), en + uk
+- Default sets для нової вправи: 3 × 8
+- Editable workout name, reorder через drag, supersets через action menu
 
 **In-workout**
-- Список вправ дня — скрол, не карусель
-- Сети з опціональною ціллю (ghost text у полях). Якщо нема — прочерк
-- Суперсети в MVP — alternating only, 2-5 вправ, однакові раунди, один rest на групу, без rest всередині раунду
+- Список вправ — скрол, не карусель
+- Сети з опц. ціллю — ghost text у полях (з clone-джерела)
 - Custom numpad замість системної клавіатури з quick-adjust ±2.5/±5
 - Set actions через тап на номер сета — warmup, RPE, note, delete
+- Active workout = full editor: add/remove set, add/insert/remove exercise, skip, reorder
+- Skip exercise — soft remove що зберігає структуру для clone
+- Failed reps (0 reps) — дозволено
 
-**Import flow**
-- Entry points: file picker + deep link. Paste / share sheet — у v1.x
-- 5 фаз: acquire → validate → reconcile → preview → land
-- Validate — dead-end errors без деталей (3 типи: JSON, structure, schemaVersion)
-- Reconcile — batch list з двома секціями (Did you mean? + Not in library), auto-resolve exact matches silently, hard gate (Continue до 0 unresolved)
-- Picker reuse з `Replace exercise`, custom exercise створена при імпорті — permanent у db
-- Preview — повна структура з expand-абельними workout-ами, resolution summary з можливістю перерезолву
-- Imported = окрема юзерська копія, decoupled від source, read-only до editor v1.1
-- Land — `Save` / `Save & activate`, дублікати назв allowed
-- Deep link під активним тренуванням — payload в queue + банер на Today
+**Суперсети (must-have в v1)**
+- Тільки alternating, 2-5 вправ, 2-10 раундів, один rest на групу
+- Створення pre-workout (Builder) і мід-tworkout (Active) з constraint: 0 залогованих сетів у кандидатів
+- UI: per-exercise `⋮` → Add to superset → multi-select picker → config sheet
+- Color-coded letter labels (A/B/C з ротацією)
+- Edit мід-tworkout: rounds (constrained), rest, add/remove exercise (під те ж обмеження), ungroup завжди
+
+**History**
+- Flat хронологічна стрічка, найновіше зверху, infinite scroll
+- Sticky section headers (week / month)
+- Detail — read-only full snapshot з group rendering для суперсетів
+- Discarded не зберігаються; partial-completed зберігаються
+- Filter / search / export / PR badges / графіки — у v2
 
 **Технічні**
 - Storage: local-only, sync-ready фундамент (UUID, soft delete, timestamps)
@@ -82,56 +94,69 @@ UI/UX **закрито концептуально**:
 - Локалізація: English (base) + Ukrainian, i18n з першого дня
 - Free, без реклами, без accounts
 
-**Формат програм**
-- Сети без ваги (тільки структура), reps як `number` або `[min, max]`
-- RPE only без RIR, прогресія через explicit weeks без формул
-- Вправи як вільний текст з conflict resolution на імпорті
-
 ## Свідомо відкладено в v2 — не обговорювати в v1
 
+**Програмний шар**
+- Bundled programs / custom programs / program editor
+- Linear progression, pointer-based scheduling
+- One active program at a time
+- Програмний JSON-формат (заморожений у `gym-tracker-program-format.md`)
+
+**Імпорт / шаринг**
+- Import flow (file picker, conflict resolution, preview, land)
+- Deep linking (gymtracker://import)
+- Universal links / App Links
+- Export програми / single workout (Markdown для LLM-чатів)
+
+**Тренувальні механіки**
 - AMRAP / time-based циркуляри
 - Drop sets, rest-pause, cluster sets
 - Уневен сети в групі
 - 1RM / e1RM estimation
+- Replace exercise мід-tworkout (в v1 = Remove + Insert after)
+
+**UX полегшення**
+- Mid-workout grouping для вправ із залогованими сетами
+- Save as draft у Workout Builder
+- Mini-bar / minimize active workout
+- PR badges на сетах у History detail
+- History filter / search / export
+- Quick-add chips ranked by usage
+
+**Інші зони**
 - Соціальні фічі
 - Wearable integration
 - Voice input
-- ШІ-генерація програм
-- Sync між пристроями
-- Substitutions у форматі (замінено generic Replace exercise + ШІ враховує availableEquipment)
-- Tempo як окреме поле
-- Прогресія через формули
-- Freestyle workout (без програми) — потребує окремої моделі і entry points
-- Calendar-based scheduling (прив'язка днів тижня до workout-ів)
+- Plate calculator
+- Calendar-based scheduling
 - Streak counters і motivational gamification
-- Editor програм (винесено у v1.1)
-- Mini-bar / minimize active workout
+- Графіки прогресу, тенденції, PR timeline
 
 ## Що далі — план роботи
 
-Три зони лишилось:
+Зони які лишилось опрацювати у v1:
 
-1. **Programs tab** — список програм, program detail screen, switch active flow (частково випливає з Today + Import)
-2. **Редактор програм** — CRUD вправ/сетів/груп (винесено у v1.1, можна не закривати в MVP-фазі)
-3. **Profile + edge cases** — exercise database UI, settings, onboarding bundled-content, +зачеплені побіжно edge cases
+1. **Profile + Settings** — units (lb), language override, theme, RPE on/off, notifications, backup/restore, delete data
+2. **Exercise database UI** — пошук, фільтри, кастомні вправи, видалення (без conflict resolution — це програмна частина, поїхала у v2)
+3. **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ)
+4. **Візуальний стиль** — типографіка, кольори (включно з letter-colors для груп), density, motion
+5. **Auto-scroll override** — pull-to-cursor UI
 
-Edge cases що зачепили побіжно і треба закрити: редагування completed сета мід-тренування, pause/resume workout, skip exercise, failed reps, auto-scroll override, reordering мід-тренуванням.
-
-Чотири технічних рішення для v1: локальна БД (рекомендовано WatermelonDB), Expo vs bare RN, мінімальні версії OS, exercise database seed-список.
+Чотири технічних рішення для v1: локальна БД (рекомендовано WatermelonDB), Expo vs bare RN, мінімальні версії OS, exercise database seed-список (повний каталог окрім 7 chip-вправ).
 
 ## Як працювати
 
 **Стиль**: ставиш питання → показуєш каркас з трейд-офами → юзер дає напрямок → фіксуємо в md. Не вирішуй за юзера — давай вибір.
 
-**Каркаси**: спершу пробуй `visualize:show_widget` (з попереднім `visualize:read_me`). Якщо tool падає (були випадки 400-х) — fallback на HTML-файл у `/mnt/user-data/outputs/` з `present_files`. ASCII / mermaid — для процесів і простих структур, не для full-screen mockup-ів.
+**Каркаси**: ASCII / mermaid — для процесів і простих структур. Для повноцінних мокапів — окрема розмова про візуальний стиль (поки відкладено).
 
-**Питання юзеру**: ask_user_input_v0 з 2-4 опціями. Не більше 3 питань за раз.
+**Питання юзеру**: AskUserQuestion з 2-4 опціями. Не більше 3 питань за раз.
 
 **Mermaid-діаграми**: для процесів, state machines, ієрархій. Не для всього — тільки коли діаграма реально допомагає.
 
-**Фіксація**: Коли зона закрита — оновлюємо відповідний md (або створюємо новий). Файли йдуть в `/mnt/user-data/outputs/`, юзер сам копіює в проєкт. Project files read-only.
+**Фіксація**: Коли зона закрита — оновлюємо відповідний md (або створюємо новий). Файли — в `D:\DEV\kachka\docs\`.
 
-**Не плодити документи без потреби**. UI/UX рішення → в `gym-tracker-spec.md`. Технічні → в `gym-tracker-tech.md`. Формат програм → в `gym-tracker-program-format.md`. Новий документ заводити тільки якщо тема справді окрема (наприклад модель даних, ШІ-сценарій).
+**Не плодити документи без потреби**. UI/UX рішення → в `gym-tracker-spec.md`. Технічні → в `gym-tracker-tech.md`. Новий документ заводити тільки якщо тема справді окрема (наприклад модель даних).
 
 ## Тон і прагматичність
 
