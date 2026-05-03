@@ -343,6 +343,42 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; }
   gap: 12px;
 }
 
+/* ---------- Prototype mode (activated by proto-mode.js when ?proto=1) ---------- */
+
+html.proto-mode {
+  background: #000;
+}
+html.proto-mode body {
+  background: #000;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+html.proto-mode .wf-header,
+html.proto-mode .wf-annotations {
+  display: none;
+}
+html.proto-mode .wf-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  max-width: none;
+  grid-template-columns: none;
+  gap: 0;
+}
+html.proto-mode .wf-frame {
+  padding: 0;
+}
+html.proto-mode .phone {
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+}
+html.proto-mode [data-href] {
+  cursor: pointer;
+}
+
 /* ---------- Misc ---------- */
 
 .placeholder-mascot {

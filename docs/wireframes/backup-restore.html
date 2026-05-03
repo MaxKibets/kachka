@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backup &amp; restore · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin: 24px 4px 8px;
+      font-weight: 500;
+    }
+    .section-card {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 18px 16px;
+    }
+    .section-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--mallard-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .section-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--mallard);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .secondary-btn {
+      width: 100%;
+      background: transparent;
+      border: 0.5px solid var(--mallard);
+      color: var(--mallard);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 11px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .secondary-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .footer-note {
+      margin-top: 24px;
+      padding: 14px;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-align: center;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Backup &amp; restore</h1>
+    <p class="wf-meta">spec §13 · Profile sub-screen, без tab bar</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <button class="wf-back-btn" aria-label="Back to Profile" data-href="profile.html">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h1 style="flex: 1; text-align: center;">Backup &amp; restore</h1>
+          <div style="width: 28px;"></div>
+        </div>
+
+        <div class="scroll-area">
+
+          <div class="section-label" style="margin-top: 4px;">Export</div>
+          <div class="section-card">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div class="desc">Export your workouts and exercises as a JSON file you can share or save elsewhere.</div>
+            <button class="secondary-btn" data-href="#">
+              <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              Export data
+            </button>
+          </div>
+
+          <div class="section-label">Import</div>
+          <div class="section-card">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <div class="desc">Import a previously exported JSON file. You'll see a preview before anything is changed.</div>
+            <button class="secondary-btn" data-href="backup-import-preview.html">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+              Import file
+            </button>
+          </div>
+
+          <div class="footer-note">
+            Auto-backup і encryption — у v2.<br>
+            Your data stays on this device.
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Profile (<a href="profile.html">profile.html</a>) → DATA → <code>Backup &amp; restore</code> (push на Profile stack, per spec §12.4)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Export data</code> → app серіалізує всі юзерські дані в JSON → native share sheet (Files / iCloud / AirDrop / Drive / email / etc., per spec §13.2). Toast <code>Backup exported</code> на success</li>
+          <li>Tap <code>Import file</code> → native file picker (filter <code>.json</code>) → validation → <a href="backup-import-preview.html">backup-import-preview.html</a></li>
+          <li>Tap <code>←</code> back → <a href="profile.html">profile.html</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Дві симетричні зони — Export і Import — кожна як card з icon + description + button</li>
+          <li>Без <code>Last export</code> indicator-у (per spec §13.1 — manual режим без напоминання)</li>
+          <li>Export — single tap → native share sheet (без свого destination picker per spec §13.2)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Без tab bar (sub-screen на Profile stack)</li>
+          <li>Кнопки secondary style — Mallard outline, не amber primary CTA. Чому: backup це не destination action в звичному flow (як Start workout), це utility tool. Mallard = data-related action (узгоджено з DATA section в Profile)</li>
+          <li>Іконки: <code>upload</code> (стрілка вгору з box) для Export, <code>download</code> (стрілка вниз з box) для Import. У Mallard tint surface на 36px square</li>
+          <li>Footer note підкреслює v2-обмеження і local-only архітектуру (per spec §13.7 + tech privacy stance)</li>
+          <li>Description copy — на одне речення, узгоджено з spec §13.1 але переписано від першого користувача ("Export your workouts and exercises..." замість "Save all your data...")</li>
+          <li>Plain JSON у v1, без encryption (per spec §13.5)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Successful export → toast <code>Backup exported</code>, лишається на цьому screen-і</li>
+          <li>Import validation fails → error sheet з конкретною причиною (per spec §13.6 — corrupted, not Kachka backup, newer schema, migration fail)</li>
+          <li>Older schema → auto-migrate JSON before preview (silent, per spec §13.6)</li>
+          <li>Newer schema → error sheet <code>This backup was created with a newer version of Kachka. Update the app to import.</code> (per spec §13.6)</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §13</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

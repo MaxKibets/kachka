@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Superset config sheet · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    /* Dimmed builder backdrop */
+    .builder-bg {
+      position: absolute;
+      inset: 0;
+      filter: blur(0px);
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      color: var(--text-primary);
+      opacity: 0.4;
+    }
+    .scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+    }
+    .name-row-bg {
+      padding: 10px 16px 14px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .ex-card-bg {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 0 16px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    /* Bottom sheet */
+    .sheet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--surface-1);
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      border-top: 0.5px solid var(--border-subtle);
+      padding: 8px 0 18px;
+      max-height: 88%;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+      z-index: 10;
+    }
+    .grab-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.16);
+      margin: 4px auto 12px;
+      flex-shrink: 0;
+    }
+    .sheet-header {
+      padding: 0 20px 12px;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .sheet-title {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+    .sheet-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .sheet-body {
+      padding: 14px 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .field-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+    .candidate-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 4px;
+      border-bottom: 0.5px solid var(--border-divider);
+      cursor: pointer;
+    }
+    .candidate-row:last-of-type {
+      border-bottom: none;
+    }
+    .checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1.5px solid var(--text-tertiary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .checkbox.checked {
+      background: var(--mallard);
+      border-color: var(--mallard);
+    }
+    .checkbox.checked svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--canvas);
+      fill: none;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .candidate-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .candidate-disabled .candidate-name {
+      color: var(--text-tertiary);
+    }
+    .candidate-reason {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 2px;
+    }
+    .stepper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-2);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 6px;
+      width: fit-content;
+    }
+    .stepper button {
+      width: 32px;
+      height: 32px;
+      background: var(--surface-3);
+      border: none;
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stepper button:disabled {
+      color: var(--text-tertiary);
+      background: transparent;
+    }
+    .stepper .value {
+      font-family: var(--font-mono);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-primary);
+      min-width: 36px;
+      text-align: center;
+    }
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .preset-chip {
+      background: transparent;
+      border: 0.5px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .preset-chip.active {
+      background: var(--surface-3);
+      border-color: var(--amber);
+      color: var(--text-primary);
+    }
+    .preset-chip .num {
+      font-family: var(--font-mono);
+    }
+    .sheet-footer {
+      padding: 12px 20px 0;
+      border-top: 0.5px solid var(--border-divider);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .sheet-cancel {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .sheet-destructive {
+      background: transparent;
+      border: 0.5px solid var(--border-subtle);
+      color: var(--letter-e);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .field-block {
+      margin-bottom: 22px;
+    }
+    .field-block:last-child {
+      margin-bottom: 0;
+    }
+    .selection-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin: 8px 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Superset config sheet · Create / Edit</h1>
+    <p class="wf-meta">spec §6.2 · bottom sheet над Builder з затемненим backdrop-ом</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone" style="position: relative; overflow: hidden;">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <!-- Dimmed Builder backdrop -->
+        <div class="builder-bg" style="position: relative; opacity: 0.4;">
+          <div class="app-bar">
+            <button class="wf-back-btn" aria-label="Close builder">
+              <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <h1 style="flex: 1; text-align: center; font-size: 17px; font-weight: 500;">Build workout</h1>
+            <div style="width: 30px;"></div>
+          </div>
+          <div class="name-row-bg">Pull A</div>
+          <div class="ex-card-bg">
+            <div>
+              <div style="font-size: 15px; font-weight: 500;">Pull-up</div>
+              <div class="text-sub" style="font-size: 12px;"><span class="num">3</span> sets · 8 reps</div>
+            </div>
+          </div>
+          <div class="ex-card-bg">
+            <div>
+              <div style="font-size: 15px; font-weight: 500;">Bicep curl</div>
+              <div class="text-sub" style="font-size: 12px;"><span class="num">3</span> sets · 8 reps</div>
+            </div>
+          </div>
+          <div class="ex-card-bg">
+            <div>
+              <div style="font-size: 15px; font-weight: 500;">Hammer curl</div>
+              <div class="text-sub" style="font-size: 12px;"><span class="num">3</span> sets · 8 reps</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scrim" data-href="builder-with-supersets.html"></div>
+
+        <!-- Bottom sheet -->
+        <div class="sheet">
+          <div class="grab-handle"></div>
+          <div class="sheet-header">
+            <div class="sheet-title">Configure superset A</div>
+            <div class="sheet-subtitle">Pick 2–5 exercises. Same rounds and rest apply to all.</div>
+          </div>
+
+          <div class="sheet-body">
+
+            <div class="field-block">
+              <div class="field-label">Exercises in group</div>
+              <div class="candidate-row">
+                <div class="checkbox checked"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div style="flex: 1;">
+                  <div class="candidate-name">Pull-up</div>
+                </div>
+              </div>
+              <div class="candidate-row">
+                <div class="checkbox checked"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div style="flex: 1;">
+                  <div class="candidate-name">Bicep curl</div>
+                </div>
+              </div>
+              <div class="candidate-row">
+                <div class="checkbox"></div>
+                <div style="flex: 1;">
+                  <div class="candidate-name">Hammer curl</div>
+                </div>
+              </div>
+              <div class="candidate-row">
+                <div class="checkbox"></div>
+                <div style="flex: 1;">
+                  <div class="candidate-name">Face pull</div>
+                </div>
+              </div>
+              <div class="candidate-row candidate-disabled">
+                <div class="checkbox" style="opacity: 0.4;"></div>
+                <div style="flex: 1;">
+                  <div class="candidate-name">Lat pulldown</div>
+                  <div class="candidate-reason">Already started</div>
+                </div>
+              </div>
+              <div class="selection-meta"><span class="num">2</span> of <span class="num">5</span> selected</div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-label">Rounds</div>
+              <div class="stepper">
+                <button aria-label="Decrease">−</button>
+                <span class="value num">3</span>
+                <button aria-label="Increase">+</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-label">Rest between rounds</div>
+              <div class="preset-row">
+                <button class="preset-chip"><span class="num">60</span>s</button>
+                <button class="preset-chip active"><span class="num">90</span>s</button>
+                <button class="preset-chip"><span class="num">120</span>s</button>
+                <button class="preset-chip"><span class="num">180</span>s</button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="sheet-footer">
+            <button class="sheet-cancel" data-href="builder-with-supersets.html">Cancel</button>
+            <button class="cta-primary" data-href="builder-with-supersets.html">
+              Save
+            </button>
+            <button class="sheet-destructive" data-href="builder.html">Ungroup</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Builder → row <code>⋮</code> → <code>Add to superset</code> → партнер picker → Configure (per spec §6.2). У create flow цей sheet — фінальний крок</li>
+          <li>Builder → group <code>⋮</code> → <code>Edit superset</code> (edit mode — додатковий <code>Ungroup</code> у footer)</li>
+          <li>Active workout → analogous, з constraint: усі candidates мають <span class="num">0</span> залогованих сетів (per spec §6.1)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Save</code> → group створено / оновлено → закриває sheet → Builder з <a href="builder-with-supersets.html">builder-with-supersets.html</a></li>
+          <li>Tap <code>Cancel</code> → закриває sheet без змін → повертається на Builder</li>
+          <li>Tap <code>Ungroup</code> (edit mode тільки) → confirmation sheet → Розпадається на флет вправи (per spec §6.7)</li>
+          <li>Свайп вниз = Cancel (per spec §1)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Multi-select checkboxes — мінімум <span class="num">2</span>, максимум <span class="num">5</span> (per spec §6.1). Save disabled якщо selected &lt; 2</li>
+          <li>Disabled candidates показані з reason inline (<code>Already started</code> якщо є залоговані сети, <code>In another superset</code> якщо вже в групі — per spec §6.2)</li>
+          <li>Rounds stepper: <span class="num">2</span>–<span class="num">10</span>, default <span class="num">3</span>. Кнопка − disabled на <span class="num">2</span>, кнопка + disabled на <span class="num">10</span></li>
+          <li>Rest presets: <span class="num">60</span>s / <span class="num">90</span>s / <span class="num">120</span>s / <span class="num">180</span>s, default <span class="num">90</span>s. Single-select chip-стилі</li>
+          <li>Свайп вниз або тап на scrim — dismiss = Cancel</li>
+          <li>Backdrop затемнений (scrim + builder opacity 0.4) — фокус на sheet</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Sheet title <code>Configure superset A</code> — letter уже відомий бо літери присвоюються при створенні (per spec §6.3)</li>
+          <li>Subtitle expects 2–5 exercises explicit (per spec §6.1) — щоб юзер бачив constraint без помилок</li>
+          <li>Footer order top-to-bottom: <code>Cancel</code> (ghost) → <code>Save</code> (primary amber CTA) → <code>Ungroup</code> (destructive, edit mode тільки). Per spec §1 — Cancel вгорі, destructive внизу. Save як primary action — between them</li>
+          <li>Edit mode додає <code>Ungroup</code> у footer (per prompt). Create mode (нова група) — без цієї кнопки</li>
+          <li><strong>Assumption</strong>: Per spec §6.2 у create flow є окремий партнер-picker screen перед config sheet. У цьому wireframe показано <strong>combined</strong> sheet — multi-select picker + config в одному. Це reasonable simplification: для 2-5 candidates з тим самим контекстом окремий screen виглядає overkill, sheet вміщає все. Якщо юзер хоче двоступеневий flow — можна додати в наступну ітерацію</li>
+          <li><strong>Assumption</strong>: Rounds picker = stepper (per prompt дозволяє "numeric stepper або dropdown"); ставлю stepper бо швидший для thumb (один тап = ±1)</li>
+          <li><strong>Assumption</strong>: Rest picker = preset chips (per prompt). Якщо потрібно custom value — TBD у impl (можна додати <code>Custom…</code> chip який відкриває numpad)</li>
+          <li>Грабхендл — 36×4 pill з <code>rgba(white, 0.16)</code> у верхньому центрі, стандартний iOS/Android indicator</li>
+          <li>Sheet visual — surface-1 background з 18px top corner radius, top border subtle. Drop-shadow для відриву від backdrop</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Create mode (без <code>Ungroup</code>) — той самий sheet без destructive button</li>
+          <li>Active workout edit mode — додатковий constraint: rounds можна збільшити завжди, зменшити тільки до значення ≥ current completed rounds (per spec §6.7) — disabled state на − якщо вже на min</li>
+          <li>Якщо selected = 0 (юзер uncheck-нув все що вибрав) — Save disabled, message <code>Pick at least 2 exercises</code></li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §6.2</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

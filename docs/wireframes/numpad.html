@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Numpad · Custom keyboard sheet · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .phone { position: relative; }
+
+    /* Dimmed in-workout backdrop */
+    .iw-backdrop {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      filter: brightness(0.4);
+      pointer-events: none;
+    }
+    .iw-backdrop .stub-app-bar {
+      padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 0.5px solid var(--border-subtle); background: var(--canvas);
+    }
+    .iw-backdrop .stub-title { font-size: 16px; font-weight: 500; }
+    .iw-backdrop .stub-meta { font-size: 11px; color: var(--text-secondary); }
+    .iw-backdrop .stub-card {
+      margin: 14px 12px; padding: 14px;
+      background: var(--surface-1); border-radius: 14px; border: 0.5px solid var(--border-subtle);
+    }
+    .iw-backdrop .stub-row {
+      display: grid; grid-template-columns: 32px 1fr 78px 60px 40px;
+      gap: 8px; align-items: center; height: 44px;
+      border-top: 0.5px solid var(--border-divider);
+      padding: 0 14px;
+      font-family: var(--font-mono); font-size: 13px;
+    }
+    .iw-backdrop .stub-row:first-child { border-top: none; }
+
+    /* Dim overlay */
+    .dim-overlay {
+      position: absolute; inset: 0;
+      background: rgba(10, 15, 14, 0.6);
+    }
+
+    /* Numpad sheet */
+    .numpad-sheet {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      background: var(--surface-1);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      border: 0.5px solid var(--border-subtle);
+      padding: 8px 14px 18px;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .grab-handle {
+      width: 36px; height: 4px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 2px;
+      margin: 4px auto 10px;
+    }
+
+    .np-header {
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 10px;
+      padding: 0 4px 12px;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .np-context { flex: 1; min-width: 0; }
+    .np-context .np-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; letter-spacing: 0.04em; }
+    .np-context .np-label .num { color: var(--text-secondary); }
+
+    .np-fields { display: flex; gap: 8px; }
+    .np-field {
+      background: var(--surface-2);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 6px 10px;
+      min-width: 78px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .np-field.active {
+      border: 1.5px solid var(--amber);
+      background: var(--surface-3);
+    }
+    .np-field .np-field-label { font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 1px; }
+    .np-field .np-field-value {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 18px; font-weight: 500;
+      color: var(--text-primary);
+    }
+    .np-field.active .np-field-value { color: var(--amber); }
+    .np-field:not(.active) .np-field-value { color: var(--text-secondary); }
+
+    /* Quick adjust row */
+    .np-quick {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 12px 0 10px;
+    }
+    .np-quick button {
+      background: var(--surface-2);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 10px 0;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 14px;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    /* 3x4 keypad grid */
+    .np-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      margin-bottom: 12px;
+    }
+    .np-key {
+      background: var(--surface-2);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px 0;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .np-key.icon-key {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    .np-key.icon-key svg {
+      width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .np-cta-row {
+      display: flex; gap: 10px; align-items: center;
+    }
+    .np-cta-row .cta-primary { flex: 1; }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Numpad · Custom keyboard sheet</h1>
+    <p class="wf-meta">spec §7.2 · кастомний numpad замість системної клавіатури з quick-adjust</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <!-- Dimmed in-workout backdrop -->
+        <div class="iw-backdrop">
+          <div class="status-bar" style="opacity: 0.5;">
+            <span class="clock">9:41</span>
+            <span></span>
+          </div>
+          <div class="stub-app-bar">
+            <span class="stub-title">Push A</span>
+            <span class="stub-meta">14:32</span>
+          </div>
+          <div class="stub-card">
+            <div style="font-size: 16px; font-weight: 500; margin-bottom: 12px;">Bench press</div>
+            <div class="stub-row"><span>1</span><span>70 × 8</span><span style="text-align: center;">70.0</span><span style="text-align: center;">8</span><span></span></div>
+            <div class="stub-row"><span>2</span><span>72.5 × 8</span><span style="text-align: center;">72.5</span><span style="text-align: center;">8</span><span></span></div>
+            <div class="stub-row"><span>3</span><span>75 × 7</span><span style="text-align: center;">75.0</span><span style="text-align: center;">8</span><span></span></div>
+          </div>
+        </div>
+
+        <!-- Dim overlay -->
+        <div class="dim-overlay" data-href="in-workout.html"></div>
+
+        <!-- Numpad bottom sheet -->
+        <div class="numpad-sheet">
+          <div class="grab-handle"></div>
+
+          <div class="np-header">
+            <div class="np-context">
+              <div class="np-label">Bench press · Set <span class="num">3</span></div>
+            </div>
+            <div class="np-fields">
+              <div class="np-field active">
+                <div class="np-field-label">KG</div>
+                <div class="np-field-value">75.0</div>
+              </div>
+              <div class="np-field">
+                <div class="np-field-label">REPS</div>
+                <div class="np-field-value">8</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick adjust ±2.5/±5 (kg mode) -->
+          <div class="np-quick">
+            <button>−5</button>
+            <button>−2.5</button>
+            <button>+2.5</button>
+            <button>+5</button>
+          </div>
+
+          <!-- 3x4 keypad: 1-9, 0, ., backspace -->
+          <div class="np-grid">
+            <button class="np-key">1</button>
+            <button class="np-key">2</button>
+            <button class="np-key">3</button>
+            <button class="np-key">4</button>
+            <button class="np-key">5</button>
+            <button class="np-key">6</button>
+            <button class="np-key">7</button>
+            <button class="np-key">8</button>
+            <button class="np-key">9</button>
+            <button class="np-key icon-key">.</button>
+            <button class="np-key">0</button>
+            <button class="np-key icon-key" aria-label="Backspace">
+              <svg viewBox="0 0 24 24"><path d="M21 6H8l-5 6 5 6h13a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+            </button>
+          </div>
+
+          <div class="np-cta-row">
+            <button class="cta-primary" data-href="in-workout.html">
+              Done
+              <svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>In-workout · tap на kg / reps tile активного сета (<a href="in-workout.html">in-workout.html</a>)</li>
+          <li>In-workout з суперсетом — те саме (<a href="in-workout-with-supersets.html">in-workout-with-supersets.html</a>)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Done</code> → коміт значення в active set, sheet закривається. Якщо обидва поля заповнені і ✓ tapped — save + advance cursor + start rest</li>
+          <li>Swipe down (через grab handle) → закриває sheet без коміту</li>
+          <li>Tap on alternate field tab (REPS) → перемикає focus, quick-adjust ряд оновлюється на <code>−5 −1 +1 +5</code> (per spec §7.2)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Tap-to-edit per spec §7.3: значення select-all-нуте, перший tap на цифру замінює; backspace очищує</li>
+          <li>Quick-adjust ряд варіюється від field: kg = <code>±2.5 ±5</code>, reps = <code>±1 ±5</code> (per spec §7.2)</li>
+          <li>Decimal separator (<code>.</code> чи <code>,</code>) визначається locale, але внутрішньо завжди point (per spec §7.5)</li>
+          <li>Drag handle вгорі sheet-а — стандартний bottom-sheet swipe-to-dismiss</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Reps mode — quick-adjust перемикається. Можна показати в alt-варіанті (TBD)</li>
+          <li>Bodyweight вправа (per spec §7.4) — kg-поле сховане, тільки reps tab. Опц. <code>+extra weight</code> tab якщо юзер тицьнув</li>
+          <li>Failed reps — юзер набирає <code>0</code> і Done. Сет вважається завершеним (per spec §5.7)</li>
+          <li>Locale-driven decimal separator — позиція <code>.</code> на key може бути <code>,</code>. Поки показую <code>.</code> як default (en locale)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Sheet rendered як bottom-anchored (per visual §5.7 + spec §1: всі menus = bottom action sheets)</li>
+          <li>Backdrop затемнений ~60% (canvas з dim overlay) щоб in-workout context лишався читабельним але secondary</li>
+          <li>Field tabs — surface-2 default, surface-3 + 1.5px amber border коли active. Active value у amber, inactive у secondary text</li>
+          <li>Quick-adjust та digit keys — surface-2 з 0.5px subtle border, radius 10–12. Plex Mono Medium для цифр</li>
+          <li>Done CTA — amber primary, full width, з check icon</li>
+          <li>Open question: чи показувати field tabs `kg` і `reps` як SEPARATE field readouts, чи об'єднувати в один великий read-out з перемикачем. Поки — два tab-fields. Перевага — обидва значення видно одразу, можна тапати між полями без закриття</li>
+          <li>Open question: <code>±0.5</code> кнопка для дробових інкрементів (gym plates 0.5kg) — поки не додаю, додамо в v1.x якщо буде запит</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §7.2</a>
+        <a href="../gym-tracker-visual.md">Visual §5.5, §5.7</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

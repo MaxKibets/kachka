@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History · List · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    /* Local styles for history list */
+
+    .scroll-area.history {
+      padding: 0 16px 24px;
+    }
+
+    .section-header {
+      position: sticky;
+      top: 0;
+      background: var(--canvas);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      padding: 14px 4px 8px;
+      z-index: 1;
+    }
+    .section-header:first-child {
+      padding-top: 6px;
+    }
+
+    .history-row {
+      display: grid;
+      grid-template-columns: 1fr 14px;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 4px;
+      border-bottom: 0.5px solid var(--border-divider);
+      cursor: pointer;
+    }
+    .history-row:last-of-type {
+      border-bottom: none;
+    }
+    .history-row .date {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+    .history-row .workout-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .history-row .meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .history-row .chev {
+      stroke: var(--text-tertiary);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .infinite-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 18px 0 6px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+    .infinite-loader .spinner {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid var(--text-tertiary);
+      border-top-color: transparent;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>History · List</h1>
+    <p class="wf-meta">spec §10.2 · root tab screen, infinite scroll</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <h1>History</h1>
+          <button class="icon-btn" aria-label="More options">
+            <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </div>
+
+        <div class="scroll-area history">
+
+          <div class="section-header">This week</div>
+
+          <div class="history-row" data-href="history-detail.html">
+            <div>
+              <div class="date">Today · <span class="num">7:24</span> PM</div>
+              <div class="workout-name">Push A</div>
+              <div class="meta"><span class="num">12</span> sets · <span class="num">4 540</span> kg · <span class="num">52</span> min</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+
+          <div class="history-row" data-href="history-detail.html">
+            <div>
+              <div class="date">Mon · <span class="num">6:12</span> PM</div>
+              <div class="workout-name">Pull A</div>
+              <div class="meta"><span class="num">14</span> sets · <span class="num">3 980</span> kg · <span class="num">58</span> min</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+
+          <div class="history-row" data-href="history-detail.html">
+            <div>
+              <div class="date">Sun · <span class="num">11:02</span> AM</div>
+              <div class="workout-name">Legs</div>
+              <div class="meta"><span class="num">10</span> sets · <span class="num">5 220</span> kg · <span class="num">47</span> min</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+
+          <div class="section-header">Last week</div>
+
+          <div class="history-row" data-href="history-detail.html">
+            <div>
+              <div class="date">Fri · <span class="num">7:55</span> PM</div>
+              <div class="workout-name">Push A</div>
+              <div class="meta"><span class="num">12</span> sets · <span class="num">4 480</span> kg · <span class="num">54</span> min</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+
+          <div class="history-row" data-href="history-detail.html">
+            <div>
+              <div class="date">Wed · <span class="num">6:40</span> PM</div>
+              <div class="workout-name">Pull A</div>
+              <div class="meta"><span class="num">14</span> sets · <span class="num">3 920</span> kg · <span class="num">61</span> min</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+
+          <div class="history-row" data-href="history-detail.html">
+            <div>
+              <div class="date">Mon · <span class="num">11:15</span> AM</div>
+              <div class="workout-name">Legs</div>
+              <div class="meta"><span class="num">10</span> sets · <span class="num">5 100</span> kg · <span class="num">49</span> min</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+
+          <div class="section-header">April 2026</div>
+
+          <div class="history-row" data-href="history-detail.html">
+            <div>
+              <div class="date"><span class="num">28</span> Apr · <span class="num">7:24</span> PM</div>
+              <div class="workout-name">Push A</div>
+              <div class="meta"><span class="num">12</span> sets · <span class="num">4 380</span> kg · <span class="num">56</span> min</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+
+          <div class="history-row" data-href="history-detail.html">
+            <div>
+              <div class="date"><span class="num">26</span> Apr · <span class="num">6:00</span> PM</div>
+              <div class="workout-name">Pull A</div>
+              <div class="meta"><span class="num">14</span> sets · <span class="num">3 850</span> kg · <span class="num">59</span> min</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+
+          <div class="infinite-loader">
+            <div class="spinner"></div>
+            <span>Loading older workouts</span>
+          </div>
+
+        </div>
+
+        <nav class="tab-bar">
+          <div class="tab" data-href="today-has-history.html">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            <span>Today</span>
+          </div>
+          <div class="tab active" data-href="#">
+            <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <span>History</span>
+          </div>
+          <div class="tab" data-href="profile.html">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+            <span>Profile</span>
+          </div>
+        </nav>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Tab bar → <code>History</code> з будь-якого таба</li>
+          <li>App launch якщо History був останнім активним табом перед закриттям (стандартне tab persistence)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap на row → <a href="history-detail.html">history-detail.html</a> (push на History stack)</li>
+          <li>Tap <code>⋯</code> → top-bar action sheet (резерв; per spec §10 у v1 без actions, у v2 — filters/export/search)</li>
+          <li>Tap <code>Today</code> tab → <a href="today-has-history.html">today-has-history.html</a></li>
+          <li>Tap <code>Profile</code> tab → <a href="profile.html">profile.html</a> — TBD</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Vertical scroll. Sticky section header (поточної групи) приклеюється до верху scroll-area при прокрутці (per spec §10.2)</li>
+          <li>Infinite scroll: при наближенні до кінця завантажує наступну сторінку (lazy loading), показує subtle loader внизу. Per spec §10.2</li>
+          <li>Tap row — push detail з smooth horizontal slide (стандарт RN navigation)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li><strong>Date format</strong> per spec §10.2: relative для останніх 7 днів (<code>Today</code>, <code>Yesterday</code>, <code>Mon</code>), absolute далі (<code>28 Apr</code>). Час додано після — task spec показує приклад <code>Tue, Apr 28</code>; обрав компактніший варіант з часом, бо в межах одного дня може бути кілька тренувань (хоча в v1 нечасто — допомагає disambiguate)</li>
+          <li><strong>Section headers</strong> — <code>This week</code>, <code>Last week</code>, потім по місяцях (<code>April 2026</code>). Перші два тижні — relative, далі — calendar months. Проста і знайомий патерн (Apple Photos, Material lists)</li>
+          <li><strong>Row layout</strong>: 2 inner рядки + chevron справа (≈68px висоти включно з padding). Per visual.md §4 — touch target ≥ 44pt; легко витриманий</li>
+          <li><strong>Volume / sets / duration</strong> в одному meta-рядку через separator <code>·</code>. Plex Mono для чисел, Inter для одиниць і слів — узгоджено з visual §3.2</li>
+          <li><strong>Top-bar <code>⋯</code></strong> залишений як placeholder для v2 (filters / search / export per spec §16). У v1 — нічого корисного, можна сховати у impl</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Empty (no workouts ever) → <a href="history-empty.html">history-empty.html</a> (spec §10.4)</li>
+          <li>Picker mode (Choose from history per spec §3.3) → <a href="history-picker.html">history-picker.html</a> (той самий рендеринг row-ів, але з close-icon, hint subheader і без tab bar)</li>
+          <li>Один workout total — все одно показуємо section header (<code>This week</code>) + одну row, без infinite loader</li>
+          <li>Дуже довга історія (200+ workouts) — same flat list, infinite scroll розв'язує. Без pagination UI</li>
+          <li>Soft-deleted custom exercise всередині workout — у цій row не змінює meta (sets/volume з historical state); назва вправи у detail зберігається через entity ID (per spec §11.9)</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §10.2</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

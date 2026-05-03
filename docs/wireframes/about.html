@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 28px 16px 24px;
+    }
+    .app-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 18px;
+      background: linear-gradient(155deg, var(--mallard) 0%, var(--mallard-dim) 100%);
+      border: 0.5px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .app-icon::after {
+      content: 'mascot';
+      position: absolute;
+      inset: 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(255, 255, 255, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .app-name {
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .app-version {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-tertiary);
+      letter-spacing: -0.01em;
+      margin-bottom: 14px;
+    }
+    .tagline {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+    .pref-list {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .pref-row {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 0 14px;
+      height: 56px;
+      border-bottom: 0.5px solid var(--border-divider);
+      cursor: pointer;
+    }
+    .pref-row:last-child { border-bottom: none; }
+    .pref-row .icon {
+      width: 20px;
+      height: 20px;
+      stroke: var(--text-secondary);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .pref-row .label {
+      font-size: 15px;
+      color: var(--text-primary);
+    }
+    .pref-row .ext-icon,
+    .pref-row .chev {
+      width: 14px;
+      height: 14px;
+      stroke: var(--text-tertiary);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin: 24px 4px 8px;
+      font-weight: 500;
+    }
+    .footer-meta {
+      text-align: center;
+      padding: 24px 16px;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>About</h1>
+    <p class="wf-meta">spec §12.5 · Profile sub-screen, без tab bar</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <button class="wf-back-btn" aria-label="Back to Profile" data-href="profile.html">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h1 style="flex: 1; text-align: center;">About</h1>
+          <div style="width: 28px;"></div>
+        </div>
+
+        <div class="scroll-area">
+
+          <div class="hero">
+            <div class="app-icon" aria-label="Kachka app icon placeholder"></div>
+            <div class="app-name">Kachka</div>
+            <div class="app-version">version <span style="color: var(--text-secondary);">1.0.0</span></div>
+            <div class="tagline">Качайся.</div>
+          </div>
+
+          <div class="section-label">Links</div>
+          <div class="pref-list">
+            <div class="pref-row" data-href="#">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              <span class="label">Source code</span>
+              <svg class="ext-icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </div>
+            <div class="pref-row" data-href="#">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9h.01M15 9h.01M9 15s1.5 2 3 2 3-2 3-2"/></svg>
+              <span class="label">Report an issue</span>
+              <svg class="ext-icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </div>
+          </div>
+
+          <div class="section-label">Privacy</div>
+          <div class="pref-list">
+            <div class="pref-row" style="height: auto; padding: 14px;" data-href="#">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span class="label" style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Your data stays on this device. No accounts, no servers, no analytics.</span>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="section-label">Legal</div>
+          <div class="pref-list">
+            <div class="pref-row" data-href="#">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <span class="label">Open source licenses</span>
+              <svg class="chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+
+          <div class="footer-meta">
+            Made by Max Kibets · <span class="num">2026</span>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Profile (<a href="profile.html">profile.html</a>) → ABOUT → tap <code>App version</code> або <code>Privacy</code> → push цей screen</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Source code</code> → external link → GitHub repo (open in browser)</li>
+          <li>Tap <code>Report an issue</code> → external link → GitHub issues / contact (TBD: чи робимо як email link, чи GH issues)</li>
+          <li>Tap <code>Open source licenses</code> → push sub-page зі списком dependencies (TBD per spec §12.5 — без acknowledgements у v1, додамо коли стек обраний)</li>
+          <li>Tap <code>←</code> back → <a href="profile.html">profile.html</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Скрол body, без sticky bottom</li>
+          <li>App icon — placeholder з Mallard gradient + dashed mascot indicator. Реальний asset — окрема artistic-сесія per visual §9</li>
+          <li>External link icon (top-right corner) на rows що відкривають browser</li>
+          <li>Privacy row — non-interactive (текст inline), тому без navigation chevron</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Без tab bar (sub-screen на Profile stack)</li>
+          <li><strong>App icon mockup</strong>: 80px square з 18px radius, Mallard gradient (mallard → mallard-dim), inner dashed border з "mascot" placeholder. Реальна iconka — okrema artistic-сесія (per visual §9 — "Mascot character TBD")</li>
+          <li>App name <code>Kachka</code> — 24px Inter Medium, найкрупніший текст на екрані. Brand-positive (per visual §1.2 — bounded brand presence у About)</li>
+          <li>Tagline <code>Качайся.</code> — українське імперативне дієслово (per visual §1.2 — gra slov "Kachka" = качка + качалка / качатися). Відповідає playful tone, не Duolingo-ниючий</li>
+          <li>Version <code>1.0.0</code> у Plex Mono (per visual §3.2 — числа в mono)</li>
+          <li>Per spec §12.5 — без acknowledgements у v1, але я додав <code>Open source licenses</code> row з placeholder navigation. Це більш explicit за inline list і не блокує v1 ship — sub-page просто з copy "Coming soon" якщо стек ще не зафіксований</li>
+          <li>Privacy note inline як rendered text (не sub-screen) — короткий, безпосередньо читається (per spec §12.5 wording)</li>
+          <li>Footer-meta з author credit — м'який touch (не критичний для v1)</li>
+          <li><code>Report an issue</code> — додав як external link для feedback loop (TBD якщо overcomplicates v1)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Open source licenses sub-page — TBD як окремий мокап якщо list стане великим. Для v1 поки placeholder з copy</li>
+          <li>Real app icon з реальним mascot — після visual §9 artistic-сесії</li>
+          <li>Якщо tagline <code>Качайся.</code> не resonates з international audience — можемо falback на neutral EN tagline у English locale</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §12.5</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

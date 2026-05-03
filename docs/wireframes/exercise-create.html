@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create custom exercise · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .field-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin: 18px 4px 8px;
+      font-weight: 500;
+    }
+    .input-wrap {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .input-wrap input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .input-wrap input::placeholder {
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+    .help-row {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin: 6px 4px 0;
+    }
+    .chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 18px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .chip.active {
+      background: var(--mallard-dim);
+      border-color: var(--mallard);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .toggle-row .label-stack .name {
+      font-size: 15px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .toggle-row .label-stack .desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .switch {
+      position: relative;
+      width: 44px;
+      height: 26px;
+      border-radius: 13px;
+      background: var(--surface-3);
+      flex-shrink: 0;
+    }
+    .switch.on { background: var(--mallard); }
+    .switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--text-primary);
+    }
+    .switch.on::after { transform: translateX(18px); }
+    .bottom-actions {
+      flex-shrink: 0;
+      padding: 12px 16px 18px;
+      background: var(--canvas);
+      border-top: 0.5px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ghost-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Create custom exercise</h1>
+    <p class="wf-meta">spec §11.7 · sub-screen / modal створення custom</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <button class="wf-back-btn" aria-label="Close" data-href="exercise-database-list.html">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <h1 style="flex: 1; text-align: center;">Create custom exercise</h1>
+          <div style="width: 28px;"></div>
+        </div>
+
+        <div class="scroll-area">
+
+          <div class="field-label">Name</div>
+          <div class="input-wrap">
+            <input type="text" placeholder="e.g. Cable woodchopper" value="">
+          </div>
+          <div class="help-row">Required · must be unique</div>
+
+          <div class="field-label">Muscle group</div>
+          <div class="chips-wrap">
+            <button class="chip" data-href="#">Chest</button>
+            <button class="chip" data-href="#">Back</button>
+            <button class="chip active" data-href="#">Legs</button>
+            <button class="chip" data-href="#">Biceps</button>
+            <button class="chip" data-href="#">Triceps</button>
+            <button class="chip" data-href="#">Shoulders</button>
+            <button class="chip" data-href="#">Core</button>
+          </div>
+          <div class="help-row">Single-select · pick the primary group</div>
+
+          <div class="field-label">Type</div>
+          <div class="toggle-row">
+            <div class="label-stack">
+              <div class="name">Bodyweight</div>
+              <div class="desc">Hide kg field during workouts</div>
+            </div>
+            <span class="switch" aria-label="Bodyweight off" data-href="#"></span>
+          </div>
+
+          <div style="height: 24px;"></div>
+
+        </div>
+
+        <div class="bottom-actions">
+          <button class="cta-primary" data-href="exercise-database-list.html">
+            Save
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+          <button class="ghost-btn" data-href="exercise-database-list.html">Cancel</button>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Exercise picker (Add mode) — sticky <code>+ Create custom</code> sticky button (per spec §11.7)</li>
+          <li>Exercise picker (Add mode) — empty search inline <code>Create as 'X'</code> affordance (per spec §11.6, з prefilled name)</li>
+          <li>Exercise database (Browse mode) — sticky bottom <code>+ Create custom</code> з <a href="exercise-database-empty.html">exercise-database-empty.html</a> або <a href="exercise-database-list.html">exercise-database-list.html</a></li>
+          <li>Edit існуючої custom — той самий sheet з prefilled values (per spec §11.8)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Save</code> → нова custom вправа в db, modal закривається. Якщо викликалось з Add mode — вправа автоматично селектиться і повертається в caller (per spec §11.7)</li>
+          <li>Tap <code>Cancel</code> або <code>✕</code> → закриває без збереження. Якщо form modified — confirmation TBD (consistent з §1 Discard pattern)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Tap на Name field → системна клавіатура (text input)</li>
+          <li>Tap на muscle chip → single-select. Активний chip — Mallard tint</li>
+          <li>Tap на Bodyweight toggle → switches state, не блокує save</li>
+          <li>Save disabled поки Name empty (тут показано як neutral state, без error indicator поки юзер ще не намагався save)</li>
+          <li>Top-bar <code>✕</code> close — modal-style dismiss</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Top-bar <code>✕</code> close замість <code>←</code> back — натяк на modal-character (sub-screen, але контекст modal-overlay)</li>
+          <li>Чому Legs preselected у demo: для візуального showcase активного chip-state. Реальний impl — нічого не selected на open</li>
+          <li><strong>Validation</strong>: name unique (case-insensitive) per spec §11.7. У neutral state (поки юзер тільки зайшов або ще не save-ив) — без error indicator. Після Save з duplicate-name — inline error під input-ом (TBD як окремий error-state мокап)</li>
+          <li>Bodyweight toggle з description під label-ом — пояснює effect (kg field ховається у workout per spec §7.4)</li>
+          <li>Save button — primary CTA з checkmark icon (per visual §5.4 Primary), Cancel — ghost text-only нижче (мала destructive-вага, симетрично з Builder bottom-actions)</li>
+          <li>Поля у v1: name, muscle group, isBodyweight (per spec §11.7). Notes / equipment — v1.x (відкладено per spec §11.10)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Empty name + tap Save → inline error <code>Name is required</code> (red-tinted, TBD style — visual §2.4 semantic)</li>
+          <li>Duplicate name → inline error <code>'X' already exists</code></li>
+          <li>Edit existing custom → той самий screen з title <code>Edit custom exercise</code> + prefilled values (per spec §11.8)</li>
+          <li>Викликано з no-results affordance → name prefilled з search query (per spec §11.6)</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §11.7</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

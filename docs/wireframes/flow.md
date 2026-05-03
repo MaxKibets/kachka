@@ -4,7 +4,7 @@
 
 Читай разом з [INDEX.md](INDEX.md) (статус мокапів) і `../gym-tracker-spec.md` (поведінка).
 
-**Status**: Today batch wired up. Інші ноди — placeholders, активуються по мірі додавання батчів.
+**Status**: Усі v1 ноди тепер мають HTML-файли (drafts). Subflow діаграми — wired нижче.
 
 ---
 
@@ -116,10 +116,126 @@ stateDiagram-v2
     state "Discard confirm" as DiscardSheet
 ```
 
-Файли:
-- [today-has-history.html](today-has-history.html)
-- [today-first.html](today-first.html)
-- [today-in-progress.html](today-in-progress.html)
+Файли: [today-has-history.html](today-has-history.html) · [today-first.html](today-first.html) · [today-in-progress.html](today-in-progress.html)
+
+---
+
+### Builder + Picker + Superset (Batch 2, ✅ wired)
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> Builder
+    Builder --> BuilderSS: add to superset
+    BuilderSS --> SupersetConfig: tap ⋮ on group
+    Builder --> RowMenu: tap ⋮ on exercise
+    RowMenu --> SupersetConfig: Add to superset
+    Builder --> PickerAdd: + Add exercise
+    PickerAdd --> Builder: pick
+    PickerAdd --> ExerciseCreate: + Create custom
+    SupersetConfig --> Builder: Save
+    Builder --> ActiveWorkout: Start workout
+
+    state "Builder (default)" as Builder
+    state "Builder w/ superset" as BuilderSS
+    state "Row menu sheet" as RowMenu
+    state "Picker (Add)" as PickerAdd
+    state "Superset config" as SupersetConfig
+    state "Exercise create" as ExerciseCreate
+    state "Active In-workout" as ActiveWorkout
+```
+
+Файли: [builder.html](builder.html) · [builder-with-supersets.html](builder-with-supersets.html) · [exercise-picker-add.html](exercise-picker-add.html) · [superset-config-sheet.html](superset-config-sheet.html) · [builder-row-menu-sheet.html](builder-row-menu-sheet.html) · [exercise-create.html](exercise-create.html)
+
+---
+
+### In-workout family (Batch 3, ✅ wired)
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> InWorkout
+    InWorkout --> InWorkoutSS: workout has superset
+    InWorkout --> Numpad: tap kg/Reps tile
+    InWorkout --> SetActions: tap set number
+    InWorkout --> RestTimer: set logged
+    InWorkout --> PullToCursor: cursor off-screen
+    Numpad --> InWorkout: Done
+    SetActions --> InWorkout: pick action / dismiss
+    RestTimer --> InWorkout: skip / timeout
+    PullToCursor --> InWorkout: tap → scroll to cursor
+    InWorkout --> FinishSheet: tap Finish workout
+
+    state "In-workout (default)" as InWorkout
+    state "In-workout w/ superset" as InWorkoutSS
+    state "Custom numpad" as Numpad
+    state "Set actions sheet" as SetActions
+    state "Rest timer" as RestTimer
+    state "Pull-to-cursor chip" as PullToCursor
+    state "Finish sheet" as FinishSheet
+```
+
+Файли: [in-workout.html](in-workout.html) · [in-workout-with-supersets.html](in-workout-with-supersets.html) · [numpad.html](numpad.html) · [set-actions-sheet.html](set-actions-sheet.html) · [rest-timer.html](rest-timer.html) · [pull-to-cursor.html](pull-to-cursor.html)
+
+---
+
+### Finish + History (Batch 4, ✅ wired)
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> InWorkout
+    InWorkout --> FinishSheet: Finish workout
+    FinishSheet --> HistoryList: Save and finish
+    FinishSheet --> InWorkout: Cancel
+
+    HistoryTab --> HistoryList: tab History
+    HistoryList --> HistoryDetail: tap row
+    HistoryList --> HistoryEmpty: 0 workouts
+    TodayHasHistory --> HistoryPicker: Choose from history
+    HistoryPicker --> Builder: tap row → clone
+
+    state "Active In-workout" as InWorkout
+    state "Finish sheet" as FinishSheet
+    state "History list" as HistoryList
+    state "History detail" as HistoryDetail
+    state "History empty state" as HistoryEmpty
+    state "History picker (modal)" as HistoryPicker
+    state "Today (entry)" as TodayHasHistory
+    state "History tab" as HistoryTab
+    state "Workout Builder" as Builder
+```
+
+Файли: [finish-sheet.html](finish-sheet.html) · [history-list.html](history-list.html) · [history-detail.html](history-detail.html) · [history-empty.html](history-empty.html) · [history-picker.html](history-picker.html)
+
+---
+
+### Profile + Settings + Database + Backup (Batch 5, ✅ wired)
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> Profile
+    Profile --> SettingsSheet: tap Theme / Language row
+    Profile --> DatabaseList: Exercise database
+    Profile --> Backup: Backup &amp; restore
+    Profile --> About: About
+    DatabaseList --> DatabaseEmpty: no custom yet (sub-state)
+    DatabaseList --> ExerciseCreate: + Create custom
+    Backup --> ImportPreview: Import file → file picker → preview
+    ImportPreview --> Backup: confirm / cancel
+
+    state "Profile root" as Profile
+    state "Theme / Language sheets" as SettingsSheet
+    state "Exercise database list" as DatabaseList
+    state "Database empty" as DatabaseEmpty
+    state "Exercise create" as ExerciseCreate
+    state "Backup &amp; restore" as Backup
+    state "Import preview" as ImportPreview
+    state "About" as About
+```
+
+Файли: [profile.html](profile.html) · [settings-theme-language-sheet.html](settings-theme-language-sheet.html) · [exercise-database-empty.html](exercise-database-empty.html) · [exercise-database-list.html](exercise-database-list.html) · [exercise-create.html](exercise-create.html) · [backup-restore.html](backup-restore.html) · [backup-import-preview.html](backup-import-preview.html) · [about.html](about.html)
 
 ---
 

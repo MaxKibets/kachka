@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>In-workout · Default · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    /* ----- In-workout local styles (scoped to this batch) ----- */
+    .iw-app-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 14px 10px;
+      flex-shrink: 0;
+    }
+    .iw-app-bar .iw-back {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+    .iw-app-bar .iw-back svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .iw-title-block { flex: 1; min-width: 0; }
+    .iw-title-row { display: flex; align-items: center; gap: 6px; }
+    .iw-title-row .iw-title { font-size: 17px; font-weight: 500; color: var(--text-primary); }
+    .iw-title-row .iw-pencil svg { width: 13px; height: 13px; stroke: var(--text-tertiary); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .iw-meta { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+    .iw-meta .num { color: var(--text-secondary); }
+
+    .iw-timer-chip {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 9px;
+      padding: 6px 10px;
+      display: flex; align-items: center; gap: 6px;
+      flex-shrink: 0;
+    }
+    .iw-timer-chip svg { width: 12px; height: 12px; stroke: var(--amber); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .iw-timer-chip .num { color: var(--amber); font-size: 16px; font-weight: 500; }
+
+    .iw-overflow {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+    .iw-overflow svg { width: 20px; height: 20px; }
+
+    /* Exercise card */
+    .ex-card {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .ex-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px 10px;
+    }
+    .ex-name { font-size: 16px; font-weight: 500; color: var(--text-primary); }
+    .ex-icons { display: flex; gap: 4px; }
+    .ex-icons .icon-btn { padding: 4px; color: var(--text-tertiary); }
+    .ex-icons .icon-btn svg { width: 18px; height: 18px; }
+
+    .ex-col-head {
+      display: grid;
+      grid-template-columns: 32px 1fr 78px 60px 40px;
+      gap: 8px;
+      padding: 0 14px 6px;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.04em;
+    }
+    .ex-col-head > div:nth-child(3),
+    .ex-col-head > div:nth-child(4) { text-align: center; }
+
+    .set-row {
+      display: grid;
+      grid-template-columns: 32px 1fr 78px 60px 40px;
+      gap: 8px;
+      align-items: center;
+      padding: 0 14px;
+      height: 44px;
+      border-top: 0.5px solid var(--border-divider);
+    }
+    .set-row.done { opacity: 0.55; }
+    .set-row.active {
+      background: var(--surface-2);
+      border-top: 1px solid rgba(242, 165, 58, 0.4);
+      border-bottom: 1px solid rgba(242, 165, 58, 0.4);
+      height: 52px;
+      margin-top: -0.5px; /* swallow divider above */
+    }
+    .set-row.active + .set-row { border-top: 1px solid rgba(242, 165, 58, 0.4); margin-top: -1px; }
+
+    .set-num {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 14px;
+      color: var(--text-primary);
+      text-align: left;
+    }
+    .set-row.active .set-num { color: var(--amber); font-weight: 500; }
+    .set-row.pending .set-num { color: var(--text-tertiary); }
+
+    .set-prev {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    .set-cell {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 15px;
+      text-align: center;
+      color: var(--text-primary);
+    }
+    .set-row.pending .set-cell { color: var(--text-tertiary); }
+    .set-cell.tile {
+      background: var(--surface-3);
+      border-radius: 8px;
+      padding: 6px 0;
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .set-check {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .check-done {
+      width: 24px; height: 24px;
+      background: var(--mallard);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .check-done svg { width: 14px; height: 14px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+    .check-active {
+      width: 26px; height: 26px;
+      border: 1.5px solid var(--amber);
+      border-radius: 50%;
+      background: transparent;
+    }
+    .check-pending {
+      width: 24px; height: 24px;
+      border: 1px solid #2C3833;
+      border-radius: 50%;
+      background: transparent;
+    }
+
+    .add-set-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: calc(100% - 28px);
+      margin: 10px 14px 12px;
+      padding: 8px 12px;
+      background: transparent;
+      border: 0.5px dashed #2C3833;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .add-set-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Bottom action bar */
+    .iw-action-bar {
+      flex-shrink: 0;
+      background: var(--canvas);
+      border-top: 0.5px solid var(--border-subtle);
+      padding: 12px 14px 18px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .iw-action-bar .iw-progress {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .iw-action-bar .iw-progress .num { color: var(--text-primary); }
+    .iw-action-bar .cta-primary { flex: 1; }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>In-workout · Default (no supersets)</h1>
+    <p class="wf-meta">spec §5 · in-workout = modal full takeover, no tab bar</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="iw-app-bar">
+          <button class="iw-back" aria-label="Back" data-href="today-in-progress.html">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="iw-title-block">
+            <div class="iw-title-row">
+              <span class="iw-title">Push A</span>
+              <span class="iw-pencil"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></span>
+            </div>
+            <div class="iw-meta"><span class="num">3</span>/<span class="num">8</span> · <span class="num">12</span> sets · <span class="num">4 540</span> kg</div>
+          </div>
+          <div class="iw-timer-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            <span class="num">14:32</span>
+          </div>
+          <button class="iw-overflow" aria-label="More" data-href="#">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        <div class="scroll-area" style="padding: 4px 12px 12px;">
+
+          <!-- Bench press card: 2 done, 1 active, 1 pending -->
+          <div class="ex-card">
+            <div class="ex-header">
+              <div class="ex-name">Bench press</div>
+              <div class="ex-icons">
+                <button class="icon-btn" aria-label="Note">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="14 3 14 9 20 9"/></svg>
+                </button>
+                <button class="icon-btn" aria-label="Exercise actions" data-href="set-actions-sheet.html">
+                  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="ex-col-head">
+              <div>SET</div>
+              <div>PREV</div>
+              <div>KG</div>
+              <div>REPS</div>
+              <div></div>
+            </div>
+
+            <!-- Set 1 done -->
+            <div class="set-row done">
+              <div class="set-num">1</div>
+              <div class="set-prev">70 × 8</div>
+              <div class="set-cell"><span class="num">70.0</span></div>
+              <div class="set-cell"><span class="num">8</span></div>
+              <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
+            </div>
+
+            <!-- Set 2 done -->
+            <div class="set-row done">
+              <div class="set-num">2</div>
+              <div class="set-prev">72.5 × 8</div>
+              <div class="set-cell"><span class="num">72.5</span></div>
+              <div class="set-cell"><span class="num">8</span></div>
+              <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
+            </div>
+
+            <!-- Set 3 active -->
+            <div class="set-row active">
+              <div class="set-num" data-href="set-actions-sheet.html">3</div>
+              <div class="set-prev">75 × 7</div>
+              <div class="set-cell tile" data-href="numpad.html"><span class="num">75.0</span></div>
+              <div class="set-cell tile" data-href="numpad.html"><span class="num">8</span></div>
+              <div class="set-check"><div class="check-active"></div></div>
+            </div>
+
+            <!-- Set 4 pending -->
+            <div class="set-row pending">
+              <div class="set-num">4</div>
+              <div class="set-prev">75 × 6</div>
+              <div class="set-cell"><span class="num">75.0</span></div>
+              <div class="set-cell"><span class="num">8</span></div>
+              <div class="set-check"><div class="check-pending"></div></div>
+            </div>
+
+            <button class="add-set-btn" data-href="#">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add set
+            </button>
+          </div>
+
+          <!-- Tricep pushdown card: all pending -->
+          <div class="ex-card">
+            <div class="ex-header">
+              <div class="ex-name">Tricep pushdown</div>
+              <div class="ex-icons">
+                <button class="icon-btn" aria-label="Exercise actions" data-href="set-actions-sheet.html">
+                  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="ex-col-head">
+              <div>SET</div>
+              <div>PREV</div>
+              <div>KG</div>
+              <div>REPS</div>
+              <div></div>
+            </div>
+
+            <div class="set-row pending">
+              <div class="set-num">1</div>
+              <div class="set-prev">25 × 12</div>
+              <div class="set-cell"><span class="num">25.0</span></div>
+              <div class="set-cell"><span class="num">12</span></div>
+              <div class="set-check"><div class="check-pending"></div></div>
+            </div>
+            <div class="set-row pending">
+              <div class="set-num">2</div>
+              <div class="set-prev">25 × 12</div>
+              <div class="set-cell"><span class="num">25.0</span></div>
+              <div class="set-cell"><span class="num">12</span></div>
+              <div class="set-check"><div class="check-pending"></div></div>
+            </div>
+            <div class="set-row pending">
+              <div class="set-num">3</div>
+              <div class="set-prev">25 × 10</div>
+              <div class="set-cell"><span class="num">25.0</span></div>
+              <div class="set-cell"><span class="num">12</span></div>
+              <div class="set-check"><div class="check-pending"></div></div>
+            </div>
+
+            <button class="add-set-btn" data-href="#">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add set
+            </button>
+          </div>
+
+        </div>
+
+        <div class="iw-action-bar">
+          <div class="iw-progress"><span class="num">12</span> / <span class="num">24</span> sets logged</div>
+          <button class="cta-primary" data-href="finish-sheet.html">
+            Finish workout
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Workout Builder → tap <code>Start workout</code> (<a href="builder.html">builder.html</a> — TBD у Batch 2)</li>
+          <li>Today banner → tap <code>Resume</code> (<a href="today-in-progress.html">today-in-progress.html</a>)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap on set <code>kg</code> / <code>reps</code> tile → custom numpad sheet (<a href="numpad.html">numpad.html</a>)</li>
+          <li>Tap on set number → set actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>)</li>
+          <li>Tap on ✓ → save set + advance cursor + start rest timer (<a href="rest-timer.html">rest-timer.html</a>)</li>
+          <li>Tap exercise <code>⋮</code> → exercise actions sheet (TBD — Insert after / Skip / Remove / Add to superset / Add note)</li>
+          <li>Tap top-bar <code>⋮</code> → workout actions sheet (TBD — Add exercise / Reorder / Discard)</li>
+          <li>Tap <code>←</code> back → закриває modal без discard, банер на Today (<a href="today-in-progress.html">today-in-progress.html</a>)</li>
+          <li>Tap <code>Finish workout</code> → confirmation + completion sheet (<a href="finish-sheet.html">finish-sheet.html</a> — TBD у Batch 4)</li>
+          <li>Cursor exits viewport → return chip (<a href="pull-to-cursor.html">pull-to-cursor.html</a>)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Vertical scroll. Auto-scroll keeps active set in view; manual scroll override pauses auto-scroll (per spec §5.8)</li>
+          <li>Tap ✓ on active set = save + advance cursor + start rest. Closing last set of last exercise = banner suggesting <code>Finish workout</code></li>
+          <li>Long-press на set row = secondary trigger для set actions (per spec §8.1)</li>
+          <li>Active set: kg/Reps tiles тапабельні незалежно (numpad перемикає focus між полями)</li>
+          <li>Без bottom tab bar — modal full takeover (per spec §1, §2.2)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>З суперсетами — <a href="in-workout-with-supersets.html">in-workout-with-supersets.html</a></li>
+          <li>Numpad open поверх → <a href="numpad.html">numpad.html</a></li>
+          <li>Set actions sheet → <a href="set-actions-sheet.html">set-actions-sheet.html</a></li>
+          <li>Rest timer running → <a href="rest-timer.html">rest-timer.html</a></li>
+          <li>Cursor поза viewport → <a href="pull-to-cursor.html">pull-to-cursor.html</a></li>
+          <li>Skipped exercise — TBD визуально (per spec §5.6: лишається в структурі помічена <code>Skipped</code>)</li>
+          <li>Failed reps (0) — TBD візуально (per spec §5.7 + visual §5.1)</li>
+          <li>Завершена вправа — collapsible до one-line summary (per spec §5.4) — TBD detail у наступних мокапах</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Header — назва + edit-pencil + meta-рядок під нею + amber timer chip + <code>⋮</code>. Timer chip — workout elapsed (per visual §5.6)</li>
+          <li>Set row grid — <code>32px | 1fr | 78px | 60px | 40px</code> з 8px gaps, 14px padding (per visual §4.1)</li>
+          <li>Done state — opacity 0.55, mallard ✓ circle. Active state — top/bottom amber borders, surface-2 фон, surface-3 tile inputs, amber empty circle. Pending — text.tertiary values, 1px subtle empty circle (per visual §5.1)</li>
+          <li>Active row "ковтає" border-divider зверху і знизу через negative margin — щоб не було подвійних ліній (subtle divider + amber border)</li>
+          <li>Bottom action bar: <code>logged / total</code> ліворуч (Plex Mono, secondary text, Plex Mono numbers primary), amber CTA повна ширина праворуч (per brief)</li>
+          <li>"Add set" — secondary button per visual §5.4 (dashed border, transparent bg)</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §5</a>
+        <a href="../gym-tracker-visual.md">Visual §5.1</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

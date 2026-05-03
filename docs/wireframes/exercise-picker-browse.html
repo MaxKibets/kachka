@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise picker · Browse mode · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .picker-search {
+      flex-shrink: 0;
+      padding: 0 16px 8px;
+      background: var(--canvas);
+    }
+    .search-input {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: var(--text-tertiary);
+      font-size: 14px;
+    }
+    .search-input svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--text-tertiary);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .picker-filters {
+      flex-shrink: 0;
+      padding: 6px 16px 12px;
+      background: var(--canvas);
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .filter-chips {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      margin: 0 -16px;
+      padding: 2px 16px;
+      scrollbar-width: none;
+    }
+    .filter-chips::-webkit-scrollbar { display: none; }
+    .filter-chip {
+      flex-shrink: 0;
+      background: transparent;
+      border: 0.5px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-family: var(--font-sans);
+      padding: 6px 11px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+    .filter-chip.active {
+      background: var(--mallard-dim);
+      border-color: var(--mallard);
+      color: var(--text-primary);
+    }
+    .picker-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 16px 8px;
+    }
+    .ex-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 4px;
+      border-bottom: 0.5px solid var(--border-divider);
+      cursor: pointer;
+      gap: 8px;
+    }
+    .ex-row:last-child { border-bottom: none; }
+    .ex-row .name-block {
+      flex: 1;
+      min-width: 0;
+    }
+    .ex-row .name-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+    .ex-row .name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .ex-row .tags {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .custom-badge {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--mallard);
+      background: var(--mallard-dim);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+    .row-menu-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .row-menu-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+    .picker-bottom {
+      flex-shrink: 0;
+      padding: 12px 16px 18px;
+      background: var(--canvas);
+      border-top: 0.5px solid var(--border-subtle);
+    }
+    .secondary-btn {
+      width: 100%;
+      background: transparent;
+      border: 0.5px dashed #2C3833;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .secondary-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Exercise picker · Browse mode</h1>
+    <p class="wf-meta">spec §11 · push sub-screen з Profile/DATA</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <button class="wf-back-btn" aria-label="Back to Profile" data-href="profile.html">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h1 style="flex: 1; text-align: center;">Exercise database</h1>
+          <div style="width: 30px;"></div>
+        </div>
+
+        <div class="picker-search">
+          <div class="search-input">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Search exercises…</span>
+          </div>
+        </div>
+
+        <div class="picker-filters">
+          <div class="filter-chips">
+            <button class="filter-chip">Chest</button>
+            <button class="filter-chip">Back</button>
+            <button class="filter-chip">Legs</button>
+            <button class="filter-chip">Biceps</button>
+            <button class="filter-chip">Triceps</button>
+            <button class="filter-chip">Shoulders</button>
+            <button class="filter-chip">Core</button>
+          </div>
+        </div>
+
+        <div class="picker-list">
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Bench press</span></div>
+              <div class="tags">Chest · Triceps · Shoulders</div>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Bicep curl</span></div>
+              <div class="tags">Biceps</div>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Cable row</span></div>
+              <div class="tags">Back · Biceps</div>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Deadlift</span></div>
+              <div class="tags">Back · Legs · Core</div>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Dumbbell row</span></div>
+              <div class="tags">Back · Biceps</div>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Face pull</span></div>
+              <div class="tags">Shoulders · Back</div>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Lat pulldown</span></div>
+              <div class="tags">Back · Biceps</div>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Overhead press</span></div>
+              <div class="tags">Shoulders · Triceps</div>
+            </div>
+          </div>
+          <!-- Custom exercise — single-tag, with badge + ⋮ -->
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line">
+                <span class="name">Pin squat</span>
+                <span class="custom-badge">Custom</span>
+              </div>
+              <div class="tags">Legs</div>
+            </div>
+            <button class="row-menu-btn" aria-label="Custom exercise menu" data-href="#">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+            </button>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Pull-up</span></div>
+              <div class="tags">Back · Biceps · bodyweight</div>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Squat</span></div>
+              <div class="tags">Legs · Core</div>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="name-block">
+              <div class="name-line"><span class="name">Tricep pushdown</span></div>
+              <div class="tags">Triceps</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="picker-bottom">
+          <button class="secondary-btn" data-href="exercise-create.html">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create custom
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Profile → DATA → <code>Exercise database</code> (<a href="profile.html">profile.html</a> — TBD у Batch 5)</li>
+          <li>Today / Builder → top-bar <code>⋯</code> → <code>Exercise database</code> (per spec §3.6)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap system row → нічого (read-only, без detail screen per spec §11.8)</li>
+          <li>Tap custom row → custom exercise detail (<a href="exercise-create.html">exercise-create.html</a> — TBD у Batch 5; spec §11.8: detail з Edit і Delete)</li>
+          <li>Tap custom <code>⋮</code> → row action sheet: <code>Edit</code>, <code>Delete</code> (destructive). Альтернатива до tap-через-detail-screen, швидший доступ</li>
+          <li>Tap <code>+ Create custom</code> → custom creation sheet (<a href="exercise-create.html">exercise-create.html</a> — TBD у Batch 5) з порожнім name</li>
+          <li>Tap <code>←</code> → push back на Profile root</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Sticky search + filter chips, скролиться список (як у Add mode)</li>
+          <li>Single-select muscle filter, default none (per spec §11.4 + prompt)</li>
+          <li>Search reset на open</li>
+          <li>Свайп вправо від лівого краю — back до Profile (iOS gesture)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Header: <code>←</code> back (push sub-screen, не modal). Title <code>Exercise database</code> — повний контекст де ми</li>
+          <li>Custom exercise differentiator: маленький <code>Custom</code> badge (mallard-dim background + mallard text, 10px uppercase) + <code>⋮</code> справа (per spec §11.5)</li>
+          <li>System exercises — без <code>⋮</code>, без detail (read-only per spec §11)</li>
+          <li>Sample custom exercise: <code>Pin squat</code>, single-tag <code>Legs</code> (per spec §11 — custom має single-tag)</li>
+          <li>Soft-deleted custom exercises тут не відображаються (per spec §11.9)</li>
+          <li>Sort alphabetical (per spec §11.5) — <code>Pin squat</code> розташовується між <code>Overhead press</code> і <code>Pull-up</code></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Add mode (modal з Builder/Active) — <a href="exercise-picker-add.html">exercise-picker-add.html</a></li>
+          <li>Empty database (юзер тільки що встановив додаток і не має custom + seed не loaded — рідко) — <a href="exercise-database-empty.html">exercise-database-empty.html</a> (TBD у Batch 5)</li>
+          <li>Search results empty з inline <code>Create as 'X'</code> (no-results affordance per spec §11.6) — TBD якщо потрібно</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §11</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>
