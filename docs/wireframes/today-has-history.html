@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Today · Has history · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Today · Has history</h1>
+    <p class="wf-meta">spec §3.1.a · default mode</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <h1>Today</h1>
+          <button class="icon-btn" aria-label="More options">
+            <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </div>
+
+        <div class="scroll-area">
+
+          <div class="card" style="padding: 16px 18px; margin-top: 4px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 4px;">
+              <div style="font-size: 18px; font-weight: 500;">Push A</div>
+              <div class="text-dim" style="font-size: 12px;"><span class="num">5</span>d ago</div>
+            </div>
+            <div class="text-sub" style="font-size: 12px; margin-bottom: 12px;"><span class="num">12</span> sets · <span class="num">4 540</span> kg · <span class="num">52</span> min</div>
+            <div class="text-sub" style="font-size: 13px; margin-bottom: 16px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Bench press, Dumbbell row, Face pull, Tricep pushdown</div>
+            <button class="cta-primary">
+              Repeat last
+              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+          <div class="text-dim" style="font-size: 12px; margin: 22px 6px 6px;">Or</div>
+
+          <div style="padding: 0 6px;">
+            <div class="row-link">
+              <span>Choose from history</span>
+              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="row-link">
+              <span>Start blank workout</span>
+              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+
+        </div>
+
+        <nav class="tab-bar">
+          <div class="tab active">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            <span>Today</span>
+          </div>
+          <div class="tab">
+            <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <span>History</span>
+          </div>
+          <div class="tab">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+            <span>Profile</span>
+          </div>
+        </nav>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>App launch (default tab)</li>
+          <li>Tab bar → <code>Today</code> з іншого таба</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Repeat last</code> → Workout Builder з клонованим списком (<a href="builder.html">builder.html</a> — TBD)</li>
+          <li>Tap <code>Choose from history</code> → History picker (<a href="history-picker.html">history-picker.html</a> — TBD)</li>
+          <li>Tap <code>Start blank workout</code> → Workout Builder порожній (<a href="builder.html">builder.html</a> — TBD)</li>
+          <li>Tap <code>⋯</code> → top-bar action sheet: Exercise database / Settings (sheet — TBD)</li>
+          <li>Tap <code>History</code> tab → <a href="history-list.html">history-list.html</a> — TBD</li>
+          <li>Tap <code>Profile</code> tab → <a href="profile.html">profile.html</a> — TBD</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Card scroll, якщо вмісту більше за viewport (рідко в цьому стані)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Перший запуск без history → <a href="today-first.html">today-first.html</a></li>
+          <li>Є in-progress workout → <a href="today-in-progress.html">today-in-progress.html</a> (банер додається зверху, цей контент лишається)</li>
+          <li>Спецстан кеша clone-джерела (наприклад джерело видалене) — TBD у спеці</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Repeat last клонує структуру + назву + targets, не залоговані значення (per spec §3.2)</li>
+          <li>Last workout meta-рядок: <code>Nd ago</code> · sets · tonnage · duration. Кандидат на скорочення якщо вузько</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §3.1.a</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

@@ -1,0 +1,360 @@
+/* ============================================================
+   Kachka · Wireframe tokens + page chrome
+   Single source for all wireframe HTML files.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ---------- Design tokens (mirror gym-tracker-visual.md) ---------- */
+
+:root {
+  /* Surface ladder */
+  --canvas: #0A0F0E;
+  --surface-1: #131A18;
+  --surface-2: #1C2521;
+  --surface-3: #28332E;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-divider: rgba(255, 255, 255, 0.05);
+
+  /* Brand */
+  --mallard: #1F6E5C;
+  --mallard-dim: #163E36;
+  --amber: #F2A53A;
+  --amber-dim: #C9821F;
+
+  /* Text */
+  --text-primary: #F1F5F4;
+  --text-secondary: #8A9A95;
+  --text-tertiary: #5D6B66;
+
+  /* Letter rotation A–E */
+  --letter-a: #5C7B95; /* dusty blue */
+  --letter-b: #C29548; /* ochre */
+  --letter-c: #7B4257; /* plum */
+  --letter-d: #87A07B; /* sage */
+  --letter-e: #B85842; /* rust */
+
+  /* Type */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* Wireframe page chrome (NOT app tokens — for the page that hosts mockups) */
+  --wf-page-bg: #08090A;
+  --wf-panel-bg: #111316;
+  --wf-panel-border: rgba(255, 255, 255, 0.08);
+  --wf-text: #C9CDD1;
+  --wf-text-muted: #6E7479;
+  --wf-link: #7AA9C5;
+}
+
+/* ---------- Reset ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--wf-page-bg);
+  color: var(--wf-text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+a { color: var(--wf-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4 { margin: 0; font-weight: 500; }
+
+/* ---------- Wireframe page layout ---------- */
+
+.wf-header {
+  padding: 24px 32px 16px;
+  border-bottom: 1px solid var(--wf-panel-border);
+}
+.wf-header h1 {
+  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.wf-header .wf-meta {
+  font-size: 12px;
+  color: var(--wf-text-muted);
+  font-family: var(--font-mono);
+}
+
+.wf-layout {
+  display: grid;
+  grid-template-columns: minmax(420px, 1fr) minmax(320px, 480px);
+  gap: 32px;
+  padding: 32px;
+  max-width: 1280px;
+}
+@media (max-width: 900px) {
+  .wf-layout {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+}
+
+.wf-frame {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.wf-annotations {
+  background: var(--wf-panel-bg);
+  border: 1px solid var(--wf-panel-border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  align-self: flex-start;
+}
+.wf-annotations section {
+  margin-bottom: 20px;
+}
+.wf-annotations section:last-of-type {
+  margin-bottom: 12px;
+}
+.wf-annotations h2 {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--wf-text-muted);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.wf-annotations ul {
+  margin: 0;
+  padding-left: 18px;
+  list-style-type: '— ';
+}
+.wf-annotations li {
+  padding-left: 4px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.wf-annotations code {
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-primary);
+}
+.wf-annotations footer {
+  border-top: 1px solid var(--wf-panel-border);
+  padding-top: 12px;
+  font-size: 12px;
+  color: var(--wf-text-muted);
+}
+.wf-annotations footer a {
+  margin-right: 8px;
+}
+
+/* ---------- Phone frame ---------- */
+
+.phone {
+  width: 375px;
+  height: 760px;
+  background: var(--canvas);
+  border-radius: 28px;
+  overflow: hidden;
+  border: 0.5px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+  position: relative;
+}
+
+.phone .status-bar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.phone .status-bar .clock {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.phone .status-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.phone .app-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 12px;
+  flex-shrink: 0;
+}
+.phone .app-bar h1 {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.phone .scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 16px 16px;
+}
+
+.phone .tab-bar {
+  height: 80px;
+  background: var(--canvas);
+  border-top: 0.5px solid var(--border-subtle);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  flex-shrink: 0;
+  padding-bottom: 16px; /* iPhone home indicator clearance */
+}
+.phone .tab-bar .tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-weight: 500;
+}
+.phone .tab-bar .tab.active {
+  color: var(--mallard);
+}
+.phone .tab-bar .tab svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Reusable in-app components ---------- */
+
+.card {
+  background: var(--surface-1);
+  border-radius: 14px;
+  border: 0.5px solid var(--border-subtle);
+}
+
+.cta-primary {
+  background: var(--amber);
+  color: var(--canvas);
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  cursor: pointer;
+}
+.cta-primary svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.text-sub { color: var(--text-secondary); }
+.text-dim { color: var(--text-tertiary); }
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.row-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 4px;
+  border-bottom: 0.5px solid var(--border-divider);
+  color: var(--text-primary);
+  font-size: 15px;
+  cursor: pointer;
+}
+.row-link:last-child {
+  border-bottom: none;
+}
+.row-link svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-tertiary);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.banner {
+  background: var(--surface-1);
+  border-left: 3px solid var(--mallard);
+  border-top: 0.5px solid var(--border-subtle);
+  border-right: 0.5px solid var(--border-subtle);
+  border-bottom: 0.5px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ---------- Misc ---------- */
+
+.placeholder-mascot {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--surface-1);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  font-size: 11px;
+  margin: 0 auto;
+}

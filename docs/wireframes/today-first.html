@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Today · First launch · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Today · First launch (no history)</h1>
+    <p class="wf-meta">spec §3.1.b · empty state for net-new users</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <h1>Today</h1>
+          <button class="icon-btn" aria-label="More options">
+            <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </div>
+
+        <div class="scroll-area" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+
+          <div style="margin-top: -32px; display: flex; flex-direction: column; align-items: center; max-width: 280px;">
+            <div class="placeholder-mascot" style="margin-bottom: 28px;">mascot</div>
+
+            <div style="font-size: 22px; font-weight: 500; line-height: 1.25; margin-bottom: 12px;">Start your first workout</div>
+
+            <div class="text-sub" style="font-size: 14px; line-height: 1.5; margin-bottom: 28px;">
+              Build it from scratch or pick from suggested exercises.
+            </div>
+
+            <button class="cta-primary" style="width: auto; padding: 12px 24px;">
+              Start workout
+              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+        </div>
+
+        <nav class="tab-bar">
+          <div class="tab active">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            <span>Today</span>
+          </div>
+          <div class="tab">
+            <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <span>History</span>
+          </div>
+          <div class="tab">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+            <span>Profile</span>
+          </div>
+        </nav>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>App launch на свіжовстановленому додатку (Today як default tab)</li>
+          <li>State коли всі тренування з історії були видалені (TBD — переважно не очікується в практиці)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Start workout</code> → Workout Builder порожній з Quick-add chips (<a href="builder.html">builder.html</a> — TBD)</li>
+          <li>Tap <code>⋯</code> → top-bar action sheet: Exercise database / Settings</li>
+          <li>Tap <code>History</code> tab → History list (буде empty state, TBD)</li>
+          <li>Tap <code>Profile</code> tab → <a href="profile.html">profile.html</a> — TBD</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Жодних окрім CTA + tab bar + ⋯</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Mascot тут — тимчасовий placeholder. Реальне ілюстраційне рішення — окрема сесія, див. <a href="../gym-tracker-visual.md">visual §9</a></li>
+          <li>Onboarding функціональний: без welcome screens, без feature tour, без вибору мови / юнітів (per spec §3.5)</li>
+          <li>CTA центральний, не full-width — щоб відрізнятись від нормального Today (de-emphasis тут не потрібен, але не хочемо щоб виглядав як CTA-bar)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Як тільки перше тренування завершено → Today перемикається на <a href="today-has-history.html">today-has-history.html</a></li>
+          <li>Якщо юзер закрив tab і повернувся до тренування — стан in-progress, але тут спершу не очікується</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §3.1.b</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>
