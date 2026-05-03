@@ -4,7 +4,7 @@
 
 **Status**: v1 scope locked — ad-hoc workouts. Programs / import / deep linking — deferred to v2.
 
-**Версія**: v0.7 · add Profile + Settings section
+**Версія**: v0.11 · add Backup & restore section (export/import flow, modes, validation)
 
 ---
 
@@ -722,7 +722,7 @@ flowchart TD
 
 ## 10. History
 
-> Перегляд минулих тренувань. Минулі тренування — read-only факт. MVP мінімальний: список + detail без фільтрів і експорту (винесено в §14).
+> Перегляд минулих тренувань. Минулі тренування — read-only факт. MVP мінімальний: список + detail без фільтрів і експорту (винесено в §16).
 
 ### 10.1 Огляд
 
@@ -772,7 +772,7 @@ Read-only знімок тренування. Жодних actions редагув
 - Сети показуються по раундах
 - Letter color консистентний з тим як був у workout-і
 
-*Без actions*: немає edit, repeat workout from this entry, export — все в §14.
+*Без actions*: немає edit, repeat workout from this entry, export — все в §16.
 
 ### 10.4 Empty state
 
@@ -1060,7 +1060,7 @@ Toggle, default ON.
 
 #### Backup & restore
 
-Тап → окремий sub-screen. Спека — окрема зона, TBD.
+Тап → окремий sub-screen. Деталі — §13.
 
 ### 12.5 About
 
@@ -1081,7 +1081,134 @@ Toggle, default ON.
 
 ---
 
-## 13. Глосарій
+## 13. Backup & restore
+
+> Manual export/import усіх юзерських даних у JSON-файл. Точка входу: Profile → DATA → Backup & restore (§12.4). Local-only фундамент (tech §2), без серверів і accounts; backup — єдиний механізм disaster recovery і device migration у v1.
+
+### 13.1 Екран Backup & restore
+
+Push sub-screen на Profile stack. Дві симетричні зони — Export і Import.
+
+```
+┌─────────────────────────┐
+│ ← Backup & restore      │
+├─────────────────────────┤
+│                         │
+│  EXPORT                 │
+│  Save all your data to  │
+│  a file you can store   │
+│  or share.              │
+│                         │
+│  [ Export backup ]      │
+│                         │
+├─────────────────────────┤
+│                         │
+│  IMPORT                 │
+│  Restore data from a    │
+│  backup file.           │
+│                         │
+│  [ Import backup ]      │
+│                         │
+└─────────────────────────┘
+```
+
+Без `Last export` індикатора — чистий manual режим.
+
+### 13.2 Export flow
+
+1. Тап `Export backup`
+2. App серіалізує усі юзерські дані в JSON:
+   - Усі workouts (з сетами і structure суперсетів, з references на exercises по UUID)
+   - Усі custom exercises (включно з soft-deleted, бо History на них посилається — див. §11.9)
+   - User settings (theme, language, Show RPE, Rest haptic, Rest sound)
+   - Metadata: `schemaVersion`, `appVersion`, `exportedAt` (ISO timestamp)
+3. Створюється тимчасовий файл `kachka-backup-YYYY-MM-DD.json`
+4. Native share sheet (iOS Share / Android Intent) — юзер обирає destination: Files, iCloud Drive, AirDrop, Drive, email, Telegram, тощо
+5. На успіх — toast `Backup exported`
+
+Свідомо без свого destination-picker — share sheet нативно покриває усі сценарії.
+
+### 13.3 Import flow
+
+1. Тап `Import backup`
+2. Native file picker, фільтр `.json`
+3. App читає файл, валідує (§13.6). При помилці — error sheet з причиною
+4. Якщо OK — push preview screen:
+
+```
+┌─────────────────────────┐
+│ ← Import preview        │
+├─────────────────────────┤
+│  kachka-backup-         │
+│  2026-04-15.json        │
+│                         │
+│  Created: 18 days ago   │
+│  App version: 1.0.0     │
+│                         │
+│  Backup contains:       │
+│   • 47 workouts         │
+│   • 12 custom exercises │
+│   • Settings            │
+│                         │
+│  IMPORT MODE            │
+│  ● Replace all          │
+│  ○ Merge (skip dupes)   │
+│                         │
+│  [ Import ]             │
+└─────────────────────────┘
+```
+
+5. Юзер переглядає preview і обирає import mode (default — Replace all). Тап `Import`.
+6. Bottom sheet confirmation (§1):
+   - *Replace*: title `Replace all data?`, description `Current data will be lost. This cannot be undone.`, `Cancel` (вгорі) + destructive `Replace` (внизу)
+   - *Merge*: title `Import 47 workouts and 12 exercises?`, description `Existing data is preserved. Duplicates by ID are skipped.`, `Cancel` (вгорі) + primary `Import` (внизу)
+7. На confirm — atomic transaction (§13.4). При failure — rollback до pre-import стану, error sheet
+8. На success — toast `Backup imported`, повернення на Profile root
+
+### 13.4 Import modes
+
+Дві опції, юзер обирає на preview screen:
+
+| Mode | Що робить з entities | Що робить з settings | Use case |
+|---|---|---|---|
+| **Replace all** (default) | Wipe local db → insert backup as-is | Settings з backup замінюють поточні | Disaster recovery / device migration / "хочу повернути все як було" |
+| **Merge (skip dupes)** | Insert тільки нові entities (новий UUID); existing — skip | Поточні settings зберігаються | Multi-device: додати тренування з іншого пристрою без втрати поточних |
+
+Default Replace — типовий сценарій. Merge — для рідкісного multi-device флоу.
+
+Skip-by-UUID означає: якщо сутність уже є з тим самим ID — лишається поточна версія. Per-field merge не робимо у v1: складно і потребує conflict resolution UX, відкладено до повноцінного sync (v2).
+
+### 13.5 Файл і формат
+
+- *Назва за замовчуванням*: `kachka-backup-YYYY-MM-DD.json`
+- *Розширення*: `.json`
+- *Encoding*: UTF-8
+- *Структура*: окремо специфікується у data model doc (поки відкрите питання, див. §15)
+- *Plain JSON у v1* — без encryption / password. Sensitivity даних низька (тренувальна історія); юзер сам обирає де зберігати файл. Encryption — окреме питання у v2 разом з sync
+
+### 13.6 Validation і помилки
+
+При читанні файлу — error sheet (bottom sheet з §1) з конкретною причиною:
+
+| Помилка | Повідомлення |
+|---|---|
+| Невалідний JSON / пошкоджений файл | `Could not read backup. The file may be corrupted.` |
+| Незрозумілий формат (нема `schemaVersion`) | `This file is not a Kachka backup.` |
+| Newer `schemaVersion` | `This backup was created with a newer version of Kachka. Update the app to import.` |
+| Older `schemaVersion` | Auto-migrate JSON → current schema перед preview (без участі юзера). Якщо migration fails — `Could not upgrade backup to current version.` |
+
+### 13.7 Що НЕ робимо у v1
+
+- Auto-backup (background tasks, permissions, reliability) → v2
+- Encryption / password protection → v2 разом з sync
+- Stale-backup nudge (`Last export: X days ago`) — manual режим без напоминання
+- Selective export (тільки workouts / тільки exercises) — backup завжди повний
+- Import dry-run (виконати без commit) — preview screen вже виконує цю роль перед confirm
+- Backup history (зберігати кілька snapshot-ів локально) — це вже робить filesystem користувача
+
+---
+
+## 14. Глосарій
 
 | Термін | Визначення |
 |---|---|
@@ -1108,19 +1235,15 @@ Toggle, default ON.
 
 ---
 
-## 14. Що ще не вирішено
+## 15. Що ще не вирішено
 
-- **Backup / Restore UX** — окремий screen чи inline action; як виглядає експорт (share sheet?) і імпорт
-- **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ)
+- **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ; впливає на JSON-формат backup-у §13)
 - **Візуальний стиль** — типографіка, кольори (включно з letter-colors для груп), density, motion, ілюстрації для empty states
-- **Auto-scroll override детальна поведінка** — pull-to-cursor UI
-- **Top-bar `⋯` меню pattern** — sheet (iOS-style) чи dropdown (Android)
-- **Confirmation dialog generic pattern** — native alerts чи custom modal
 - **Exercise database seed-список** — повний каталог системних вправ (окрім 7 chip-вправ); де брати: wger чи власний
 
 ---
 
-## 15. Свідомо відкладено в v2 / пізніше
+## 16. Свідомо відкладено в v2 / пізніше
 
 **Програмний шар**
 - Bundled programs / custom programs / program editor
@@ -1161,7 +1284,7 @@ Toggle, default ON.
 
 ---
 
-## 16. Список зафіксованих рішень
+## 17. Список зафіксованих рішень
 
 **Базові UI patterns**
 - [x] Усі action menus — bottom action sheets (top-bar `⋯`, row `⋮`, set actions, numpad, superset config). Той самий pattern на iOS і Android. Причина — thumb-reach однією рукою
@@ -1249,3 +1372,13 @@ Toggle, default ON.
 - [x] Exercise database, Backup & restore — окремі sub-screens
 - [x] About: app version + GitHub link + privacy note (без acknowledgements у v1)
 - [x] Без `Delete all data` у v1 (юзер перевстановлює додаток)
+
+**Backup & restore**
+- [x] Manual export/import у JSON; auto-backup → v2
+- [x] Plain JSON, без encryption у v1 (encryption → v2 разом з sync)
+- [x] Export: один тап → native share sheet (Files / iCloud / AirDrop / Drive / email / тощо). Без свого destination-picker
+- [x] Файл: `kachka-backup-YYYY-MM-DD.json`, повний state (workouts + custom exercises включно з soft-deleted + settings + metadata з `schemaVersion`/`appVersion`/`exportedAt`)
+- [x] Import: file picker → preview screen (counts + дата + версія + mode picker) → bottom sheet confirmation → atomic transaction
+- [x] Two import modes: Replace all (default, для recovery/migration) і Merge skip-by-UUID (для multi-device). Per-field merge → v2
+- [x] Older `schemaVersion` → auto-migrate JSON before preview. Newer → блокується з повідомленням оновити app
+- [x] Без stale-backup nudge (`Last export` не показуємо)
