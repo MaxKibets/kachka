@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backup · Import preview · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .file-card {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 8px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .file-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .file-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--mallard);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .file-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .file-name {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-primary);
+      word-break: break-all;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 12px;
+      font-size: 12px;
+    }
+    .meta-grid .key {
+      color: var(--text-tertiary);
+    }
+    .meta-grid .val {
+      color: var(--text-secondary);
+    }
+    .meta-grid .val.mono {
+      font-family: var(--font-mono);
+      letter-spacing: -0.01em;
+    }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin: 22px 4px 8px;
+      font-weight: 500;
+    }
+    .counts-card {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 6px 16px;
+    }
+    .count-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .count-row:last-child {
+      border-bottom: none;
+    }
+    .count-row svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--text-secondary);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .count-row .num-val {
+      font-family: var(--font-mono);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+    .count-row .label {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .mode-card {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .mode-row {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 0.5px solid var(--border-divider);
+      cursor: pointer;
+      align-items: flex-start;
+    }
+    .mode-row:last-child { border-bottom: none; }
+    .radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid var(--text-tertiary);
+      margin-top: 1px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .mode-row.active .radio {
+      border-color: var(--mallard);
+    }
+    .mode-row.active .radio::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--mallard);
+    }
+    .mode-row .name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .mode-row.active .name {
+      color: var(--mallard);
+    }
+    .mode-row .desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .bottom-actions {
+      flex-shrink: 0;
+      padding: 12px 16px 18px;
+      background: var(--canvas);
+      border-top: 0.5px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ghost-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Backup · Import preview</h1>
+    <p class="wf-meta">spec §13.3 · preview перед applying import</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <button class="wf-back-btn" aria-label="Back" data-href="backup-restore.html">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h1 style="flex: 1; text-align: center;">Import preview</h1>
+          <div style="width: 28px;"></div>
+        </div>
+
+        <div class="scroll-area">
+
+          <div class="file-card">
+            <div class="file-icon">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="file-body">
+              <div class="file-name">kachka-backup-2026-04-28.json</div>
+              <div class="meta-grid">
+                <span class="key">Schema</span>
+                <span class="val mono">1.0</span>
+                <span class="key">Created</span>
+                <span class="val">April 28, 2026 · 7:24 PM</span>
+                <span class="key">App</span>
+                <span class="val mono">1.0.0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-label">Contents</div>
+          <div class="counts-card">
+            <div class="count-row">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
+              <span class="num-val">42</span>
+              <span class="label">workouts</span>
+            </div>
+            <div class="count-row">
+              <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="6" y1="18" x2="18" y2="18"/></svg>
+              <span class="num-val">127</span>
+              <span class="label">sets total</span>
+            </div>
+            <div class="count-row">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
+              <span class="num-val">18</span>
+              <span class="label">custom exercises</span>
+            </div>
+          </div>
+
+          <div class="section-label">Import mode</div>
+          <div class="mode-card">
+            <div class="mode-row active" data-href="#">
+              <div class="radio"></div>
+              <div>
+                <div class="name">Replace all</div>
+                <div class="desc">All current data is replaced with the imported file.</div>
+              </div>
+            </div>
+            <div class="mode-row" data-href="#">
+              <div class="radio"></div>
+              <div>
+                <div class="name">Merge (skip duplicates by UUID)</div>
+                <div class="desc">Existing items keep their data; new ones are added.</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="height: 24px;"></div>
+
+        </div>
+
+        <div class="bottom-actions">
+          <button class="cta-primary" data-href="backup-restore.html">
+            Import
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="ghost-btn" data-href="backup-restore.html">Cancel</button>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Backup &amp; restore (<a href="backup-restore.html">backup-restore.html</a>) → tap <code>Import file</code> → native file picker → validation pass → push цей screen (per spec §13.3)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Import</code> → bottom sheet confirmation (per spec §13.3 step 6, §1 confirmations pattern):
+            <ul>
+              <li><strong>Replace</strong> mode: title <code>Replace all data?</code>, description <code>Current data will be lost. This cannot be undone.</code>, Cancel вгорі + destructive <code>Replace</code> внизу</li>
+              <li><strong>Merge</strong> mode: title <code>Import 42 workouts and 18 exercises?</code>, description <code>Existing data is preserved. Duplicates by ID are skipped.</code>, Cancel + primary <code>Import</code></li>
+            </ul>
+          </li>
+          <li>On confirm → atomic transaction (per spec §13.3 step 7). Success → toast <code>Backup imported</code>, повернення на Profile root</li>
+          <li>Tap <code>Cancel</code> або <code>←</code> back → <a href="backup-restore.html">backup-restore.html</a> без змін</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Tap radio row → перемикає mode. Active row має Mallard radio fill + Mallard label color</li>
+          <li>Скрол всього body, bottom actions sticky</li>
+          <li>File card — visual summary що завантажено, без actions</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>File card з file-icon + Plex Mono filename + metadata grid (Schema 1.0, Created date, App 1.0.0)</li>
+          <li>Counts block — Plex Mono для чисел (узгоджено з visual §3.2 — числа в mono). Іконки 18px line поряд для швидкого scan</li>
+          <li>Mode picker — radio rows з description під label (per spec §13.3 layout). Default Replace all (per spec §13.4)</li>
+          <li>Primary CTA <code>Import</code> з chevron — opens confirmation bottom sheet перед applying (per spec §1, §13.3). Сам import не виконується тут — тільки після confirm</li>
+          <li>Без tab bar (sub-screen на Profile stack)</li>
+          <li>Filename у Plex Mono — узгоджено з visual §3.2 (data-as-text в mono)</li>
+          <li>Дата у file card — повний human-readable (April 28, 2026 · 7:24 PM) для одноразового context, не для skim</li>
+          <li>Counts: <code>42 workouts</code>, <code>127 sets total</code>, <code>18 custom exercises</code> — три ключові цифри, без дрібниць типу "12 settings" (settings — single-shot, не варто рахувати)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Older schema → auto-migrate before preview (silent, per spec §13.6). Preview показує мігровану версію</li>
+          <li>Newer schema → не доходить до цього screen-у; error sheet на попередньому кроці</li>
+          <li>Validation fail (corrupted JSON) → error sheet, не доходить сюди</li>
+          <li>Atomic transaction fail при applying → rollback + error sheet (per spec §13.3 step 7)</li>
+          <li>Merge mode з 0 нових entities (всі duplicates) → toast <code>Nothing to import</code> на success (TBD як explicit state)</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §13.3</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

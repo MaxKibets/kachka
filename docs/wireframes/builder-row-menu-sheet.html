@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Builder row menu sheet · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    /* Dimmed backdrop */
+    .builder-bg {
+      position: relative;
+      flex: 1;
+      color: var(--text-primary);
+      opacity: 0.4;
+      overflow: hidden;
+    }
+    .scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+    }
+    .name-row-bg {
+      padding: 10px 16px 14px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .ex-card-bg {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 0 16px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ex-card-bg.highlighted {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 1px var(--amber);
+    }
+    /* Sheet */
+    .sheet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--surface-1);
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      border-top: 0.5px solid var(--border-subtle);
+      padding: 8px 0 18px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+      z-index: 10;
+    }
+    .grab-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.16);
+      margin: 4px auto 12px;
+      flex-shrink: 0;
+    }
+    .sheet-header {
+      padding: 0 20px 14px;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .sheet-title {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+    .sheet-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .sheet-body {
+      padding: 6px 0;
+    }
+    .action-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 15px;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .action-row:last-child {
+      border-bottom: none;
+    }
+    .action-row svg.icon {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .action-row .label-block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .action-row .sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .action-row.disabled {
+      color: var(--text-tertiary);
+    }
+    .action-row.disabled svg {
+      stroke: var(--text-tertiary);
+    }
+    .action-row.destructive {
+      color: var(--letter-e);
+    }
+    .action-row.destructive svg {
+      stroke: var(--letter-e);
+    }
+    .letter-chip {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: #0A0F0E;
+      flex-shrink: 0;
+    }
+    .letter-chip.a { background: var(--letter-a); }
+    .divider-section {
+      height: 6px;
+      background: var(--canvas);
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Builder row menu sheet</h1>
+    <p class="wf-meta">spec §1 + §4 + §6 · bottom action sheet після row <code>⋮</code></p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone" style="position: relative; overflow: hidden;">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="builder-bg">
+          <div class="app-bar">
+            <button class="wf-back-btn" aria-label="Close builder">
+              <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <h1 style="flex: 1; text-align: center; font-size: 17px; font-weight: 500;">Build workout</h1>
+            <div style="width: 30px;"></div>
+          </div>
+          <div class="name-row-bg">Push A</div>
+          <div class="ex-card-bg highlighted">
+            <div>
+              <div style="font-size: 15px; font-weight: 500;">Bench press</div>
+              <div class="text-sub" style="font-size: 12px;"><span class="num">3</span> sets · 8 reps</div>
+            </div>
+          </div>
+          <div class="ex-card-bg">
+            <div>
+              <div style="font-size: 15px; font-weight: 500;">Pull-up</div>
+              <div class="text-sub" style="font-size: 12px;"><span class="num">3</span> sets · 8 reps · bodyweight</div>
+            </div>
+          </div>
+          <div class="ex-card-bg">
+            <div>
+              <div style="font-size: 15px; font-weight: 500;">Tricep pushdown</div>
+              <div class="text-sub" style="font-size: 12px;"><span class="num">3</span> sets · 8 reps</div>
+            </div>
+          </div>
+          <div class="scrim" data-href="builder.html"></div>
+        </div>
+
+        <div class="sheet">
+          <div class="grab-handle"></div>
+
+          <div class="sheet-header">
+            <div class="sheet-title">Bench press</div>
+            <div class="sheet-subtitle"><span class="num">3</span> sets · Chest · Triceps · Shoulders</div>
+          </div>
+
+          <div class="sheet-body">
+
+            <!-- Add to superset (з indicator A якщо вже є група A в workout-і) -->
+            <div class="action-row" data-href="superset-config-sheet.html">
+              <svg class="icon" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+              </svg>
+              <div class="label-block">
+                <span>Add to superset</span>
+                <span class="sub">Group with another exercise</span>
+              </div>
+              <div class="letter-chip a">A</div>
+            </div>
+
+            <!-- Replace exercise (v1 placeholder) -->
+            <div class="action-row disabled" data-href="#">
+              <svg class="icon" viewBox="0 0 24 24">
+                <polyline points="17 1 21 5 17 9"/>
+                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                <polyline points="7 23 3 19 7 15"/>
+                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+              </svg>
+              <div class="label-block">
+                <span>Replace exercise</span>
+                <span class="sub">Coming in v2</span>
+              </div>
+            </div>
+
+            <!-- Move up -->
+            <div class="action-row" data-href="builder.html">
+              <svg class="icon" viewBox="0 0 24 24">
+                <line x1="12" y1="19" x2="12" y2="5"/>
+                <polyline points="5 12 12 5 19 12"/>
+              </svg>
+              <div class="label-block">
+                <span>Move up</span>
+              </div>
+            </div>
+
+            <!-- Move down -->
+            <div class="action-row" data-href="builder.html">
+              <svg class="icon" viewBox="0 0 24 24">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <polyline points="19 12 12 19 5 12"/>
+              </svg>
+              <div class="label-block">
+                <span>Move down</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider-section"></div>
+
+          <div class="sheet-body" style="padding-top: 0; padding-bottom: 4px;">
+            <div class="action-row destructive" data-href="builder.html">
+              <svg class="icon" viewBox="0 0 24 24">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6"/>
+                <path d="M14 11v6"/>
+                <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+              </svg>
+              <div class="label-block">
+                <span>Remove from workout</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Builder → row <code>⋮</code> на standalone exercise (<a href="builder.html">builder.html</a>, <a href="builder-with-supersets.html">builder-with-supersets.html</a>)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Add to superset</code> → партнер picker → <a href="superset-config-sheet.html">superset-config-sheet.html</a></li>
+          <li>Якщо в workout-і вже є група A — letter chip <code>A</code> indicator. Tap → додає вправу до існуючої групи A (skip step partner picker, відкривається config sheet з prefilled candidates per spec §6.2)</li>
+          <li>Tap <code>Replace exercise</code> → disabled у v1, відкладено в v2 (per spec §4 + §5.5). У cell показано як <code>Coming in v2</code></li>
+          <li>Tap <code>Move up</code> / <code>Move down</code> → переміщує вправу в списку, sheet закривається</li>
+          <li>Tap <code>Remove from workout</code> → confirmation sheet (<code>Remove this exercise?</code>) → видаляє вправу з Builder</li>
+          <li>Свайп вниз або тап на scrim → close (per spec §1)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Sheet відкривається після тапу <code>⋮</code> на row у Builder. Highlighted row у backdrop — амбер border на тій вправі, до якої прив'язаний sheet (visual cue для контексту)</li>
+          <li>Свайп вниз = close (per spec §1)</li>
+          <li>Тап поза sheet (на scrim) = close</li>
+          <li>Disabled <code>Replace exercise</code> — без hover/press, прозорий ghost-стилі</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Sheet header дублює контекст: name <code>Bench press</code> + subtitle <code>3 sets · Chest · Triceps · Shoulders</code> — щоб юзер не плутався який саме exercise редагує</li>
+          <li><strong>Letter chip A</strong> показано як indicator на <code>Add to superset</code> — означає що в workout-і вже є група <code>A</code> (per prompt). Якщо тап → додасть до неї. Якщо груп немає — chip відсутній, тап → партнер picker (нова група)</li>
+          <li><code>Replace exercise</code> — placeholder per spec §4. Сtep §5.5 каже "Replace exercise свідомо відкладено в v2". У UI лишаємо row для discoverability, але disabled з explanation</li>
+          <li><code>Move up</code> / <code>Move down</code> — secondary affordance. Per spec §4.4 + §4.6 drag є primary. Корисно для accessibility (folks без drag), і фолбек коли drag важко (точність thumb)</li>
+          <li><code>Remove from workout</code> — destructive (rust color <code>--letter-e</code>). Окрема divider-section з canvas-кольором візуально відмежовує destructive від neutral actions (per spec §1 — destructive внизу)</li>
+          <li>Per spec §4.4 повний menu також включає <code>Edit sets</code>, <code>Add note</code> — у v1 ставимо мінімум для Batch 2 wireframe. Можна розширити в наступних ітераціях</li>
+          <li><strong>Assumption</strong>: <code>Edit sets</code> і <code>Add note</code> per spec §4.4 не included у цей wireframe (не зазначено в prompt-і). Якщо потрібно — додаємо у наступному раунді</li>
+          <li><strong>Assumption</strong>: Confirmation для <code>Remove from workout</code> per spec §1 — окремий confirmation sheet (TBD у Batch 3-4 — той самий компонент з <code>Cancel</code> вгорі і destructive внизу)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Якщо вправа вже в групі (children A1/A2 у <a href="builder-with-supersets.html">builder-with-supersets.html</a>) — sheet адаптується: замість <code>Add to superset</code> з'являється <code>Remove from group</code>; <code>Move up/down</code> в межах групи</li>
+          <li>Group <code>⋮</code> menu — інший sheet (TBD): Edit rounds/rest, Add exercise to group, Reorder inside, Move group up/down, Ungroup (per spec §4.5)</li>
+          <li>Active workout row menu — спорідений компонент з додатковими actions (Skip, Insert after) per spec §5.5 — TBD у Batch 3</li>
+          <li>Якщо в workout-і кілька груп (A, B) — chip indicator показує літеру першої групи, або show selector (TBD UX-варіант якщо понадобиться)</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §4 + §6</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise database · With custom · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .sticky-top {
+      position: sticky;
+      top: 0;
+      background: var(--canvas);
+      z-index: 5;
+      padding-top: 4px;
+      padding-bottom: 8px;
+      margin: 0 -16px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .search svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--text-tertiary);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .search input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+    }
+    .search input::placeholder {
+      color: var(--text-tertiary);
+    }
+    .chips-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin: 0 -16px;
+      padding: 0 16px 4px;
+      scrollbar-width: none;
+    }
+    .chips-scroll::-webkit-scrollbar { display: none; }
+    .chip {
+      flex-shrink: 0;
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 13px;
+      padding: 7px 12px;
+      border-radius: 18px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .chip.active {
+      background: var(--mallard-dim);
+      border-color: var(--mallard);
+      color: var(--text-primary);
+    }
+    .ex-list {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .ex-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .ex-row:last-child { border-bottom: none; }
+    .ex-row .name-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+    .ex-row .name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .ex-row .sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .custom-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mallard);
+      background: var(--mallard-dim);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-weight: 500;
+    }
+    .row-menu-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+    .row-menu-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+    .group-letter {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      padding: 14px 4px 6px;
+    }
+    .bottom-actions {
+      flex-shrink: 0;
+      padding: 12px 16px 18px;
+      background: var(--canvas);
+      border-top: 0.5px solid var(--border-subtle);
+    }
+    .add-cta {
+      width: 100%;
+      background: transparent;
+      border: 0.5px dashed #2C3833;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .add-cta svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Exercise database · With custom exercises</h1>
+    <p class="wf-meta">spec §11 · Browse mode, system + custom mixed</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <button class="wf-back-btn" aria-label="Back to Profile" data-href="profile.html">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h1 style="flex: 1; text-align: center;">Exercise database</h1>
+          <div style="width: 28px;"></div>
+        </div>
+
+        <div class="scroll-area">
+
+          <div class="sticky-top">
+            <div class="search">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+              <input type="text" placeholder="Search exercises" disabled>
+            </div>
+
+            <div class="chips-scroll">
+              <button class="chip active">All</button>
+              <button class="chip">Chest</button>
+              <button class="chip">Back</button>
+              <button class="chip">Legs</button>
+              <button class="chip">Biceps</button>
+              <button class="chip">Triceps</button>
+              <button class="chip">Shoulders</button>
+              <button class="chip">Core</button>
+            </div>
+          </div>
+
+          <div class="group-letter">A</div>
+          <div class="ex-list">
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Arnold press</span><span class="custom-badge">Custom</span></div>
+                <div class="sub">Shoulders</div>
+              </div>
+              <button class="row-menu-btn" aria-label="Custom exercise menu" data-href="#">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+              </button>
+            </div>
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Barbell row</span></div>
+                <div class="sub">Back, Biceps</div>
+              </div>
+            </div>
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Bench press</span></div>
+                <div class="sub">Chest, Triceps</div>
+              </div>
+            </div>
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Bicep curl</span></div>
+                <div class="sub">Biceps</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="group-letter">C</div>
+          <div class="ex-list">
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Cable crossover</span><span class="custom-badge">Custom</span></div>
+                <div class="sub">Chest</div>
+              </div>
+              <button class="row-menu-btn" aria-label="Custom exercise menu" data-href="#">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="group-letter">D</div>
+          <div class="ex-list">
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Deadlift</span></div>
+                <div class="sub">Back, Legs</div>
+              </div>
+            </div>
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Dumbbell row</span></div>
+                <div class="sub">Back, Biceps</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="group-letter">F</div>
+          <div class="ex-list">
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Face pull</span></div>
+                <div class="sub">Back, Shoulders</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="group-letter">M</div>
+          <div class="ex-list">
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">My weird squat</span><span class="custom-badge">Custom</span></div>
+                <div class="sub">Legs · Bodyweight</div>
+              </div>
+              <button class="row-menu-btn" aria-label="Custom exercise menu" data-href="#">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="group-letter">O</div>
+          <div class="ex-list">
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Overhead press</span></div>
+                <div class="sub">Shoulders, Triceps</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="group-letter">P</div>
+          <div class="ex-list">
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Pull-up</span></div>
+                <div class="sub">Back, Biceps · Bodyweight</div>
+              </div>
+            </div>
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Push-up</span></div>
+                <div class="sub">Chest, Triceps · Bodyweight</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="group-letter">S</div>
+          <div class="ex-list">
+            <div class="ex-row">
+              <div>
+                <div class="name-line"><span class="name">Squat</span></div>
+                <div class="sub">Legs</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="height: 8px;"></div>
+
+        </div>
+
+        <div class="bottom-actions">
+          <button class="add-cta" data-href="exercise-create.html">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create custom
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Profile (<a href="profile.html">profile.html</a>) → DATA → <code>Exercise database</code> (push на Profile stack, Browse mode per spec §11.1)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>+ Create custom</code> (sticky bottom) → <a href="exercise-create.html">exercise-create.html</a> з порожнім name</li>
+          <li>Tap custom row <code>⋮</code> → action sheet: <code>Edit</code> / <code>Delete</code> (per spec §11.8) — bottom sheet TBD</li>
+          <li>Tap custom row body → custom exercise detail (per spec §11.8 — Edit / Delete buttons; на цьому етапі можна inline без detail screen якщо менш ніж 3 fields)</li>
+          <li>Tap muscle filter chip → AND-фільтр з search (per spec §11.4)</li>
+          <li>Tap search → field expands, system keyboard, case-insensitive substring (per spec §11.3)</li>
+          <li>Tap system row → нічого (read-only, без detail у Browse mode per spec §11.1)</li>
+          <li>Tap <code>←</code> back → <a href="profile.html">profile.html</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Search + filter sticky зверху під app-bar</li>
+          <li><code>⋮</code> button лише на custom rows. System rows без menu — read-only</li>
+          <li>Custom badge — маленький Mallard chip справа від назви для миттєвої idenfification</li>
+          <li>Sticky bottom <code>+ Create custom</code></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li><strong>Custom mark</strong>: я обрав inline badge <code>Custom</code> у Mallard tint справа від назви. Альтернатива — chevron <code>&gt;</code> справа від rows (per spec §11.5) — але це менш explicit за тип. Badge читається на бігу і не плутається з navigation chevron-ом</li>
+          <li><strong>System vs custom row affordance</strong>: custom має <code>⋮</code> справа (для edit/delete), system — нічого. Дві різні lights, але обидві read у Browse-режимі</li>
+          <li>Letter grouping (A, C, D, F, M, O, P, S) — алфавітний індекс. Custom і system mixed у тих самих секціях (на цьому фреймі не виділяємо custom-only список)</li>
+          <li>Showcase демонструє 3 custom + 9 system, mixed — Arnold press (A), Cable crossover (C), My weird squat (M, bodyweight)</li>
+          <li>Filter chips state — All активний (дефолт). Single-select per spec §11.4</li>
+          <li>Search input decorative; реальний impl — focus → keyboard → live filter</li>
+          <li>Soft-deleted custom не відображаються (per spec §11.9)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Без жодного custom → <a href="exercise-database-empty.html">exercise-database-empty.html</a></li>
+          <li>Search no-results → inline <code>Create as 'X'</code> affordance (per spec §11.6)</li>
+          <li>Filter <code>Bodyweight</code>-only — у v1 нема (per spec §11.10 — equipment filter відкладено в v2)</li>
+          <li>Custom <code>⋮</code> tap → bottom action sheet (Edit / Delete). Delete → confirmation per spec §1 — TBD як окремий мокап</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §11</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

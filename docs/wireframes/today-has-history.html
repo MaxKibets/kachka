@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Today · Has history · Kachka wireframes</title>
   <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
 </head>
 <body>
   <header class="wf-header">
@@ -40,7 +41,7 @@
             </div>
             <div class="text-sub" style="font-size: 12px; margin-bottom: 12px;"><span class="num">12</span> sets · <span class="num">4 540</span> kg · <span class="num">52</span> min</div>
             <div class="text-sub" style="font-size: 13px; margin-bottom: 16px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Bench press, Dumbbell row, Face pull, Tricep pushdown</div>
-            <button class="cta-primary">
+            <button class="cta-primary" data-href="builder.html">
               Repeat last
               <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
@@ -49,11 +50,11 @@
           <div class="text-dim" style="font-size: 12px; margin: 22px 6px 6px;">Or</div>
 
           <div style="padding: 0 6px;">
-            <div class="row-link">
+            <div class="row-link" data-href="history-picker.html">
               <span>Choose from history</span>
               <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
-            <div class="row-link">
+            <div class="row-link" data-href="builder.html">
               <span>Start blank workout</span>
               <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
@@ -62,15 +63,15 @@
         </div>
 
         <nav class="tab-bar">
-          <div class="tab active">
+          <div class="tab active" data-href="#">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
             <span>Today</span>
           </div>
-          <div class="tab">
+          <div class="tab" data-href="history-list.html">
             <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             <span>History</span>
           </div>
-          <div class="tab">
+          <div class="tab" data-href="profile.html">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
             <span>Profile</span>
           </div>

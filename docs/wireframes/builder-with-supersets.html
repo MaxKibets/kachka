@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Builder · With superset · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 4px 14px;
+      border-bottom: 0.5px solid var(--border-divider);
+      margin-bottom: 16px;
+    }
+    .name-row .name {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .name-row .pencil {
+      width: 13px;
+      height: 13px;
+      stroke: var(--text-tertiary);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin: 4px 4px 8px;
+    }
+    .chips-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 4px 4px;
+      margin: 0 -16px 16px;
+      padding-left: 16px;
+      padding-right: 16px;
+      scrollbar-width: none;
+    }
+    .chips-scroll::-webkit-scrollbar { display: none; }
+    .chip {
+      flex-shrink: 0;
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      color: var(--text-primary);
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .chip svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--text-secondary);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .ex-card {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      display: grid;
+      grid-template-columns: 16px 1fr 28px;
+      align-items: center;
+      gap: 10px;
+    }
+    .drag-handle {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      color: var(--text-tertiary);
+      cursor: grab;
+    }
+    .drag-handle .dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .drag-handle .row {
+      display: flex;
+      gap: 3px;
+    }
+    .ex-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .ex-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .row-menu-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+    .row-menu-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+    /* Group card (visual §5.3) — surface-1 + 3px solid mallard left-border + 0.5px subtle on others */
+    .group-card {
+      background: var(--surface-1);
+      border-left: 3px solid var(--mallard);
+      border-top: 0.5px solid var(--border-subtle);
+      border-right: 0.5px solid var(--border-subtle);
+      border-bottom: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 14px 8px;
+      margin-bottom: 10px;
+    }
+    .group-header {
+      display: grid;
+      grid-template-columns: 16px 24px 1fr 28px;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 0.5px solid var(--border-divider);
+      margin-bottom: 6px;
+    }
+    .letter-chip {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: #0A0F0E;
+    }
+    .letter-chip.a { background: var(--letter-a); }
+    .group-header .meta-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 1px;
+    }
+    .group-header .meta-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .group-row {
+      display: grid;
+      grid-template-columns: 16px 1fr 28px;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .group-row:last-child {
+      border-bottom: none;
+    }
+    /* tinted letter prefix per visual §2.5 */
+    .ex-name-prefixed {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .letter-prefix {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--letter-a);
+      background: rgba(92, 123, 149, 0.15);
+      border: 0.5px solid rgba(92, 123, 149, 0.5);
+      border-radius: 4px;
+      padding: 1px 5px;
+      letter-spacing: 0.02em;
+    }
+    .add-ex-btn {
+      width: 100%;
+      background: transparent;
+      border: 0.5px dashed #2C3833;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .add-ex-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .bottom-actions {
+      flex-shrink: 0;
+      padding: 12px 16px 18px;
+      background: var(--canvas);
+      border-top: 0.5px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ghost-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Workout Builder · With superset A</h1>
+    <p class="wf-meta">spec §4 + §6 · group card pattern (visual §5.3) + letter chip A</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <button class="wf-back-btn" aria-label="Close builder" data-href="today-has-history.html">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h1 style="flex: 1; text-align: center;">Build workout</h1>
+          <button class="icon-btn" aria-label="More options">
+            <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </div>
+
+        <div class="scroll-area">
+
+          <div class="name-row">
+            <span class="name">Pull A</span>
+            <svg class="pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+          </div>
+
+          <div class="section-label">Quick add</div>
+          <div class="chips-scroll">
+            <button class="chip"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Squat</button>
+            <button class="chip"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Bench press</button>
+            <button class="chip"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Deadlift</button>
+            <button class="chip"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Barbell row</button>
+            <button class="chip"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Overhead press</button>
+            <button class="chip"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Pull-up</button>
+            <button class="chip"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Bicep curl</button>
+          </div>
+
+          <div class="section-label">Exercises</div>
+
+          <!-- 1. Standalone: Bench press -->
+          <div class="ex-card">
+            <div class="drag-handle">
+              <div class="row"><div class="dot"></div><div class="dot"></div></div>
+              <div class="row"><div class="dot"></div><div class="dot"></div></div>
+              <div class="row"><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div>
+              <div class="ex-name">Bench press</div>
+              <div class="ex-sub"><span class="num">3</span> sets · 8 reps</div>
+            </div>
+            <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+            </button>
+          </div>
+
+          <!-- 2. Group A: Dumbbell row + Face pull -->
+          <div class="group-card">
+            <div class="group-header">
+              <div class="drag-handle">
+                <div class="row"><div class="dot"></div><div class="dot"></div></div>
+                <div class="row"><div class="dot"></div><div class="dot"></div></div>
+                <div class="row"><div class="dot"></div><div class="dot"></div></div>
+              </div>
+              <div class="letter-chip a">A</div>
+              <div>
+                <div class="meta-name">Superset</div>
+                <div class="meta-sub"><span class="num">3</span> rounds · <span class="num">90</span>s rest</div>
+              </div>
+              <button class="row-menu-btn" aria-label="Group menu" data-href="superset-config-sheet.html">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+              </button>
+            </div>
+
+            <div class="group-row">
+              <div class="drag-handle">
+                <div class="row"><div class="dot"></div><div class="dot"></div></div>
+                <div class="row"><div class="dot"></div><div class="dot"></div></div>
+                <div class="row"><div class="dot"></div><div class="dot"></div></div>
+              </div>
+              <div>
+                <div class="ex-name-prefixed">
+                  <span class="letter-prefix">A1</span>
+                  <span class="ex-name" style="margin: 0;">Dumbbell row</span>
+                </div>
+                <div class="ex-sub" style="margin-top: 2px;"><span class="num">8</span> reps</div>
+              </div>
+              <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+              </button>
+            </div>
+
+            <div class="group-row">
+              <div class="drag-handle">
+                <div class="row"><div class="dot"></div><div class="dot"></div></div>
+                <div class="row"><div class="dot"></div><div class="dot"></div></div>
+                <div class="row"><div class="dot"></div><div class="dot"></div></div>
+              </div>
+              <div>
+                <div class="ex-name-prefixed">
+                  <span class="letter-prefix">A2</span>
+                  <span class="ex-name" style="margin: 0;">Face pull</span>
+                </div>
+                <div class="ex-sub" style="margin-top: 2px;"><span class="num">12</span> reps</div>
+              </div>
+              <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. Standalone: Tricep pushdown -->
+          <div class="ex-card">
+            <div class="drag-handle">
+              <div class="row"><div class="dot"></div><div class="dot"></div></div>
+              <div class="row"><div class="dot"></div><div class="dot"></div></div>
+              <div class="row"><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div>
+              <div class="ex-name">Tricep pushdown</div>
+              <div class="ex-sub"><span class="num">3</span> sets · 8 reps</div>
+            </div>
+            <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+            </button>
+          </div>
+
+          <button class="add-ex-btn" data-href="exercise-picker-add.html">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add exercise
+          </button>
+
+        </div>
+
+        <div class="bottom-actions">
+          <button class="cta-primary" data-href="in-workout-with-supersets.html">
+            Start workout
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="ghost-btn" data-href="today-has-history.html">Discard</button>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Той самий screen що <a href="builder.html">builder.html</a> — варіант з суперсетом створеним юзером</li>
+          <li>Tap <code>Add to superset</code> у row menu (<a href="builder-row-menu-sheet.html">builder-row-menu-sheet.html</a>) → партнер picker → <a href="superset-config-sheet.html">superset-config-sheet.html</a> → group створено</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap group <code>⋮</code> (у group header) → group action sheet (TBD у Batch 3 — patterns в <code>builder-row-menu-sheet</code> і <code>set-actions-sheet</code>): Edit rounds/rest, Add exercise to group, Remove exercise from group, Reorder inside, Move group up/down, Ungroup (per spec §4.5)</li>
+          <li>Tap row <code>⋮</code> на A1/A2 → row action sheet з контекстним <code>Add to superset</code> = inactive (вже у групі), додатково <code>Remove from group</code></li>
+          <li>Tap row <code>⋮</code> на Bench press / Tricep pushdown → <a href="builder-row-menu-sheet.html">builder-row-menu-sheet.html</a> з <code>Add to superset · A</code> (індикатор що існує група A — додає до неї)</li>
+          <li>Tap <code>Start workout</code> → Active Workout (<a href="in-workout.html">in-workout.html</a> — TBD у Batch 3)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Drag handle на group header — рухає всю групу як одне ціле (per spec §4.6)</li>
+          <li>Drag handle всередині group rows — reorder тільки в межах групи (per spec §4.5)</li>
+          <li>Group card спадково відрізняється: 3px solid mallard left-border + 0.5px subtle borders на трьох інших сторонах (per visual §5.3)</li>
+          <li>Letter chip <code>A</code> — square 24×24, radius 6, color <code>--letter-a</code> dusty blue, text <code>#0A0F0E</code> (per visual §2.5)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Letter chip <code>A</code> showing only on group header. Children-вправи мають tinted letter <code>A1</code>, <code>A2</code> — background <code>rgba(letter, 0.15)</code>, border <code>0.5px solid rgba(letter, 0.5)</code>, text сам letter color (per visual §2.5)</li>
+          <li>Group header subtitle: <code>Superset · 3 rounds · 90s rest</code>. У builder поки немає progress, у Active workout буде <code>round X of Y</code> (per spec §6.4)</li>
+          <li>Sets count для group children показано як <code>8 reps</code> / <code>12 reps</code> — без явної кількості сетів, бо у супер-сеті всі вправи мають однакову кількість раундів = група має <code>3 rounds</code> в header. Per round = 1 set кожної вправи</li>
+          <li><strong>Assumption</strong>: A1 = <code>Dumbbell row · 8 reps</code>, A2 = <code>Face pull · 12 reps</code>. Spec не дає конкретних reps для group children, ставимо reasonable defaults</li>
+          <li><strong>Assumption</strong>: Group card has its own drag handle для перетягування групи цілком (на group header). Spec §4.6 каже "drag handle на правому краю", але візуально drag handle ліворуч консистентний з standalone exercises у цьому wireframe-batch</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Без групи — <a href="builder.html">builder.html</a></li>
+          <li>2+ групи (B, C) — letter chip і tinted letter ротуються по visual §2.5 (B = ochre, C = plum, D = sage, E = rust)</li>
+          <li>Група розпалась до 1 вправи через Remove (per spec §4.5) — auto-ungroup, картка стає звичайною ex-card</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §4 + §6</a>
+        <a href="../gym-tracker-visual.md">Visual §5.3 + §2.5</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise picker · Add mode · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .wf-back-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      margin-left: -6px;
+    }
+    .wf-back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .picker-search {
+      flex-shrink: 0;
+      padding: 0 16px 8px;
+      background: var(--canvas);
+    }
+    .search-input {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: var(--text-tertiary);
+      font-size: 14px;
+    }
+    .search-input svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--text-tertiary);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .picker-filters {
+      flex-shrink: 0;
+      padding: 6px 16px 12px;
+      background: var(--canvas);
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .filter-chips {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      margin: 0 -16px;
+      padding: 2px 16px;
+      scrollbar-width: none;
+    }
+    .filter-chips::-webkit-scrollbar { display: none; }
+    .filter-chip {
+      flex-shrink: 0;
+      background: transparent;
+      border: 0.5px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-family: var(--font-sans);
+      padding: 6px 11px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+    .filter-chip.active {
+      background: var(--mallard-dim);
+      border-color: var(--mallard);
+      color: var(--text-primary);
+    }
+    .picker-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 16px 8px;
+    }
+    .ex-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 4px;
+      border-bottom: 0.5px solid var(--border-divider);
+      cursor: pointer;
+    }
+    .ex-row:last-child { border-bottom: none; }
+    .ex-row .name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+    .ex-row .tags {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .picker-bottom {
+      flex-shrink: 0;
+      padding: 12px 16px 18px;
+      background: var(--canvas);
+      border-top: 0.5px solid var(--border-subtle);
+    }
+    .secondary-btn {
+      width: 100%;
+      background: transparent;
+      border: 0.5px dashed #2C3833;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .secondary-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Exercise picker · Add mode</h1>
+    <p class="wf-meta">spec §11 · modal з Builder/Active workout</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <button class="wf-back-btn" aria-label="Close picker" data-href="builder.html">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <h1 style="flex: 1; text-align: center;">Add exercise</h1>
+          <div style="width: 30px;"></div>
+        </div>
+
+        <div class="picker-search">
+          <div class="search-input">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Search exercises…</span>
+          </div>
+        </div>
+
+        <div class="picker-filters">
+          <div class="filter-chips">
+            <button class="filter-chip">Chest</button>
+            <button class="filter-chip">Back</button>
+            <button class="filter-chip">Legs</button>
+            <button class="filter-chip">Biceps</button>
+            <button class="filter-chip">Triceps</button>
+            <button class="filter-chip">Shoulders</button>
+            <button class="filter-chip">Core</button>
+          </div>
+        </div>
+
+        <div class="picker-list">
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Bench press</div>
+              <div class="tags">Chest · Triceps · Shoulders</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Bicep curl</div>
+              <div class="tags">Biceps</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Cable row</div>
+              <div class="tags">Back · Biceps</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Deadlift</div>
+              <div class="tags">Back · Legs · Core</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Dumbbell row</div>
+              <div class="tags">Back · Biceps</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Face pull</div>
+              <div class="tags">Shoulders · Back</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Hammer curl</div>
+              <div class="tags">Biceps</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Lat pulldown</div>
+              <div class="tags">Back · Biceps</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Leg extension</div>
+              <div class="tags">Legs</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Overhead press</div>
+              <div class="tags">Shoulders · Triceps</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Pull-up</div>
+              <div class="tags">Back · Biceps · bodyweight</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Squat</div>
+              <div class="tags">Legs · Core</div>
+            </div>
+          </div>
+          <div class="ex-row" data-href="builder.html">
+            <div>
+              <div class="name">Tricep pushdown</div>
+              <div class="tags">Triceps</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="picker-bottom">
+          <button class="secondary-btn" data-href="exercise-create.html">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create custom
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Workout Builder → <code>+ Add exercise</code> (<a href="builder.html">builder.html</a>)</li>
+          <li>Active workout → top bar <code>⋯</code> → <code>Add exercise</code> (in-workout — TBD у Batch 3)</li>
+          <li>Active workout → per-exercise <code>⋮</code> → <code>Insert after</code> (per spec §11.1)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap row → returns selected exercise to caller (closes modal). Builder додає 3×8, Active додає 3×8 і ставить cursor</li>
+          <li>Tap <code>+ Create custom</code> → custom creation sheet (<a href="exercise-create.html">exercise-create.html</a> — TBD у Batch 5) з порожнім name</li>
+          <li>Tap <code>×</code> → closes modal без selection, повертається на caller</li>
+          <li>Search results empty → inline <code>Create as 'X'</code> affordance (no-results state, per spec §11.6) — окремий wireframe TBD; sticky <code>+ Create custom</code> завжди доступний</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Sticky search input + filter chips під ним. Скролиться тільки список</li>
+          <li>Filter chips — single-select (один або жоден). Default — none selected (показує весь каталог)</li>
+          <li>Filter scroll горизонтально якщо chips не вміщаються</li>
+          <li>Search — case-insensitive substring (per spec §11.3). AND-композиція з muscle filter</li>
+          <li>Search/filter — reset кожен раз як відкривається picker (per spec §11.3, §11.4)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Header: close <code>×</code> зліва (не back chevron) щоб підкреслити modal-нічність — це не push, це modal який можна dismiss-нути</li>
+          <li>Single-select Add mode у v1 (multi-select → v1.x per spec §11.10)</li>
+          <li>Bodyweight показано як inline-tag <code>bodyweight</code> в muscle list — мінімалістично, без окремого badge</li>
+          <li>System exercises у Add mode — без <code>⋮</code>, без chevron, без custom badge (read-only, тап на рядку селектить)</li>
+          <li><strong>Assumption</strong>: Spec §11 каже "Sticky `All` chip first, selected by default", але prompt каже "Default state — none selected, 7 chips single-select". Дотримуюсь prompt-у — без явного <code>All</code> chip-у; якщо нічого не selected, показується весь каталог</li>
+          <li><strong>Assumption</strong>: Sample list з 13 вправ — представляє типове розмаїття (compound + isolation + bodyweight). Реальний seed буде ширшим</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Browse mode (з Profile/DATA) — <a href="exercise-picker-browse.html">exercise-picker-browse.html</a></li>
+          <li>Empty search results з <code>+ Create as 'X'</code> — окремий state, TBD якщо потрібно</li>
+          <li>Active workout context: вправи що мають залоговані сети у поточному workout-і не disabled — picker дозволяє додати ту ж вправу повторно (свідомо, юзер може хотіти додати її після іншої)</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §11</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

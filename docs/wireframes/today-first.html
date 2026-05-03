@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Today · First launch · Kachka wireframes</title>
   <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
 </head>
 <body>
   <header class="wf-header">
@@ -42,7 +43,7 @@
               Build it from scratch or pick from suggested exercises.
             </div>
 
-            <button class="cta-primary" style="width: auto; padding: 12px 24px;">
+            <button class="cta-primary" style="width: auto; padding: 12px 24px;" data-href="builder.html">
               Start workout
               <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
@@ -51,15 +52,15 @@
         </div>
 
         <nav class="tab-bar">
-          <div class="tab active">
+          <div class="tab active" data-href="#">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
             <span>Today</span>
           </div>
-          <div class="tab">
+          <div class="tab" data-href="history-empty.html">
             <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             <span>History</span>
           </div>
-          <div class="tab">
+          <div class="tab" data-href="profile.html">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
             <span>Profile</span>
           </div>

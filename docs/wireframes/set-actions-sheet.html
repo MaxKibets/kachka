@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set actions sheet · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .phone { position: relative; }
+
+    /* Dimmed backdrop */
+    .iw-backdrop {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      filter: brightness(0.4);
+      pointer-events: none;
+    }
+    .iw-backdrop .stub-app-bar {
+      padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 0.5px solid var(--border-subtle); background: var(--canvas);
+    }
+    .iw-backdrop .stub-title { font-size: 16px; font-weight: 500; }
+    .iw-backdrop .stub-meta { font-size: 11px; color: var(--text-secondary); }
+    .iw-backdrop .stub-card {
+      margin: 14px 12px; padding: 14px;
+      background: var(--surface-1); border-radius: 14px; border: 0.5px solid var(--border-subtle);
+    }
+    .iw-backdrop .stub-row {
+      display: grid; grid-template-columns: 32px 1fr 78px 60px 40px;
+      gap: 8px; align-items: center; height: 44px;
+      border-top: 0.5px solid var(--border-divider);
+      padding: 0 14px;
+      font-family: var(--font-mono); font-size: 13px;
+    }
+    .iw-backdrop .stub-row:first-child { border-top: none; }
+
+    .dim-overlay { position: absolute; inset: 0; background: rgba(10, 15, 14, 0.6); }
+
+    /* Action sheet */
+    .action-sheet {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      background: var(--surface-1);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      border: 0.5px solid var(--border-subtle);
+      padding: 8px 0 18px;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+    }
+    .grab-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.18); border-radius: 2px; margin: 4px auto 12px; }
+
+    .sheet-header {
+      padding: 0 18px 12px;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .sheet-header .sh-label {
+      font-size: 11px; color: var(--text-secondary);
+      letter-spacing: 0.04em;
+    }
+    .sheet-header .sh-label .num { color: var(--text-secondary); }
+
+    .action-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px;
+      border-bottom: 0.5px solid var(--border-divider);
+      cursor: pointer;
+    }
+    .action-row:last-child { border-bottom: none; }
+    .action-row .ar-icon {
+      width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .action-row .ar-icon svg {
+      width: 20px; height: 20px;
+      stroke: currentColor; fill: none; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .action-row .ar-text {
+      flex: 1; font-size: 15px; color: var(--text-primary);
+    }
+    .action-row .ar-meta {
+      font-size: 12px; color: var(--text-tertiary);
+      font-family: var(--font-mono);
+    }
+    .action-row.destructive .ar-icon,
+    .action-row.destructive .ar-text {
+      color: #B85842;
+    }
+
+    /* Inline RPE picker */
+    .rpe-inline {
+      padding: 10px 18px 14px;
+      border-bottom: 0.5px solid var(--border-divider);
+      background: var(--surface-2);
+    }
+    .rpe-inline .rpe-label {
+      font-size: 11px; color: var(--text-secondary);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+    .rpe-buttons {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 4px;
+    }
+    .rpe-buttons .rpe-key {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 8px 0;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      color: var(--text-primary);
+      text-align: center;
+      cursor: pointer;
+    }
+    .rpe-buttons .rpe-key.selected {
+      background: var(--mallard-dim);
+      border-color: var(--mallard);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Warmup preview indicator (W badge) */
+    .warmup-preview {
+      width: 18px; height: 18px;
+      background: rgba(242, 165, 58, 0.15);
+      border: 0.5px solid rgba(242, 165, 58, 0.5);
+      border-radius: 4px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10px; font-weight: 500;
+      color: var(--amber);
+      margin-left: 6px;
+    }
+
+    .section-divider {
+      height: 6px;
+      background: var(--canvas);
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Set actions sheet</h1>
+    <p class="wf-meta">spec §8 · bottom sheet після тапу на номер сета</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <!-- Dimmed in-workout backdrop -->
+        <div class="iw-backdrop">
+          <div class="status-bar" style="opacity: 0.5;"><span class="clock">9:41</span><span></span></div>
+          <div class="stub-app-bar">
+            <span class="stub-title">Push A</span>
+            <span class="stub-meta">14:32</span>
+          </div>
+          <div class="stub-card">
+            <div style="font-size: 16px; font-weight: 500; margin-bottom: 12px;">Bench press</div>
+            <div class="stub-row"><span>1</span><span>70 × 8</span><span style="text-align: center;">70.0</span><span style="text-align: center;">8</span><span></span></div>
+            <div class="stub-row"><span>2</span><span>72.5 × 8</span><span style="text-align: center;">72.5</span><span style="text-align: center;">8</span><span></span></div>
+            <div class="stub-row"><span>3</span><span>75 × 7</span><span style="text-align: center;">75.0</span><span style="text-align: center;">8</span><span></span></div>
+          </div>
+        </div>
+
+        <div class="dim-overlay" data-href="in-workout.html"></div>
+
+        <!-- Bottom action sheet -->
+        <div class="action-sheet">
+          <div class="grab-handle"></div>
+
+          <div class="sheet-header">
+            <div class="sh-label">Bench press · Set <span class="num">3</span></div>
+          </div>
+
+          <!-- Mark as warmup -->
+          <div class="action-row" data-href="in-workout.html">
+            <div class="ar-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2v4"/><path d="M5 12H2"/><path d="M22 12h-3"/><path d="M19 5l-2 2"/><path d="M5 5l2 2"/><circle cx="12" cy="14" r="6"/></svg>
+            </div>
+            <div class="ar-text">
+              Mark as warm-up
+              <span class="warmup-preview">W</span>
+            </div>
+          </div>
+
+          <!-- RPE inline picker -->
+          <div class="action-row" style="border-bottom: none; padding-bottom: 8px;" data-href="in-workout.html">
+            <div class="ar-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 18l4-4 4 4 7-7 3 3"/></svg>
+            </div>
+            <div class="ar-text">RPE</div>
+            <div class="ar-meta">@<span class="num">8</span></div>
+          </div>
+          <div class="rpe-inline">
+            <div class="rpe-label">RPE 6 — 10 (0.5 step)</div>
+            <div class="rpe-buttons">
+              <div class="rpe-key">6</div>
+              <div class="rpe-key">6.5</div>
+              <div class="rpe-key">7</div>
+              <div class="rpe-key">7.5</div>
+              <div class="rpe-key selected">8</div>
+              <div class="rpe-key">8.5</div>
+              <div class="rpe-key">9</div>
+              <div class="rpe-key">9.5</div>
+              <div class="rpe-key">10</div>
+            </div>
+          </div>
+
+          <!-- Add note -->
+          <div class="action-row" data-href="in-workout.html">
+            <div class="ar-icon">
+              <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="14 3 14 9 20 9"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+            </div>
+            <div class="ar-text">Add note</div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <!-- Delete set (destructive) -->
+          <div class="action-row destructive" data-href="in-workout.html">
+            <div class="ar-icon">
+              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </div>
+            <div class="ar-text">Delete set</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>In-workout · tap на номер сета (primary trigger per spec §8.1) — будь-який рядок (done / active / pending) (<a href="in-workout.html">in-workout.html</a>)</li>
+          <li>In-workout · long-press на set row (secondary trigger per spec §8.1)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Mark as warm-up</code> → toggle warmup на сеті, sheet закривається. Сет помічається <code>W</code>-бейджем (per spec §8.3)</li>
+          <li>Tap RPE value → коміт RPE на сет, sheet закривається. Бейдж <code>@8</code> у рядку</li>
+          <li>Tap <code>Add note</code> → системна клавіатура text input (per spec §8.2). Сет помічається крапкою</li>
+          <li>Tap <code>Delete set</code> → bottom sheet confirmation (per spec §1: <code>Cancel</code> вгорі + destructive внизу). Підтвердження → видалення сета</li>
+          <li>Swipe down / tap на dim → закриває sheet без змін</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Inline RPE picker — 9 кнопок (6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10), single-select. Tap одразу комітить значення. Selected — mallard-dim фон з mallard border</li>
+          <li>Якщо RPE вже встановлено — selected кнопка вже виділена. Tap іншої = переписати. Tap selected ще раз = remove (TBD)</li>
+          <li>Якщо <code>Show RPE</code> у Settings вимкнено (per spec §12.2) — рядок RPE і inline picker не показуються</li>
+          <li>Mark as warm-up — toggle. Якщо сет вже warmup — рядок змінює label на <code>Unmark as warm-up</code></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Сет ще не залогований (pending/active) — Delete доступний, прибирає сет з вправи. Якщо сет вже done — Delete теж доступний, але треба явне confirm (per spec §8 + §5.5)</li>
+          <li>Last set у вправі — Delete vs add: видалити можна; якщо вправа лишилась з 0 сетами — TBD (видалити вправу? показати empty стан?)</li>
+          <li>Note вже існує → рядок <code>Add note</code> змінюється на <code>Edit note</code></li>
+          <li>RPE off у settings — рядок прихований (per spec §12.2)</li>
+          <li>Warmup сет — у volume і PR не йде (per spec §8.2)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Sheet — bottom-anchored, повна ширина, grab handle вгорі (per visual §5.7 + spec §1)</li>
+          <li>Header label — Plex Mono number у контексті <code>Bench press · Set 3</code></li>
+          <li>RPE inline (а не submenu): rare action але важливий для тих хто RPE юзає; краще одразу tap-to-commit без додаткових екранів</li>
+          <li>Range RPE 6 — 10 свідомо (per common gym usage — нижче 6 малоінформативно). 0.5 step як в загальній практиці. Якщо юзер запросить 1 — додамо в v1.x</li>
+          <li>Destructive Delete — у нашій мові #B85842 (letter E rust). Resolves visual §2.4 TBD: для destructive перевикористовуємо rust-letter-color як warning/danger у v1 (semantic colors TBD у visual §2.4)</li>
+          <li>Section divider між standard actions і destructive — 6px canvas band (per common iOS pattern)</li>
+          <li>Open question: показувати rest timer override як action (start rest now / skip rest)? Поки не включаю — rest auto-start після ✓ tap, окремий action sheet не потрібен</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §8</a>
+        <a href="../gym-tracker-visual.md">Visual §5.7</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

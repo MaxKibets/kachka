@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>In-workout · With supersets · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    /* ----- Re-using same in-workout shell ----- */
+    .iw-app-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 14px 10px; flex-shrink: 0; }
+    .iw-app-bar .iw-back { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--text-primary); flex-shrink: 0; }
+    .iw-app-bar .iw-back svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .iw-title-block { flex: 1; min-width: 0; }
+    .iw-title-row { display: flex; align-items: center; gap: 6px; }
+    .iw-title-row .iw-title { font-size: 17px; font-weight: 500; color: var(--text-primary); }
+    .iw-title-row .iw-pencil svg { width: 13px; height: 13px; stroke: var(--text-tertiary); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .iw-meta { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+    .iw-timer-chip { background: var(--surface-1); border: 0.5px solid var(--border-subtle); border-radius: 9px; padding: 6px 10px; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .iw-timer-chip svg { width: 12px; height: 12px; stroke: var(--amber); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .iw-timer-chip .num { color: var(--amber); font-size: 16px; font-weight: 500; }
+    .iw-overflow { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--text-primary); flex-shrink: 0; }
+    .iw-overflow svg { width: 20px; height: 20px; }
+
+    /* Cards */
+    .ex-card { background: var(--surface-1); border: 0.5px solid var(--border-subtle); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
+    .ex-card.completed { padding: 14px; display: flex; align-items: center; gap: 10px; }
+    .ex-card.completed .check-mini { width: 22px; height: 22px; background: var(--mallard); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ex-card.completed .check-mini svg { width: 13px; height: 13px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+    .ex-card.completed .ex-name { flex: 1; font-size: 15px; }
+    .ex-card.completed .ex-summary { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-secondary); }
+
+    .ex-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 10px; }
+    .ex-name { font-size: 16px; font-weight: 500; color: var(--text-primary); }
+    .ex-icons { display: flex; gap: 4px; }
+    .ex-icons .icon-btn { padding: 4px; color: var(--text-tertiary); }
+    .ex-icons .icon-btn svg { width: 18px; height: 18px; }
+
+    .ex-col-head {
+      display: grid; grid-template-columns: 32px 1fr 78px 60px 40px;
+      gap: 8px; padding: 0 14px 6px; font-size: 11px; color: var(--text-tertiary); letter-spacing: 0.04em;
+    }
+    .ex-col-head > div:nth-child(3), .ex-col-head > div:nth-child(4) { text-align: center; }
+
+    .set-row {
+      display: grid; grid-template-columns: 32px 1fr 78px 60px 40px;
+      gap: 8px; align-items: center; padding: 0 14px; height: 44px;
+      border-top: 0.5px solid var(--border-divider);
+    }
+    .set-row.done { opacity: 0.55; }
+    .set-row.active {
+      background: var(--surface-2);
+      border-top: 1px solid rgba(242, 165, 58, 0.4);
+      border-bottom: 1px solid rgba(242, 165, 58, 0.4);
+      height: 52px;
+      margin-top: -0.5px;
+    }
+    .set-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 14px; color: var(--text-primary); }
+    .set-row.active .set-num { color: var(--amber); font-weight: 500; }
+    .set-row.pending .set-num { color: var(--text-tertiary); }
+    .set-prev { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-tertiary); }
+    .set-cell { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 15px; text-align: center; color: var(--text-primary); }
+    .set-row.pending .set-cell { color: var(--text-tertiary); }
+    .set-cell.tile { background: var(--surface-3); border-radius: 8px; padding: 6px 0; font-size: 17px; font-weight: 500; }
+    .set-check { display: flex; align-items: center; justify-content: center; }
+    .check-done { width: 24px; height: 24px; background: var(--mallard); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .check-done svg { width: 14px; height: 14px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+    .check-active { width: 26px; height: 26px; border: 1.5px solid var(--amber); border-radius: 50%; }
+    .check-pending { width: 24px; height: 24px; border: 1px solid #2C3833; border-radius: 50%; }
+
+    .add-set-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: calc(100% - 28px); margin: 10px 14px 12px; padding: 8px 12px;
+      background: transparent; border: 0.5px dashed #2C3833; border-radius: 10px;
+      color: var(--text-secondary); font-family: var(--font-sans); font-size: 13px;
+    }
+    .add-set-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Group card per visual §5.3 — surface-1 + 3px mallard left-border */
+    .group-card {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-left: 3px solid var(--mallard);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .group-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px 8px;
+    }
+    .letter-chip {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #0A0F0E;
+      font-size: 13px; font-weight: 500;
+      flex-shrink: 0;
+    }
+    .letter-chip.a { background: var(--letter-a); }
+
+    .group-title-block { flex: 1; min-width: 0; }
+    .group-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+    .group-meta { font-size: 11px; color: var(--text-secondary); margin-top: 2px; display: flex; align-items: center; gap: 8px; }
+    .group-meta .round-dots { display: inline-flex; gap: 3px; }
+    .group-meta .round-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--letter-a); opacity: 0.3; }
+    .group-meta .round-dots .dot.done { opacity: 1; }
+    .group-meta .round-dots .dot.current { opacity: 1; background: var(--amber); }
+
+    .group-overflow { padding: 4px; color: var(--text-tertiary); }
+    .group-overflow svg { width: 18px; height: 18px; }
+
+    /* Child exercise inside group */
+    .group-child {
+      padding: 10px 14px 0;
+      border-top: 0.5px solid var(--border-divider);
+    }
+    .group-child:first-of-type { border-top: 0.5px solid var(--border-subtle); }
+
+    .group-child-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .group-child-name { display: flex; align-items: center; gap: 8px; }
+    .tinted-letter {
+      width: 20px; height: 20px;
+      border-radius: 6px;
+      background: rgba(92, 123, 149, 0.15);
+      border: 0.5px solid rgba(92, 123, 149, 0.5);
+      color: var(--letter-a);
+      font-size: 11px; font-weight: 500;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .group-child-name .ex-name { font-size: 14px; font-weight: 500; }
+
+    /* Group active row — full card width, no side borders, no radius (visual §5.2) */
+    .group-active-wrap {
+      margin: 0 -14px 0 -17px; /* extend across full card width incl. left mallard border + right edge */
+      background: var(--surface-2);
+      border-top: 1px solid rgba(242, 165, 58, 0.4);
+      border-bottom: 1px solid rgba(242, 165, 58, 0.4);
+      padding: 0;
+    }
+    .group-active-wrap .set-row.active {
+      background: transparent;
+      border-top: none;
+      border-bottom: none;
+      margin-top: 0;
+    }
+
+    .group-child-body { margin: 0 -14px; }
+    .group-child-body .set-row { padding-left: 14px; padding-right: 14px; }
+
+    /* Bottom action bar */
+    .iw-action-bar {
+      flex-shrink: 0; background: var(--canvas);
+      border-top: 0.5px solid var(--border-subtle);
+      padding: 12px 14px 18px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .iw-action-bar .iw-progress { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; }
+    .iw-action-bar .iw-progress .num { color: var(--text-primary); }
+    .iw-action-bar .cta-primary { flex: 1; }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>In-workout · With superset (group A active)</h1>
+    <p class="wf-meta">spec §5 + §6 · group A round 2 of 3 — Dumbbell row set 2 active</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="iw-app-bar">
+          <button class="iw-back" aria-label="Back" data-href="today-in-progress.html"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <div class="iw-title-block">
+            <div class="iw-title-row">
+              <span class="iw-title">Push A</span>
+              <span class="iw-pencil"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></span>
+            </div>
+            <div class="iw-meta"><span class="num">5</span>/<span class="num">9</span> · <span class="num">14</span> sets · <span class="num">5 120</span> kg</div>
+          </div>
+          <div class="iw-timer-chip">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            <span class="num">22:08</span>
+          </div>
+          <button class="iw-overflow" aria-label="More" data-href="#"><svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button>
+        </div>
+
+        <div class="scroll-area" style="padding: 4px 12px 12px;">
+
+          <!-- Bench press completed (collapsed summary) -->
+          <div class="ex-card completed">
+            <div class="check-mini"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div>
+            <div class="ex-name">Bench press</div>
+            <div class="ex-summary"><span class="num">4</span> sets done</div>
+          </div>
+
+          <!-- Group A: Dumbbell row + Face pull -->
+          <div class="group-card">
+            <div class="group-header">
+              <div class="letter-chip a">A</div>
+              <div class="group-title-block">
+                <div class="group-title">Superset · Round <span class="num" style="font-family: var(--font-mono);">2</span> of <span class="num" style="font-family: var(--font-mono);">3</span></div>
+                <div class="group-meta">
+                  <span class="round-dots">
+                    <span class="dot done"></span>
+                    <span class="dot current"></span>
+                    <span class="dot"></span>
+                  </span>
+                  <span>Rest <span class="num" style="font-family: var(--font-mono);">90</span>s</span>
+                </div>
+              </div>
+              <button class="group-overflow" aria-label="Group actions" data-href="superset-config-sheet.html">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+              </button>
+            </div>
+
+            <!-- A1 Dumbbell row -->
+            <div class="group-child">
+              <div class="group-child-header">
+                <div class="group-child-name">
+                  <div class="tinted-letter">A</div>
+                  <div class="ex-name">Dumbbell row</div>
+                </div>
+                <button class="icon-btn" aria-label="Exercise actions" style="padding: 4px; color: var(--text-tertiary);" data-href="set-actions-sheet.html">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                </button>
+              </div>
+              <div class="ex-col-head" style="padding: 0 0 6px;">
+                <div>SET</div>
+                <div>PREV</div>
+                <div>KG</div>
+                <div>REPS</div>
+                <div></div>
+              </div>
+              <div class="group-child-body">
+                <!-- Set 1 done (round 1) -->
+                <div class="set-row done">
+                  <div class="set-num">1</div>
+                  <div class="set-prev">22.5 × 10</div>
+                  <div class="set-cell"><span class="num">22.5</span></div>
+                  <div class="set-cell"><span class="num">10</span></div>
+                  <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
+                </div>
+                <!-- Set 2 active (round 2) — full card width per visual §5.2 -->
+                <div class="group-active-wrap">
+                  <div class="set-row active">
+                    <div class="set-num" style="padding-left: 17px;" data-href="set-actions-sheet.html">2</div>
+                    <div class="set-prev">22.5 × 10</div>
+                    <div class="set-cell tile" data-href="numpad.html"><span class="num">22.5</span></div>
+                    <div class="set-cell tile" data-href="numpad.html"><span class="num">10</span></div>
+                    <div class="set-check"><div class="check-active"></div></div>
+                  </div>
+                </div>
+                <!-- Set 3 pending (round 3) -->
+                <div class="set-row pending">
+                  <div class="set-num">3</div>
+                  <div class="set-prev">22.5 × 10</div>
+                  <div class="set-cell"><span class="num">22.5</span></div>
+                  <div class="set-cell"><span class="num">10</span></div>
+                  <div class="set-check"><div class="check-pending"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- A2 Face pull -->
+            <div class="group-child" style="padding-bottom: 10px;">
+              <div class="group-child-header">
+                <div class="group-child-name">
+                  <div class="tinted-letter">A</div>
+                  <div class="ex-name">Face pull</div>
+                </div>
+                <button class="icon-btn" aria-label="Exercise actions" style="padding: 4px; color: var(--text-tertiary);" data-href="set-actions-sheet.html">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                </button>
+              </div>
+              <div class="ex-col-head" style="padding: 0 0 6px;">
+                <div>SET</div>
+                <div>PREV</div>
+                <div>KG</div>
+                <div>REPS</div>
+                <div></div>
+              </div>
+              <div class="group-child-body">
+                <div class="set-row done">
+                  <div class="set-num">1</div>
+                  <div class="set-prev">15 × 15</div>
+                  <div class="set-cell"><span class="num">15.0</span></div>
+                  <div class="set-cell"><span class="num">15</span></div>
+                  <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
+                </div>
+                <div class="set-row pending">
+                  <div class="set-num">2</div>
+                  <div class="set-prev">15 × 15</div>
+                  <div class="set-cell"><span class="num">15.0</span></div>
+                  <div class="set-cell"><span class="num">15</span></div>
+                  <div class="set-check"><div class="check-pending"></div></div>
+                </div>
+                <div class="set-row pending">
+                  <div class="set-num">3</div>
+                  <div class="set-prev">15 × 15</div>
+                  <div class="set-cell"><span class="num">15.0</span></div>
+                  <div class="set-cell"><span class="num">15</span></div>
+                  <div class="set-check"><div class="check-pending"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tricep pushdown (pending) -->
+          <div class="ex-card">
+            <div class="ex-header">
+              <div class="ex-name">Tricep pushdown</div>
+              <div class="ex-icons">
+                <button class="icon-btn" aria-label="Exercise actions" data-href="set-actions-sheet.html">
+                  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="ex-col-head">
+              <div>SET</div>
+              <div>PREV</div>
+              <div>KG</div>
+              <div>REPS</div>
+              <div></div>
+            </div>
+            <div class="set-row pending">
+              <div class="set-num">1</div>
+              <div class="set-prev">25 × 12</div>
+              <div class="set-cell"><span class="num">25.0</span></div>
+              <div class="set-cell"><span class="num">12</span></div>
+              <div class="set-check"><div class="check-pending"></div></div>
+            </div>
+            <div class="set-row pending">
+              <div class="set-num">2</div>
+              <div class="set-prev">25 × 12</div>
+              <div class="set-cell"><span class="num">25.0</span></div>
+              <div class="set-cell"><span class="num">12</span></div>
+              <div class="set-check"><div class="check-pending"></div></div>
+            </div>
+            <div class="set-row pending">
+              <div class="set-num">3</div>
+              <div class="set-prev">25 × 10</div>
+              <div class="set-cell"><span class="num">25.0</span></div>
+              <div class="set-cell"><span class="num">12</span></div>
+              <div class="set-check"><div class="check-pending"></div></div>
+            </div>
+            <button class="add-set-btn">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add set
+            </button>
+          </div>
+
+        </div>
+
+        <div class="iw-action-bar">
+          <div class="iw-progress"><span class="num">5</span> / <span class="num">14</span> sets logged</div>
+          <button class="cta-primary" data-href="finish-sheet.html">
+            Finish workout
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Active workout у якому існує група A. Створення групи — pre-workout (Builder) або mid-workout (per spec §6.2)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap на set (kg/reps tile) → numpad (<a href="numpad.html">numpad.html</a>)</li>
+          <li>Tap на set number → set actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>)</li>
+          <li>Tap ✓ → save + advance cursor (миттєво на A2 set 2 без rest, бо це ще mid-round per spec §6.5) → потім rest після set 2 of A2 (<a href="rest-timer.html">rest-timer.html</a>)</li>
+          <li>Tap group <code>⋮</code> → group actions sheet (TBD — Edit rounds / Edit rest / Add to group / Remove / Ungroup, per spec §6.7)</li>
+          <li>Tap exercise <code>⋮</code> в межах групи → exercise-in-group actions (Remove from group / тощо)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Cursor cycling: A1 set 2 done → миттєвий перехід на A2 set 2, без rest. Після A2 set 2 done → стартує rest 90s, наступний цикл — A1 set 3 (per spec §6.5)</li>
+          <li>Round dots оновлюються тільки коли всі вправи раунду закриті</li>
+          <li>Group active row — full card width, top/bottom amber borders, без бічних бордерів і без round corners (per visual §5.2)</li>
+          <li>Group active row "обтікає" 3px mallard left-border — negative margin extends across full card</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Без групи → <a href="in-workout.html">in-workout.html</a></li>
+          <li>Rest між сетами групи → <a href="rest-timer.html">rest-timer.html</a></li>
+          <li>Numpad active → <a href="numpad.html">numpad.html</a></li>
+          <li>Set actions → <a href="set-actions-sheet.html">set-actions-sheet.html</a></li>
+          <li>Pull-to-cursor chip → <a href="pull-to-cursor.html">pull-to-cursor.html</a> (для group cursor префікс <code>A · Set 2 · Dumbbell row</code>)</li>
+          <li>Ungroup mid-workout → set numbers стають sequential (per spec §6.7) — рендер як standalone exercise card</li>
+          <li>Group з 3+ вправами (B, C) — letter chip кольору ротації (B = ochre, C = plum, per visual §2.5). Не показано в цьому мокапі</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Letter chip A = dusty blue <code>#5C7B95</code> per visual §2.5. На child exercises — tinted letter (background <code>rgba(letter, 0.15)</code> + 0.5px border)</li>
+          <li>Group card = surface-1 + 3px solid mallard left-border + 0.5px subtle border на інших сторонах (per visual §5.3)</li>
+          <li>Round indicators (●●○): першa точка зелена-A (round 1 done), друга amber (current round 2), третя приглушена-A (pending). Альтернатива — всі три у letter color з opacity варіаціями. Поки amber для current round щоб корелювало з amber active set</li>
+          <li>Bench press показано як collapsed completed card (per spec §5.4) — single row, mallard ✓ + summary</li>
+          <li>Rest <code>90</code>s — інлайн у group meta. На bottom bar під час running rest — окремий dock (TBD у <a href="rest-timer.html">rest-timer.html</a>)</li>
+          <li>Open question: у group active wrap треба перевірити що padding-left set number компенсує мінус-маргін акуратно — у production імплементації cleaner-варіант через grid template overflow</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §6</a>
+        <a href="../gym-tracker-visual.md">Visual §5.2</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

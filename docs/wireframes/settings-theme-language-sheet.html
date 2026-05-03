@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings · Theme &amp; Language pickers · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .frames {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    /* Sheet sits at bottom of phone canvas, dimmed bg above */
+    .sheet-backdrop {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(2px);
+    }
+    .sheet {
+      background: var(--surface-1);
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      border-top: 0.5px solid var(--border-subtle);
+      flex-shrink: 0;
+      padding: 8px 0 24px;
+    }
+    .sheet .grab {
+      width: 36px;
+      height: 4px;
+      background: var(--text-tertiary);
+      border-radius: 2px;
+      margin: 0 auto 12px;
+      opacity: 0.6;
+    }
+    .sheet-title {
+      font-size: 16px;
+      font-weight: 500;
+      padding: 4px 20px 12px;
+      color: var(--text-primary);
+    }
+    .sheet-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      gap: 12px;
+      border-top: 0.5px solid var(--border-divider);
+      cursor: pointer;
+    }
+    .sheet-row:first-of-type {
+      border-top: none;
+    }
+    .sheet-row .label {
+      font-size: 15px;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sheet-row .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: transparent;
+    }
+    .sheet-row.active .dot {
+      background: var(--mallard);
+    }
+    .sheet-row .check {
+      width: 18px;
+      height: 18px;
+      stroke: var(--mallard);
+      fill: none;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      visibility: hidden;
+    }
+    .sheet-row.active .check {
+      visibility: visible;
+    }
+    .sheet-row.active .label {
+      color: var(--mallard);
+      font-weight: 500;
+    }
+    .sheet-actions {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 16px 0;
+      border-top: 0.5px solid var(--border-divider);
+      margin-top: 4px;
+    }
+    .sheet-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      padding: 12px 8px;
+      cursor: pointer;
+    }
+    .sheet-btn.primary {
+      color: var(--mallard);
+      font-weight: 500;
+    }
+    .frame-caption {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--wf-text-muted);
+      text-align: center;
+      margin-top: 12px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Settings · Theme &amp; Language pickers</h1>
+    <p class="wf-meta">spec §12.2 · bottom sheets з Profile root</p>
+  </header>
+
+  <main class="wf-layout" style="grid-template-columns: 1fr;">
+    <section class="wf-frame">
+      <div class="frames">
+
+        <!-- Theme picker sheet -->
+        <div>
+          <div class="phone">
+            <div class="status-bar">
+              <span class="clock">9:41</span>
+              <span class="status-icons">
+                <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+                <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+              </span>
+            </div>
+
+            <div class="sheet-backdrop" data-href="profile.html"></div>
+
+            <div class="sheet">
+              <div class="grab"></div>
+              <div class="sheet-title">Theme</div>
+
+              <div class="sheet-row active" data-href="profile.html">
+                <span class="label"><span class="dot"></span>System</span>
+                <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="sheet-row" data-href="profile.html">
+                <span class="label"><span class="dot"></span>Dark</span>
+                <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="sheet-row" data-href="profile.html">
+                <span class="label"><span class="dot"></span>Light</span>
+                <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+
+              <div class="sheet-actions">
+                <button class="sheet-btn" data-href="profile.html">Cancel</button>
+                <button class="sheet-btn primary" data-href="profile.html">Done</button>
+              </div>
+            </div>
+          </div>
+          <div class="frame-caption">Theme picker</div>
+        </div>
+
+        <!-- Language picker sheet -->
+        <div>
+          <div class="phone">
+            <div class="status-bar">
+              <span class="clock">9:41</span>
+              <span class="status-icons">
+                <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+                <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+              </span>
+            </div>
+
+            <div class="sheet-backdrop" data-href="profile.html"></div>
+
+            <div class="sheet">
+              <div class="grab"></div>
+              <div class="sheet-title">Language</div>
+
+              <div class="sheet-row active" data-href="profile.html">
+                <span class="label"><span class="dot"></span>System (English)</span>
+                <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="sheet-row" data-href="profile.html">
+                <span class="label"><span class="dot"></span>English</span>
+                <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="sheet-row" data-href="profile.html">
+                <span class="label"><span class="dot"></span>Українська</span>
+                <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+
+              <div class="sheet-actions">
+                <button class="sheet-btn" data-href="profile.html">Cancel</button>
+                <button class="sheet-btn primary" data-href="profile.html">Done</button>
+              </div>
+            </div>
+          </div>
+          <div class="frame-caption">Language picker</div>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations" style="max-width: 720px; margin: 0 auto;">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Profile (<a href="profile.html">profile.html</a>) → tap <code>Theme</code> row → Theme sheet</li>
+          <li>Profile → tap <code>Language</code> row → Language sheet</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap radio row → визначає selection (з mallard accent + checkmark)</li>
+          <li>Tap <code>Done</code> або swipe-down → застосовує миттєво (per spec §12.2 — "вибір застосовується миттєво") і повертає в Profile</li>
+          <li>Tap <code>Cancel</code> → закриває sheet без змін</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Grab handle угорі — swipe down dismisses (per spec §1 — bottom sheets pattern)</li>
+          <li>Backdrop tap = Cancel</li>
+          <li>Single-select — лише один радіо активний за раз. Активний row має mallard dot + checkmark</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Один HTML файл показує два окремі sheets side-by-side для compact демонстрації. У реальному app це два незалежні bottom sheets, відкриваються по черзі з Profile root</li>
+          <li>Default selection — <code>System</code> у обох (per spec §12.2)</li>
+          <li>Language <code>System</code> auto-detect-ить локаль; якщо locale не EN і не UK — fallback English (per spec §12.2). Тут показано як "<code>System (English)</code>" — резолвлене значення показується в дужках для clarity</li>
+          <li>Чому bottom sheet а не push-screen для 3-row picker — узгоджено з §1 spec: усі action menus / pickers через bottom sheets. Економить навігаційну глибину для тривіальних виборів</li>
+          <li><code>Cancel</code> вгорі / <code>Done</code> внизу справа — узгоджено з confirmations pattern (§1: Cancel вгорі), але тут sheet не destructive, тому використовуємо звичайний горизонтальний layout</li>
+          <li>Висота sheet — content-driven (drag handle + title + 3 rows + actions). Якщо у v2 додасться більше опцій — sheet просто виростає</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>OS тема змінилась поки app закритий + Theme=System → app перевідкривається в новій темі</li>
+          <li>System locale не EN/UK → Language sheet показує <code>System (English)</code> (fallback per spec §12.2)</li>
+          <li>Перемикання Language миттєве, без рестарту (per spec §12.2)</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §12.2</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

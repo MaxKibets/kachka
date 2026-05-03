@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kachka · Prototype</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    body {
+      background: #000;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 360px;
+      width: 100%;
+      color: var(--text-primary);
+    }
+    .menu .brand {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .menu .lead {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    .menu h2 {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-top: 16px;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    .menu a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 12px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 15px;
+      transition: border-color 120ms ease, background 120ms ease;
+    }
+    .menu a:hover {
+      border-color: var(--mallard);
+      background: var(--surface-2);
+      text-decoration: none;
+    }
+    .menu a small {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 12px;
+      margin-top: 2px;
+      font-weight: 400;
+    }
+    .menu a span {
+      flex: 1;
+      min-width: 0;
+    }
+    .menu a svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--text-tertiary);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+    .footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+    }
+    .footer a {
+      color: var(--mallard);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <div class="brand">Kachka</div>
+    <div class="lead">Clickable prototype · v0 drafts. Прохід усіх основних флоу — натискай кнопки і пересувайся між екранами як у справжньому додатку.</div>
+
+    <h2>Start scenarios</h2>
+
+    <a href="today-has-history.html?proto=1">
+      <span>
+        <strong>Default user</strong>
+        <small>Юзер з історією тренувань. Today показує last workout, можна Repeat last / Choose / Start blank.</small>
+      </span>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+
+    <a href="today-first.html?proto=1">
+      <span>
+        <strong>First launch</strong>
+        <small>Свіжий юзер, Today показує empty state з єдиним CTA.</small>
+      </span>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+
+    <a href="today-in-progress.html?proto=1">
+      <span>
+        <strong>In-progress workout</strong>
+        <small>Юзер закрив додаток мід-tworkout. Today показує banner з Resume / Discard.</small>
+      </span>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+
+    <h2>Direct entry</h2>
+
+    <a href="in-workout.html?proto=1">
+      <span>
+        <strong>In-workout</strong>
+        <small>Активне тренування з 4 сетами Bench press.</small>
+      </span>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+
+    <a href="profile.html?proto=1">
+      <span>
+        <strong>Profile</strong>
+        <small>Hub з settings, exercise database, backup, about.</small>
+      </span>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+
+    <a href="history-list.html?proto=1">
+      <span>
+        <strong>History list</strong>
+        <small>Список завершених тренувань.</small>
+      </span>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+
+    <div class="footer">
+      Wireframes — drafts v0. Дизайн і поведінка можуть мінятись. Потрібна зворотній зв'язок — пиши Максу.
+      <br><br>
+      <a href="INDEX.md">Wireframes index (для дизайнерів)</a>
+    </div>
+  </div>
+</body>
+</html>

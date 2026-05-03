@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History · Empty · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    .secondary-cta {
+      background: transparent;
+      border: 0.5px solid var(--border-subtle);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 11px 22px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .secondary-cta svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>History · Empty</h1>
+    <p class="wf-meta">spec §10.4 · no workouts yet</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <h1>History</h1>
+        </div>
+
+        <div class="scroll-area" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+
+          <div style="margin-top: -20px; display: flex; flex-direction: column; align-items: center; max-width: 280px;">
+            <div class="placeholder-mascot" style="margin-bottom: 24px;">mascot</div>
+
+            <div style="font-size: 20px; font-weight: 500; line-height: 1.3; margin-bottom: 10px;">No workouts yet</div>
+
+            <div class="text-sub" style="font-size: 14px; line-height: 1.5; margin-bottom: 24px;">
+              Finished workouts will show up here. Start your first one from Today.
+            </div>
+
+            <button class="secondary-cta" data-href="today-first.html">
+              Go to Today
+              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+        </div>
+
+        <nav class="tab-bar">
+          <div class="tab" data-href="today-first.html">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            <span>Today</span>
+          </div>
+          <div class="tab active" data-href="#">
+            <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <span>History</span>
+          </div>
+          <div class="tab" data-href="profile.html">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+            <span>Profile</span>
+          </div>
+        </nav>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>Tab bar → <code>History</code> на свіжовстановленому додатку (без жодного завершеного workout-у)</li>
+          <li>Edge: усі тренування з історії були видалені (рідкісно — у v1 нема `Delete all data`, тільки перевстановлення per spec §12.6)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Go to Today</code> → перехід на <code>Today</code> tab → <a href="today-first.html">today-first.html</a> (first launch state) або <a href="today-has-history.html">today-has-history.html</a> (якщо history був стертий, але це не основний use case)</li>
+          <li>Tap <code>Today</code> tab → теж <a href="today-first.html">today-first.html</a></li>
+          <li>Tap <code>Profile</code> tab → <a href="profile.html">profile.html</a> — TBD</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Жодних окрім CTA + tab bar</li>
+          <li>Без top-bar <code>⋯</code> у цьому стані — немає чого робити з порожньою історією</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Mascot тут — placeholder. Реальна empty-state ілюстрація — окрема сесія per visual §8 + §9</li>
+          <li><code>Go to Today</code> — secondary CTA, не amber primary. Per task spec: <em>не main action</em> (юзер уже у Today flow природньо, цей button — shortcut, не "the action of this screen"). Тут стилізовано через <code>border + transparent bg</code>, без власного класу в tokens.css щоб не плодити токени без потреби. Якщо стане canonical secondary button — окремий клас у наступній ітерації токенів</li>
+          <li>Microcopy <code>"Finished workouts will show up here. Start your first one from Today."</code> — per task spec, тримає утилітарний тон без celebratory шуму. Per visual §8 — `playful але не Duolingo-ниючий`; цей варіант ближче до утилітарного, без playful — open question чи додавати jokey варіант</li>
+          <li>Title <code>"No workouts yet"</code> — per spec §10.4 + task spec, нейтральне формулювання</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Як тільки перше тренування завершено через Today flow → History перемикається на <a href="history-list.html">history-list.html</a></li>
+          <li>In-progress workout exists, але в History без records → empty state не змінюється (in-progress не завершене, не потрапляє в History per spec §10.5). Banner на Today лише</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §10.4</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

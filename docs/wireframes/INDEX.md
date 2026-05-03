@@ -2,7 +2,7 @@
 
 > Per-screen HTML мокапи v1 + flow-діаграма + спільні токени. Кожен файл self-contained — відкривай у браузері без серверу.
 
-**Status**: v0 in-progress · Batch 1 (Today) — done · Batches 2–5 — TBD
+**Status**: v0 drafts complete · Batches 1–5 — initial drafts done. Очікують ревью + точкові правки.
 
 Читай разом з `../CONTEXT.md`, `../gym-tracker-spec.md` (поведінка), `../gym-tracker-visual.md` (візуальна система).
 
@@ -14,10 +14,20 @@
 wireframes/
 ├── INDEX.md                  ← цей файл
 ├── flow.md                   ← Mermaid state-diagram, посилання на HTML
+├── prototype.html            ← entry point для тестування (живий клікабельний прототип)
 ├── shared/
-│   └── tokens.css            ← Mallard токени + wireframe page chrome (всі HTML імпортують)
+│   ├── tokens.css            ← Mallard токени + wireframe page chrome (всі HTML імпортують)
+│   └── proto-mode.js         ← runtime який активує proto-режим за ?proto=1
 └── *.html                    ← один файл = один екран
 ```
+
+## Два режими використання
+
+**Default mode** (відкрив будь-який `*.html` напряму): wireframe з side-panel анотаціями, для дизайнерського ревʼю.
+
+**Prototype mode** (відкрий `prototype.html` → обери стартову точку): тестер бачить тільки phone frame, всі основні CTA/links/tabs клікабельні і ведуть до правильних екранів. Реалізовано через `?proto=1` URL-параметр який активує `proto-mode.js`.
+
+Що клікабельно (через `data-href` атрибут): tab bar, primary CTA, list rows, action sheet items, back chevrons, sheet backdrop. Що неактивно: toggle switches, search inputs, form fields, muscle group filter chips — це поза скоупом v0 prototype, тестер просто бачить статичний state.
 
 Кожен HTML:
 - 375px phone frame з dark Mallard
@@ -35,42 +45,42 @@ wireframes/
 - [x] [today-first.html](today-first.html) — empty state, single CTA
 - [x] [today-in-progress.html](today-in-progress.html) — banner + основний flow під ним
 
-### Batch 2 — Workout Builder · Exercise picker · Superset config
+### Batch 2 — Workout Builder · Exercise picker · Superset config ✅
 
-- [ ] `builder.html` — pre-workout list, Quick-add chips, editable name, drag reorder, action menu
-- [ ] `builder-with-supersets.html` — Builder з суперсетом A
-- [ ] `exercise-picker-add.html` — picker у Add режимі (з Builder/Active)
-- [ ] `exercise-picker-browse.html` — picker у Browse режимі (з Profile/DATA)
-- [ ] `superset-config-sheet.html` — bottom sheet створення/edit суперсету
-- [ ] `builder-row-menu-sheet.html` — per-row action sheet (`⋮` на вправі: Add to superset, Remove, Replace TBD)
+- [x] [builder.html](builder.html) — pre-workout list, Quick-add chips, editable name, drag reorder, action menu
+- [x] [builder-with-supersets.html](builder-with-supersets.html) — Builder з суперсетом A
+- [x] [exercise-picker-add.html](exercise-picker-add.html) — picker у Add режимі (з Builder/Active)
+- [x] [exercise-picker-browse.html](exercise-picker-browse.html) — picker у Browse режимі (з Profile/DATA)
+- [x] [superset-config-sheet.html](superset-config-sheet.html) — bottom sheet створення/edit суперсету
+- [x] [builder-row-menu-sheet.html](builder-row-menu-sheet.html) — per-row action sheet
 
-### Batch 3 — In-workout family
+### Batch 3 — In-workout family ✅
 
-- [ ] `in-workout.html` — refined основний In-workout (за основу взяти мокап з v0 + tokens)
-- [ ] `in-workout-with-supersets.html` — приклад з суперсетом і round indicator
-- [ ] `numpad.html` — custom numpad (overlay або bottom sheet)
-- [ ] `set-actions-sheet.html` — bottom sheet після тапу на номер сета (warmup, RPE, note, delete)
-- [ ] `rest-timer.html` — rest timer overlay/state
-- [ ] `pull-to-cursor.html` — floating chip коли cursor поза viewport
+- [x] [in-workout.html](in-workout.html) — refined основний In-workout
+- [x] [in-workout-with-supersets.html](in-workout-with-supersets.html) — приклад з суперсетом і round indicator
+- [x] [numpad.html](numpad.html) — custom numpad (bottom sheet)
+- [x] [set-actions-sheet.html](set-actions-sheet.html) — bottom sheet після тапу на номер сета
+- [x] [rest-timer.html](rest-timer.html) — rest timer overlay/state
+- [x] [pull-to-cursor.html](pull-to-cursor.html) — floating chip коли cursor поза viewport
 
-### Batch 4 — Finish · History
+### Batch 4 — Finish · History ✅
 
-- [ ] `finish-sheet.html` — finish workout summary sheet
-- [ ] `history-list.html` — flat хронологічна стрічка з sticky section headers
-- [ ] `history-detail.html` — read-only snapshot з group rendering
-- [ ] `history-empty.html` — empty state
-- [ ] `history-picker.html` — list для Choose from history (той самий рендер що list)
+- [x] [finish-sheet.html](finish-sheet.html) — finish workout summary sheet
+- [x] [history-list.html](history-list.html) — flat хронологічна стрічка з sticky section headers
+- [x] [history-detail.html](history-detail.html) — read-only snapshot з group rendering
+- [x] [history-empty.html](history-empty.html) — empty state
+- [x] [history-picker.html](history-picker.html) — list для Choose from history
 
-### Batch 5 — Profile · Settings · Database · Backup
+### Batch 5 — Profile · Settings · Database · Backup ✅
 
-- [ ] `profile.html` — root hybrid hub (PREFERENCES / WORKOUT / DATA / About)
-- [ ] `settings-theme.html`, `settings-language.html` — sub-screens (можна об'єднати один файл-варіант)
-- [ ] `exercise-database-empty.html` — без custom вправ
-- [ ] `exercise-database-list.html` — alphabetical, з search/filter
-- [ ] `exercise-create.html` — inline create custom (name + muscle group + isBodyweight)
-- [ ] `backup-restore.html` — root з Export / Import
-- [ ] `backup-import-preview.html` — preview screen перед import
-- [ ] `about.html` — app version + GitHub + privacy note
+- [x] [profile.html](profile.html) — root hybrid hub
+- [x] [settings-theme-language-sheet.html](settings-theme-language-sheet.html) — Theme + Language pickers (об'єднано в одному файлі для compact reference)
+- [x] [exercise-database-empty.html](exercise-database-empty.html) — без custom вправ
+- [x] [exercise-database-list.html](exercise-database-list.html) — alphabetical з custom mix
+- [x] [exercise-create.html](exercise-create.html) — inline create custom
+- [x] [backup-restore.html](backup-restore.html) — root з Export / Import
+- [x] [backup-import-preview.html](backup-import-preview.html) — preview screen перед import
+- [x] [about.html](about.html) — app version + GitHub + privacy note
 
 ### Later (post-v1 batch)
 
@@ -115,6 +125,45 @@ wireframes/
 
 ## Open questions (накопичуємо по ходу)
 
-- **today-in-progress.html**: що відбувається при тапі на Repeat last / Choose / Start blank коли є in-progress workout? Блокування + Resume-only? Confirm? Spec не уточнює (§3.1.c) — потрібно з'ясувати
-- **Iconography library**: Lucide vs Phosphor — лочимо коли почнеться імплементація. У wireframes вживаю inline SVG в Lucide-стилі
-- **Mascot**: усі empty states зараз з placeholder. Реальні ілюстрації — окрема сесія
+Зведено з агент-репортів Batches 2–5 + поточних попередніх. Список для прохідки ревью — кожен пункт або підтвердити, або переграти точково.
+
+### Behavior gaps у spec
+
+- **today-in-progress + Choose / Repeat / Start blank**: що відбувається коли є in-progress workout і юзер тапає на головні CTA? Блокувати? Confirm? Spec §3.1.c не уточнює.
+- **Empty workout** (0 sets logged) — чи показувати Discard замість Save у finish-sheet?
+- **In-progress + tap Choose from history** — який prompt показуємо. Не вирішене.
+- **Replace exercise** мід-tworkout — у v1 показано як disabled "Coming in v2" rows у row menu. Перевірити, чи прибрати взагалі.
+
+### Spec-divergence (агент свідомо інакше)
+
+- **Drag handle position** у Builder: spec §4.6 каже справа, агент Batch 2 поставив зліва (для thumb-reach + symmetric з ⋮). Узгодити.
+- **Custom mark на exercise-database-list**: spec §11.5 каже chevron `>` для custom у Browse mode; агент зробив inline `Custom` badge у Mallard tint. Узгодити.
+- **Default `All` chip у picker**: spec §11.4 каже "Sticky All chip first, selected by default". Агент опустив (без явного `All`, пустий filter = весь каталог). Узгодити.
+- **finish-sheet vs spec §9.2 full completion screen**: spec описує full screen з 4 stats cards + PR card + collapsible exercises. Агент зробив lightweight bottom sheet. Узгодити: чи це quick-confirm sheet → потім full screen, чи sheet і є фінальною формою.
+- **Edit/Delete custom exercise**: spec §11.8 описує custom detail screen з Edit + Delete buttons. Агент залишив `⋮` action sheet, не зробив detail screen. Узгодити чи нам потрібен окремий detail.
+
+### Дизайн-рішення прийняті як defaults (можна переграти)
+
+- **Letter E rust `#B85842` як destructive color** — частково розв'язує semantic colors з visual §2.4. Перевірити.
+- **Rest timer**: floating circular dock над bottom action bar (агент Batch 3 обрав цей варіант, alt — bottom dock з horizontal bar — описаний у Notes файлу).
+- **Numpad layout**: bottom sheet з обома fields (kg + reps) одночасно видимими. Active field має amber border.
+- **Numpad ±0.5 quick-adjust** — не доданий, поки `±2.5/±5` для kg, `±1/±5` для reps.
+- **Numpad decimal separator** — `.` (English locale). Локалізація на uk → `,` per spec §7.5, але це impl detail.
+- **RPE picker у set-actions-sheet** — inline 6.0–10.0 з 0.5-step, не submenu.
+- **Round indicator dots** у group meta — current round = amber. Альтернатива — letter color opacity. Поки amber.
+- **Combined picker + config sheet** для суперсету — агент об'єднав multi-select + rounds + rest у один sheet. Spec §6.2 натякає на двоступеневий flow (partner picker → config).
+- **Settings Theme + Language** — об'єднано в один файл для compact reference (у app це два незалежні sheets).
+- **Profile WORKOUT секція** — додано placeholder `Default rest` row. Spec §12.3 згадує лише Rest haptic + Rest sound. Прибрати?
+- **About: Report an issue + Licenses** — додано хоча per spec §12.5 acknowledgements відкладено. Тримати чи зрізати до v1 scope?
+- **About tagline `Качайся.`** — playful, ua-only. Англійський variant потребує decision.
+- **Builder row menu обсяг** — агент додав 5 actions. Spec §4.4 також описує `Edit sets` і `Add note` — не включені. Додати?
+- **Group active row через negative margin** — production cleanup TBD; production варіант через grid layout без margin tricks.
+- **Floating timer + pull-to-cursor конфлікт** — обидва на 92px-bottom. Layout не вирішено в межах wireframe.
+- **RPE remove value** через tap selected ще раз — поведінка TBD.
+- **Pause на rest timer** — не доданий (типовий use-case = Skip або wait).
+- **Default reps for group children** у builder-with-supersets: 8 для Dumbbell row, 12 для Face pull (reasonable).
+
+### Технічні (impl-time)
+
+- **Iconography library**: Lucide vs Phosphor — лочимо при імплементації.
+- **Mascot illustrations**: усі empty states зараз з `placeholder-mascot`. Реальні ілюстрації — окрема artistic-сесія per visual §9.
