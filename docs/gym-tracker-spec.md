@@ -23,6 +23,8 @@
 - Читабельність на відстані витягнутої руки
 - Очевидний "де я зараз" з одного погляду
 - Темна тема обов'язкова
+- Усі action menus — bottom action sheets, той самий pattern на iOS і Android. Стосується top-bar `⋯`-меню, per-row `⋮`-меню (вправа, група), set actions (§8), numpad (§7.2), superset config (§6.2). Причина: thumb-reach однією рукою; уникаємо top-anchored dropdown-ів. Native action sheet (iOS) і Material Bottom Sheet (Android) — еквівалентні impl-варіанти, візуально уніфікуються
+- Усі confirmations — теж bottom sheet (той самий компонент): title + опц. description + дві кнопки `Cancel` (вгорі) і destructive (внизу). Свайп вниз = Cancel. Cancel вгорі — захист від випадкового тапу destructive: швидкий dismiss без точного прицілу, основна дія далі від великого пальця. Узгоджено з Apple HIG (action sheet для destructive confirms) і Material 3 (modal bottom sheet). Стосується Discard workout (§3.1.c, §9.2), Discard setup (§4.8), Remove exercise / Remove set (§4.4, §4.5, §5.5), Save partial (§9.1), Delete custom (§11.8) і будь-яких майбутніх confirm-flows
 
 ---
 
@@ -421,9 +423,37 @@ Per-exercise `⋯` → Skip → exercise помічена `Skipped`, без ви
 
 ### 5.8 Auto-scroll override
 
-Coли юзер свідомо скролить до іншої вправи (manual scroll), auto-scroll-логіка призупиняється для поточної сесії. Закриття сета все одно робить save + cursor advance, але viewport не стрибає назад до cursor-а. Юзер може прокрутити до cursor-а manually або потягнути pull-to-cursor (свайп вниз з топу).
+Коли юзер свідомо скролить до іншої вправи (manual scroll), auto-scroll-логіка призупиняється. Закриття сета все одно робить save + cursor advance логічно, але viewport не стрибає назад до cursor-а. Юзер може повернутися двома шляхами: проскролити вручну або тапнути floating "return to current set" чип.
 
-UX pull-to-cursor — TBD до моменту реалізації, базова логіка зафіксована.
+#### Return-to-cursor chip
+
+Floating chip над bottom bar, з'являється тільки коли активний сет повністю поза viewport (зник зверху або знизу).
+
+```
+┌─────────────────────────┐
+│  ... scroll list ...    │
+│                         │
+│      ┌──────────────┐   │
+│      │ ↑ Set 3 of 4 │   │  floating chip, info color
+│      └──────────────┘   │
+├─────────────────────────┤
+│  A · Rest 1:23          │  bottom bar
+└─────────────────────────┘
+```
+
+- *Anchor*: над bottom bar, центровано по горизонталі. Не блокує bottom bar
+- *Іконка-стрілка*: `↑` якщо cursor вище viewport, `↓` якщо нижче
+- *Лейбл*: коротке посилання на ціль — `Set 3 of 4` для standalone-вправи; `A · Set 3 of 4` для суперсета (літерний префікс групи)
+- *Колір*: info-tint, узгоджений з cursor highlight (§5.3) — підкреслено не криклавий
+- *Поведінка тапу*: smooth scroll до активного сета, chip ховається, auto-scroll знову активний
+- *Visibility logic*: показ коли активний сет рендерається повністю поза viewport (з невеликим threshold-ом — 1-2 рядки за межами не вважаються "поза")
+- *Не показується* коли cursor у viewport, або коли workout completed
+
+#### Re-engage auto-scroll
+
+Тап по chip = re-engage auto-scroll: viewport знову слідкує за cursor після advance. Якщо юзер знову свідомо скролить — auto-scroll знову призупиняється; коли cursor виходить з viewport — chip знову з'являється. Цикл повторюваний.
+
+Свайп-down жест як альтернативу не робимо у v1: погана discoverability, верх екрану — недотяжний для thumb на 6+" телефоні, і ризик колізії з майбутнім pull-to-refresh у History. Можемо додати як power-user shortcut пізніше — окремою опцією.
 
 ---
 
@@ -1133,6 +1163,10 @@ Toggle, default ON.
 
 ## 16. Список зафіксованих рішень
 
+**Базові UI patterns**
+- [x] Усі action menus — bottom action sheets (top-bar `⋯`, row `⋮`, set actions, numpad, superset config). Той самий pattern на iOS і Android. Причина — thumb-reach однією рукою
+- [x] Усі confirmations — bottom sheet (той самий компонент): title + опц. description + `Cancel` (вгорі) + destructive (внизу). Cancel вгорі — захист від випадкового тапу destructive. Свайп вниз = Cancel
+
 **Скоуп v1**
 - [x] v1 = ad-hoc workouts (build / execute / log to history)
 - [x] Програми / import / deep linking → v2
@@ -1164,7 +1198,7 @@ Toggle, default ON.
 - [x] Active workout = full editor: add/remove set, add/insert/remove exercise, reorder
 - [x] Skip exercise — soft remove що зберігає структуру для clone
 - [x] Failed reps (0 reps) — дозволено, save + green ✓, не йде в volume і PR
-- [x] Auto-scroll призупиняється при manual scroll
+- [x] Auto-scroll призупиняється при manual scroll; повернення через floating "return to current set" chip над bottom bar (з'являється коли cursor поза viewport, тап → smooth scroll + auto-scroll re-engages). Свайп-down — у v2 як power-user опція
 
 **Суперсети**
 - [x] Must-have в v1
