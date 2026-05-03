@@ -26,7 +26,7 @@ UI/UX **закрито концептуально** для v1:
 
 **Зафіксовано**: технічні і продуктові рішення. Програмний JSON-формат також зафіксований на рівні полів — заморожений, повертається у v2.
 
-Лишається опрацювати: Backup/Restore UX, формальну модель даних, візуальний стиль.
+Лишається опрацювати: формальну модель даних, візуальний стиль. Технічно: exercise database seed-список.
 
 ## Документація проєкту
 
@@ -107,6 +107,19 @@ UI/UX **закрито концептуально** для v1:
 - About: app version + GitHub + privacy note
 - Без push-нотифікацій, без Delete all data, без units toggle у v1
 
+**Backup & restore**
+- Manual export/import у JSON (auto-backup, encryption → v2)
+- Export: тап → native share sheet (Files / iCloud / AirDrop / etc.)
+- Import: file picker → preview screen (counts + дата + версія + mode picker) → bottom sheet confirmation → atomic transaction
+- Two import modes: Replace all (default) і Merge skip-by-UUID
+- Older `schemaVersion` → auto-migrate. Newer → блокується
+- Без stale-backup nudge
+
+**Базові UI patterns**
+- Усі action menus — bottom action sheets (top-bar `⋯`, row `⋮`, set actions, numpad, superset config)
+- Усі confirmations — bottom sheet з Cancel вгорі і destructive внизу. Свайп вниз = Cancel
+- In-workout pull-to-cursor: floating chip над bottom bar (з'являється коли cursor поза viewport), тап → smooth scroll + auto-scroll re-engages
+
 **Технічні**
 - Storage: local-only, sync-ready фундамент (UUID, soft delete, timestamps)
 - Юніти: kg only для MVP, lb потім через user setting
@@ -155,12 +168,8 @@ UI/UX **закрито концептуально** для v1:
 
 Зони які лишилось опрацювати у v1:
 
-1. **Backup / Restore UX** — окремий screen чи inline action; як виглядає експорт (share sheet?) і імпорт
-2. **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ)
-3. **Візуальний стиль** — типографіка, кольори (включно з letter-colors для груп), density, motion, ілюстрації для empty states
-4. **Auto-scroll override** — pull-to-cursor UI
-5. **Top-bar `⋯` меню pattern** — sheet (iOS-style) чи dropdown (Android)
-6. **Confirmation dialog generic pattern** — native alerts чи custom modal
+1. **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ; впливає на JSON-формат backup-у)
+2. **Візуальний стиль** — типографіка, кольори (включно з letter-colors для груп), density, motion, ілюстрації для empty states
 
 Чотири технічних рішення для v1: локальна БД (рекомендовано WatermelonDB), Expo vs bare RN, мінімальні версії OS, exercise database seed-список (повний каталог окрім 7 chip-вправ).
 
