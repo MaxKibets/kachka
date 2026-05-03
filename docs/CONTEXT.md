@@ -21,10 +21,11 @@ UI/UX **закрито концептуально** для v1:
 - In-workout зона (вся, включно з editing мід-tworkout)
 - Суперсети ad-hoc з color-coded letter labels
 - History (list + detail без фільтрів/експорту)
+- Exercise picker / Database (один компонент, два режими, 7 muscle groups, custom з soft delete)
 
 **Зафіксовано**: технічні і продуктові рішення. Програмний JSON-формат також зафіксований на рівні полів — заморожений, повертається у v2.
 
-Лишається опрацювати: Settings, Exercise database UI, формальну модель даних, візуальний стиль.
+Лишається опрацювати: Profile + Settings, Backup/Restore UX, формальну модель даних, візуальний стиль.
 
 ## Документація проєкту
 
@@ -88,6 +89,15 @@ UI/UX **закрито концептуально** для v1:
 - Discarded не зберігаються; partial-completed зберігаються
 - Filter / search / export / PR badges / графіки — у v2
 
+**Exercise picker / Database**
+- Один screen-component, два режими: Add (modal з Builder/Active) і Browse (Profile root)
+- Search: case-insensitive substring + 7 muscle groups (Chest · Back · Legs · Biceps · Triceps · Shoulders · Core), single-select chip
+- System exercises — multi-tag, read-only, без detail. Custom — single-tag, edit + soft delete
+- Custom creation: inline `Create as 'X'` (no-results) + sticky `+ Create custom` button
+- Custom fields: name + muscle group + isBodyweight
+- Soft delete зберігає past workouts (entity by ID, `deletedAt` flag)
+- Sort alphabetical; search/filter reset на open
+
 **Технічні**
 - Storage: local-only, sync-ready фундамент (UUID, soft delete, timestamps)
 - Юніти: kg only для MVP, lb потім через user setting
@@ -136,11 +146,13 @@ UI/UX **закрито концептуально** для v1:
 
 Зони які лишилось опрацювати у v1:
 
-1. **Profile + Settings** — units (lb), language override, theme, RPE on/off, notifications, backup/restore, delete data
-2. **Exercise database UI** — пошук, фільтри, кастомні вправи, видалення (без conflict resolution — це програмна частина, поїхала у v2)
+1. **Profile main + Settings** — структура menu, units (lb), language override, theme, RPE on/off, notifications, delete data
+2. **Backup / Restore UX** — окремий screen чи inline action; як виглядає експорт (share sheet?) і імпорт
 3. **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ)
-4. **Візуальний стиль** — типографіка, кольори (включно з letter-colors для груп), density, motion
+4. **Візуальний стиль** — типографіка, кольори (включно з letter-colors для груп), density, motion, ілюстрації для empty states
 5. **Auto-scroll override** — pull-to-cursor UI
+6. **Top-bar `⋯` меню pattern** — sheet (iOS-style) чи dropdown (Android)
+7. **Confirmation dialog generic pattern** — native alerts чи custom modal
 
 Чотири технічних рішення для v1: локальна БД (рекомендовано WatermelonDB), Expo vs bare RN, мінімальні версії OS, exercise database seed-список (повний каталог окрім 7 chip-вправ).
 
