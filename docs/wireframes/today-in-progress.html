@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Today · In-progress banner · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Today · In-progress workout banner</h1>
+    <p class="wf-meta">spec §3.1.c · accosts has-history under banner; analogous over first-launch якщо юзер ще не завершив перше</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">9:41</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <h1>Today</h1>
+          <button class="icon-btn" aria-label="More options">
+            <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </div>
+
+        <div class="scroll-area">
+
+          <div class="banner" style="margin-top: 4px;">
+            <div style="min-width: 0; flex: 1;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+                <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--mallard); flex-shrink: 0;"></div>
+                <div class="text-sub" style="font-size: 11px; letter-spacing: 0.04em;">In-progress</div>
+              </div>
+              <div style="font-size: 15px; font-weight: 500;">Push A</div>
+              <div class="text-sub" style="font-size: 11px; margin-top: 2px;"><span class="num">3</span> of <span class="num">8</span> · started <span class="num">14</span> min ago</div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-shrink: 0;">
+              <button style="background: var(--mallard); color: var(--canvas); border: none; padding: 8px 14px; border-radius: 9px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; cursor: pointer;">Resume</button>
+              <button style="background: transparent; color: var(--text-secondary); border: 0.5px solid var(--border-subtle); padding: 8px 12px; border-radius: 9px; font-family: var(--font-sans); font-size: 13px; cursor: pointer;">Discard</button>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px;">
+            <div class="card" style="padding: 16px 18px;">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 4px;">
+                <div style="font-size: 18px; font-weight: 500;">Pull A</div>
+                <div class="text-dim" style="font-size: 12px;"><span class="num">3</span>d ago</div>
+              </div>
+              <div class="text-sub" style="font-size: 12px; margin-bottom: 12px;"><span class="num">14</span> sets · <span class="num">3 980</span> kg · <span class="num">48</span> min</div>
+              <div class="text-sub" style="font-size: 13px; margin-bottom: 16px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Pull-ups, Barbell row, Lat pulldown, Bicep curl</div>
+              <button class="cta-primary">
+                Repeat last
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="text-dim" style="font-size: 12px; margin: 22px 6px 6px;">Or</div>
+
+          <div style="padding: 0 6px;">
+            <div class="row-link">
+              <span>Choose from history</span>
+              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="row-link">
+              <span>Start blank workout</span>
+              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+
+        </div>
+
+        <nav class="tab-bar">
+          <div class="tab active">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            <span>Today</span>
+          </div>
+          <div class="tab">
+            <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <span>History</span>
+          </div>
+          <div class="tab">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+            <span>Profile</span>
+          </div>
+        </nav>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li>App launch коли є збережений in-progress workout (crash recovery, юзер закрив додаток мід-tworkout)</li>
+          <li>Tab bar → Today під час паузи в активному тренуванні (юзер закрив modal Active workout не завершивши)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Resume</code> → Active workout modal на збереженому state (<a href="in-workout.html">in-workout.html</a> — TBD у Batch 3)</li>
+          <li>Tap <code>Discard</code> → bottom sheet confirmation (<code>Discard workout?</code>) → видаляє in-progress, banner зникає, екран стає <a href="today-has-history.html">today-has-history.html</a></li>
+          <li>Tap <code>Repeat last</code> / <code>Choose from history</code> / <code>Start blank workout</code> → Workout Builder. Spec не уточнює, що відбувається з in-progress workout у цьому випадку — TBD: ймовірно блокується (можна тільки Resume або Discard) або теж confirm</li>
+          <li>Tap <code>⋯</code> → top-bar action sheet: Exercise database / Settings</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Banner НЕ swipe-dismissable — навмисно sticky щоб юзер не "загубив" workout</li>
+          <li>Свідомо NOT auto-resume per spec §3.1.c — захист від попадання в забуте старе тренування</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li>Banner-стан показуємо в стилі mallard left-border (як group card в visual §5.3) — саме mallard сигналізує "позитивна важливість"</li>
+          <li>Resume = filled mallard, Discard = ghost. Discard відкриває confirmation bottom sheet (per spec §3.1.c + §1 confirmation pattern)</li>
+          <li>Open question: чи показувати progress підрахунок (<span class="num">3</span> of <span class="num">8</span>) одразу чи лише назву. Поки ставлю — корисно перед Resume</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li>Якщо юзер discard-нув — falls back to <a href="today-has-history.html">today-has-history.html</a></li>
+          <li>Якщо у юзера немає history (вперше запустив, почав тренування, закрив) — banner все одно показується, під ним <a href="today-first.html">today-first.html</a> empty state без card</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §3.1.c</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

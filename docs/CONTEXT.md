@@ -24,21 +24,22 @@ UI/UX **закрито концептуально** для v1:
 - Exercise picker / Database (один компонент, два режими, 7 muscle groups, custom з soft delete)
 - Profile + Settings (hybrid hub: PREFERENCES / WORKOUT / DATA / About)
 
-**Зафіксовано**: технічні і продуктові рішення. Програмний JSON-формат також зафіксований на рівні полів — заморожений, повертається у v2.
+**Зафіксовано**: технічні і продуктові рішення. Програмний JSON-формат також зафіксований на рівні полів — заморожений, повертається у v2. Візуальна система — фундамент зафіксований (mood, brand, palette, typography, letter rotation, базові компонентні патерни).
 
-Лишається опрацювати: формальну модель даних, візуальний стиль. Технічно: exercise database seed-список.
+Лишається опрацювати: формальну модель даних; візуально — мокапи інших екранів (Today / History / Builder / Profile), action sheets, custom numpad, iconography lock, motion, mascot character + empty state illustrations. Технічно: exercise database seed-список.
 
 ## Документація проєкту
 
-Три md-файли в проєкті, треба читати їх як єдине ціле:
+Чотири md-файли в проєкті, треба читати їх як єдине ціле:
 
 | Файл | Зміст | Status |
 |------|-------|--------|
 | `gym-tracker-spec.md` | UI/UX v1 — Navigation, Today, Workout Builder, In-workout, Суперсети, History | Active |
 | `gym-tracker-tech.md` | Технічні і продуктові рішення — платформа, storage, юніти, локалізація, монетизація, дистрибуція | Active |
+| `gym-tracker-visual.md` | Візуальна система — палета, типографіка, density, компонентні патерни, letter rotation, iconography/motion stubs | Active · v0 |
 | `gym-tracker-program-format.md` | JSON-формат програм для імпорту/експорту | **Frozen — v2** |
 
-**Перед будь-якою відповіддю — прочитати spec і tech.** Program format читати тільки якщо запит явно стосується v2 / шарингу / імпорту.
+**Перед будь-якою відповіддю — прочитати spec, tech і visual.** Program format читати тільки якщо запит явно стосується v2 / шарингу / імпорту.
 
 ## Найважливіші зафіксовані рішення
 
