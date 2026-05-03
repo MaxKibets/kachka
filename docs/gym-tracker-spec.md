@@ -4,7 +4,7 @@
 
 **Status**: v1 scope locked — ad-hoc workouts. Programs / import / deep linking — deferred to v2.
 
-**Версія**: v0.7 · add Profile + Settings section
+**Версія**: v0.11 · add Backup & restore section (export/import flow, modes, validation)
 
 ---
 
@@ -23,6 +23,8 @@
 - Читабельність на відстані витягнутої руки
 - Очевидний "де я зараз" з одного погляду
 - Темна тема обов'язкова
+- Усі action menus — bottom action sheets, той самий pattern на iOS і Android. Стосується top-bar `⋯`-меню, per-row `⋮`-меню (вправа, група), set actions (§8), numpad (§7.2), superset config (§6.2). Причина: thumb-reach однією рукою; уникаємо top-anchored dropdown-ів. Native action sheet (iOS) і Material Bottom Sheet (Android) — еквівалентні impl-варіанти, візуально уніфікуються
+- Усі confirmations — теж bottom sheet (той самий компонент): title + опц. description + дві кнопки `Cancel` (вгорі) і destructive (внизу). Свайп вниз = Cancel. Cancel вгорі — захист від випадкового тапу destructive: швидкий dismiss без точного прицілу, основна дія далі від великого пальця. Узгоджено з Apple HIG (action sheet для destructive confirms) і Material 3 (modal bottom sheet). Стосується Discard workout (§3.1.c, §9.2), Discard setup (§4.8), Remove exercise / Remove set (§4.4, §4.5, §5.5), Save partial (§9.1), Delete custom (§11.8) і будь-яких майбутніх confirm-flows
 
 ---
 
@@ -421,9 +423,37 @@ Per-exercise `⋯` → Skip → exercise помічена `Skipped`, без ви
 
 ### 5.8 Auto-scroll override
 
-Coли юзер свідомо скролить до іншої вправи (manual scroll), auto-scroll-логіка призупиняється для поточної сесії. Закриття сета все одно робить save + cursor advance, але viewport не стрибає назад до cursor-а. Юзер може прокрутити до cursor-а manually або потягнути pull-to-cursor (свайп вниз з топу).
+Коли юзер свідомо скролить до іншої вправи (manual scroll), auto-scroll-логіка призупиняється. Закриття сета все одно робить save + cursor advance логічно, але viewport не стрибає назад до cursor-а. Юзер може повернутися двома шляхами: проскролити вручну або тапнути floating "return to current set" чип.
 
-UX pull-to-cursor — TBD до моменту реалізації, базова логіка зафіксована.
+#### Return-to-cursor chip
+
+Floating chip над bottom bar, з'являється тільки коли активний сет повністю поза viewport (зник зверху або знизу).
+
+```
+┌─────────────────────────┐
+│  ... scroll list ...    │
+│                         │
+│      ┌──────────────┐   │
+│      │ ↑ Set 3 of 4 │   │  floating chip, info color
+│      └──────────────┘   │
+├─────────────────────────┤
+│  A · Rest 1:23          │  bottom bar
+└─────────────────────────┘
+```
+
+- *Anchor*: над bottom bar, центровано по горизонталі. Не блокує bottom bar
+- *Іконка-стрілка*: `↑` якщо cursor вище viewport, `↓` якщо нижче
+- *Лейбл*: коротке посилання на ціль — `Set 3 of 4` для standalone-вправи; `A · Set 3 of 4` для суперсета (літерний префікс групи)
+- *Колір*: info-tint, узгоджений з cursor highlight (§5.3) — підкреслено не криклавий
+- *Поведінка тапу*: smooth scroll до активного сета, chip ховається, auto-scroll знову активний
+- *Visibility logic*: показ коли активний сет рендерається повністю поза viewport (з невеликим threshold-ом — 1-2 рядки за межами не вважаються "поза")
+- *Не показується* коли cursor у viewport, або коли workout completed
+
+#### Re-engage auto-scroll
+
+Тап по chip = re-engage auto-scroll: viewport знову слідкує за cursor після advance. Якщо юзер знову свідомо скролить — auto-scroll знову призупиняється; коли cursor виходить з viewport — chip знову з'являється. Цикл повторюваний.
+
+Свайп-down жест як альтернативу не робимо у v1: погана discoverability, верх екрану — недотяжний для thumb на 6+" телефоні, і ризик колізії з майбутнім pull-to-refresh у History. Можемо додати як power-user shortcut пізніше — окремою опцією.
 
 ---
 
@@ -692,7 +722,7 @@ flowchart TD
 
 ## 10. History
 
-> Перегляд минулих тренувань. Минулі тренування — read-only факт. MVP мінімальний: список + detail без фільтрів і експорту (винесено в §14).
+> Перегляд минулих тренувань. Минулі тренування — read-only факт. MVP мінімальний: список + detail без фільтрів і експорту (винесено в §16).
 
 ### 10.1 Огляд
 
@@ -742,7 +772,7 @@ Read-only знімок тренування. Жодних actions редагув
 - Сети показуються по раундах
 - Letter color консистентний з тим як був у workout-і
 
-*Без actions*: немає edit, repeat workout from this entry, export — все в §14.
+*Без actions*: немає edit, repeat workout from this entry, export — все в §16.
 
 ### 10.4 Empty state
 
@@ -1030,7 +1060,7 @@ Toggle, default ON.
 
 #### Backup & restore
 
-Тап → окремий sub-screen. Спека — окрема зона, TBD.
+Тап → окремий sub-screen. Деталі — §13.
 
 ### 12.5 About
 
@@ -1051,7 +1081,134 @@ Toggle, default ON.
 
 ---
 
-## 13. Глосарій
+## 13. Backup & restore
+
+> Manual export/import усіх юзерських даних у JSON-файл. Точка входу: Profile → DATA → Backup & restore (§12.4). Local-only фундамент (tech §2), без серверів і accounts; backup — єдиний механізм disaster recovery і device migration у v1.
+
+### 13.1 Екран Backup & restore
+
+Push sub-screen на Profile stack. Дві симетричні зони — Export і Import.
+
+```
+┌─────────────────────────┐
+│ ← Backup & restore      │
+├─────────────────────────┤
+│                         │
+│  EXPORT                 │
+│  Save all your data to  │
+│  a file you can store   │
+│  or share.              │
+│                         │
+│  [ Export backup ]      │
+│                         │
+├─────────────────────────┤
+│                         │
+│  IMPORT                 │
+│  Restore data from a    │
+│  backup file.           │
+│                         │
+│  [ Import backup ]      │
+│                         │
+└─────────────────────────┘
+```
+
+Без `Last export` індикатора — чистий manual режим.
+
+### 13.2 Export flow
+
+1. Тап `Export backup`
+2. App серіалізує усі юзерські дані в JSON:
+   - Усі workouts (з сетами і structure суперсетів, з references на exercises по UUID)
+   - Усі custom exercises (включно з soft-deleted, бо History на них посилається — див. §11.9)
+   - User settings (theme, language, Show RPE, Rest haptic, Rest sound)
+   - Metadata: `schemaVersion`, `appVersion`, `exportedAt` (ISO timestamp)
+3. Створюється тимчасовий файл `kachka-backup-YYYY-MM-DD.json`
+4. Native share sheet (iOS Share / Android Intent) — юзер обирає destination: Files, iCloud Drive, AirDrop, Drive, email, Telegram, тощо
+5. На успіх — toast `Backup exported`
+
+Свідомо без свого destination-picker — share sheet нативно покриває усі сценарії.
+
+### 13.3 Import flow
+
+1. Тап `Import backup`
+2. Native file picker, фільтр `.json`
+3. App читає файл, валідує (§13.6). При помилці — error sheet з причиною
+4. Якщо OK — push preview screen:
+
+```
+┌─────────────────────────┐
+│ ← Import preview        │
+├─────────────────────────┤
+│  kachka-backup-         │
+│  2026-04-15.json        │
+│                         │
+│  Created: 18 days ago   │
+│  App version: 1.0.0     │
+│                         │
+│  Backup contains:       │
+│   • 47 workouts         │
+│   • 12 custom exercises │
+│   • Settings            │
+│                         │
+│  IMPORT MODE            │
+│  ● Replace all          │
+│  ○ Merge (skip dupes)   │
+│                         │
+│  [ Import ]             │
+└─────────────────────────┘
+```
+
+5. Юзер переглядає preview і обирає import mode (default — Replace all). Тап `Import`.
+6. Bottom sheet confirmation (§1):
+   - *Replace*: title `Replace all data?`, description `Current data will be lost. This cannot be undone.`, `Cancel` (вгорі) + destructive `Replace` (внизу)
+   - *Merge*: title `Import 47 workouts and 12 exercises?`, description `Existing data is preserved. Duplicates by ID are skipped.`, `Cancel` (вгорі) + primary `Import` (внизу)
+7. На confirm — atomic transaction (§13.4). При failure — rollback до pre-import стану, error sheet
+8. На success — toast `Backup imported`, повернення на Profile root
+
+### 13.4 Import modes
+
+Дві опції, юзер обирає на preview screen:
+
+| Mode | Що робить з entities | Що робить з settings | Use case |
+|---|---|---|---|
+| **Replace all** (default) | Wipe local db → insert backup as-is | Settings з backup замінюють поточні | Disaster recovery / device migration / "хочу повернути все як було" |
+| **Merge (skip dupes)** | Insert тільки нові entities (новий UUID); existing — skip | Поточні settings зберігаються | Multi-device: додати тренування з іншого пристрою без втрати поточних |
+
+Default Replace — типовий сценарій. Merge — для рідкісного multi-device флоу.
+
+Skip-by-UUID означає: якщо сутність уже є з тим самим ID — лишається поточна версія. Per-field merge не робимо у v1: складно і потребує conflict resolution UX, відкладено до повноцінного sync (v2).
+
+### 13.5 Файл і формат
+
+- *Назва за замовчуванням*: `kachka-backup-YYYY-MM-DD.json`
+- *Розширення*: `.json`
+- *Encoding*: UTF-8
+- *Структура*: окремо специфікується у data model doc (поки відкрите питання, див. §15)
+- *Plain JSON у v1* — без encryption / password. Sensitivity даних низька (тренувальна історія); юзер сам обирає де зберігати файл. Encryption — окреме питання у v2 разом з sync
+
+### 13.6 Validation і помилки
+
+При читанні файлу — error sheet (bottom sheet з §1) з конкретною причиною:
+
+| Помилка | Повідомлення |
+|---|---|
+| Невалідний JSON / пошкоджений файл | `Could not read backup. The file may be corrupted.` |
+| Незрозумілий формат (нема `schemaVersion`) | `This file is not a Kachka backup.` |
+| Newer `schemaVersion` | `This backup was created with a newer version of Kachka. Update the app to import.` |
+| Older `schemaVersion` | Auto-migrate JSON → current schema перед preview (без участі юзера). Якщо migration fails — `Could not upgrade backup to current version.` |
+
+### 13.7 Що НЕ робимо у v1
+
+- Auto-backup (background tasks, permissions, reliability) → v2
+- Encryption / password protection → v2 разом з sync
+- Stale-backup nudge (`Last export: X days ago`) — manual режим без напоминання
+- Selective export (тільки workouts / тільки exercises) — backup завжди повний
+- Import dry-run (виконати без commit) — preview screen вже виконує цю роль перед confirm
+- Backup history (зберігати кілька snapshot-ів локально) — це вже робить filesystem користувача
+
+---
+
+## 14. Глосарій
 
 | Термін | Визначення |
 |---|---|
@@ -1078,19 +1235,15 @@ Toggle, default ON.
 
 ---
 
-## 14. Що ще не вирішено
+## 15. Що ще не вирішено
 
-- **Backup / Restore UX** — окремий screen чи inline action; як виглядає експорт (share sheet?) і імпорт
-- **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ)
+- **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ; впливає на JSON-формат backup-у §13)
 - **Візуальний стиль** — типографіка, кольори (включно з letter-colors для груп), density, motion, ілюстрації для empty states
-- **Auto-scroll override детальна поведінка** — pull-to-cursor UI
-- **Top-bar `⋯` меню pattern** — sheet (iOS-style) чи dropdown (Android)
-- **Confirmation dialog generic pattern** — native alerts чи custom modal
 - **Exercise database seed-список** — повний каталог системних вправ (окрім 7 chip-вправ); де брати: wger чи власний
 
 ---
 
-## 15. Свідомо відкладено в v2 / пізніше
+## 16. Свідомо відкладено в v2 / пізніше
 
 **Програмний шар**
 - Bundled programs / custom programs / program editor
@@ -1131,7 +1284,11 @@ Toggle, default ON.
 
 ---
 
-## 16. Список зафіксованих рішень
+## 17. Список зафіксованих рішень
+
+**Базові UI patterns**
+- [x] Усі action menus — bottom action sheets (top-bar `⋯`, row `⋮`, set actions, numpad, superset config). Той самий pattern на iOS і Android. Причина — thumb-reach однією рукою
+- [x] Усі confirmations — bottom sheet (той самий компонент): title + опц. description + `Cancel` (вгорі) + destructive (внизу). Cancel вгорі — захист від випадкового тапу destructive. Свайп вниз = Cancel
 
 **Скоуп v1**
 - [x] v1 = ad-hoc workouts (build / execute / log to history)
@@ -1164,7 +1321,7 @@ Toggle, default ON.
 - [x] Active workout = full editor: add/remove set, add/insert/remove exercise, reorder
 - [x] Skip exercise — soft remove що зберігає структуру для clone
 - [x] Failed reps (0 reps) — дозволено, save + green ✓, не йде в volume і PR
-- [x] Auto-scroll призупиняється при manual scroll
+- [x] Auto-scroll призупиняється при manual scroll; повернення через floating "return to current set" chip над bottom bar (з'являється коли cursor поза viewport, тап → smooth scroll + auto-scroll re-engages). Свайп-down — у v2 як power-user опція
 
 **Суперсети**
 - [x] Must-have в v1
@@ -1215,3 +1372,13 @@ Toggle, default ON.
 - [x] Exercise database, Backup & restore — окремі sub-screens
 - [x] About: app version + GitHub link + privacy note (без acknowledgements у v1)
 - [x] Без `Delete all data` у v1 (юзер перевстановлює додаток)
+
+**Backup & restore**
+- [x] Manual export/import у JSON; auto-backup → v2
+- [x] Plain JSON, без encryption у v1 (encryption → v2 разом з sync)
+- [x] Export: один тап → native share sheet (Files / iCloud / AirDrop / Drive / email / тощо). Без свого destination-picker
+- [x] Файл: `kachka-backup-YYYY-MM-DD.json`, повний state (workouts + custom exercises включно з soft-deleted + settings + metadata з `schemaVersion`/`appVersion`/`exportedAt`)
+- [x] Import: file picker → preview screen (counts + дата + версія + mode picker) → bottom sheet confirmation → atomic transaction
+- [x] Two import modes: Replace all (default, для recovery/migration) і Merge skip-by-UUID (для multi-device). Per-field merge → v2
+- [x] Older `schemaVersion` → auto-migrate JSON before preview. Newer → блокується з повідомленням оновити app
+- [x] Без stale-backup nudge (`Last export` не показуємо)
