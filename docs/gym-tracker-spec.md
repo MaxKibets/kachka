@@ -51,7 +51,7 @@ In-workout екран — modal поверх tab navigator. Tab bar ховаєт
 - Максимальний фокус, нема відволікань
 - Простіша архітектура, менше edge cases
 
-App backgrounded → state preserved → при поверненні відкривається на тому ж місці. Старт нового workout-у при активному → prompt "Finish or discard current first".
+App backgrounded → state preserved → при поверненні відкривається на тому ж місці. Старт нового workout-у при активному неможливий: на Today висить in-progress banner, головні CTA disabled, поки юзер не зробить Resume або Discard (див. §3.1.c).
 
 ### 2.3 Workout Builder — modal pre-workout
 
@@ -179,7 +179,9 @@ Banner над основним вмістом (накладається пове
 - Resume → Active workout modal відкривається на збереженому state
 - Discard → workout прибирається з confirmation
 
-Свідомо НЕ auto-resume: ризик попасти в забуте старе тренування одразу при відкритті.
+Поки banner присутній, головні CTA режимів (a)/(b) — `Repeat last`, `Choose from history`, `Start blank` — **disabled** (приглушені, не реагують на тап). Єдиний шлях далі — Resume або Discard через banner. Constraint: один активний workout одночасно; новий не стартує доки старий не завершено або не відкинуто.
+
+Свідомо НЕ auto-resume: ризик попасти в забуте старе тренування одразу при відкритті. Свідомо блокуємо CTA замість confirm-діалогу: banner уже несе Resume/Discard, дублювати вибір у sheet — зайвий стан.
 
 ### 3.2 Repeat last — клонування
 
@@ -683,22 +685,28 @@ flowchart TD
 ```mermaid
 flowchart TD
     Active[Active workout]
-    Active --> Done{All sets logged?}
+    Active --> Empty{0 sets logged?}
+    Empty -->|Yes| DiscardConfirm
+    Empty -->|No| Done{All sets logged?}
     Done -->|Yes| Banner[Banner: Finish workout?]
     Done -->|No| Manual[User taps Finish in menu]
     Banner --> Summary
     Manual --> Partial{Confirm save partial?}
     Partial -->|Yes| Summary
     Partial -->|No| Active
-    Summary[Completion screen]
+    Summary[Completion screen · full screen]
     Summary --> Choice{User choice}
     Choice -->|Save| History[Saved to history]
-    Choice -->|Discard| Confirm{Confirm discard?}
-    Confirm -->|Yes| Removed[Workout deleted]
-    Confirm -->|No| Summary
+    Choice -->|Discard| DiscardConfirm{Confirm discard?}
+    DiscardConfirm -->|Yes| Removed[Workout deleted]
+    DiscardConfirm -->|No| Active
 ```
 
+**Empty workout (0 залогованих сетів).** Якщо юзер тапає Finish не залогувавши жодного сета — completion screen **пропускаємо**, одразу destructive confirm `Nothing logged — discard this workout?` (Cancel вгорі, Discard внизу, per §1). Порожній workout у History не зберігається: stats-екран з нулями безсенсовний, а junk-entry зламав би Repeat last / Choose from history.
+
 ### 9.2 Зміст completion screen
+
+Completion screen — **повноекранний, не bottom sheet**. Одноступеневий: тап Finish → цей екран → Save/Discard. Проміжного quick-confirm sheet немає (свідомо: PR card — єдиний motivational accent застосунку, ховати його за sheet-ом і дублювати summary двічі не виправдано). Wireframe: `docs/wireframes/completion-screen.html` (попередня lightweight-ітерація `finish-sheet.html` видалена).
 
 - Назва тренування + дата + duration
 - Stats grid (4 картки): `Volume`, `Sets`, `Duration`, `Personal records`
