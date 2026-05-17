@@ -239,20 +239,6 @@
               <div class="letter-chip a">A</div>
             </div>
 
-            <!-- Replace exercise (v1 placeholder) -->
-            <div class="action-row disabled" data-href="#">
-              <svg class="icon" viewBox="0 0 24 24">
-                <polyline points="17 1 21 5 17 9"/>
-                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
-                <polyline points="7 23 3 19 7 15"/>
-                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-              </svg>
-              <div class="label-block">
-                <span>Replace exercise</span>
-                <span class="sub">Coming in v2</span>
-              </div>
-            </div>
-
             <!-- Move up -->
             <div class="action-row" data-href="builder.html">
               <svg class="icon" viewBox="0 0 24 24">
@@ -310,7 +296,6 @@
         <ul>
           <li>Tap <code>Add to superset</code> → партнер picker → <a href="superset-config-sheet.html">superset-config-sheet.html</a></li>
           <li>Якщо в workout-і вже є група A — letter chip <code>A</code> indicator. Tap → додає вправу до існуючої групи A (skip step partner picker, відкривається config sheet з prefilled candidates per spec §6.2)</li>
-          <li>Tap <code>Replace exercise</code> → disabled у v1, відкладено в v2 (per spec §4 + §5.5). У cell показано як <code>Coming in v2</code></li>
           <li>Tap <code>Move up</code> / <code>Move down</code> → переміщує вправу в списку, sheet закривається</li>
           <li>Tap <code>Remove from workout</code> → confirmation sheet (<code>Remove this exercise?</code>) → видаляє вправу з Builder</li>
           <li>Свайп вниз або тап на scrim → close (per spec §1)</li>
@@ -323,7 +308,6 @@
           <li>Sheet відкривається після тапу <code>⋮</code> на row у Builder. Highlighted row у backdrop — амбер border на тій вправі, до якої прив'язаний sheet (visual cue для контексту)</li>
           <li>Свайп вниз = close (per spec §1)</li>
           <li>Тап поза sheet (на scrim) = close</li>
-          <li>Disabled <code>Replace exercise</code> — без hover/press, прозорий ghost-стилі</li>
         </ul>
       </section>
 
@@ -332,7 +316,6 @@
         <ul>
           <li>Sheet header дублює контекст: name <code>Bench press</code> + subtitle <code>3 sets · Chest · Triceps · Shoulders</code> — щоб юзер не плутався який саме exercise редагує</li>
           <li><strong>Letter chip A</strong> показано як indicator на <code>Add to superset</code> — означає що в workout-і вже є група <code>A</code> (per prompt). Якщо тап → додасть до неї. Якщо груп немає — chip відсутній, тап → партнер picker (нова група)</li>
-          <li><code>Replace exercise</code> — placeholder per spec §4. Сtep §5.5 каже "Replace exercise свідомо відкладено в v2". У UI лишаємо row для discoverability, але disabled з explanation</li>
           <li><code>Move up</code> / <code>Move down</code> — secondary affordance. Per spec §4.4 + §4.6 drag є primary. Корисно для accessibility (folks без drag), і фолбек коли drag важко (точність thumb)</li>
           <li><code>Remove from workout</code> — destructive (rust color <code>--letter-e</code>). Окрема divider-section з canvas-кольором візуально відмежовує destructive від neutral actions (per spec §1 — destructive внизу)</li>
           <li>Per spec §4.4 повний menu також включає <code>Edit sets</code>, <code>Add note</code> — у v1 ставимо мінімум для Batch 2 wireframe. Можна розширити в наступних ітераціях</li>

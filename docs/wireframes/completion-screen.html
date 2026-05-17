@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Completion screen · Kachka wireframes</title>
+  <link rel="stylesheet" href="shared/tokens.css">
+  <script src="shared/proto-mode.js" defer></script>
+  <style>
+    /* Local styles for full-screen completion (spec §9.2) */
+
+    .header-block {
+      padding: 2px 4px 14px;
+      border-bottom: 0.5px solid var(--border-divider);
+      margin-bottom: 14px;
+    }
+    .header-block .title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .header-block .when {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Stats grid — 2×2 */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .stat-card {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .stat-card .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 6px;
+    }
+    .stat-card .stat-value {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .stat-card .stat-value .unit {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-left: 3px;
+    }
+
+    /* PR card — info accent (dusty blue per visual §2.4 info→dusty blue) */
+    .stat-card.pr {
+      background: rgba(92, 123, 149, 0.12);
+      border-color: rgba(92, 123, 149, 0.45);
+    }
+    .stat-card.pr .stat-label {
+      color: var(--letter-a);
+    }
+    .stat-card.pr .stat-value {
+      color: var(--text-primary);
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .stat-card.pr .pr-names {
+      font-size: 11px;
+      color: var(--letter-a);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .pr-diamond {
+      color: var(--letter-a);
+      font-size: 12px;
+    }
+
+    /* Note */
+    .note-input {
+      width: 100%;
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      margin-bottom: 12px;
+      resize: none;
+      min-height: 60px;
+      line-height: 1.5;
+    }
+    .note-input::placeholder { color: var(--text-tertiary); }
+
+    /* Exercise summary (collapsible) */
+    .summary {
+      background: var(--surface-1);
+      border: 0.5px solid var(--border-subtle);
+      border-radius: 14px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .summary > summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .summary > summary::-webkit-details-marker { display: none; }
+    .summary > summary .chev {
+      width: 14px;
+      height: 14px;
+      stroke: var(--text-tertiary);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.15s;
+    }
+    .summary[open] > summary .chev { transform: rotate(180deg); }
+    .summary .summary-body {
+      padding: 0 14px 6px;
+    }
+    .sum-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 0;
+      border-top: 0.5px solid var(--border-divider);
+      font-size: 14px;
+    }
+    .sum-row .ex-name {
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sum-row .ex-count {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    /* Group block inside summary */
+    .sum-group {
+      border-top: 0.5px solid var(--border-divider);
+      padding: 10px 0 4px;
+    }
+    .sum-group .g-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .sum-group .letter-chip {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--letter-a);
+      color: var(--canvas);
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sum-group .g-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .sum-group .g-meta {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-left: auto;
+    }
+    .sum-group .g-ex {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 3px 0 3px 30px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sum-group .g-ex .pref {
+      font-size: 11px;
+      color: var(--letter-a);
+      font-weight: 500;
+      width: 22px;
+    }
+
+    /* Bottom action bar (fixed, outside scroll) */
+    .finish-actions {
+      flex-shrink: 0;
+      padding: 12px 16px 24px;
+      border-top: 0.5px solid var(--border-subtle);
+      background: var(--canvas);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .discard-btn {
+      background: transparent;
+      border: none;
+      color: var(--letter-e);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header class="wf-header">
+    <h1>Completion screen · Full screen</h1>
+    <p class="wf-meta">spec §9.2 · post-Finish terminal screen, без tab bar</p>
+  </header>
+
+  <main class="wf-layout">
+    <section class="wf-frame">
+      <div class="phone">
+
+        <div class="status-bar">
+          <span class="clock">10:33</span>
+          <span class="status-icons">
+            <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="4" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="10" rx="0.5" fill="currentColor"/></svg>
+            <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="2.5" stroke="currentColor" fill="none" stroke-width="0.7" opacity="0.5"/><rect x="2" y="2" width="14" height="7" rx="1.2" fill="currentColor"/><rect x="19" y="3" width="2" height="5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>
+          </span>
+        </div>
+
+        <div class="app-bar">
+          <h1 style="flex: 1; text-align: center;">Workout complete</h1>
+        </div>
+
+        <div class="scroll-area">
+
+          <div class="header-block">
+            <div class="title">Push A</div>
+            <div class="when">Tuesday, <span class="num">28</span> April <span class="num">2026</span> · <span class="num">7:24</span> PM</div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Volume</div>
+              <div class="stat-value"><span class="num">4 540</span><span class="unit">kg</span></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Duration</div>
+              <div class="stat-value"><span class="num">52</span><span class="unit">min</span></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Sets</div>
+              <div class="stat-value"><span class="num">12</span></div>
+            </div>
+            <div class="stat-card pr">
+              <div class="stat-label">Personal records</div>
+              <div class="stat-value"><span class="pr-diamond">◆</span> <span class="num">2</span> new</div>
+              <div class="pr-names">Bench press · Tricep pushdown</div>
+            </div>
+          </div>
+
+          <textarea class="note-input" placeholder="Add a note (optional)" rows="2"></textarea>
+
+          <details class="summary" open>
+            <summary>
+              <span>Exercise summary</span>
+              <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="summary-body">
+
+              <div class="sum-row">
+                <span class="ex-name">Bench press <span class="pr-diamond">◆</span></span>
+                <span class="ex-count"><span class="num">4</span> sets</span>
+              </div>
+
+              <div class="sum-group">
+                <div class="g-head">
+                  <span class="letter-chip">A</span>
+                  <span class="g-title">Superset</span>
+                  <span class="g-meta"><span class="num">3</span> rounds</span>
+                </div>
+                <div class="g-ex"><span class="pref">A1</span>Dumbbell row</div>
+                <div class="g-ex"><span class="pref">A2</span>Face pull</div>
+              </div>
+
+              <div class="sum-row">
+                <span class="ex-name">Tricep pushdown <span class="pr-diamond">◆</span></span>
+                <span class="ex-count"><span class="num">3</span> sets</span>
+              </div>
+
+            </div>
+          </details>
+
+        </div>
+
+        <div class="finish-actions">
+          <button class="cta-primary" data-href="history-list.html">
+            Save to history
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="discard-btn" data-href="#">Discard workout</button>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="wf-annotations">
+      <section>
+        <h2>Opens from</h2>
+        <ul>
+          <li><a href="in-workout.html">in-workout.html</a> → tap <code>Finish workout</code> у top-bar <code>⋯</code> (manual, partial allowed) — per spec §9.1</li>
+          <li><a href="in-workout.html">in-workout.html</a> → auto-prompt banner коли всі сети залоговані → tap <code>Finish</code></li>
+          <li>Не досяжний при <strong>0 залогованих сетів</strong> — той шлях йде одразу в Discard confirm, completion screen пропускається (spec §9.1)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Opens to</h2>
+        <ul>
+          <li>Tap <code>Save to history</code> → workout зберігається → <a href="history-list.html">history-list.html</a> (свіжий entry зверху). Per spec §9.1 → §10.5</li>
+          <li>Tap <code>Discard workout</code> → destructive confirm sheet (Cancel вгорі, Discard внизу, per §1) → confirm видаляє workout, не зберігає; cancel повертає на цей екран. Окремий confirm wireframe — TBD</li>
+          <li>Немає back: екран термінальний, вийти лише через Save або Discard (per spec §1 — In-workout modal закривається тільки свідомою дією)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interactions</h2>
+        <ul>
+          <li>Vertical scroll у тілі; action bar (Save / Discard) — fixed внизу, поза скролом</li>
+          <li>Tap на note input → системна клавіатура; note редагується тут до Save (per spec §9.2 — textarea, опціональна)</li>
+          <li><code>Exercise summary</code> — collapsible (<code>details</code>), default expanded. Tap на header → згорнути/розгорнути, chevron обертається</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Notes</h2>
+        <ul>
+          <li><strong>Повноекранний, не bottom sheet</strong> — per spec §9.2 (рішення зафіксоване: один крок Finish → цей екран → Save/Discard, без проміжного quick-confirm sheet). Замінив видалену lightweight-ітерацію <code>finish-sheet.html</code></li>
+          <li><strong>Stats grid 2×2</strong>, 4 картки per spec §9.2: Volume / Duration / Sets / Personal records. Перші три — нейтральні surface-1; <code>Personal records</code> — info-accent</li>
+          <li><strong>PR card = info-accent</strong> (dusty blue <code>--letter-a #5C7B95</code>) per spec §9.2 "PR card візуально виділена info-кольором — єдиний motivational accent". Вибір кольору: visual §2.4 мапить info → dusty blue (конфлікт з letter A відмічений там як TBD; тут беремо як reasonable default до lock semantic palette). PR-вправи перелічені під лічильником</li>
+          <li><strong>PR marker <code>◆</code></strong> біля назви вправи в summary і на stats card — per spec §9.3</li>
+          <li><strong>Primary CTA = amber</strong> <code>Save to history</code> (visual §5.4 — primary CTA amber; mallard несе success/done, але кнопка тут конструктивна-нейтральна)</li>
+          <li><strong>Discard = rust text</strong> <code>--letter-e #B85842</code> — secondary text button per spec §9.2; rust як destructive default (узгоджено з row-menu/INDEX semantic-default)</li>
+          <li><strong>Group rendering у summary</strong>: компактний — letter chip A + title + <code>3 rounds</code> meta + A1/A2 mini-list. Повна round-by-round розбивка — у History detail (§10.3), не тут (summary = per-exercise counts per spec §9.2)</li>
+          <li><strong>App-bar</strong> — лише centered title <code>Workout complete</code>, без back / <code>⋯</code> (термінальний екран)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Edge cases · related states</h2>
+        <ul>
+          <li><strong>Partial-completed</strong> (юзер вручну Finish, не всі сети): дозволено зберігати (spec §9.1). <code>Sets</code> card показує залоговані (напр. <code>12</code>), не заплановані; опц. підрядок-hint <code>2 sets not logged — won't be saved</code> у text-secondary. Volume/PR рахуються лише по залогованих</li>
+          <li><strong>0 PR</strong>: <code>Personal records</code> card → нейтральний surface-1 (без info-accent), value <code>0</code>, без pr-names, без <code>◆</code> у summary. Motivational accent зникає коли нема чого святкувати</li>
+          <li><strong>Без note</strong>: textarea лишається порожня з placeholder; при Save note не зберігається (умовно)</li>
+          <li><strong>Skipped exercise з сетами</strong>: показується як звичайна вправа з тими сетами що залогувались; skipped marker не йде в History (spec §5.6)</li>
+          <li><strong>0 sets logged</strong>: цей екран НЕ показується — Finish веде одразу в Discard confirm (spec §9.1). Тут не моделюється свідомо</li>
+          <li><strong>Кілька груп</strong>: letter rotation A/B/C, letter-chip колір змінюється відповідно (visual §2.5)</li>
+        </ul>
+      </section>
+
+      <footer>
+        <a href="flow.md">Flow</a>
+        <a href="INDEX.md">Index</a>
+        <a href="../gym-tracker-spec.md">Spec §9</a>
+        <a href="../gym-tracker-visual.md">Visual</a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>

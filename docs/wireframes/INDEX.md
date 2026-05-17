@@ -65,7 +65,7 @@ wireframes/
 
 ### Batch 4 — Finish · History ✅
 
-- [x] [finish-sheet.html](finish-sheet.html) — finish workout summary sheet
+- [x] [completion-screen.html](completion-screen.html) — повноекранний post-Finish screen per spec §9.2: 4 stats cards + info-accent PR card + collapsible exercise summary + note + Save/Discard (замінив видалений `finish-sheet.html`)
 - [x] [history-list.html](history-list.html) — flat хронологічна стрічка з sticky section headers
 - [x] [history-detail.html](history-detail.html) — read-only snapshot з group rendering
 - [x] [history-empty.html](history-empty.html) — empty state
@@ -129,17 +129,17 @@ wireframes/
 
 ### Behavior gaps у spec
 
-- **today-in-progress + Choose / Repeat / Start blank**: що відбувається коли є in-progress workout і юзер тапає на головні CTA? Блокувати? Confirm? Spec §3.1.c не уточнює.
-- **Empty workout** (0 sets logged) — чи показувати Discard замість Save у finish-sheet?
-- **In-progress + tap Choose from history** — який prompt показуємо. Не вирішене.
-- **Replace exercise** мід-tworkout — у v1 показано як disabled "Coming in v2" rows у row menu. Перевірити, чи прибрати взагалі.
+- ~~**today-in-progress + Choose / Repeat / Start blank**~~ — RESOLVED: CTA disabled поки banner присутній; лише Resume/Discard. Spec §3.1.c оновлено.
+- ~~**Empty workout** (0 sets logged)~~ — RESOLVED: 0 сетів + Finish → пропуск completion screen, одразу Discard confirm. Spec §9.1 оновлено.
+- ~~**In-progress + tap Choose from history**~~ — RESOLVED: див. перший пункт (CTA блокується, prompt не потрібен).
+- ~~**Replace exercise** мід-tworkout~~ — RESOLVED: прибрано з v1 row menu повністю (Remove + Insert after). `builder-row-menu-sheet.html` оновлено.
 
 ### Spec-divergence (агент свідомо інакше)
 
 - **Drag handle position** у Builder: spec §4.6 каже справа, агент Batch 2 поставив зліва (для thumb-reach + symmetric з ⋮). Узгодити.
 - **Custom mark на exercise-database-list**: spec §11.5 каже chevron `>` для custom у Browse mode; агент зробив inline `Custom` badge у Mallard tint. Узгодити.
 - **Default `All` chip у picker**: spec §11.4 каже "Sticky All chip first, selected by default". Агент опустив (без явного `All`, пустий filter = весь каталог). Узгодити.
-- **finish-sheet vs spec §9.2 full completion screen**: spec описує full screen з 4 stats cards + PR card + collapsible exercises. Агент зробив lightweight bottom sheet. Узгодити: чи це quick-confirm sheet → потім full screen, чи sheet і є фінальною формою.
+- ~~**finish-sheet vs spec §9.2 full completion screen**~~ — RESOLVED: повноекранний completion screen, один крок (Finish → screen → Save/Discard). Без quick-confirm sheet. `finish-sheet.html` видалено, створено `completion-screen.html`. Spec §9.2 оновлено.
 - **Edit/Delete custom exercise**: spec §11.8 описує custom detail screen з Edit + Delete buttons. Агент залишив `⋮` action sheet, не зробив detail screen. Узгодити чи нам потрібен окремий detail.
 
 ### Дизайн-рішення прийняті як defaults (можна переграти)

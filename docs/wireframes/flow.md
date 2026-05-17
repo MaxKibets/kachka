@@ -34,9 +34,10 @@ stateDiagram-v2
     HistoryPicker --> Builder: tap workout (clone)
     Builder --> ActiveWorkout: tap Start workout
     Builder --> TodayHasHistory: tap back / Discard setup
-    ActiveWorkout --> FinishSheet: tap Finish workout
-    FinishSheet --> HistoryList: save → land in history
-    FinishSheet --> ActiveWorkout: tap Cancel sheet
+    ActiveWorkout --> CompletionScreen: tap Finish (≥1 set logged)
+    ActiveWorkout --> ConfirmDiscard: tap Finish (0 sets logged)
+    CompletionScreen --> HistoryList: tap Save to history
+    CompletionScreen --> ConfirmDiscard: tap Discard workout
 
     TodayHasHistory --> HistoryList: tab History
     TodayHasHistory --> Profile: tab Profile
@@ -49,7 +50,7 @@ stateDiagram-v2
     state "Exercise picker (Add mode)" as ExercisePickerAdd
     state "Exercise picker (Browse mode)" as ExercisePickerBrowse
     state "Active In-workout" as ActiveWorkout
-    state "Finish workout sheet" as FinishSheet
+    state "Completion screen (full screen)" as CompletionScreen
     state "History list" as HistoryList
     state "History detail" as HistoryDetail
     state "History picker" as HistoryPicker
@@ -164,7 +165,8 @@ stateDiagram-v2
     SetActions --> InWorkout: pick action / dismiss
     RestTimer --> InWorkout: skip / timeout
     PullToCursor --> InWorkout: tap → scroll to cursor
-    InWorkout --> FinishSheet: tap Finish workout
+    InWorkout --> CompletionScreen: tap Finish (≥1 set logged)
+    InWorkout --> ConfirmDiscard: tap Finish (0 sets logged)
 
     state "In-workout (default)" as InWorkout
     state "In-workout w/ superset" as InWorkoutSS
@@ -172,7 +174,8 @@ stateDiagram-v2
     state "Set actions sheet" as SetActions
     state "Rest timer" as RestTimer
     state "Pull-to-cursor chip" as PullToCursor
-    state "Finish sheet" as FinishSheet
+    state "Completion screen (full screen)" as CompletionScreen
+    state "Discard confirm" as ConfirmDiscard
 ```
 
 Файли: [in-workout.html](in-workout.html) · [in-workout-with-supersets.html](in-workout-with-supersets.html) · [numpad.html](numpad.html) · [set-actions-sheet.html](set-actions-sheet.html) · [rest-timer.html](rest-timer.html) · [pull-to-cursor.html](pull-to-cursor.html)
@@ -185,9 +188,11 @@ stateDiagram-v2
 stateDiagram-v2
     direction LR
     [*] --> InWorkout
-    InWorkout --> FinishSheet: Finish workout
-    FinishSheet --> HistoryList: Save and finish
-    FinishSheet --> InWorkout: Cancel
+    InWorkout --> CompletionScreen: Finish (≥1 set logged)
+    InWorkout --> ConfirmDiscard: Finish (0 sets logged)
+    CompletionScreen --> HistoryList: Save to history
+    CompletionScreen --> ConfirmDiscard: Discard workout
+    ConfirmDiscard --> TodayHasHistory: confirm (workout deleted, not saved)
 
     HistoryTab --> HistoryList: tab History
     HistoryList --> HistoryDetail: tap row
@@ -196,7 +201,8 @@ stateDiagram-v2
     HistoryPicker --> Builder: tap row → clone
 
     state "Active In-workout" as InWorkout
-    state "Finish sheet" as FinishSheet
+    state "Completion screen (full screen)" as CompletionScreen
+    state "Discard confirm" as ConfirmDiscard
     state "History list" as HistoryList
     state "History detail" as HistoryDetail
     state "History empty state" as HistoryEmpty
@@ -206,7 +212,7 @@ stateDiagram-v2
     state "Workout Builder" as Builder
 ```
 
-Файли: [finish-sheet.html](finish-sheet.html) · [history-list.html](history-list.html) · [history-detail.html](history-detail.html) · [history-empty.html](history-empty.html) · [history-picker.html](history-picker.html)
+Файли: [completion-screen.html](completion-screen.html) · [history-list.html](history-list.html) · [history-detail.html](history-detail.html) · [history-empty.html](history-empty.html) · [history-picker.html](history-picker.html)
 
 ---
 
