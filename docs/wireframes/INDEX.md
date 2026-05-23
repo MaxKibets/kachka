@@ -136,11 +136,11 @@ wireframes/
 
 ### Spec-divergence (агент свідомо інакше)
 
-- **Drag handle position** у Builder: spec §4.6 каже справа, агент Batch 2 поставив зліва (для thumb-reach + symmetric з ⋮). Узгодити.
-- **Custom mark на exercise-database-list**: spec §11.5 каже chevron `>` для custom у Browse mode; агент зробив inline `Custom` badge у Mallard tint. Узгодити.
-- **Default `All` chip у picker**: spec §11.4 каже "Sticky All chip first, selected by default". Агент опустив (без явного `All`, пустий filter = весь каталог). Узгодити.
+- ~~**Drag handle position** у Builder~~ — RESOLVED: **зліва** (агентів варіант) — рознесення з `⋮` справа прибирає скупчення. Spec §4.6 оновлено.
+- ~~**Custom mark на exercise-database-list**~~ — RESOLVED: `Custom` badge (identity) + `⋮` (дії); chevron `>` НЕ використовуємо (у v1 немає detail для навігації). Spec §11.5 оновлено.
+- ~~**Default `All` chip у picker**~~ — RESOLVED: явний sticky `All`, active by default (spec §11.4 канон). Додано в `exercise-picker-add` / `-browse` (Browse-режим уже мав).
 - ~~**finish-sheet vs spec §9.2 full completion screen**~~ — RESOLVED: повноекранний completion screen, один крок (Finish → screen → Save/Discard). Без quick-confirm sheet. `finish-sheet.html` видалено, створено `completion-screen.html`. Spec §9.2 оновлено.
-- **Edit/Delete custom exercise**: spec §11.8 описує custom detail screen з Edit + Delete buttons. Агент залишив `⋮` action sheet, не зробив detail screen. Узгодити чи нам потрібен окремий detail.
+- ~~**Edit/Delete custom exercise**~~ — RESOLVED: `⋮` action sheet (Edit/Delete), **без** detail-екрана у v1 (detail → v2 разом зі статистикою). Spec §11.1/§11.5/§11.8/§11.10 оновлено.
 
 ### Дизайн-рішення прийняті як defaults (можна переграти)
 
@@ -151,7 +151,7 @@ wireframes/
 - **Numpad decimal separator** — `.` (English locale). Локалізація на uk → `,` per spec §7.5, але це impl detail.
 - **RPE picker у set-actions-sheet** — inline 6.0–10.0 з 0.5-step, не submenu.
 - **Round indicator dots** у group meta — current round = amber. Альтернатива — letter color opacity. Поки amber.
-- **Combined picker + config sheet** для суперсету — агент об'єднав multi-select + rounds + rest у один sheet. Spec §6.2 натякає на двоступеневий flow (partner picker → config).
+- ~~**Combined picker + config sheet** для суперсету~~ — RESOLVED: один обʼєднаний sheet (multi-select + rounds + rest), не двоступеневий. Spec §6.2 переписано під combined flow.
 - **Settings Theme + Language** — об'єднано в один файл для compact reference (у app це два незалежні sheets).
 - **Profile WORKOUT секція** — додано placeholder `Default rest` row. Spec §12.3 згадує лише Rest haptic + Rest sound. Прибрати?
 - **About: Report an issue + Licenses** — додано хоча per spec §12.5 acknowledgements відкладено. Тримати чи зрізати до v1 scope?

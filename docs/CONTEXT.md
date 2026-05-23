@@ -80,7 +80,7 @@ UI/UX **закрито концептуально** для v1:
 **Суперсети (must-have в v1)**
 - Тільки alternating, 2-5 вправ, 2-10 раундів, один rest на групу
 - Створення pre-workout (Builder) і мід-tworkout (Active) з constraint: 0 залогованих сетів у кандидатів
-- UI: per-exercise `⋮` → Add to superset → multi-select picker → config sheet
+- UI: per-exercise `⋮` → Add to superset → один combined sheet (multi-select партнерів + rounds + rest), не двоступеневий
 - Color-coded letter labels (A/B/C з ротацією)
 - Edit мід-tworkout: rounds (constrained), rest, add/remove exercise (під те ж обмеження), ungroup завжди
 

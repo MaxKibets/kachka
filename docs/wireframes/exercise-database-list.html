@@ -382,8 +382,8 @@
         <h2>Opens to</h2>
         <ul>
           <li>Tap <code>+ Create custom</code> (sticky bottom) → <a href="exercise-create.html">exercise-create.html</a> з порожнім name</li>
-          <li>Tap custom row <code>⋮</code> → action sheet: <code>Edit</code> / <code>Delete</code> (per spec §11.8) — bottom sheet TBD</li>
-          <li>Tap custom row body → custom exercise detail (per spec §11.8 — Edit / Delete buttons; на цьому етапі можна inline без detail screen якщо менш ніж 3 fields)</li>
+          <li>Tap custom row <code>⋮</code> → bottom action sheet: <code>Edit</code> / <code>Delete</code> (per spec §11.8) — sheet wireframe TBD</li>
+          <li>Tap custom row body → нічого (як system): окремого detail-екрана у v1 немає (per spec §11.8, detail → v2 §11.10)</li>
           <li>Tap muscle filter chip → AND-фільтр з search (per spec §11.4)</li>
           <li>Tap search → field expands, system keyboard, case-insensitive substring (per spec §11.3)</li>
           <li>Tap system row → нічого (read-only, без detail у Browse mode per spec §11.1)</li>
@@ -404,7 +404,7 @@
       <section>
         <h2>Notes</h2>
         <ul>
-          <li><strong>Custom mark</strong>: я обрав inline badge <code>Custom</code> у Mallard tint справа від назви. Альтернатива — chevron <code>&gt;</code> справа від rows (per spec §11.5) — але це менш explicit за тип. Badge читається на бігу і не плутається з navigation chevron-ом</li>
+          <li><strong>Custom mark</strong>: inline badge <code>Custom</code> у Mallard tint справа від назви (identity) + <code>⋮</code> для дій (per spec §11.5). Chevron <code>&gt;</code> свідомо НЕ використовуємо — у v1 немає detail-екрана для навігації, а badge explicit-ніший за тип і не плутається з navigation chevron-ом</li>
           <li><strong>System vs custom row affordance</strong>: custom має <code>⋮</code> справа (для edit/delete), system — нічого. Дві різні lights, але обидві read у Browse-режимі</li>
           <li>Letter grouping (A, C, D, F, M, O, P, S) — алфавітний індекс. Custom і system mixed у тих самих секціях (на цьому фреймі не виділяємо custom-only список)</li>
           <li>Showcase демонструє 3 custom + 9 system, mixed — Arnold press (A), Cable crossover (C), My weird squat (M, bodyweight)</li>
