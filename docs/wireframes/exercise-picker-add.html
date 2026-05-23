@@ -175,6 +175,7 @@
 
         <div class="picker-filters">
           <div class="filter-chips">
+            <button class="filter-chip active">All</button>
             <button class="filter-chip">Chest</button>
             <button class="filter-chip">Back</button>
             <button class="filter-chip">Legs</button>
@@ -300,7 +301,7 @@
         <h2>Interactions</h2>
         <ul>
           <li>Sticky search input + filter chips під ним. Скролиться тільки список</li>
-          <li>Filter chips — single-select (один або жоден). Default — none selected (показує весь каталог)</li>
+          <li>Filter chips — single-select, sticky <code>All</code> першим і selected by default (per spec §11.4). Тап на групу звужує; тап на <code>All</code> повертає весь каталог</li>
           <li>Filter scroll горизонтально якщо chips не вміщаються</li>
           <li>Search — case-insensitive substring (per spec §11.3). AND-композиція з muscle filter</li>
           <li>Search/filter — reset кожен раз як відкривається picker (per spec §11.3, §11.4)</li>
@@ -314,7 +315,7 @@
           <li>Single-select Add mode у v1 (multi-select → v1.x per spec §11.10)</li>
           <li>Bodyweight показано як inline-tag <code>bodyweight</code> в muscle list — мінімалістично, без окремого badge</li>
           <li>System exercises у Add mode — без <code>⋮</code>, без chevron, без custom badge (read-only, тап на рядку селектить)</li>
-          <li><strong>Assumption</strong>: Spec §11 каже "Sticky `All` chip first, selected by default", але prompt каже "Default state — none selected, 7 chips single-select". Дотримуюсь prompt-у — без явного <code>All</code> chip-у; якщо нічого не selected, показується весь каталог</li>
+          <li><strong>All chip</strong>: sticky <code>All</code> першим, active за замовчуванням (per spec §11.4). Узгоджено з Browse-режимом (exercise-database-list / -empty) — explicit «бачиш усе» + очевидний скид single-select фільтра</li>
           <li><strong>Assumption</strong>: Sample list з 13 вправ — представляє типове розмаїття (compound + isolation + bodyweight). Реальний seed буде ширшим</li>
         </ul>
       </section>

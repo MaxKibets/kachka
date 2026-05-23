@@ -210,6 +210,7 @@
 
         <div class="picker-filters">
           <div class="filter-chips">
+            <button class="filter-chip active">All</button>
             <button class="filter-chip">Chest</button>
             <button class="filter-chip">Back</button>
             <button class="filter-chip">Legs</button>
@@ -325,8 +326,8 @@
         <h2>Opens to</h2>
         <ul>
           <li>Tap system row → нічого (read-only, без detail screen per spec §11.8)</li>
-          <li>Tap custom row → custom exercise detail (<a href="exercise-create.html">exercise-create.html</a> — TBD у Batch 5; spec §11.8: detail з Edit і Delete)</li>
-          <li>Tap custom <code>⋮</code> → row action sheet: <code>Edit</code>, <code>Delete</code> (destructive). Альтернатива до tap-через-detail-screen, швидший доступ</li>
+          <li>Tap custom row body → нічого (як system): окремого detail-екрана у v1 немає (per spec §11.8)</li>
+          <li>Tap custom <code>⋮</code> → bottom action sheet: <code>Edit</code> (→ custom creation sheet з prefill) + <code>Delete</code> (destructive, з confirmation). Єдина точка edit/delete у v1 (per spec §11.8)</li>
           <li>Tap <code>+ Create custom</code> → custom creation sheet (<a href="exercise-create.html">exercise-create.html</a> — TBD у Batch 5) з порожнім name</li>
           <li>Tap <code>←</code> → push back на Profile root</li>
         </ul>
@@ -336,7 +337,7 @@
         <h2>Interactions</h2>
         <ul>
           <li>Sticky search + filter chips, скролиться список (як у Add mode)</li>
-          <li>Single-select muscle filter, default none (per spec §11.4 + prompt)</li>
+          <li>Single-select muscle filter, sticky <code>All</code> першим і active by default (per spec §11.4)</li>
           <li>Search reset на open</li>
           <li>Свайп вправо від лівого краю — back до Profile (iOS gesture)</li>
         </ul>
