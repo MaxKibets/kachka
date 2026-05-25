@@ -34,7 +34,7 @@ UI/UX **закрито концептуально** для v1:
 
 | Файл | Зміст | Status |
 |------|-------|--------|
-| `gym-tracker-spec.md` | UI/UX v1 — Navigation, Today, Workout Builder, In-workout, Суперсети, History | Active |
+| `gym-tracker-spec.md` | UI/UX v1 — карта + §-індекс. Зони у `spec/`: foundations, today, builder, in-workout, supersets, finish, history, exercises, profile, glossary, decisions | Active |
 | `gym-tracker-tech.md` | Технічні і продуктові рішення — платформа, storage, юніти, локалізація, монетизація, дистрибуція | Active |
 | `gym-tracker-visual.md` | Візуальна система — палета, типографіка, density, компонентні патерни, letter rotation, iconography/motion stubs | Active · v0 |
 | `gym-tracker-program-format.md` | JSON-формат програм для імпорту/експорту | **Frozen — v2** |
@@ -186,7 +186,7 @@ UI/UX **закрито концептуально** для v1:
 
 **Фіксація**: Коли зона закрита — оновлюємо відповідний md (або створюємо новий). Файли — в `D:\DEV\kachka\docs\`.
 
-**Не плодити документи без потреби**. UI/UX рішення → в `gym-tracker-spec.md`. Технічні → в `gym-tracker-tech.md`. Новий документ заводити тільки якщо тема справді окрема (наприклад модель даних).
+**Не плодити документи без потреби**. UI/UX рішення → у відповідний зонний файл `spec/<zone>.md` (карта і §-індекс — `gym-tracker-spec.md`); зафіксовані рішення / open / deferred → `spec/decisions.md`. Технічні → в `gym-tracker-tech.md`. Новий документ заводити тільки якщо тема справді окрема (наприклад модель даних).
 
 ## Тон і прагматичність
 
