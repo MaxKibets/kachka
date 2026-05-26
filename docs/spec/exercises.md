@@ -1,7 +1,7 @@
 # Exercise picker / database
 
-> Спільний компонент пошуку / вибору / management вправ: Add і Browse режими, custom з soft delete (§11). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](../gym-tracker-spec.md).
-> Поведінка описана тут; візуальна система — `../gym-tracker-visual.md`.
+> Спільний компонент пошуку / вибору / management вправ: Add і Browse режими, custom з soft delete (§11). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
+> Поведінка описана тут; візуальна система — `../visual/README.md`.
 
 ---
 

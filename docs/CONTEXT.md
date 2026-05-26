@@ -34,10 +34,10 @@ UI/UX **закрито концептуально** для v1:
 
 | Файл | Зміст | Status |
 |------|-------|--------|
-| `gym-tracker-spec.md` | UI/UX v1 — карта + §-індекс. Зони у `spec/`: foundations, today, builder, in-workout, supersets, finish, history, exercises, profile, glossary, decisions | Active |
-| `gym-tracker-tech.md` | Технічні і продуктові рішення — платформа, storage, юніти, локалізація, монетизація, дистрибуція | Active |
-| `gym-tracker-visual.md` | Візуальна система — палета, типографіка, density, компонентні патерни, letter rotation, iconography/motion stubs | Active · v0 |
-| `gym-tracker-program-format.md` | JSON-формат програм для імпорту/експорту | **Frozen — v2** |
+| `spec/README.md` | UI/UX v1 — карта + §-індекс. Зони у `spec/`: foundations, today, builder, in-workout, supersets, finish, history, exercises, profile, glossary, decisions | Active |
+| `tech/README.md` | Технічні і продуктові рішення — платформа, storage, юніти, локалізація, монетизація, дистрибуція | Active |
+| `visual/README.md` | Візуальна система — палета, типографіка, density, компонентні патерни, letter rotation, iconography/motion stubs | Active · v0 |
+| `program-format.md` | JSON-формат програм для імпорту/експорту | **Frozen — v2** |
 
 **Перед будь-якою відповіддю — прочитати spec, tech і visual.** Program format читати тільки якщо запит явно стосується v2 / шарингу / імпорту.
 
@@ -133,7 +133,7 @@ UI/UX **закрито концептуально** для v1:
 - Bundled programs / custom programs / program editor
 - Linear progression, pointer-based scheduling
 - One active program at a time
-- Програмний JSON-формат (заморожений у `gym-tracker-program-format.md`)
+- Програмний JSON-формат (заморожений у `program-format.md`)
 
 **Імпорт / шаринг**
 - Import flow (file picker, conflict resolution, preview, land)
@@ -186,7 +186,7 @@ UI/UX **закрито концептуально** для v1:
 
 **Фіксація**: Коли зона закрита — оновлюємо відповідний md (або створюємо новий). Файли — в `D:\DEV\kachka\docs\`.
 
-**Не плодити документи без потреби**. UI/UX рішення → у відповідний зонний файл `spec/<zone>.md` (карта і §-індекс — `gym-tracker-spec.md`); зафіксовані рішення / open / deferred → `spec/decisions.md`. Технічні → в `gym-tracker-tech.md`. Новий документ заводити тільки якщо тема справді окрема (наприклад модель даних).
+**Не плодити документи без потреби**. UI/UX рішення → у відповідний зонний файл `spec/<zone>.md` (карта і §-індекс — `spec/README.md`); зафіксовані рішення / open / deferred → `spec/decisions.md`. Технічні → в `tech/README.md`. Новий документ заводити тільки якщо тема справді окрема (наприклад модель даних).
 
 ## Тон і прагматичність
 

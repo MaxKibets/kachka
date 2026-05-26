@@ -1,6 +1,6 @@
 # Gym Tracker · Технічні вимоги
 
-> Архітектурні та продуктові рішення. UI/UX — у `gym-tracker-spec.md`. Модель даних — у `gym-tracker-data-model.md` (TBD).
+> Архітектурні та продуктові рішення. UI/UX — у `../spec/README.md`. Модель даних — у `../data-model.md` (TBD).
 
 **Версія**: v0.2 · v1 scope locked (без програм / import / deep linking — у v2)
 

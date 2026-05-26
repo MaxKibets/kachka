@@ -4,7 +4,7 @@
 
 **Status**: v0 drafts complete · Batches 1–5 — initial drafts done. Очікують ревью + точкові правки.
 
-Читай разом з `../CONTEXT.md`, `../gym-tracker-spec.md` (поведінка), `../gym-tracker-visual.md` (візуальна система).
+Читай разом з `../CONTEXT.md`, `../spec/README.md` (поведінка), `../visual/README.md` (візуальна система).
 
 ---
 
@@ -113,7 +113,7 @@ wireframes/
 
 ## Що робить наступна сесія
 
-1. Прочитай `../CONTEXT.md` + `../gym-tracker-spec.md` + `../gym-tracker-visual.md`
+1. Прочитай `../CONTEXT.md` + `../spec/README.md` + `../visual/README.md`
 2. Подивись цей файл, знайди наступний незакреслений batch
 3. Прочитай вже зроблені wireframes у поточному batch для tone reference
 4. Додай нові HTML файли. Стиль — як в Today batch

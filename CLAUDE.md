@@ -12,9 +12,9 @@ working solo with AI assistance (Claude, Cursor).
 Key reference docs:
 
 - `docs/CONTEXT.md` — product context.
-- `docs/gym-tracker-spec.md` — spec map + §-index; zone files live in `docs/spec/`.
-- `docs/gym-tracker-tech.md` — technical overview.
-- `docs/gym-tracker-program-format.md` — program/program-format definition.
+- `docs/spec/README.md` — spec map + §-index; zone files live in `docs/spec/`.
+- `docs/tech/README.md` — technical overview.
+- `docs/program-format.md` — program/program-format definition.
 - `docs/wireframes/*.html` — UI wireframes.
 
 ## Git rules (non-negotiable)

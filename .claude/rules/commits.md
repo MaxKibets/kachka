@@ -46,7 +46,7 @@ feat(workout): add rest-timer auto-start
 
 Triggers a 90s timer when a set is logged. Configurable per-exercise
 via the program format. Closes the loop on the "lazy logging" UX goal
-from gym-tracker-spec.md.
+from spec/README.md.
 ```
 
 ## Diff hygiene
