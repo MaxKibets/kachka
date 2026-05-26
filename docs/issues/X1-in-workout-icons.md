@@ -24,7 +24,7 @@ tap targets" promise is made or broken.
 
 ## Spec reference
 
-`docs/gym-tracker-visual.md` §6 lists the icon library (Lucide vs Phosphor) as
+`docs/visual/README.md` §6 lists the icon library (Lucide vs Phosphor) as
 **TBD**. That open decision is the root cause.
 
 ## Action
@@ -36,5 +36,5 @@ tap targets" promise is made or broken.
 
 ## Done when
 
-- Icon library is recorded as decided in `gym-tracker-visual.md` §6.
+- Icon library is recorded as decided in `visual/README.md` §6.
 - close / `⋯` / `⋮` / note render as real glyphs on both in-workout wireframes.
