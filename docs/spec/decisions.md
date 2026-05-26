@@ -1,7 +1,7 @@
 # Рішення · відкрите · відкладене
 
-> Проєктна пам'ять: відкриті питання (§15), відкладене у v2 (§16), зафіксовані рішення (§17). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](../gym-tracker-spec.md).
-> Поведінка описана тут; візуальна система — `../gym-tracker-visual.md`.
+> Проєктна пам'ять: відкриті питання (§15), відкладене у v2 (§16), зафіксовані рішення (§17). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
+> Поведінка описана тут; візуальна система — `../visual/README.md`.
 
 ---
 
@@ -20,7 +20,7 @@
 - Bundled programs / custom programs / program editor
 - Linear progression, pointer-based scheduling
 - One active program at a time
-- Програмний JSON-формат (gym-tracker-program-format.md — заморожений)
+- Програмний JSON-формат (../program-format.md — заморожений)
 
 **Імпорт / шаринг**
 - Import flow (file picker, conflict resolution, preview, land)

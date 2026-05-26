@@ -1,7 +1,7 @@
 # Суперсети / групи вправ
 
-> Alternating-групи: створення pre/mid-workout, color-coded labels, cursor cycling, edit (§6). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](../gym-tracker-spec.md).
-> Поведінка описана тут; візуальна система — `../gym-tracker-visual.md`.
+> Alternating-групи: створення pre/mid-workout, color-coded labels, cursor cycling, edit (§6). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
+> Поведінка описана тут; візуальна система — `../visual/README.md`.
 
 ---
 

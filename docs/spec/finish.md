@@ -1,7 +1,7 @@
 # Завершення тренування
 
-> Completion screen, PR detection, volume metric (§9). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](../gym-tracker-spec.md).
-> Поведінка описана тут; візуальна система — `../gym-tracker-visual.md`.
+> Completion screen, PR detection, volume metric (§9). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
+> Поведінка описана тут; візуальна система — `../visual/README.md`.
 
 ---
 
