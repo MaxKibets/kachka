@@ -1,11 +1,11 @@
-# Завершення тренування
+# Workout completion
 
-> Completion screen, PR detection, volume metric (§9). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
-> Поведінка описана тут; візуальна система — `../visual/README.md`.
+> Completion screen, PR detection, volume metric (§9). Part of the Kachka v1 UI/UX spec — full map and §-index: [spec map](README.md).
+> Behavior is described here; the visual system lives in `../visual/README.md`.
 
 ---
 
-## 9. Завершення тренування
+## 9. Workout completion
 
 ### 9.1 Flow
 
@@ -29,27 +29,26 @@ flowchart TD
     DiscardConfirm -->|No| Active
 ```
 
-**Empty workout (0 залогованих сетів).** Якщо юзер тапає Finish не залогувавши жодного сета — completion screen **пропускаємо**, одразу destructive confirm `Nothing logged — discard this workout?` (Cancel вгорі, Discard внизу, per §1). Порожній workout у History не зберігається: stats-екран з нулями безсенсовний, а junk-entry зламав би Repeat last / Choose from history.
+**Empty workout (0 logged sets).** If the user taps Finish without having logged a single set — the completion screen is **skipped**, and a destructive confirm appears immediately `Nothing logged — discard this workout?` (Cancel on top, Discard at the bottom, per §1). An empty workout is not saved to History: a stats screen full of zeros is meaningless, and a junk entry would break Repeat last / Choose from history.
 
-### 9.2 Зміст completion screen
+### 9.2 Completion screen content
 
-Completion screen — **повноекранний, не bottom sheet**. Одноступеневий: тап Finish → цей екран → Save/Discard. Проміжного quick-confirm sheet немає (свідомо: PR card — єдиний motivational accent застосунку, ховати його за sheet-ом і дублювати summary двічі не виправдано). Wireframe: `docs/wireframes/completion-screen.html` (попередня lightweight-ітерація `finish-sheet.html` видалена).
+The completion screen is **full-screen, not a bottom sheet**. Single-step: tap Finish → this screen → Save/Discard. There is no intermediate quick-confirm sheet (deliberately: the PR card is the app's only motivational accent, and hiding it behind a sheet while duplicating the summary twice is not justified). Wireframe: `docs/wireframes/completion-screen.html` (the earlier lightweight iteration `finish-sheet.html` has been removed).
 
-- Назва тренування + дата + duration
-- Stats grid (4 картки): `Volume`, `Sets`, `Duration`, `Personal records`
-- PR card візуально виділена info-кольором — єдиний motivational accent на екрані
-- Workout note (textarea, опціональна)
-- Exercise summary (collapsible, показує per-exercise sets count і marker `◆` для PR; групи з letter labels)
+- Workout name + date + duration
+- Stats grid (4 cards): `Volume`, `Sets`, `Duration`, `Personal records`
+- The PR card is visually highlighted with an info color — the only motivational accent on the screen
+- Workout note (textarea, optional)
+- Exercise summary (collapsible, shows per-exercise sets count and a `◆` marker for a PR; groups with letter labels)
 - Primary button: `Save to history`
-- Secondary text button: `Discard workout` (з confirmation)
+- Secondary text button: `Discard workout` (with confirmation)
 
 ### 9.3 PR detection — MVP
 
-Якщо в певному rep-діапазоні юзер вперше підняв таку вагу — це PR. Маленький `◆` біля назви вправи в summary і на картці stats.
+If in a given rep range the user lifts such a weight for the first time — it's a PR. A small `◆` next to the exercise name in the summary and on the stats card.
 
-Повноцінна логіка (1RM estimation з формулами Epley / Brzycki, e1RM tracking) — пізніше.
+Full-fledged logic (1RM estimation with Epley / Brzycki formulas, e1RM tracking) — later.
 
 ### 9.4 Volume metric
 
-`sum(weight × reps)` по робочих сетах (warmups виключаються). Не ідеальна метрика тренувального стресу, але стандартна — юзери звикли.
-
+`sum(weight × reps)` over working sets (warmups excluded). Not a perfect metric of training stress, but a standard one — users are used to it.

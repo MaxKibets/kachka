@@ -1,80 +1,79 @@
 # History
 
-> Перегляд минулих тренувань: список + read-only detail (§10). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
-> Поведінка описана тут; візуальна система — `../visual/README.md`.
+> Viewing past workouts: list + read-only detail (§10). Part of the Kachka v1 UI/UX spec — full map and §-index: [spec map](README.md).
+> Behavior is described here; the visual system lives in `../visual/README.md`.
 
 ---
 
 ## 10. History
 
-> Перегляд минулих тренувань. Минулі тренування — read-only факт. MVP мінімальний: список + detail без фільтрів і експорту (винесено в §16).
+> Viewing past workouts. Past workouts are a read-only fact. The MVP is minimal: list + detail with no filters or export (moved to §16).
 
-### 10.1 Огляд
+### 10.1 Overview
 
-History — окремий bottom tab (`Today · History · Profile`). Стек з двох екранів:
+History is a separate bottom tab (`Today · History · Profile`). A stack of two screens:
 
-- *List* — хронологічна стрічка завершених тренувань
-- *Detail* — read-only знімок одного тренування
+- *List* — a chronological feed of completed workouts
+- *Detail* — a read-only snapshot of a single workout
 
-Без topbar actions, без filter, без search, без export — все це переноситься в v2. Ціль MVP: бачити що я робив, у простій timeline-формі.
+No topbar actions, no filter, no search, no export — all of this is moved to v2. MVP goal: see what I did, in a simple timeline form.
 
-### 10.2 Список тренувань
+### 10.2 Workout list
 
-- *Структура*: flat хронологічна стрічка, найновіше зверху, infinite scroll з lazy loading
-- *Sticky section headers*: при скролі зверху приклеюється label поточного тижня/місяця (`This week`, `Last week`, `April`). Це візуальна пунктуація в flat list, не зміна структури
-- *Topbar*: заголовок `History`, без actions, без back-кнопки (це root-екран таба)
+- *Structure*: flat chronological feed, newest on top, infinite scroll with lazy loading
+- *Sticky section headers*: on scroll, the label of the current week/month sticks to the top (`This week`, `Last week`, `April`). This is visual punctuation in a flat list, not a structural change
+- *Topbar*: title `History`, no actions, no back button (this is the root screen of the tab)
 
-Row (medium density), два рядки:
+Row (medium density), two rows:
 
 ```
 [Date · Workout name]                    [Duration]
 [N sets · Volume kg]
 ```
 
-- *Date format*: relative для останніх 7 днів (`Today`, `Yesterday`, `Mon`), absolute далі (`28 Apr 2026`)
-- *Volume*: `sum(weight × reps)` по робочих сетах, warmups виключаються (узгоджено з §9.4)
-- *Bodyweight*: вправи без weight дають 0 у внеску до volume
+- *Date format*: relative for the last 7 days (`Today`, `Yesterday`, `Mon`), absolute beyond that (`28 Apr 2026`)
+- *Volume*: `sum(weight × reps)` over working sets, warmups excluded (aligned with §9.4)
+- *Bodyweight*: exercises without weight contribute 0 to volume
 
-Tap на рядок → push detail screen.
+Tap on a row → push detail screen.
 
 ### 10.3 Detail screen
 
-Read-only знімок тренування. Жодних actions редагування.
+Read-only snapshot of a workout. No editing actions.
 
 *Header* (sticky):
-- Back-кнопка
-- Назва workout-у
-- Підзаголовок: дата (повна) + duration
+- Back button
+- Workout name
+- Subtitle: date (full) + duration
 
 *Body* — full snapshot:
-- Усі вправи в порядку виконання
-- Для кожного сета: номер (або `W` для warmup), `weight × reps`, RPE (якщо було), маркер нотатки
-- Workout note (якщо була залогована при completion)
+- All exercises in execution order
+- For each set: number (or `W` for warmup), `weight × reps`, RPE (if any), note marker
+- Workout note (if one was logged at completion)
 
-*Суперсети* — group rendering як у in-workout, але read-only:
+*Supersets* — group rendering as in-workout, but read-only:
 - Group header: letter label (`A · Superset · 3 rounds`)
-- Список вправ у групі з префіксами A1/A2/A3
-- Сети показуються по раундах
-- Letter color консистентний з тим як був у workout-і
+- List of exercises in the group with prefixes A1/A2/A3
+- Sets shown by rounds
+- Letter color consistent with how it was in the workout
 
-*Без actions*: немає edit, repeat workout from this entry, export — все в §16.
+*No actions*: there is no edit, repeat workout from this entry, export — all in §16.
 
 ### 10.4 Empty state
 
-Юзер ніколи не завершив тренування → центрований stack:
+The user has never completed a workout → centered stack:
 
-- Проста іконка (стиль ілюстрації — TBD з візуальним стилем)
+- Simple icon (illustration style — TBD with the visual style)
 - Title: `No workouts yet`
 - Subtitle: `Complete your first workout to see it here.`
 
-Bottom tab bar лишається. Без CTA — Today вже доступний в табах.
+The bottom tab bar remains. No CTA — Today is already available in the tabs.
 
-### 10.5 Що потрапляє в History
+### 10.5 What gets into History
 
-| Подія | Поведінка |
+| Event | Behavior |
 |---|---|
-| Юзер натиснув `Save to history` на completion screen | Додається в History з тими сетами що залогував |
-| Завершено з partial-completed (не всі заплановані сети) | Додається з логованими сетами, відсутні просто не показуються |
-| Юзер натиснув `Discard workout` | Не зберігається в History |
-| Skipped exercise мід-tworkout | Зберігається з тими сетами що залогувалися (якщо були) |
-
+| User tapped `Save to history` on the completion screen | Added to History with the sets that were logged |
+| Finished with partial-completed (not all planned sets) | Added with the logged sets, missing ones simply not shown |
+| User tapped `Discard workout` | Not saved to History |
+| Skipped exercise mid-workout | Saved with the sets that were logged (if any) |

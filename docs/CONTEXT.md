@@ -1,195 +1,195 @@
 # Gym Tracker · Handoff Context
 
-> Контекст для AI-асистента що підхоплює UI/UX роботу над цим проєктом. Прочитати перед першою відповіддю.
+> Context for an AI assistant picking up UI/UX work on this project. Read before your first response.
 
 ---
 
-## Що це за проєкт
+## What this project is
 
-React Native (iOS + Android) трекер тренувань у спортзалі. Хобі-проєкт без монетизації. Цільова аудиторія — міжнародна, реліз в App Store + Google Play.
+A React Native (iOS + Android) gym workout tracker. A hobby project without monetization. Target audience — international, release on App Store + Google Play.
 
-Мова дискусії: **українська**. Технічні терміни (RPE, PR, superset, set) лишаються англійською.
+Discussion language: **Ukrainian**. Technical terms (RPE, PR, superset, set) stay in English.
 
-## Поточний стан
+## Current state
 
-**v1 scope locked: ad-hoc workouts.** Юзер створює тренування на льоту або клонує з історії, виконує, логує в історію. Програмний шар повністю відкладено у v2.
+**v1 scope locked: ad-hoc workouts.** The user creates a workout on the fly or clones one from history, performs it, logs it to history. The program layer is fully deferred to v2.
 
-UI/UX **закрито концептуально** для v1:
+UI/UX is **conceptually locked** for v1:
 - Navigation / IA (3 tabs: Today · History · Profile)
 - Today flow (Repeat last / Choose from history / Start blank)
 - Workout Builder (pre-workout list + Quick-add chips + supersets)
-- In-workout зона (вся, включно з editing мід-tworkout)
-- Суперсети ad-hoc з color-coded letter labels
-- History (list + detail без фільтрів/експорту)
-- Exercise picker / Database (один компонент, два режими, 7 muscle groups, custom з soft delete)
+- In-workout zone (everything, including editing mid-workout)
+- Ad-hoc supersets with color-coded letter labels
+- History (list + detail without filters/export)
+- Exercise picker / Database (one component, two modes, 7 muscle groups, custom with soft delete)
 - Profile + Settings (hybrid hub: PREFERENCES / WORKOUT / DATA / About)
 
-**Зафіксовано**: технічні і продуктові рішення. Програмний JSON-формат також зафіксований на рівні полів — заморожений, повертається у v2. Візуальна система — фундамент зафіксований (mood, brand, palette, typography, letter rotation, базові компонентні патерни).
+**Locked**: technical and product decisions. The program JSON format is also locked at the field level — frozen, returns in v2. Visual system — the foundation is locked (mood, brand, palette, typography, letter rotation, basic component patterns).
 
-Лишається опрацювати: формальну модель даних; візуально — мокапи інших екранів (Today / History / Builder / Profile), action sheets, custom numpad, iconography lock, motion, mascot character + empty state illustrations. Технічно: exercise database seed-список.
+Still to work out: the formal data model; visually — mockups of the other screens (Today / History / Builder / Profile), action sheets, custom numpad, iconography lock, motion, mascot character + empty state illustrations. Technically: exercise database seed list.
 
-## Документація проєкту
+## Project documentation
 
-Чотири md-файли в проєкті, треба читати їх як єдине ціле:
+Four md files in the project, they should be read as a single whole:
 
-| Файл | Зміст | Status |
-|------|-------|--------|
-| `spec/README.md` | UI/UX v1 — карта + §-індекс. Зони у `spec/`: foundations, today, builder, in-workout, supersets, finish, history, exercises, profile, glossary, decisions | Active |
-| `tech/README.md` | Технічні і продуктові рішення — платформа, storage, юніти, локалізація, монетизація, дистрибуція | Active |
-| `visual/README.md` | Візуальна система — палета, типографіка, density, компонентні патерни, letter rotation, iconography/motion stubs | Active · v0 |
-| `program-format.md` | JSON-формат програм для імпорту/експорту | **Frozen — v2** |
+| File | Content | Status |
+|------|---------|--------|
+| `spec/README.md` | UI/UX v1 — map + §-index. Zones in `spec/`: foundations, today, builder, in-workout, supersets, finish, history, exercises, profile, glossary, decisions | Active |
+| `tech/README.md` | Technical and product decisions — platform, storage, units, localization, monetization, distribution | Active |
+| `visual/README.md` | Visual system — palette, typography, density, component patterns, letter rotation, iconography/motion stubs | Active · v0 |
+| `program-format.md` | Program JSON format for import/export | **Frozen — v2** |
 
-**Перед будь-якою відповіддю — прочитати spec, tech і visual.** Program format читати тільки якщо запит явно стосується v2 / шарингу / імпорту.
+**Before any response — read spec, tech, and visual.** Read the program format only if the request explicitly concerns v2 / sharing / import.
 
-## Найважливіші зафіксовані рішення
+## Most important locked decisions
 
-Скорочений список — деталі в md-файлах:
+A shortened list — details in the md files:
 
-**Контекст і базові обмеження**
-- Юзер у залі, потіє, одна рука, 5–15с на сет, 15–30 циклів за тренування. UI оптимізує саме під цей сценарій
-- Темна тема обов'язкова, великі тач-таргети, мінімум тапів
+**Context and base constraints**
+- User in the gym, sweating, one hand, 5–15s per set, 15–30 cycles per workout. The UI optimizes specifically for this scenario
+- Dark theme mandatory, large touch targets, minimum taps
 
-**Скоуп v1**
+**v1 scope**
 - v1 = ad-hoc workouts (build / execute / log to history)
-- Програми / import / deep linking → v2
+- Programs / import / deep linking → v2
 - 3 bottom tabs: Today · History · Profile
-- Active workout — modal full takeover (без mini-bar)
+- Active workout — modal full takeover (no mini-bar)
 - Workout Builder — modal pre-workout
-- Exercise database — всередині Profile
+- Exercise database — inside Profile
 
 **Today flow**
-- 3 режими: has history (Repeat last + Choose from history + Start blank) / first launch (single CTA) / in-progress (banner)
-- Repeat last — primary CTA, клонує структуру + назву + targets, prev = з джерела клонування
-- Choose from history — список усіх завершених для split routines
-- Crash restoration — banner на Today (Resume / Discard), не auto-resume
+- 3 modes: has history (Repeat last + Choose from history + Start blank) / first launch (single CTA) / in-progress (banner)
+- Repeat last — primary CTA, clones structure + name + targets, prev = from the clone source
+- Choose from history — list of all completed for split routines
+- Crash restoration — banner on Today (Resume / Discard), not auto-resume
 
 **Workout Builder**
 - Quick-add chips: 7 popular exercises (Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl), en + uk
-- Default sets для нової вправи: 3 × 8
-- Editable workout name, reorder через drag, supersets через action menu
+- Default sets for a new exercise: 3 × 8
+- Editable workout name, reorder via drag, supersets via action menu
 
 **In-workout**
-- Список вправ — скрол, не карусель
-- Сети з опц. ціллю — ghost text у полях (з clone-джерела)
-- Custom numpad замість системної клавіатури з quick-adjust ±2.5/±5
-- Set actions через тап на номер сета — warmup, RPE, note, delete
+- Exercise list — scroll, not carousel
+- Sets with an optional target — ghost text in the fields (from the clone source)
+- Custom numpad instead of the system keyboard with quick-adjust ±2.5/±5
+- Set actions via tap on the set number — warmup, RPE, note, delete
 - Active workout = full editor: add/remove set, add/insert/remove exercise, skip, reorder
-- Skip exercise — soft remove що зберігає структуру для clone
-- Failed reps (0 reps) — дозволено
+- Skip exercise — soft remove that preserves the structure for clone
+- Failed reps (0 reps) — allowed
 
-**Суперсети (must-have в v1)**
-- Тільки alternating, 2-5 вправ, 2-10 раундів, один rest на групу
-- Створення pre-workout (Builder) і мід-tworkout (Active) з constraint: 0 залогованих сетів у кандидатів
-- UI: per-exercise `⋮` → Add to superset → один combined sheet (multi-select партнерів + rounds + rest), не двоступеневий
-- Color-coded letter labels (A/B/C з ротацією)
-- Edit мід-tworkout: rounds (constrained), rest, add/remove exercise (під те ж обмеження), ungroup завжди
+**Supersets (must-have in v1)**
+- Only alternating, 2-5 exercises, 2-10 rounds, one rest per group
+- Creation pre-workout (Builder) and mid-workout (Active) with constraint: 0 logged sets in the candidates
+- UI: per-exercise `⋮` → Add to superset → one combined sheet (multi-select partners + rounds + rest), not two-step
+- Color-coded letter labels (A/B/C with rotation)
+- Edit mid-workout: rounds (constrained), rest, add/remove exercise (under the same constraint), ungroup always
 
 **History**
-- Flat хронологічна стрічка, найновіше зверху, infinite scroll
+- Flat chronological feed, newest on top, infinite scroll
 - Sticky section headers (week / month)
-- Detail — read-only full snapshot з group rendering для суперсетів
-- Discarded не зберігаються; partial-completed зберігаються
-- Filter / search / export / PR badges / графіки — у v2
+- Detail — read-only full snapshot with group rendering for supersets
+- Discarded are not saved; partial-completed are saved
+- Filter / search / export / PR badges / charts — in v2
 
 **Exercise picker / Database**
-- Один screen-component, два режими: Add (modal з Builder/Active) і Browse (sub-screen з Profile/DATA)
+- One screen-component, two modes: Add (modal from Builder/Active) and Browse (sub-screen from Profile/DATA)
 - Search: case-insensitive substring + 7 muscle groups (Chest · Back · Legs · Biceps · Triceps · Shoulders · Core), single-select chip
-- System exercises — multi-tag, read-only, без detail. Custom — single-tag, edit + soft delete
+- System exercises — multi-tag, read-only, without detail. Custom — single-tag, edit + soft delete
 - Custom creation: inline `Create as 'X'` (no-results) + sticky `+ Create custom` button
 - Custom fields: name + muscle group + isBodyweight
-- Soft delete зберігає past workouts (entity by ID, `deletedAt` flag)
-- Sort alphabetical; search/filter reset на open
+- Soft delete preserves past workouts (entity by ID, `deletedAt` flag)
+- Sort alphabetical; search/filter reset on open
 
 **Profile + Settings**
 - Profile root = hybrid hub: inline preferences + grouped sections (PREFERENCES / WORKOUT / DATA / About)
 - Theme: System / Dark / Light (default System); Language: System / English / Ukrainian (default System, fallback English)
 - Show RPE toggle (default ON); Rest haptic (default ON), Rest sound (default OFF)
-- Exercise database, Backup & restore — окремі sub-screens
+- Exercise database, Backup & restore — separate sub-screens
 - About: app version + GitHub + privacy note
-- Без push-нотифікацій, без Delete all data, без units toggle у v1
+- No push notifications, no Delete all data, no units toggle in v1
 
 **Backup & restore**
-- Manual export/import у JSON (auto-backup, encryption → v2)
-- Export: тап → native share sheet (Files / iCloud / AirDrop / etc.)
-- Import: file picker → preview screen (counts + дата + версія + mode picker) → bottom sheet confirmation → atomic transaction
-- Two import modes: Replace all (default) і Merge skip-by-UUID
-- Older `schemaVersion` → auto-migrate. Newer → блокується
-- Без stale-backup nudge
+- Manual export/import in JSON (auto-backup, encryption → v2)
+- Export: tap → native share sheet (Files / iCloud / AirDrop / etc.)
+- Import: file picker → preview screen (counts + date + version + mode picker) → bottom sheet confirmation → atomic transaction
+- Two import modes: Replace all (default) and Merge skip-by-UUID
+- Older `schemaVersion` → auto-migrate. Newer → blocked
+- No stale-backup nudge
 
-**Базові UI patterns**
-- Усі action menus — bottom action sheets (top-bar `⋯`, row `⋮`, set actions, numpad, superset config)
-- Усі confirmations — bottom sheet з Cancel вгорі і destructive внизу. Свайп вниз = Cancel
-- In-workout pull-to-cursor: floating chip над bottom bar (з'являється коли cursor поза viewport), тап → smooth scroll + auto-scroll re-engages
+**Base UI patterns**
+- All action menus — bottom action sheets (top-bar `⋯`, row `⋮`, set actions, numpad, superset config)
+- All confirmations — bottom sheet with Cancel on top and destructive at the bottom. Swipe down = Cancel
+- In-workout pull-to-cursor: floating chip above the bottom bar (appears when the cursor is out of viewport), tap → smooth scroll + auto-scroll re-engages
 
-**Технічні**
-- Storage: local-only, sync-ready фундамент (UUID, soft delete, timestamps)
-- Юніти: kg only для MVP, lb потім через user setting
-- Локалізація: English (base) + Ukrainian, i18n з першого дня
-- Free, без реклами, без accounts
+**Technical**
+- Storage: local-only, sync-ready foundation (UUID, soft delete, timestamps)
+- Units: kg only for MVP, lb later via user setting
+- Localization: English (base) + Ukrainian, i18n from day one
+- Free, no ads, no accounts
 
-## Свідомо відкладено в v2 — не обговорювати в v1
+## Deliberately deferred to v2 — do not discuss in v1
 
-**Програмний шар**
+**Program layer**
 - Bundled programs / custom programs / program editor
 - Linear progression, pointer-based scheduling
 - One active program at a time
-- Програмний JSON-формат (заморожений у `program-format.md`)
+- Program JSON format (frozen in `program-format.md`)
 
-**Імпорт / шаринг**
+**Import / sharing**
 - Import flow (file picker, conflict resolution, preview, land)
 - Deep linking (gymtracker://import)
 - Universal links / App Links
-- Export програми / single workout (Markdown для LLM-чатів)
+- Export of program / single workout (Markdown for LLM chats)
 
-**Тренувальні механіки**
-- AMRAP / time-based циркуляри
+**Workout mechanics**
+- AMRAP / time-based circuits
 - Drop sets, rest-pause, cluster sets
-- Уневен сети в групі
+- Uneven sets in a group
 - 1RM / e1RM estimation
-- Replace exercise мід-tworkout (в v1 = Remove + Insert after)
+- Replace exercise mid-workout (in v1 = Remove + Insert after)
 
-**UX полегшення**
-- Mid-workout grouping для вправ із залогованими сетами
-- Save as draft у Workout Builder
+**UX conveniences**
+- Mid-workout grouping for exercises with logged sets
+- Save as draft in Workout Builder
 - Mini-bar / minimize active workout
-- PR badges на сетах у History detail
+- PR badges on sets in History detail
 - History filter / search / export
 - Quick-add chips ranked by usage
 
-**Інші зони**
-- Соціальні фічі
+**Other zones**
+- Social features
 - Wearable integration
 - Voice input
 - Plate calculator
 - Calendar-based scheduling
-- Streak counters і motivational gamification
-- Графіки прогресу, тенденції, PR timeline
+- Streak counters and motivational gamification
+- Progress charts, trends, PR timeline
 
-## Що далі — план роботи
+## What's next — the work plan
 
-Зони які лишилось опрацювати у v1:
+Zones remaining to work out in v1:
 
-1. **Модель даних** — формальна схема `Workout → Group | Exercise → Set` з типами полів і правилами (TBD як окремий документ; впливає на JSON-формат backup-у)
-2. **Візуальний стиль** — типографіка, кольори (включно з letter-colors для груп), density, motion, ілюстрації для empty states
+1. **Data model** — formal schema `Workout → Group | Exercise → Set` with field types and rules (TBD as a separate document; affects the backup JSON format)
+2. **Visual style** — typography, colors (including letter-colors for groups), density, motion, illustrations for empty states
 
-Чотири технічних рішення для v1: локальна БД (рекомендовано WatermelonDB), Expo vs bare RN, мінімальні версії OS, exercise database seed-список (повний каталог окрім 7 chip-вправ).
+Four technical decisions for v1: local DB (recommended WatermelonDB), Expo vs bare RN, minimum OS versions, exercise database seed list (full catalog except the 7 chip exercises).
 
-## Як працювати
+## How to work
 
-**Стиль**: ставиш питання → показуєш каркас з трейд-офами → юзер дає напрямок → фіксуємо в md. Не вирішуй за юзера — давай вибір.
+**Style**: you ask a question → show a skeleton with trade-offs → the user gives direction → we lock it in md. Don't decide for the user — give a choice.
 
-**Каркаси**: ASCII / mermaid — для процесів і простих структур. Для повноцінних мокапів — окрема розмова про візуальний стиль (поки відкладено).
+**Skeletons**: ASCII / mermaid — for processes and simple structures. For full mockups — a separate conversation about visual style (deferred for now).
 
-**Питання юзеру**: AskUserQuestion з 2-4 опціями. Не більше 3 питань за раз.
+**Questions to the user**: AskUserQuestion with 2-4 options. No more than 3 questions at a time.
 
-**Mermaid-діаграми**: для процесів, state machines, ієрархій. Не для всього — тільки коли діаграма реально допомагає.
+**Mermaid diagrams**: for processes, state machines, hierarchies. Not for everything — only when a diagram genuinely helps.
 
-**Фіксація**: Коли зона закрита — оновлюємо відповідний md (або створюємо новий). Файли — в `D:\DEV\kachka\docs\`.
+**Locking**: When a zone is closed — we update the corresponding md (or create a new one). Files — in `D:\DEV\kachka\docs\`.
 
-**Не плодити документи без потреби**. UI/UX рішення → у відповідний зонний файл `spec/<zone>.md` (карта і §-індекс — `spec/README.md`); зафіксовані рішення / open / deferred → `spec/decisions.md`. Технічні → в `tech/README.md`. Новий документ заводити тільки якщо тема справді окрема (наприклад модель даних).
+**Don't create documents without need**. UI/UX decisions → into the corresponding zone file `spec/<zone>.md` (map and §-index — `spec/README.md`); locked decisions / open / deferred → `spec/decisions.md`. Technical → into `tech/README.md`. Create a new document only if the topic is genuinely separate (for example, the data model).
 
-## Тон і прагматичність
+## Tone and pragmatism
 
-Юзер — досвідчений розробник, не пояснювати базові речі. Цінує trade-offs і чесні рекомендації, не ухиляйся коли запитують "що краще". Працює сам, без команди — час дорогий, не плодити фіч.
+The user is an experienced developer, don't explain basic things. Values trade-offs and honest recommendations, don't dodge when asked "which is better". Works alone, without a team — time is expensive, don't proliferate features.
 
-При сумнівах — простіше краще ніж складніше, MVP-філософія.
+When in doubt — simpler is better than more complex, MVP philosophy.

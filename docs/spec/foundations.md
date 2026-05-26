@@ -1,61 +1,61 @@
-# Foundations · принципи та навігація
+# Foundations · principles and navigation
 
-> Базові обмеження in-workout UI (§1) і навігація / IA (§2). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
-> Поведінка описана тут; візуальна система — `../visual/README.md`.
-
----
-
-## 1. Базові принципи
-
-- React Native, кросплатформенний (iOS + Android)
-- Цільовий контекст — людина в спортзалі: одна рука, потіє, 5–15 секундні взаємодії між сетами, 15–30 циклів "глянув → залогував → відклав" за тренування
-- Власна візуальна мова, не клонуємо Hevy / Strong / Boostcamp
-- MVP-філософія: суперсети — must-have, AMRAP / drop sets / cluster — у v2
-- v1 ціль: найшвидший спосіб залогувати тренування. Структура планується ad-hoc на старті або клонуванням з історії
-
-З цього випливають базові обмеження для in-workout UI:
-
-- Великі тач-таргети (палець, не курсор)
-- Мінімум тапів на сет
-- Читабельність на відстані витягнутої руки
-- Очевидний "де я зараз" з одного погляду
-- Темна тема обов'язкова
-- Усі action menus — bottom action sheets, той самий pattern на iOS і Android. Стосується top-bar `⋯`-меню, per-row `⋮`-меню (вправа, група), set actions (§8), numpad (§7.2), superset config (§6.2). Причина: thumb-reach однією рукою; уникаємо top-anchored dropdown-ів. Native action sheet (iOS) і Material Bottom Sheet (Android) — еквівалентні impl-варіанти, візуально уніфікуються
-- Усі confirmations — теж bottom sheet (той самий компонент): title + опц. description + дві кнопки `Cancel` (вгорі) і destructive (внизу). Свайп вниз = Cancel. Cancel вгорі — захист від випадкового тапу destructive: швидкий dismiss без точного прицілу, основна дія далі від великого пальця. Узгоджено з Apple HIG (action sheet для destructive confirms) і Material 3 (modal bottom sheet). Стосується Discard workout (§3.1.c, §9.2), Discard setup (§4.8), Remove exercise / Remove set (§4.4, §4.5, §5.5), Save partial (§9.1), Delete custom (§11.8) і будь-яких майбутніх confirm-flows
-
+> Base constraints of the in-workout UI (§1) and navigation / IA (§2). Part of the Kachka v1 UI/UX spec — full map and §-index: [spec map](README.md).
+> Behavior is described here; the visual system lives in `../visual/README.md`.
 
 ---
 
-## 2. Навігація / IA
+## 1. Base principles
 
-### 2.1 Top-level каркас
+- React Native, cross-platform (iOS + Android)
+- Target context — a person in the gym: one hand, sweating, 5–15 second interactions between sets, 15–30 "glance → log → defer" cycles per workout
+- Own visual language, we don't clone Hevy / Strong / Boostcamp
+- MVP philosophy: supersets — must-have, AMRAP / drop sets / cluster — in v2
+- v1 goal: the fastest way to log a workout. Structure is planned ad-hoc at the start or by cloning from history
+
+From this follow the base constraints for the in-workout UI:
+
+- Large touch targets (finger, not cursor)
+- Minimum taps per set
+- Readability at arm's length
+- Obvious "where am I now" at a glance
+- Dark theme mandatory
+- All action menus — bottom action sheets, the same pattern on iOS and Android. Applies to the top-bar `⋯` menu, per-row `⋮` menu (exercise, group), set actions (§8), numpad (§7.2), superset config (§6.2). Reason: thumb-reach with one hand; we avoid top-anchored dropdowns. Native action sheet (iOS) and Material Bottom Sheet (Android) — equivalent impl variants, visually unified
+- All confirmations — also bottom sheet (the same component): title + opt. description + two buttons `Cancel` (top) and destructive (bottom). Swipe down = Cancel. Cancel on top — protection against accidental tap on destructive: fast dismiss without precise aim, the main action farther from the thumb. Aligned with Apple HIG (action sheet for destructive confirms) and Material 3 (modal bottom sheet). Applies to Discard workout (§3.1.c, §9.2), Discard setup (§4.8), Remove exercise / Remove set (§4.4, §4.5, §5.5), Save partial (§9.1), Delete custom (§11.8) and any future confirm flows
+
+
+---
+
+## 2. Navigation / IA
+
+### 2.1 Top-level frame
 
 3 bottom tabs:
 
-| Tab | Зміст |
-|-----|-------|
-| **Today** | Старт тренування: Repeat last / Choose from history / Start blank. Banner при in-progress workout-і |
-| **History** | Минулі тренування хронологічно, деталь |
+| Tab | Content |
+|-----|-----|
+| **Today** | Start workout: Repeat last / Choose from history / Start blank. Banner when there is an in-progress workout |
+| **History** | Past workouts chronologically, detail |
 | **Profile** | Preferences, exercise database, backup/restore, about |
 
-Exercise database живе всередині Profile (а не як окремий 4-й таб). Profile — generic hub для усього що не workout / history.
+Exercise database lives inside Profile (not as a separate 4th tab). Profile — generic hub for everything that is not workout / history.
 
 ### 2.2 Active workout — modal full takeover
 
-In-workout екран — modal поверх tab navigator. Tab bar ховається. Вийти можна тільки через свідому дію: `Finish` або `Discard`.
+In-workout screen — modal on top of the tab navigator. Tab bar hides. You can exit only through a deliberate action: `Finish` or `Discard`.
 
-Свідома відмова від mini-bar / minimize-режиму:
+Deliberate refusal of mini-bar / minimize mode:
 
-- Максимальний фокус, нема відволікань
-- Простіша архітектура, менше edge cases
+- Maximum focus, no distractions
+- Simpler architecture, fewer edge cases
 
-App backgrounded → state preserved → при поверненні відкривається на тому ж місці. Старт нового workout-у при активному неможливий: на Today висить in-progress banner, головні CTA disabled, поки юзер не зробить Resume або Discard (див. §3.1.c).
+App backgrounded → state preserved → on return it opens in the same place. Starting a new workout while one is active is impossible: on Today an in-progress banner is shown, the main CTAs disabled, until the user does Resume or Discard (see §3.1.c).
 
 ### 2.3 Workout Builder — modal pre-workout
 
-Pre-workout екран де юзер збирає список вправ і груп — теж modal overlay над Tab Navigator. Деталі — §4.
+Pre-workout screen where the user assembles the list of exercises and groups — also a modal overlay above the Tab Navigator. Details — §4.
 
-### 2.4 Дерево навігації
+### 2.4 Navigation tree
 
 ```mermaid
 flowchart TB
@@ -88,5 +88,4 @@ flowchart TB
     Modal --> M4[Completion screen]
 ```
 
-Today — single screen без stack. Workout Builder і Active Workout — modals. Решта табів мають свої стеки.
-
+Today — single screen without a stack. Workout Builder and Active Workout — modals. The rest of the tabs have their own stacks.

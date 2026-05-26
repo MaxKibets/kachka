@@ -1,26 +1,26 @@
 # Gym Tracker · Program Format
 
-> ⚠️ **Status: Frozen — deferred to v2.** Програмний шар повністю винесений з v1. v1 застосунок працює з ad-hoc workout-ами (див. `spec/README.md`), без поняття "програма". Цей документ зберігається як reference для майбутнього v2 — формат уже спроектований і не потребує перепродумування коли програми повернуться. UI імпорту також відкладено у v2.
+> ⚠️ **Status: Frozen — deferred to v2.** The program layer is fully removed from v1. The v1 app works with ad-hoc workouts (see `spec/README.md`), without the notion of a "program". This document is kept as a reference for a future v2 — the format is already designed and does not need rethinking when programs return. The import UI is also deferred to v2.
 
-> JSON-формат для імпорту/експорту програм. Один формат обслуговує: ручний імпорт, шаринг між юзерами, бекап, ШІ-генерацію. Технічні вимоги — у `tech/README.md`.
+> JSON format for importing/exporting programs. One format serves: manual import, sharing between users, backup, AI generation. Technical requirements — in `tech/README.md`.
 
-**Статус**: формат зафіксовано на рівні полів і правил. UI імпорту і conflict resolution — окрема робота. Імплементація — v2.
+**Status**: the format is frozen at the level of fields and rules. The import UI and conflict resolution — separate work. Implementation — v2.
 
-**Версія**: v0.1 · `schemaVersion: 1` · frozen
+**Version**: v0.1 · `schemaVersion: 1` · frozen
 
 ---
 
-## 1. Огляд
+## 1. Overview
 
-Формат описує програму тренувань як **дерево**: програма → тижні → тренування → елементи (вправа або група) → сети.
+The format describes a workout program as a **tree**: program → weeks → workouts → items (exercise or group) → sets.
 
-Основні принципи:
+Core principles:
 
-- Сети задаються **без таргет-ваги**, тільки структурою (повтори + опціональний RPE). Юзер сам підбирає вагу під час тренування
-- Прогресія між тижнями — **явна, без формул**. Якщо тижні різні, автор пише кожен окремо
-- Вправи задаються як **вільний текст** — імпортер мапить на exercise database через conflict resolution
-- Усі додаткові поля **опціональні**. Мінімальна валідна програма містить лише назву, тижні, тренування, вправи, повтори
-- Невідомі поля **ігноруються** при парсингу — це дозволяє додавати нові поля у майбутніх версіях формату без поломки старих імпортерів
+- Sets are defined **without a target weight**, only by structure (reps + optional RPE). The user picks the weight themselves during the workout
+- Progression between weeks is **explicit, without formulas**. If the weeks differ, the author writes each one separately
+- Exercises are defined as **free text** — the importer maps them onto the exercise database via conflict resolution
+- All additional fields are **optional**. A minimal valid program contains only a name, weeks, workouts, exercises, reps
+- Unknown fields are **ignored** during parsing — this allows adding new fields in future versions of the format without breaking old importers
 
 ```mermaid
 flowchart TD
@@ -40,7 +40,7 @@ flowchart TD
 
 ---
 
-## 2. Top-level структура
+## 2. Top-level structure
 
 ```json
 {
@@ -50,11 +50,11 @@ flowchart TD
 }
 ```
 
-| Поле | Тип | Обов'язкове | Опис |
+| Field | Type | Required | Description |
 |------|-----|-------------|------|
-| `schemaVersion` | integer | так | Версія формату. Зараз `1` |
-| `metadata` | object | так | Назва, опис, теги — див. §3 |
-| `weeks` | array | так | Масив тижнів — див. §4 |
+| `schemaVersion` | integer | yes | Format version. Currently `1` |
+| `metadata` | object | yes | Name, description, tags — see §3 |
+| `weeks` | array | yes | Array of weeks — see §4 |
 
 ---
 
@@ -72,38 +72,38 @@ flowchart TD
 }
 ```
 
-| Поле | Тип | Обов'язкове | Опис |
+| Field | Type | Required | Description |
 |------|-----|-------------|------|
-| `name` | string | так | Назва програми, відображається в списку |
-| `description` | string | ні | Короткий опис, відображається на превʼю перед стартом |
-| `author` | string | ні | Автор. Може бути будь-яким рядком |
-| `level` | enum | ні | `"beginner"`, `"intermediate"`, `"advanced"` |
-| `frequencyPerWeek` | integer | ні | Скільки тренувань на тиждень рекомендовано (для фільтрів). Має узгоджуватись з `workouts.length` у тижні |
-| `totalWeeks` | integer | ні | Скільки реальних тижнів триває програма. Якщо опущено — береться `weeks.length` |
-| `tags` | string[] | ні | Вільні теги для майбутнього пошуку: `"strength"`, `"hypertrophy"`, `"home"`, `"gym"`, тощо |
+| `name` | string | yes | Program name, displayed in the list |
+| `description` | string | no | Short description, displayed on the preview before start |
+| `author` | string | no | Author. Can be any string |
+| `level` | enum | no | `"beginner"`, `"intermediate"`, `"advanced"` |
+| `frequencyPerWeek` | integer | no | How many workouts per week are recommended (for filters). Must be consistent with `workouts.length` in a week |
+| `totalWeeks` | integer | no | How many real weeks the program lasts. If omitted — `weeks.length` is used |
+| `tags` | string[] | no | Free tags for future search: `"strength"`, `"hypertrophy"`, `"home"`, `"gym"`, etc. |
 
 ---
 
 ## 4. Weeks: pattern repeat vs sequence
 
-Масив `weeks` підтримує два режими, обумовлені своєю довжиною:
+The `weeks` array supports two modes, determined by its length:
 
 ```mermaid
 flowchart TB
     Start[Import]
     Start --> Check{weeks.length}
-    Check -->|=== 1| Repeat["Repeat: один тиждень × totalWeeks разів"]
-    Check -->|=== totalWeeks| Seq["Sequence: кожен тиждень унікальний"]
+    Check -->|=== 1| Repeat["Repeat: one week × totalWeeks times"]
+    Check -->|=== totalWeeks| Seq["Sequence: each week unique"]
     Check -->|other| Err[Validation error]
 ```
 
-**Режим repeat** — `weeks.length === 1`, програма повторює цей тиждень `totalWeeks` разів. Підходить для більшості початкових програм (PPL, Upper/Lower) де тижні структурно однакові.
+**Repeat mode** — `weeks.length === 1`, the program repeats this week `totalWeeks` times. Suitable for most beginner programs (PPL, Upper/Lower) where the weeks are structurally identical.
 
-**Режим sequence** — `weeks.length === totalWeeks`, кожен тиждень прописаний окремо. Підходить для програм з прогресією (5/3/1, Smolov, програми з deload).
+**Sequence mode** — `weeks.length === totalWeeks`, each week is written out separately. Suitable for programs with progression (5/3/1, Smolov, programs with deload).
 
-**Інші значення** — помилка валідації. Зокрема, не підтримується "повтор патерна з 2 тижнів × 6 разів" — автор має розгорнути в усі 12 тижнів.
+**Other values** — a validation error. In particular, "repeat a 2-week pattern × 6 times" is not supported — the author must expand it into all 12 weeks.
 
-### 4.1 Структура одного тижня
+### 4.1 Structure of a single week
 
 ```json
 {
@@ -113,17 +113,17 @@ flowchart TB
 }
 ```
 
-| Поле | Тип | Обов'язкове | Опис |
+| Field | Type | Required | Description |
 |------|-----|-------------|------|
-| `name` | string | ні | Назва тижня. Якщо опущено — береться `"Week N"` |
-| `isDeload` | boolean | ні | Маркер що це deload-тиждень. Впливає на статистику (не рахується для PR), на UI (показує позначку). Default `false` |
-| `workouts` | array | так | Масив тренувань цього тижня — див. §5 |
+| `name` | string | no | Week name. If omitted — `"Week N"` is used |
+| `isDeload` | boolean | no | A marker that this is a deload week. Affects statistics (not counted toward PRs), the UI (shows a badge). Default `false` |
+| `workouts` | array | yes | Array of workouts for this week — see §5 |
 
 ---
 
 ## 5. Workout
 
-Одне тренування дня.
+One workout for a day.
 
 ```json
 {
@@ -133,17 +133,17 @@ flowchart TB
 }
 ```
 
-| Поле | Тип | Обов'язкове | Опис |
+| Field | Type | Required | Description |
 |------|-----|-------------|------|
-| `name` | string | так | Назва тренування. "Push day", "Day 1", "Heavy upper" |
-| `notes` | string | ні | Author note для юзера, відображається перед стартом тренування |
-| `items` | array | так | Масив елементів: вправа або група — див. §6 |
+| `name` | string | yes | Workout name. "Push day", "Day 1", "Heavy upper" |
+| `notes` | string | no | Author note for the user, displayed before the workout starts |
+| `items` | array | yes | Array of items: exercise or group — see §6 |
 
 ---
 
 ## 6. Items: exercise vs group
 
-Кожен елемент в `items` — або одиночна вправа, або група вправ (суперсет). Розрізняється полем `type`.
+Each item in `items` is either a single exercise or a group of exercises (superset). Distinguished by the `type` field.
 
 ```mermaid
 flowchart TD
@@ -152,7 +152,7 @@ flowchart TD
     Item -->|group| Gr["{ type: group, rounds: N, exercises: [...] }"]
 ```
 
-### 6.1 Exercise (одиночна вправа)
+### 6.1 Exercise (single exercise)
 
 ```json
 {
@@ -170,16 +170,16 @@ flowchart TD
 }
 ```
 
-| Поле | Тип | Обов'язкове | Опис |
+| Field | Type | Required | Description |
 |------|-----|-------------|------|
-| `type` | `"exercise"` | так | Дискримінатор |
-| `exercise` | string | так | Назва вправи вільним текстом. Імпортер мапить на db — див. §8 |
-| `notes` | string | ні | Author note для цієї вправи |
-| `restBetweenSets` | integer | ні | Секунди відпочинку. Default з settings |
-| `isBodyweight` | boolean | ні | Якщо `true` — у numpad-і ховається kg-поле. Default `false` |
-| `sets` | array | так | Масив сетів — див. §7. Кожен сет має власні таргети |
+| `type` | `"exercise"` | yes | Discriminator |
+| `exercise` | string | yes | Exercise name as free text. The importer maps it onto the db — see §8 |
+| `notes` | string | no | Author note for this exercise |
+| `restBetweenSets` | integer | no | Rest seconds. Default from settings |
+| `isBodyweight` | boolean | no | If `true` — the kg field is hidden in the numpad. Default `false` |
+| `sets` | array | yes | Array of sets — see §7. Each set has its own targets |
 
-### 6.2 Group (суперсет)
+### 6.2 Group (superset)
 
 ```json
 {
@@ -202,31 +202,31 @@ flowchart TD
 }
 ```
 
-| Поле | Тип | Обов'язкове | Опис |
+| Field | Type | Required | Description |
 |------|-----|-------------|------|
-| `type` | `"group"` | так | Дискримінатор |
-| `rounds` | integer | так | Кількість раундів. 2–10 (типово 3–4) |
-| `restBetweenRounds` | integer | ні | Секунди відпочинку між раундами. Default з settings |
-| `notes` | string | ні | Author note для групи |
-| `exercises` | array | так | 2–5 вправ у групі. Кожна виконується раз за раунд |
+| `type` | `"group"` | yes | Discriminator |
+| `rounds` | integer | yes | Number of rounds. 2–10 (typically 3–4) |
+| `restBetweenRounds` | integer | no | Rest seconds between rounds. Default from settings |
+| `notes` | string | no | Author note for the group |
+| `exercises` | array | yes | 2–5 exercises in the group. Each is performed once per round |
 
-**Group exercise** (елемент масиву `exercises` у групі):
+**Group exercise** (an element of the `exercises` array in a group):
 
-| Поле | Тип | Обов'язкове | Опис |
+| Field | Type | Required | Description |
 |------|-----|-------------|------|
-| `exercise` | string | так | Назва вправи |
-| `notes` | string | ні | Author note для цієї вправи в межах групи |
-| `isBodyweight` | boolean | ні | Як у звичайній вправі |
-| `reps` | number \| [min, max] | так | Цільові повтори. Один шаблон на всі раунди |
-| `rpe` | number 1–10 | ні | Цільовий RPE |
+| `exercise` | string | yes | Exercise name |
+| `notes` | string | no | Author note for this exercise within the group |
+| `isBodyweight` | boolean | no | As in a regular exercise |
+| `reps` | number \| [min, max] | yes | Target reps. One template for all rounds |
+| `rpe` | number 1–10 | no | Target RPE |
 
-**Чому в групі немає `sets`-масиву.** Усі вправи групи мають однакову кількість раундів (= `rounds`) — це обмеження зафіксоване в моделі. Кожен раунд — це один прохід через всі вправи. Тому замість списку сетів — один шаблон, який повторюється `rounds` разів. Спроба написати уневен сети просто неможлива в форматі.
+**Why a group has no `sets` array.** All exercises in a group have the same number of rounds (= `rounds`) — this constraint is fixed in the model. Each round is one pass through all exercises. So instead of a list of sets there is one template that repeats `rounds` times. Trying to write uneven sets is simply impossible in the format.
 
 ---
 
 ## 7. Set
 
-Один сет одиночної вправи.
+One set of a single exercise.
 
 ```json
 {
@@ -237,24 +237,24 @@ flowchart TD
 }
 ```
 
-| Поле | Тип | Обов'язкове | Опис |
+| Field | Type | Required | Description |
 |------|-----|-------------|------|
-| `reps` | number \| [min, max] | так | Цільові повтори. `8` або `[8, 12]` для ranges. Range коректний коли `min < max`, обоє `> 0` |
-| `rpe` | number | ні | Цільовий RPE 1–10. Десяткові дозволені (`8.5`) |
-| `isWarmup` | boolean | ні | Маркер що сет — розминка. Виключається з volume і PR detection. Default `false` |
-| `notes` | string | ні | Author note для цього сета |
+| `reps` | number \| [min, max] | yes | Target reps. `8` or `[8, 12]` for ranges. A range is valid when `min < max`, both `> 0` |
+| `rpe` | number | no | Target RPE 1–10. Decimals allowed (`8.5`) |
+| `isWarmup` | boolean | no | A marker that the set is a warmup. Excluded from volume and PR detection. Default `false` |
+| `notes` | string | no | Author note for this set |
 
-**Чому немає поля для ваги.** Зафіксоване рішення: програми визначають структуру, не вагу. Юзер сам підбирає вагу під час тренування орієнтуючись на `prev` (минуле тренування) і RPE-таргет.
+**Why there is no weight field.** A fixed decision: programs define structure, not weight. The user picks the weight themselves during the workout, guided by `prev` (the previous workout) and the RPE target.
 
-**Що з RIR.** Не підтримується. Усе internal — RPE.
+**What about RIR.** Not supported. Everything is internal — RPE.
 
-**Що з tempo.** Не підтримується окремим полем. Якщо автор хоче — пише в `notes` вправи: `"Tempo 3-1-1-0"`.
+**What about tempo.** Not supported as a separate field. If the author wants it — they write it in the exercise `notes`: `"Tempo 3-1-1-0"`.
 
 ---
 
-## 8. Conflict resolution на імпорті
+## 8. Conflict resolution on import
 
-Вправи в форматі — вільний текст. На імпорті застосунок мапить кожну назву на exercise database (системну + кастомну).
+Exercises in the format are free text. On import the app maps each name onto the exercise database (system + custom).
 
 ```mermaid
 flowchart TD
@@ -273,40 +273,40 @@ flowchart TD
     MakeNew --> Next
 ```
 
-**Exact match** — точна збіжність назви (case-insensitive, ignore leading/trailing spaces).
+**Exact match** — an exact name match (case-insensitive, ignore leading/trailing spaces).
 
-**Fuzzy match** — близька назва (Levenshtein distance ≤ 2 символи, або substring match). Наприклад: `"Bench press"` ↔ `"Bench Press"`, `"Pullups"` ↔ `"Pull-ups"`. Юзер підтверджує.
+**Fuzzy match** — a close name (Levenshtein distance ≤ 2 characters, or substring match). For example: `"Bench press"` ↔ `"Bench Press"`, `"Pullups"` ↔ `"Pull-ups"`. The user confirms.
 
-**No match** — пропонується створити кастомну вправу з цією назвою.
+**No match** — creating a custom exercise with this name is offered.
 
-UI цього флоу — окрема робота, не у форматі. Поточний документ описує тільки **що** мапиться, не **як** показується.
+The UI of this flow — separate work, not in the format. This document describes only **what** is mapped, not **how** it is shown.
 
 ---
 
 ## 9. Validation rules
 
-При імпорті JSON застосунок перевіряє:
+On JSON import the app checks:
 
-| Правило | Помилка |
+| Rule | Error |
 |---------|---------|
-| `schemaVersion` присутнє і відоме | "Unsupported schema version" |
-| `metadata.name` непорожній | "Program must have a name" |
+| `schemaVersion` is present and known | "Unsupported schema version" |
+| `metadata.name` is non-empty | "Program must have a name" |
 | `weeks.length === 1 \|\| weeks.length === totalWeeks` | "Weeks count doesn't match totalWeeks" |
-| Кожен тиждень має `workouts.length >= 1` | "Week must have at least one workout" |
-| Кожне тренування має `items.length >= 1` | "Workout must have at least one exercise" |
-| У групі `exercises.length` між 2 і 5 | "Group must have 2 to 5 exercises" |
-| У групі `rounds` між 2 і 10 | "Group must have 2 to 10 rounds" |
-| Кожна вправа має `sets.length >= 1` (regular) або `reps` (group) | "Exercise must have at least one set" |
-| `reps` — позитивне число або `[min, max]` де `min < max`, обоє > 0 | "Invalid reps value" |
-| `rpe` між 1 і 10 (включно) | "RPE must be between 1 and 10" |
+| Each week has `workouts.length >= 1` | "Week must have at least one workout" |
+| Each workout has `items.length >= 1` | "Workout must have at least one exercise" |
+| In a group `exercises.length` between 2 and 5 | "Group must have 2 to 5 exercises" |
+| In a group `rounds` between 2 and 10 | "Group must have 2 to 10 rounds" |
+| Each exercise has `sets.length >= 1` (regular) or `reps` (group) | "Exercise must have at least one set" |
+| `reps` is a positive number or `[min, max]` where `min < max`, both > 0 | "Invalid reps value" |
+| `rpe` between 1 and 10 (inclusive) | "RPE must be between 1 and 10" |
 
-Невідомі поля ігноруються (forward compatibility). Дублікати в array-ах допускаються (юзер може хотіти 3 однакові вправи в одному дні — ідентичні warmup-сети, наприклад).
+Unknown fields are ignored (forward compatibility). Duplicates in arrays are allowed (a user may want 3 identical exercises in one day — identical warmup sets, for example).
 
 ---
 
-## 10. Повний приклад
+## 10. Full example
 
-Реалістична PPL програма, 4 тижні, останній тиждень — deload. Pattern: `sequence`.
+A realistic PPL program, 4 weeks, the last week is a deload. Pattern: `sequence`.
 
 ```json
 {
@@ -367,29 +367,29 @@ UI цього флоу — окрема робота, не у форматі. П
 
 ---
 
-## 11. Що зафіксовано — чеклист
+## 11. What is frozen — checklist
 
-- [x] `schemaVersion: 1` як корінь
-- [x] Сети без `targetWeight`, тільки структура
-- [x] Reps — `number` або `[min, max]`
-- [x] RPE only, без RIR (range 1–10, опціонально)
-- [x] Прогресія через explicit weeks, без формул
-- [x] `weeklyPattern` через довжину масиву (1 = repeat, totalWeeks = sequence)
-- [x] Опціональний `isDeload` на рівні тижня
-- [x] Author notes на 3 рівнях: program, workout, exercise (без per-set)
-- [x] Tempo — не у форматі, тільки в exercise notes якщо потрібно
-- [x] Substitutions — не у форматі (generic Replace exercise + ШІ враховує availableEquipment)
-- [x] Вправи — вільний текст з conflict resolution на імпорті
-- [x] Groups: `rounds` + спільний шаблон, не масив сетів
-- [x] Невідомі поля ігноруються (forward compat)
+- [x] `schemaVersion: 1` as the root
+- [x] Sets without `targetWeight`, structure only
+- [x] Reps — `number` or `[min, max]`
+- [x] RPE only, no RIR (range 1–10, optional)
+- [x] Progression via explicit weeks, without formulas
+- [x] `weeklyPattern` via the array length (1 = repeat, totalWeeks = sequence)
+- [x] Optional `isDeload` at the week level
+- [x] Author notes at 3 levels: program, workout, exercise (no per-set)
+- [x] Tempo — not in the format, only in exercise notes if needed
+- [x] Substitutions — not in the format (generic Replace exercise + AI takes availableEquipment into account)
+- [x] Exercises — free text with conflict resolution on import
+- [x] Groups: `rounds` + a shared template, not an array of sets
+- [x] Unknown fields are ignored (forward compat)
 
 ---
 
-## 12. Відкриті питання
+## 12. Open questions
 
-UI імпорту, conflict resolution, validation feedback, deep link landing, multi-language програми і edit після import — були спроектовані разом з v0.4 spec-у. Поточний spec (v0.5) ці зони не містить — програмний шар відкладено у v2.
+The import UI, conflict resolution, validation feedback, deep link landing, multi-language programs and editing after import — were designed together with the v0.4 spec. The current spec (v0.5) does not contain these zones — the program layer is deferred to v2.
 
-Лишаються:
+Remaining:
 
-- **Versioning і backward compat** — як еволюціонувати формат з v1 на v2 без поломки старих експортів. Спрощений принцип: невідомі поля ігноруються (forward compat). `schemaVersion` mismatch у бік newer — dead-end на імпорті. Деталі стратегії міграцій — TBD коли з'явиться v2
-- **`availableEquipment` user setting** — окреме поле в settings для майбутньої ШІ-генерації, треба зафіксувати в `tech/README.md`
+- **Versioning and backward compat** — how to evolve the format from v1 to v2 without breaking old exports. Simplified principle: unknown fields are ignored (forward compat). A `schemaVersion` mismatch toward newer — a dead-end on import. Details of the migration strategy — TBD when v2 appears
+- **`availableEquipment` user setting** — a separate field in settings for future AI generation, needs to be fixed in `tech/README.md`

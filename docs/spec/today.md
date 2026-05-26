@@ -1,21 +1,21 @@
 # Today · pre-workout flow
 
-> Старт тренування: три режими Today, Repeat last, Choose from history, onboarding (§3). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
-> Поведінка описана тут; візуальна система — `../visual/README.md`.
+> Workout start: three modes — Today, Repeat last, Choose from history, onboarding (§3). Part of the Kachka v1 UI/UX spec — full map and §-index: [spec map](README.md).
+> Behavior is described here; the visual system lives in `../visual/README.md`.
 
 ---
 
 ## 3. Pre-workout flow (Today)
 
-### 3.1 Today — три режими
+### 3.1 Today — three modes
 
-Today має три можливі стани:
+Today has three possible states:
 
-**(a) Has history, no in-progress workout** — основний flow. Картка "Repeat last" + посилання `Choose from history` і `Start blank`.
+**(a) Has history, no in-progress workout** — main flow. "Repeat last" card + links `Choose from history` and `Start blank`.
 
-**(b) No history (first launch)** — empty state. Один CTA "Start your first workout".
+**(b) No history (first launch)** — empty state. A single CTA "Start your first workout".
 
-**(c) In-progress workout exists** — banner зверху "In-progress · Resume / Discard" + основний flow під ним.
+**(c) In-progress workout exists** — banner at the top "In-progress · Resume / Discard" + main flow below it.
 
 #### 3.1.a Has history
 
@@ -41,9 +41,9 @@ Today має три можливі стани:
 └─────────────────────────┘
 ```
 
-- **Repeat last** card показує summary останнього завершеного тренування: назва, відносна дата (`5d ago`, `2 weeks ago`), one-liner списку вправ.
-- **Choose from history** — тап → list з усіма завершеними тренуваннями (chronological). Тап на тренування → клонується. Корисно для split routines (PPL, upper/lower) — юзер обирає "last upper day".
-- **Start blank workout** — тап → Workout Builder з пустим списком + Quick-add chips.
+- **Repeat last** card shows a summary of the last completed workout: name, relative date (`5d ago`, `2 weeks ago`), one-liner exercise list.
+- **Choose from history** — tap → list of all completed workouts (chronological). Tap on a workout → it is cloned. Useful for split routines (PPL, upper/lower) — the user picks "last upper day".
+- **Start blank workout** — tap → Workout Builder with an empty list + Quick-add chips.
 
 #### 3.1.b No history (first launch)
 
@@ -66,11 +66,11 @@ Today має три можливі стани:
 └─────────────────────────┘
 ```
 
-CTA → Workout Builder з пустим списком. Quick-add chips (§4.2) видимі зверху — юзер бачить 7 знайомих вправ і починає одним тапом.
+CTA → Workout Builder with an empty list. Quick-add chips (§4.2) are visible at the top — the user sees 7 familiar exercises and starts with one tap.
 
 #### 3.1.c In-progress workout
 
-Banner над основним вмістом (накладається поверх режиму (a) або (b)):
+Banner above the main content (overlaid on top of mode (a) or (b)):
 
 ```
 ┌─────────────────────────┐
@@ -82,54 +82,53 @@ Banner над основним вмістом (накладається пове
 │  │ Resume · Discard  │  │
 │  └───────────────────┘  │
 │                         │
-│  ... основний flow ...  │
+│  ... main flow ...      │
 └─────────────────────────┘
 ```
 
-- Resume → Active workout modal відкривається на збереженому state
-- Discard → workout прибирається з confirmation
+- Resume → Active workout modal opens at the saved state
+- Discard → workout is removed with confirmation
 
-Поки banner присутній, головні CTA режимів (a)/(b) — `Repeat last`, `Choose from history`, `Start blank` — **disabled** (приглушені, не реагують на тап). Єдиний шлях далі — Resume або Discard через banner. Constraint: один активний workout одночасно; новий не стартує доки старий не завершено або не відкинуто.
+While the banner is present, the main CTAs of modes (a)/(b) — `Repeat last`, `Choose from history`, `Start blank` — are **disabled** (dimmed, do not respond to tap). The only way forward is Resume or Discard via the banner. Constraint: one active workout at a time; a new one does not start until the old one is completed or discarded.
 
-Свідомо НЕ auto-resume: ризик попасти в забуте старе тренування одразу при відкритті. Свідомо блокуємо CTA замість confirm-діалогу: banner уже несе Resume/Discard, дублювати вибір у sheet — зайвий стан.
+Deliberately NOT auto-resume: risk of landing in a forgotten old workout right when opening. We deliberately block the CTAs instead of a confirm dialog: the banner already carries Resume/Discard, duplicating the choice in a sheet would be a redundant state.
 
-### 3.2 Repeat last — клонування
+### 3.2 Repeat last — cloning
 
-Тап на "Repeat last" виконує:
+Tapping "Repeat last" performs:
 
-1. Створює новий workout з ID (UUID v4) і поточною датою-часом
-2. Копіює `name` з джерела
-3. Копіює структуру: вправи в тому ж порядку, групи з тими ж rounds + rest, set count і таргети (reps + RPE)
-4. **НЕ копіює залоговані значення** (kg, фактичні reps). Поля порожні
-5. Прив'язує `prev` для кожного сета — значення з джерела клонування
-6. Відкриває Workout Builder з заповненим списком — юзер може коригувати перш ніж стартувати
+1. Creates a new workout with an ID (UUID v4) and the current date-time
+2. Copies `name` from the source
+3. Copies the structure: exercises in the same order, groups with the same rounds + rest, set count and targets (reps + RPE)
+4. **Does NOT copy logged values** (kg, actual reps). Fields are empty
+5. Binds `prev` for each set — the value from the cloning source
+6. Opens Workout Builder with a filled list — the user can adjust before starting
 
-Юзер бачить готовий workout, може щось додати/прибрати/відредагувати, і стартує.
+The user sees a ready workout, can add/remove/edit something, and starts.
 
 ### 3.3 Choose from history
 
-Окремий screen зі списком завершених тренувань (хронологічно). Те саме рендеринг що History list (§10.2). Тап на тренування → клонується (як §3.2) → відкривається Workout Builder.
+A separate screen with a list of completed workouts (chronological). Same rendering as the History list (§10.2). Tap on a workout → it is cloned (as §3.2) → Workout Builder opens.
 
-`prev`-значення в клонованому workout-і беруться з обраного джерела, а не з найостаннього такого ж workout-у. Свідомо — юзер обрав цей конкретний день як точку відліку.
+The `prev` values in the cloned workout are taken from the chosen source, not from the most recent identical workout. Deliberate — the user chose this specific day as the reference point.
 
 ### 3.4 Start blank — Workout Builder
 
-Тап → Workout Builder з пустим списком. Quick-add chips видимі зверху для швидкого старту. Можна також через "+ Add exercise" викликати full exercise picker.
+Tap → Workout Builder with an empty list. Quick-add chips are visible at the top for a quick start. You can also call the full exercise picker via "+ Add exercise".
 
-Деталі builder-а — у §4.
+Builder details — in §4.
 
 ### 3.5 Onboarding
 
-Перший запуск:
+First launch:
 
 1. App launches
 2. Today screen → empty state (3.1.b)
-3. Тап "Start workout" → Workout Builder з chips
+3. Tap "Start workout" → Workout Builder with chips
 
-Без welcome screens, без feature tour, без вибору мови (auto-detect з locale), без вибору юнітів (kg в MVP). Onboarding — функціональний, не маркетинговий.
+No welcome screens, no feature tour, no language selection (auto-detect from locale), no units selection (kg in MVP). Onboarding is functional, not marketing.
 
-### 3.6 Top-bar `⋯` меню Today
+### 3.6 Top-bar `⋯` menu Today
 
 - Exercise database → Profile/Exercise db
 - Settings → Profile (root)
-
