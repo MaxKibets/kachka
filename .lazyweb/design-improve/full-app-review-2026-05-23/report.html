@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kachka v1 — Design Review</title>
+<style>
+  :root {
+    --bg:#0A0F0E; --card:#131A18; --line:rgba(255,255,255,.08);
+    --text:#F1F5F4; --muted:#8A9A95; --dim:#5D6B66;
+    --mallard:#1F6E5C; --amber:#F2A53A; --info:#5C7B95; --rust:#B85842;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+    line-height:1.6; font-size:15px;
+  }
+  .wrap { max-width:920px; margin:0 auto; padding:48px 24px 96px; }
+  h1 { font-size:30px; font-weight:600; letter-spacing:-.02em; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 28px; font-size:14px; }
+  h2 {
+    font-size:21px; font-weight:600; margin:48px 0 14px;
+    padding-bottom:8px; border-bottom:1px solid var(--line);
+  }
+  h3 { font-size:16px; font-weight:600; margin:26px 0 8px; }
+  p { margin:10px 0; }
+  code {
+    font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-size:.86em;
+    background:#1C2521; padding:1px 5px; border-radius:5px; color:#cfe;
+  }
+  a { color:var(--amber); }
+  .tldr {
+    background:rgba(92,123,149,.13); border:1px solid rgba(92,123,149,.4);
+    border-radius:12px; padding:18px 22px; margin:18px 0 8px;
+  }
+  .tldr ol { margin:8px 0 0; padding-left:20px; }
+  ul,ol { margin:8px 0; padding-left:22px; }
+  li { margin:5px 0; }
+  .good { border-left:3px solid var(--mallard); padding-left:14px; margin:14px 0; color:var(--text); }
+  .find { margin:12px 0; }
+  .find b { color:var(--amber); }
+  table { border-collapse:collapse; width:100%; margin:18px 0; font-size:13.5px; }
+  th,td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:#1C2521; color:var(--muted); font-weight:600; }
+  .p0 { color:var(--rust); font-weight:600; }
+  .p1 { color:var(--amber); font-weight:600; }
+  .p2 { color:var(--info); font-weight:600; }
+  .p3 { color:var(--dim); font-weight:600; }
+  .gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px; margin:18px 0; }
+  .gallery figure { margin:0; }
+  .gallery img, .ref img { width:100%; border-radius:10px; border:1px solid var(--line); display:block; }
+  .gallery figcaption, .ref figcaption { color:var(--dim); font-size:11.5px; margin-top:5px; text-align:center; }
+  .ref { display:flex; gap:18px; align-items:flex-start; margin:18px 0; flex-wrap:wrap; }
+  .ref figure { margin:0; flex:0 0 200px; }
+  .tag { display:inline-block; font-size:11px; padding:1px 7px; border-radius:6px; background:#1C2521; color:var(--muted); border:1px solid var(--line); }
+  .flow-imgs { display:flex; gap:12px; flex-wrap:wrap; margin:14px 0; }
+  .flow-imgs figure { margin:0; flex:0 0 160px; }
+  .flow-imgs img { width:100%; border-radius:10px; border:1px solid var(--line); }
+  .flow-imgs figcaption { color:var(--dim); font-size:11px; margin-top:4px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Kachka v1 — Design Review</h1>
+<p class="sub">All 28 wireframes &amp; 5 flows · 2026-05-23 · rendered in proto mode, compared against the UX spec + Lazyweb references</p>
+
+<div class="tldr">
+<p><b>TL;DR.</b> The system is strong and coherent — utility-dense, dark, mono-numerals, two-color brand discipline, clear set-row state machine. It already reads better than most apps in the reference set. The work left is not structural; it's three buckets:</p>
+<ol>
+<li><b>One real visual defect</b> — the most-used in-workout controls (top-bar close / <code>⋯</code>, group <code>⋮</code>) render as <b>blank white squares</b>; icon lock is blocking the highest-traffic screen.</li>
+<li><b>~10 wireframe↔spec divergences</b>, each needing a one-line decision (update spec or fix mockup).</li>
+<li><b>A few interaction refinements</b> — rest-timer vs pull-to-cursor share the bottom zone; settings sheets mix instant-apply with Cancel/Done; superset config isn't mode-aware.</li>
+</ol>
+<p style="margin-bottom:0">No redesign needed — a polish + reconciliation pass.</p>
+</div>
+
+<h2>Cross-cutting issues</h2>
+
+<div class="find"><p><b>X1 · Icon placeholders render as blank squares ⭐</b> — on <code>in-workout</code> the top-bar close &amp; <code>⋯</code> and the group <code>⋮</code> render as solid white squares. These are the most-tapped controls in the app. Profile/Builder icons render fine, so it's the unresolved in-workout icon set. Lock the library (Lucide/Phosphor, visual §6) and wire <code>close</code>, <code>more-horizontal</code>, <code>more-vertical</code>, <code>note</code>.</p></div>
+<div class="find"><p><b>X2 · Ambiguous meta token <code>· 4 ·</code></b> — the unlabeled exercise count sits between <code>12 sets</code> and <code>540 kg</code> on Today, every History row, and the in-workout top bar. Label it (<code>4 ex</code>) or drop it.</p></div>
+<div class="find"><p><b>X3 · Volume thousands separator</b> — <code>4 540 kg</code> reads as two numbers next to the <code>·</code> meta rhythm. Pick <code>4,540</code> / <code>4540</code> / <code>4.5k</code>. Also an i18n call (UA uses space grouping).</p></div>
+
+<h2>Flow 1 — Today / pre-workout</h2>
+<div class="flow-imgs">
+  <figure><img src="references/current-today-has-history.png" alt=""><figcaption>has-history</figcaption></figure>
+  <figure><img src="references/current-today-first.png" alt=""><figcaption>first launch</figcaption></figure>
+  <figure><img src="references/current-today-in-progress.png" alt=""><figcaption>in-progress</figcaption></figure>
+</div>
+<p class="good"><b>Working:</b> clean three-state model; single confident amber CTA with demoted text-link alternates — the 90%-case optimization the spec argues for.</p>
+<div class="find"><p><b>F1.1 · In-progress CTAs aren't disabled</b> — spec §3.1.c requires Repeat/Choose/Start dimmed while the banner shows (only Resume/Discard live). Mockup shows them bright. Mockup gap vs a locked decision.</p></div>
+<div class="find"><p><b>F1.2 · Orphan "Or" label</b> — weak connector; use a thin "— or —" divider or drop it.</p></div>
+
+<h2>Flow 2 — Builder / picker / superset</h2>
+<div class="flow-imgs">
+  <figure><img src="references/current-builder.png" alt=""><figcaption>builder</figcaption></figure>
+  <figure><img src="references/current-builder-with-supersets.png" alt=""><figcaption>w/ supersets</figcaption></figure>
+  <figure><img src="references/current-superset-config.png" alt=""><figcaption>superset config</figcaption></figure>
+  <figure><img src="references/current-row-menu.png" alt=""><figcaption>row menu</figcaption></figure>
+  <figure><img src="references/current-picker-add.png" alt=""><figcaption>picker (add)</figcaption></figure>
+  <figure><img src="references/current-exercise-create.png" alt=""><figcaption>create custom</figcaption></figure>
+</div>
+<p class="good"><b>Working:</b> drag-handle (left) + <code>⋮</code> (right) cleanly split; Quick-add chips peek the next chip; superset card reads instantly (mallard border + letter chip + A1/A2). Picker + create have helpful inline helper text.</p>
+<div class="find"><p><b>F2.1 · Row menu missing <code>Edit sets</code> + <code>Add note</code></b> — spec §4.4 lists both. Without them there's no pre-workout way to change the default 3×8 or set targets — user must start the workout to edit. Functional gap.</p></div>
+<div class="find"><p><b>F2.2 · Superset sheet isn't mode-aware</b> — shows <code>Cancel · Save · Ungroup</code> together. Ungroup only applies in edit mode. Create → <code>Cancel / Create group</code>; edit → <code>Cancel / Save</code> + <code>Ungroup</code>. (Spec §6.2 calls it "Create group", not "Save".)</p></div>
+<div class="find"><p><b>F2.3 · Rest is below the fold in the config sheet</b> — the combined sheet's point is partner + rounds + rest in one glance. Compress the exercise list so Rounds + Rest + Create sit above the fold. <span class="tag">see Ladder ref</span></p></div>
+<div class="find"><p><b>F2.4 · <code>Discard</code> sits under the primary CTA</b> — destructive verb under the thumb's primary target. Add separation.</p></div>
+
+<h2>Flow 3 — In-workout family</h2>
+<div class="flow-imgs">
+  <figure><img src="references/current-in-workout.png" alt=""><figcaption>in-workout</figcaption></figure>
+  <figure><img src="references/current-in-workout-supersets.png" alt=""><figcaption>w/ supersets</figcaption></figure>
+  <figure><img src="references/current-numpad.png" alt=""><figcaption>numpad</figcaption></figure>
+  <figure><img src="references/current-set-actions.png" alt=""><figcaption>set actions</figcaption></figure>
+  <figure><img src="references/current-rest-timer.png" alt=""><figcaption>rest timer</figcaption></figure>
+  <figure><img src="references/current-pull-to-cursor.png" alt=""><figcaption>pull-to-cursor</figcaption></figure>
+</div>
+<p class="good"><b>Working — the strongest part of the app.</b> Set table is dense but legible; active = amber tile + bold mono, done = muted + mallard check, collapsed completed exercise saves space. The custom numpad beats the references (gym quick-adjust <code>−5/−2.5/+2.5/+5</code>, dual fields, big keys). Inline RPE picker is well-judged. Superset in-workout density is impressive without chaos.</p>
+<div class="find"><p><b>F3.1 · Rest-timer ring vs pull-to-cursor chip compete for the bottom zone</b> — INDEX flags the 92px collision. Decide: prominent ring (glanceable, but ~180px) <i>or</i> spec's compact bottom-bar countdown (§5.1/§6.6). If ring stays, it can't share a layer with the chip — define stacking.</p></div>
+<div class="find"><p><b>F3.2 · Numpad "Done" → "Save set"</b> — names the consequence (logs set, advances cursor, starts rest). §7.2.</p></div>
+<div class="find"><p><b>F3.3 · Failed-reps (0) &amp; warmup row treatment still TBD</b> — visual §5.1. Mock the row-level feedback for a logged failed set (§5.7).</p></div>
+
+<h2>Flow 4 — Finish / History</h2>
+<div class="flow-imgs">
+  <figure><img src="references/current-completion.png" alt=""><figcaption>completion</figcaption></figure>
+  <figure><img src="references/current-history-list.png" alt=""><figcaption>history list</figcaption></figure>
+  <figure><img src="references/current-history-detail.png" alt=""><figcaption>history detail</figcaption></figure>
+  <figure><img src="references/current-history-empty.png" alt=""><figcaption>history empty</figcaption></figure>
+  <figure><img src="references/current-history-picker.png" alt=""><figcaption>history picker</figcaption></figure>
+</div>
+<p class="good"><b>Working:</b> Completion nails it — 4 stat cards with the PR card as the single info-tinted accent (restraint most apps fail). History detail's read-only per-round superset breakdown is genuinely good information design. Sticky week/month headers + two-line rows scan well.</p>
+<div class="find"><p><b>F4.1 · History has top-bar <code>⋯</code> menus; spec says it shouldn't</b> — §10.1–10.3 say no topbar actions / read-only. Either the decision changed (update spec + define the menu) or drop the <code>⋯</code>.</p></div>
+<div class="find"><p><b>F4.2 · <code>history-empty</code> has a "Go to Today" CTA; spec says none</b> (§10.4). Arguably helpful — make it a decision, not a silent override.</p></div>
+<div class="find"><p><b>F4.4 · Completion note placement</b> — sits between stats and summary; notes are usually written last, so consider moving it below the summary. Low priority.</p></div>
+
+<h2>Flow 5 — Profile / settings / DB / backup</h2>
+<div class="flow-imgs">
+  <figure><img src="references/current-profile.png" alt=""><figcaption>profile</figcaption></figure>
+  <figure><img src="references/current-settings-sheet.png" alt=""><figcaption>theme/lang sheets</figcaption></figure>
+  <figure><img src="references/current-db-list.png" alt=""><figcaption>exercise db</figcaption></figure>
+  <figure><img src="references/current-db-empty.png" alt=""><figcaption>db empty</figcaption></figure>
+  <figure><img src="references/current-backup-restore.png" alt=""><figcaption>backup</figcaption></figure>
+  <figure><img src="references/current-import-preview.png" alt=""><figcaption>import preview</figcaption></figure>
+  <figure><img src="references/current-about.png" alt=""><figcaption>about</figcaption></figure>
+</div>
+<p class="good"><b>Working:</b> tidy iOS-style grouped hub; DB browse matches the §11.5 resolution (CUSTOM badge + custom-only <code>⋮</code>); db-empty's "build your custom library" nudge over the always-present system list is a smart read of "empty = no custom"; import preview is thorough.</p>
+<div class="find"><p><b>F5.1 · Backup copy is broken (UA/EN mix) ⭐</b> — footer reads <b>"Auto-backup i encryption — y v2."</b> (<code>i</code>=і, <code>y</code>=у leaking in). Should be <b>"Auto-backup and encryption — in v2."</b> Repo rule: base UI copy is English. Clear bug.</p></div>
+<div class="find"><p><b>F5.2 · Settings: instant-apply vs Cancel/Done conflict</b> — §12.2 says Theme/Language apply <i>instantly</i>, but the sheets have a Cancel/Done footer (implies a commit step). Pick one. Also the selected row is double-encoded (mallard dot + checkmark) — one marker is enough.</p></div>
+<div class="find"><p><b>F5.3 · <code>Default rest</code> row not in spec</b> (§12.3 lists only Rest haptic + Rest sound). It's genuinely useful — likely "add to spec" rather than cut. Decide.</p></div>
+<div class="find"><p><b>F5.4 · About scope creep</b> — Report an issue + Open source licenses appear though §12.5 defers acknowledgements; <code>Качайся.</code> tagline is UA-only (needs EN variant or accept as brand-ism). Reconcile with v1 scope.</p></div>
+<div class="find"><p><b>F5.5 · Import preview dropped the "Settings" line</b> — spec §13.3 lists it; keep it so users know settings get replaced/merged. Minor.</p></div>
+
+<h2>Prioritized punch list</h2>
+<table>
+<tr><th>#</th><th>Fix</th><th>Type</th><th>Priority</th></tr>
+<tr><td>X1</td><td>Lock icons; in-workout close/<code>⋯</code>/<code>⋮</code> render as squares</td><td>Visual defect</td><td class="p0">P0</td></tr>
+<tr><td>F5.1</td><td>Fix "Auto-backup i encryption — y v2" → English</td><td>Copy bug</td><td class="p0">P0</td></tr>
+<tr><td>F2.1</td><td>Add <code>Edit sets</code> + <code>Add note</code> to builder row menu</td><td>Functional gap</td><td class="p1">P1</td></tr>
+<tr><td>F1.1</td><td>Disable Today CTAs while in-progress banner shows</td><td>Spec gap</td><td class="p1">P1</td></tr>
+<tr><td>F3.1</td><td>Resolve rest-timer ring vs pull-to-cursor layout</td><td>Interaction</td><td class="p1">P1</td></tr>
+<tr><td>F2.2</td><td>Make superset sheet mode-aware (Create vs Save+Ungroup)</td><td>Spec/logic</td><td class="p1">P1</td></tr>
+<tr><td>F5.2</td><td>Settings: instant-apply OR Cancel/Done; single select marker</td><td>Spec/logic</td><td class="p1">P1</td></tr>
+<tr><td>X2</td><td>Label/drop bare exercise-count <code>· 4 ·</code></td><td>Consistency</td><td class="p2">P2</td></tr>
+<tr><td>X3</td><td>Disambiguate volume thousands separator</td><td>Consistency/i18n</td><td class="p2">P2</td></tr>
+<tr><td>F4.1</td><td>Drop History <code>⋯</code> menus (or update spec + define)</td><td>Spec divergence</td><td class="p2">P2</td></tr>
+<tr><td>F4.2</td><td>Decide History-empty CTA</td><td>Spec divergence</td><td class="p2">P2</td></tr>
+<tr><td>F5.3</td><td>Decide <code>Default rest</code> (add to spec or cut)</td><td>Spec divergence</td><td class="p2">P2</td></tr>
+<tr><td>F3.2</td><td>Numpad "Done" → "Save set"</td><td>Copy</td><td class="p3">P3</td></tr>
+<tr><td>F2.3</td><td>Surface Rest above fold in superset sheet</td><td>Polish</td><td class="p3">P3</td></tr>
+<tr><td>F5.4</td><td>Reconcile About with v1 scope</td><td>Scope</td><td class="p3">P3</td></tr>
+<tr><td>F3.3</td><td>Mock failed-reps (0) + warmup row treatment</td><td>Visual TBD</td><td class="p3">P3</td></tr>
+<tr><td>F2.4</td><td>Separate Builder <code>Discard</code> from primary CTA</td><td>Polish</td><td class="p3">P3</td></tr>
+<tr><td>F1.2 / F4.4 / F5.5</td><td>"Or" connector · completion note order · import "Settings" line</td><td>Polish</td><td class="p3">P3</td></tr>
+</table>
+
+<h2>References</h2>
+<p>Match quality from Lazyweb was moderate — a data-dense, no-account, single-purpose logger is a narrow niche, and the spec deliberately avoids cloning Hevy/Strong/Fitbod. Treat these as inspiration, not templates.</p>
+
+<div class="ref">
+  <figure><img src="references/ref-fitbod-builder.png" alt=""><figcaption>Fitbod — builder <span class="tag">Lazyweb</span></figcaption></figure>
+  <div><b>Workout plan / builder.</b> Editable circuit list with per-exercise sets/reps/weight, target-muscle context, prominent Start Workout. Fitbod exposes per-exercise edit inline — supports adding <code>Edit sets</code> to Kachka's row menu (F2.1).</div>
+</div>
+<div class="ref">
+  <figure><img src="references/ref-numbies-numpad.png" alt=""><figcaption>Numbies — rep keypad <span class="tag">Lazyweb</span></figcaption></figure>
+  <div><b>Rep logging + numeric keypad.</b> Kachka's numpad is more capable (dual kg/reps + gym quick-adjust), which validates the custom-numpad decision — the "what good looks like, and we're past it" baseline.</div>
+</div>
+<div class="ref">
+  <figure><img src="references/ref-ladder-multiselect.png" alt=""><figcaption>Ladder — constrained multi-select <span class="tag">Lazyweb</span></figcaption></figure>
+  <div><b>"Pick up to N" selection.</b> Constraint stated inline + compact footer. Relevant to the superset config sheet (F2.3) — keep the constraint label + selection + action above the fold.</div>
+</div>
+
+<p class="sub" style="margin-top:40px">All 27 rendered screens live in <code>references/current-*.png</code> (proto mode, clean phone frame).</p>
+
+</div>
+</body>
+</html>
