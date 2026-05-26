@@ -1,15 +1,15 @@
 # Profile, Settings & Backup
 
-> Hub налаштувань — PREFERENCES / WORKOUT / DATA / About (§12) і backup / restore (§13). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
-> Поведінка описана тут; візуальна система — `../visual/README.md`.
+> Settings hub — PREFERENCES / WORKOUT / DATA / About (§12) and backup / restore (§13). Part of the Kachka v1 UI/UX spec — full map and §-index: [spec map](README.md).
+> Behavior is described here; the visual system lives in `../visual/README.md`.
 
 ---
 
 ## 12. Profile + Settings
 
-> Profile tab — generic hub для всього що не workout / history. Архітектура hybrid: settings inline на root-екрані, важкі workflows (Exercise db, Backup/Restore) як окремі sub-screens.
+> Profile tab — generic hub for everything that is not workout / history. Hybrid architecture: settings inline on the root screen, heavy workflows (Exercise db, Backup/Restore) as separate sub-screens.
 
-### 12.1 Profile root — структура
+### 12.1 Profile root — structure
 
 ```
 ┌─────────────────────────┐
@@ -32,84 +32,84 @@
 └─────────────────────────┘
 ```
 
-Profile root — root-екран таба, без back-кнопки. Заголовок `Profile`. Скрол.
+Profile root — the tab's root screen, no back button. Title `Profile`. Scrollable.
 
-Чотири блоки з grouped section headers:
+Four blocks with grouped section headers:
 
-| Секція | Зміст | Тип контролів |
+| Section | Content | Control type |
 |---|---|---|
 | `PREFERENCES` | Theme, Language, Show RPE | Picker rows + toggle |
 | `WORKOUT` | Rest haptic, Rest sound | Toggles |
 | `DATA` | Exercise database, Backup & restore | Sub-screen rows |
-| `About` | About | Sub-screen row (без префікса-секції) |
+| `About` | About | Sub-screen row (no section prefix) |
 
 ### 12.2 PREFERENCES
 
 #### Theme
 
-Tap → action sheet з трьома опціями: `System` (default), `Dark`, `Light`. Вибір застосовується миттєво. `System` означає auto-follow OS-теми.
+Tap → action sheet with three options: `System` (default), `Dark`, `Light`. The selection applies instantly. `System` means auto-follow the OS theme.
 
-`Dark` — основна тема (з §1: «темна тема обов'язкова»). `Light` робиться у v1 для повноти і System-режиму, але не як рекомендований use-case.
+`Dark` — the primary theme (from §1: "dark theme is mandatory"). `Light` is built in v1 for completeness and the System mode, but not as a recommended use case.
 
 #### Language
 
-Tap → action sheet з трьома опціями: `System` (default), `English`, `Ukrainian`. `System` auto-detect-ить з locale; якщо locale не English і не Ukrainian — fallback English. Override переписує detection без рестарту.
+Tap → action sheet with three options: `System` (default), `English`, `Ukrainian`. `System` auto-detects from locale; if the locale is neither English nor Ukrainian — fallback to English. The override overwrites detection without a restart.
 
 #### Show RPE
 
 Toggle, default ON.
 
-- ON: RPE picker доступний у set actions sheet (§8.2), бейдж `@8` рендериться у рядку сета
-- OFF: пункт `RPE` зникає з set actions sheet, бейджі `@8` не показуються; раніше залоговані RPE-значення зберігаються в db і повертаються при ON
+- ON: RPE picker available in the set actions sheet (§8.2), the `@8` badge is rendered in the set row
+- OFF: the `RPE` item disappears from the set actions sheet, `@8` badges are not shown; previously logged RPE values are kept in the db and returned when ON
 
 ### 12.3 WORKOUT
 
-Сигнали по закінченні rest-таймера.
+Signals when the rest timer ends.
 
-| Toggle | Default | Поведінка коли ON |
+| Toggle | Default | Behavior when ON |
 |---|---|---|
-| Rest haptic | ON | Haptic impact (medium) при досягненні 0:00 |
-| Rest sound | OFF | Короткий cue-sound через системний audio channel |
+| Rest haptic | ON | Haptic impact (medium) on reaching 0:00 |
+| Rest sound | OFF | A short cue sound via the system audio channel |
 
-Без push-нотифікацій у v1 (background → v2). Коли обидва OFF — таймер просто візуально доходить до 0:00.
+No push notifications in v1 (background → v2). When both are OFF — the timer simply visually reaches 0:00.
 
 ### 12.4 DATA
 
 #### Exercise database
 
-Тап → відкриває §11 Exercise picker у Browse mode як push на Profile stack.
+Tap → opens §11 Exercise picker in Browse mode as a push on the Profile stack.
 
 #### Backup & restore
 
-Тап → окремий sub-screen. Деталі — §13.
+Tap → a separate sub-screen. Details — §13.
 
 ### 12.5 About
 
-Тап → push sub-screen зі статичним контентом:
+Tap → push sub-screen with static content:
 
-- App name + version: `Kachka · 1.0.0 (build 42)` (build number з CI)
+- App name + version: `Kachka · 1.0.0 (build 42)` (build number from CI)
 - Source code link → GitHub (open source)
 - Privacy note: `Your data stays on this device. No accounts, no servers, no analytics.`
 
-Без acknowledgements у v1 — додамо коли стек обраний і список залежностей зафіксується.
+No acknowledgements in v1 — we will add them once the stack is chosen and the dependency list is fixed.
 
-### 12.6 Свідомо НЕ робимо у v1
+### 12.6 Deliberately NOT doing in v1
 
-- **Delete all data** — рідкісний use case (юзер може перевстановити додаток). Якщо колись треба — окрема destructive-дія в DATA з double-confirm
-- **Units toggle (kg/lb)** — kg only у v1, lb через user setting у v2 (з tech doc: «Юніти: kg only для MVP»)
-- **Decimal separator override** — locale-driven, без user-facing toggle (§7.5)
-- **Notifications** — push, scheduled reminders, rest-end banner у background → v2. У v1 тільки local haptic/sound (§12.3)
+- **Delete all data** — a rare use case (the user can reinstall the app). If ever needed — a separate destructive action in DATA with a double-confirm
+- **Units toggle (kg/lb)** — kg only in v1, lb via a user setting in v2 (from the tech doc: "Units: kg only for MVP")
+- **Decimal separator override** — locale-driven, no user-facing toggle (§7.5)
+- **Notifications** — push, scheduled reminders, rest-end banner in the background → v2. In v1 only local haptic/sound (§12.3)
 
 
 ---
 
 ## 13. Backup & restore
 
-> Manual export/import усіх юзерських даних у JSON-файл. Точка входу: Profile → DATA → Backup & restore (§12.4). Local-only фундамент (tech §2), без серверів і accounts; backup — єдиний механізм disaster recovery і device migration у v1.
+> Manual export/import of all user data into a JSON file. Entry point: Profile → DATA → Backup & restore (§12.4). Local-only foundation (tech §2), without servers or accounts; backup is the only disaster recovery and device migration mechanism in v1.
 
-### 13.1 Екран Backup & restore
+### 13.1 Backup & restore screen
 
-Push sub-screen на Profile stack. Дві симетричні зони — Export і Import.
+Push sub-screen on the Profile stack. Two symmetric zones — Export and Import.
 
 ```
 ┌─────────────────────────┐
@@ -134,28 +134,28 @@ Push sub-screen на Profile stack. Дві симетричні зони — Exp
 └─────────────────────────┘
 ```
 
-Без `Last export` індикатора — чистий manual режим.
+No `Last export` indicator — a clean manual mode.
 
 ### 13.2 Export flow
 
-1. Тап `Export backup`
-2. App серіалізує усі юзерські дані в JSON:
-   - Усі workouts (з сетами і structure суперсетів, з references на exercises по UUID)
-   - Усі custom exercises (включно з soft-deleted, бо History на них посилається — див. §11.9)
+1. Tap `Export backup`
+2. The app serializes all user data into JSON:
+   - All workouts (with sets and superset structure, with references to exercises by UUID)
+   - All custom exercises (including soft-deleted ones, since History references them — see §11.9)
    - User settings (theme, language, Show RPE, Rest haptic, Rest sound)
    - Metadata: `schemaVersion`, `appVersion`, `exportedAt` (ISO timestamp)
-3. Створюється тимчасовий файл `kachka-backup-YYYY-MM-DD.json`
-4. Native share sheet (iOS Share / Android Intent) — юзер обирає destination: Files, iCloud Drive, AirDrop, Drive, email, Telegram, тощо
-5. На успіх — toast `Backup exported`
+3. A temporary file `kachka-backup-YYYY-MM-DD.json` is created
+4. Native share sheet (iOS Share / Android Intent) — the user picks the destination: Files, iCloud Drive, AirDrop, Drive, email, Telegram, etc.
+5. On success — toast `Backup exported`
 
-Свідомо без свого destination-picker — share sheet нативно покриває усі сценарії.
+Deliberately without a custom destination picker — the share sheet natively covers all scenarios.
 
 ### 13.3 Import flow
 
-1. Тап `Import backup`
-2. Native file picker, фільтр `.json`
-3. App читає файл, валідує (§13.6). При помилці — error sheet з причиною
-4. Якщо OK — push preview screen:
+1. Tap `Import backup`
+2. Native file picker, filter `.json`
+3. The app reads the file, validates (§13.6). On error — error sheet with the reason
+4. If OK — push preview screen:
 
 ```
 ┌─────────────────────────┐
@@ -180,51 +180,50 @@ Push sub-screen на Profile stack. Дві симетричні зони — Exp
 └─────────────────────────┘
 ```
 
-5. Юзер переглядає preview і обирає import mode (default — Replace all). Тап `Import`.
+5. The user reviews the preview and chooses an import mode (default — Replace all). Tap `Import`.
 6. Bottom sheet confirmation (§1):
-   - *Replace*: title `Replace all data?`, description `Current data will be lost. This cannot be undone.`, `Cancel` (вгорі) + destructive `Replace` (внизу)
-   - *Merge*: title `Import 47 workouts and 12 exercises?`, description `Existing data is preserved. Duplicates by ID are skipped.`, `Cancel` (вгорі) + primary `Import` (внизу)
-7. На confirm — atomic transaction (§13.4). При failure — rollback до pre-import стану, error sheet
-8. На success — toast `Backup imported`, повернення на Profile root
+   - *Replace*: title `Replace all data?`, description `Current data will be lost. This cannot be undone.`, `Cancel` (top) + destructive `Replace` (bottom)
+   - *Merge*: title `Import 47 workouts and 12 exercises?`, description `Existing data is preserved. Duplicates by ID are skipped.`, `Cancel` (top) + primary `Import` (bottom)
+7. On confirm — atomic transaction (§13.4). On failure — rollback to the pre-import state, error sheet
+8. On success — toast `Backup imported`, return to Profile root
 
 ### 13.4 Import modes
 
-Дві опції, юзер обирає на preview screen:
+Two options, the user chooses on the preview screen:
 
-| Mode | Що робить з entities | Що робить з settings | Use case |
+| Mode | What it does with entities | What it does with settings | Use case |
 |---|---|---|---|
-| **Replace all** (default) | Wipe local db → insert backup as-is | Settings з backup замінюють поточні | Disaster recovery / device migration / "хочу повернути все як було" |
-| **Merge (skip dupes)** | Insert тільки нові entities (новий UUID); existing — skip | Поточні settings зберігаються | Multi-device: додати тренування з іншого пристрою без втрати поточних |
+| **Replace all** (default) | Wipe local db → insert backup as-is | Settings from the backup replace the current ones | Disaster recovery / device migration / "I want everything back the way it was" |
+| **Merge (skip dupes)** | Insert only new entities (new UUID); existing — skip | Current settings are kept | Multi-device: add workouts from another device without losing the current ones |
 
-Default Replace — типовий сценарій. Merge — для рідкісного multi-device флоу.
+Default Replace — the typical scenario. Merge — for the rare multi-device flow.
 
-Skip-by-UUID означає: якщо сутність уже є з тим самим ID — лишається поточна версія. Per-field merge не робимо у v1: складно і потребує conflict resolution UX, відкладено до повноцінного sync (v2).
+Skip-by-UUID means: if an entity already exists with the same ID — the current version stays. We do not do per-field merge in v1: it is complex and needs conflict resolution UX, deferred to full sync (v2).
 
-### 13.5 Файл і формат
+### 13.5 File and format
 
-- *Назва за замовчуванням*: `kachka-backup-YYYY-MM-DD.json`
-- *Розширення*: `.json`
+- *Default name*: `kachka-backup-YYYY-MM-DD.json`
+- *Extension*: `.json`
 - *Encoding*: UTF-8
-- *Структура*: окремо специфікується у data model doc (поки відкрите питання, див. §15)
-- *Plain JSON у v1* — без encryption / password. Sensitivity даних низька (тренувальна історія); юзер сам обирає де зберігати файл. Encryption — окреме питання у v2 разом з sync
+- *Structure*: specified separately in the data model doc (still an open question, see §15)
+- *Plain JSON in v1* — without encryption / password. The data sensitivity is low (workout history); the user chooses where to store the file. Encryption — a separate question in v2 together with sync
 
-### 13.6 Validation і помилки
+### 13.6 Validation and errors
 
-При читанні файлу — error sheet (bottom sheet з §1) з конкретною причиною:
+When reading the file — error sheet (bottom sheet from §1) with a specific reason:
 
-| Помилка | Повідомлення |
+| Error | Message |
 |---|---|
-| Невалідний JSON / пошкоджений файл | `Could not read backup. The file may be corrupted.` |
-| Незрозумілий формат (нема `schemaVersion`) | `This file is not a Kachka backup.` |
+| Invalid JSON / corrupted file | `Could not read backup. The file may be corrupted.` |
+| Unrecognized format (no `schemaVersion`) | `This file is not a Kachka backup.` |
 | Newer `schemaVersion` | `This backup was created with a newer version of Kachka. Update the app to import.` |
-| Older `schemaVersion` | Auto-migrate JSON → current schema перед preview (без участі юзера). Якщо migration fails — `Could not upgrade backup to current version.` |
+| Older `schemaVersion` | Auto-migrate JSON → current schema before preview (without user involvement). If migration fails — `Could not upgrade backup to current version.` |
 
-### 13.7 Що НЕ робимо у v1
+### 13.7 What we do NOT do in v1
 
 - Auto-backup (background tasks, permissions, reliability) → v2
-- Encryption / password protection → v2 разом з sync
-- Stale-backup nudge (`Last export: X days ago`) — manual режим без напоминання
-- Selective export (тільки workouts / тільки exercises) — backup завжди повний
-- Import dry-run (виконати без commit) — preview screen вже виконує цю роль перед confirm
-- Backup history (зберігати кілька snapshot-ів локально) — це вже робить filesystem користувача
-
+- Encryption / password protection → v2 together with sync
+- Stale-backup nudge (`Last export: X days ago`) — manual mode without reminders
+- Selective export (only workouts / only exercises) — the backup is always complete
+- Import dry-run (run without commit) — the preview screen already serves this role before confirm
+- Backup history (storing several snapshots locally) — the user's filesystem already does this

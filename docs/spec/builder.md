@@ -1,15 +1,15 @@
 # Workout Builder
 
-> Pre-workout збірка списку вправ і груп перед стартом (§4). Частина UI/UX-специфікації Kachka v1 — повна карта і §-індекс: [spec map](README.md).
-> Поведінка описана тут; візуальна система — `../visual/README.md`.
+> Pre-workout assembly of the list of exercises and groups before the start (§4). Part of the Kachka v1 UI/UX spec — full map and §-index: [spec map](README.md).
+> Behavior is described here; the visual system lives in `../visual/README.md`.
 
 ---
 
 ## 4. Workout Builder
 
-> Pre-workout екран де юзер збирає список вправ перед стартом тренування. Точки входу: Start blank (§3.4), Repeat last (§3.2), Choose from history (§3.3).
+> Pre-workout screen where the user assembles the list of exercises before starting the workout. Entry points: Start blank (§3.4), Repeat last (§3.2), Choose from history (§3.3).
 
-### 4.1 Структура екрана
+### 4.1 Screen structure
 
 ```
 ┌─────────────────────────┐
@@ -44,16 +44,16 @@
 └─────────────────────────┘
 ```
 
-- **Header**: back button, screen title `Build workout`. Свайп вниз закриває (з confirmation якщо щось змінено).
-- **Workout name**: editable inline. При Repeat last / Choose from history заповнено з джерела. При Start blank — auto `Workout · 2026-05-02`, юзер може переписати.
-- **Quick add chips**: 7 popular exercises (§4.2). Тап додає вправу з default-сетами.
-- **Exercises list**: вправи + групи в порядку виконання. Кожна вправа — секція з one-liner summary і `⋮`-меню.
-- **+ Add exercise**: відкриває exercise picker (повний список + пошук + custom).
-- **Start workout** sticky button: запускає Active Workout modal. Disabled поки список порожній.
+- **Header**: back button, screen title `Build workout`. Swipe down closes (with confirmation if something was changed).
+- **Workout name**: editable inline. With Repeat last / Choose from history it is filled from the source. With Start blank — auto `Workout · 2026-05-02`, the user can overwrite it.
+- **Quick add chips**: 7 popular exercises (§4.2). Tap adds the exercise with default sets.
+- **Exercises list**: exercises + groups in performance order. Each exercise is a section with a one-liner summary and a `⋮` menu.
+- **+ Add exercise**: opens the exercise picker (full list + search + custom).
+- **Start workout** sticky button: launches the Active Workout modal. Disabled while the list is empty.
 
 ### 4.2 Quick-add chips
 
-Зашитий у v1 список з 7 вправ (powerlifting + базовий комплекс):
+A hardcoded v1 list of 7 exercises (powerlifting + basic set):
 
 | EN | UK |
 |---|---|
@@ -65,47 +65,47 @@
 | Pull-up | Підтягування |
 | Bicep Curl | Згинання на біцепс |
 
-- Чіпи видимі завжди (постійний UX, не онбординг)
-- Локалізовані з системного exercise database через `exerciseId`
-- Тап → додає вправу з default-сетами в кінець списку
-- Без локального ranking-у в v1 (можливе майбутнє покращення — зараз чіпи статичні)
+- Chips are always visible (permanent UX, not onboarding)
+- Localized from the system exercise database via `exerciseId`
+- Tap → adds the exercise with default sets to the end of the list
+- No local ranking in v1 (a possible future improvement — for now the chips are static)
 
-### 4.3 Default sets для нової вправи
+### 4.3 Default sets for a new exercise
 
-Коли вправа додається через Quick-add або через picker — автоматично створюється 3 сети з `reps: 8`, без RPE, без warmup. Юзер може коригувати в `⋮`-меню вправи.
+When an exercise is added via Quick-add or via the picker — 3 sets with `reps: 8`, no RPE, no warmup are created automatically. The user can adjust them in the exercise's `⋮` menu.
 
-Bodyweight вправи (з системної db `isBodyweight: true`) додаються без kg-поля.
+Bodyweight exercises (from the system db `isBodyweight: true`) are added without the kg field.
 
-### 4.4 Меню вправи `⋮` (у Builder)
-
-| Action | Result |
-|---|---|
-| Edit sets | Sheet з list-ом сетів. Кожен сет — `reps` (single або range) + опц. `rpe` + warmup toggle + delete. + Add set |
-| Add to superset | Multi-select picker з інших standalone-вправ → config sheet (rounds, rest) → створює групу. §6 |
-| Move up / Move down | Перемістити в списку |
-| Remove exercise | Видалити вправу з confirmation |
-| Add note | Per-exercise note — author hint що показується в Active workout |
-
-### 4.5 Меню групи `⋮` (у Builder)
+### 4.4 Exercise menu `⋮` (in Builder)
 
 | Action | Result |
 |---|---|
-| Edit rounds / rest | Sheet з rounds (2-10) і restBetweenRounds |
-| Add exercise to group | Picker → додає до групи (до ліміту 5) |
-| Remove exercise from group | З confirmation. Якщо лишається 1 — auto-ungroup |
-| Reorder inside | Drag handles в межах групи |
-| Move group up / down | Як одне ціле |
-| Ungroup | Розпадається на флет-вправи в тому ж порядку |
+| Edit sets | Sheet with a list of sets. Each set — `reps` (single or range) + optional `rpe` + warmup toggle + delete. + Add set |
+| Add to superset | Multi-select picker from other standalone exercises → config sheet (rounds, rest) → creates a group. §6 |
+| Move up / Move down | Move within the list |
+| Remove exercise | Remove the exercise with confirmation |
+| Add note | Per-exercise note — author hint shown in Active workout |
 
-### 4.6 Reorder зовнішнього списку
+### 4.5 Group menu `⋮` (in Builder)
 
-Drag handle на **лівому** краю кожної секції (вправи або групи). Drag перемикає порядок. Групи рухаються цілком.
+| Action | Result |
+|---|---|
+| Edit rounds / rest | Sheet with rounds (2-10) and restBetweenRounds |
+| Add exercise to group | Picker → adds to the group (up to the limit of 5) |
+| Remove exercise from group | With confirmation. If 1 remains — auto-ungroup |
+| Reorder inside | Drag handles within the group |
+| Move group up / down | As a single whole |
+| Ungroup | Breaks apart into flat exercises in the same order |
 
-Handle зліва (а не на trailing-краю за iOS-конвенцією) свідомо: `⋮`-меню вже на правому краю, тож рознесення двох контролів по різних краях прибирає скупчення і unambiguous tap-таргети.
+### 4.6 Reorder of the outer list
+
+Drag handle on the **left** edge of each section (exercise or group). Drag changes the order. Groups move as a whole.
+
+The handle on the left (rather than on the trailing edge per the iOS convention) is deliberate: the `⋮` menu is already on the right edge, so spreading the two controls across different edges removes clustering and yields unambiguous tap targets.
 
 ### 4.7 Empty list
 
-Якщо список порожній:
+If the list is empty:
 
 ```
   No exercises yet
@@ -114,8 +114,7 @@ Handle зліва (а не на trailing-краю за iOS-конвенцією)
 
 Start workout button disabled.
 
-### 4.8 Discard / save для пізніше
+### 4.8 Discard / save for later
 
-- Закрити builder без старту → confirmation "Discard workout setup?". Підтвердити — все втрачається.
-- "Save as draft" свідомо не робимо в v1: додає state-management без чіткої цінності. Юзер з готовим планом стартує одразу.
-
+- Close the builder without starting → confirmation "Discard workout setup?". Confirm — everything is lost.
+- "Save as draft" is deliberately not done in v1: it adds state-management without clear value. A user with a ready plan starts immediately.
