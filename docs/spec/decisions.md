@@ -78,10 +78,18 @@
 **Workout Builder**
 - [x] Modal overlay over the Tab Navigator
 - [x] Quick-add chips: Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl
-- [x] Default sets for a new exercise: 3 × 8
+- [x] Default 1 pending set when an exercise is added (replaces the earlier 3 × 8 default; sets are configured in the In-workout pending state, see Builder & in-workout flow)
 - [x] Editable workout name (from the source when cloning, auto-name when blank)
 - [x] Reorder via drag, supersets via action menu
 - [x] Start workout button disabled while the list is empty
+
+**Builder & in-workout flow**
+- [x] Builder is composition-only: name + muscle groups per card, reorder, add via chips/picker + supersets. No set presets in the Builder
+- [x] Sets are configured in the In-workout pending (pre-start) state, not in the Builder
+- [x] Soft start: the workout begins at the first logged set or an explicit `Begin` tap, whichever first; setup time is not counted toward duration
+- [x] Default 1 pending set when an exercise is added (replaces the earlier 3 × 8 default)
+- [x] `Add set` copies the previous set's values (reps / weight)
+- [x] Pre-set weights optional; `prev` shown as guidance; weight chosen live remains the norm
 
 **In-workout**
 - [x] Exercise list — scroll, not carousel
