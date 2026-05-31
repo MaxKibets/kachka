@@ -196,19 +196,19 @@
           <div class="ex-card-bg highlighted">
             <div>
               <div style="font-size: 15px; font-weight: 500;">Bench press</div>
-              <div class="text-sub" style="font-size: 12px;"><span class="num">3</span> sets · 8 reps</div>
+              <div class="text-sub" style="font-size: 12px;">Chest · Triceps · Shoulders</div>
             </div>
           </div>
           <div class="ex-card-bg">
             <div>
               <div style="font-size: 15px; font-weight: 500;">Pull-up</div>
-              <div class="text-sub" style="font-size: 12px;"><span class="num">3</span> sets · 8 reps · bodyweight</div>
+              <div class="text-sub" style="font-size: 12px;">Back · Biceps</div>
             </div>
           </div>
           <div class="ex-card-bg">
             <div>
               <div style="font-size: 15px; font-weight: 500;">Tricep pushdown</div>
-              <div class="text-sub" style="font-size: 12px;"><span class="num">3</span> sets · 8 reps</div>
+              <div class="text-sub" style="font-size: 12px;">Triceps</div>
             </div>
           </div>
           <div class="scrim" data-href="builder.html"></div>
@@ -219,10 +219,25 @@
 
           <div class="sheet-header">
             <div class="sheet-title">Bench press</div>
-            <div class="sheet-subtitle"><span class="num">3</span> sets · Chest · Triceps · Shoulders</div>
+            <div class="sheet-subtitle">Chest · Triceps · Shoulders</div>
           </div>
 
           <div class="sheet-body">
+
+            <!-- Add note → per-exercise note editor (per spec §4.4) -->
+            <div class="action-row" data-href="#">
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <line x1="10" y1="9" x2="8" y2="9"/>
+              </svg>
+              <div class="label-block">
+                <span>Add note</span>
+                <span class="sub">Hint shown during the workout</span>
+              </div>
+            </div>
 
             <!-- Add to superset (з indicator A якщо вже є група A в workout-і) -->
             <div class="action-row" data-href="superset-config-sheet.html">
@@ -294,6 +309,7 @@
       <section>
         <h2>Opens to</h2>
         <ul>
+          <li>Tap <code>Add note</code> → per-exercise note editor; note показується author hint-ом в Active workout (per spec §4.4) — окремий wireframe TBD</li>
           <li>Tap <code>Add to superset</code> → партнер picker → <a href="superset-config-sheet.html">superset-config-sheet.html</a></li>
           <li>Якщо в workout-і вже є група A — letter chip <code>A</code> indicator. Tap → додає вправу до існуючої групи A (skip step partner picker, відкривається config sheet з prefilled candidates per spec §6.2)</li>
           <li>Tap <code>Move up</code> / <code>Move down</code> → переміщує вправу в списку, sheet закривається</li>
@@ -314,12 +330,11 @@
       <section>
         <h2>Notes</h2>
         <ul>
-          <li>Sheet header дублює контекст: name <code>Bench press</code> + subtitle <code>3 sets · Chest · Triceps · Shoulders</code> — щоб юзер не плутався який саме exercise редагує</li>
+          <li>Sheet header дублює контекст: name <code>Bench press</code> + subtitle <code>Chest · Triceps · Shoulders</code> — щоб юзер не плутався який саме exercise редагує. Sets у subtitle більше немає — у Builder сети не визначаються (per redesign)</li>
           <li><strong>Letter chip A</strong> показано як indicator на <code>Add to superset</code> — означає що в workout-і вже є група <code>A</code> (per prompt). Якщо тап → додасть до неї. Якщо груп немає — chip відсутній, тап → партнер picker (нова група)</li>
           <li><code>Move up</code> / <code>Move down</code> — secondary affordance. Per spec §4.4 + §4.6 drag є primary. Корисно для accessibility (folks без drag), і фолбек коли drag важко (точність thumb)</li>
           <li><code>Remove from workout</code> — destructive (rust color <code>--letter-e</code>). Окрема divider-section з canvas-кольором візуально відмежовує destructive від neutral actions (per spec §1 — destructive внизу)</li>
-          <li>Per spec §4.4 повний menu також включає <code>Edit sets</code>, <code>Add note</code> — у v1 ставимо мінімум для Batch 2 wireframe. Можна розширити в наступних ітераціях</li>
-          <li><strong>Assumption</strong>: <code>Edit sets</code> і <code>Add note</code> per spec §4.4 не included у цей wireframe (не зазначено в prompt-і). Якщо потрібно — додаємо у наступному раунді</li>
+          <li>Row menu тепер <strong>composition-only</strong> per spec §4.4 (redesign, supersedes F2.1 — див. <a href="../issues/REDESIGN-builder-inworkout.md">REDESIGN-builder-inworkout.md</a>). <code>Edit sets</code> прибрано: редагування сетів переїхало в In-workout pending state (per spec §5.9), бо у Builder сети більше не визначаються. <code>Add note</code> лишається — author hint, що рендериться в Active workout; відкриває окремий per-exercise note editor (destination wireframe TBD)</li>
           <li><strong>Assumption</strong>: Confirmation для <code>Remove from workout</code> per spec §1 — окремий confirmation sheet (TBD у Batch 3-4 — той самий компонент з <code>Cancel</code> вгорі і destructive внизу)</li>
         </ul>
       </section>

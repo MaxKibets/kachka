@@ -19,6 +19,7 @@
     .iw-app-bar .iw-back {
       width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center;
+      background: none; border: none; padding: 0; cursor: pointer;
       color: var(--text-primary);
       flex-shrink: 0;
     }
@@ -44,6 +45,7 @@
     .iw-overflow {
       width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center;
+      background: none; border: none; padding: 0; cursor: pointer;
       color: var(--text-primary);
       flex-shrink: 0;
     }
@@ -353,7 +355,8 @@
       <section>
         <h2>Opens from</h2>
         <ul>
-          <li>Workout Builder → tap <code>Start workout</code> (<a href="builder.html">builder.html</a> — TBD у Batch 2)</li>
+          <li><strong>Pending (pre-start) стан того ж екрана</strong> — In-workout відкривається спершу як pending (<a href="in-workout-pending.html">in-workout-pending.html</a>, per spec §5.9). Цей мокап — <em>live</em> стан після soft start</li>
+          <li>Workout Builder → tap <code>Start workout</code> (<a href="builder.html">builder.html</a> — TBD у Batch 2). Веде у pending стан, не одразу сюди</li>
           <li>Today banner → tap <code>Resume</code> (<a href="today-in-progress.html">today-in-progress.html</a>)</li>
         </ul>
       </section>
@@ -380,12 +383,15 @@
           <li>Long-press на set row = secondary trigger для set actions (per spec §8.1)</li>
           <li>Active set: kg/Reps tiles тапабельні незалежно (numpad перемикає focus між полями)</li>
           <li>Без bottom tab bar — modal full takeover (per spec §1, §2.2)</li>
+          <li><strong>Soft start</strong>: цей live стан настає коли тренування «почалося» — на першому залогованому сеті АБО після явного <code>Begin</code> у pending стані (що раніше). Тоді вмикається cursor, армується rest timer, стартує duration clock (per spec §5.9). До того — <a href="in-workout-pending.html">pending стан</a></li>
+          <li><code>Add set</code> копіює значення попереднього сету (reps/weight) — додати сет це один тап (per spec §5.5, §5.9)</li>
         </ul>
       </section>
 
       <section>
         <h2>Edge cases · related states</h2>
         <ul>
+          <li><strong>Pending (pre-start) стан</strong> — <a href="in-workout-pending.html">in-workout-pending.html</a> (стан перед soft start, per spec §5.9)</li>
           <li>З суперсетами — <a href="in-workout-with-supersets.html">in-workout-with-supersets.html</a></li>
           <li>Numpad open поверх → <a href="numpad.html">numpad.html</a></li>
           <li>Set actions sheet → <a href="set-actions-sheet.html">set-actions-sheet.html</a></li>
@@ -405,7 +411,8 @@
           <li>Done state — opacity 0.55, mallard ✓ circle. Active state — top/bottom amber borders, surface-2 фон, surface-3 tile inputs, amber empty circle. Pending — text.tertiary values, 1px subtle empty circle (per visual §5.1)</li>
           <li>Active row "ковтає" border-divider зверху і знизу через negative margin — щоб не було подвійних ліній (subtle divider + amber border)</li>
           <li>Bottom action bar: <code>logged / total</code> ліворуч (Plex Mono, secondary text, Plex Mono numbers primary), amber CTA повна ширина праворуч (per brief)</li>
-          <li>"Add set" — secondary button per visual §5.4 (dashed border, transparent bg)</li>
+          <li>"Add set" — secondary button per visual §5.4 (dashed border, transparent bg). Копіює попередній сет (per spec §5.9)</li>
+          <li><strong>Перед цим екраном</strong> — pending (pre-start) стан (<a href="in-workout-pending.html">in-workout-pending.html</a>): усі сети pending, cursor вимкнено, timer/clock не йдуть, час підготовки не рахується в duration. Soft start (перший лог АБО <code>Begin</code>) переводить екран у цей live стан (per spec §5.9)</li>
         </ul>
       </section>
 

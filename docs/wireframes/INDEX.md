@@ -56,7 +56,8 @@ wireframes/
 
 ### Batch 3 — In-workout family ✅
 
-- [x] [in-workout.html](in-workout.html) — refined основний In-workout
+- [x] [in-workout.html](in-workout.html) — refined основний In-workout (live state)
+- [x] [in-workout-pending.html](in-workout-pending.html) — pending (pre-start) state: налаштування сетів/reps до старту, soft start (redesign, spec §5.9)
 - [x] [in-workout-with-supersets.html](in-workout-with-supersets.html) — приклад з суперсетом і round indicator
 - [x] [numpad.html](numpad.html) — custom numpad (bottom sheet)
 - [x] [set-actions-sheet.html](set-actions-sheet.html) — bottom sheet після тапу на номер сета
@@ -156,7 +157,7 @@ wireframes/
 - **Profile WORKOUT секція** — додано placeholder `Default rest` row. Spec §12.3 згадує лише Rest haptic + Rest sound. Прибрати?
 - **About: Report an issue + Licenses** — додано хоча per spec §12.5 acknowledgements відкладено. Тримати чи зрізати до v1 scope?
 - **About tagline `Качайся.`** — playful, ua-only. Англійський variant потребує decision.
-- **Builder row menu обсяг** — агент додав 5 actions. Spec §4.4 також описує `Edit sets` і `Add note` — не включені. Додати?
+- ~~**Builder row menu обсяг**~~ — RESOLVED (redesign): row menu стало композиційним (`Add note` / `Add to superset` / `Move` / `Remove`); `Edit sets` прибрано — сети тепер налаштовуються в In-workout pending-стані (spec §5.9). Див. `../issues/REDESIGN-builder-inworkout.md`.
 - **Group active row через negative margin** — production cleanup TBD; production варіант через grid layout без margin tricks.
 - **Floating timer + pull-to-cursor конфлікт** — обидва на 92px-bottom. Layout не вирішено в межах wireframe.
 - **RPE remove value** через tap selected ще раз — поведінка TBD.
