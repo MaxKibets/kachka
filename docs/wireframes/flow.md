@@ -22,6 +22,7 @@ stateDiagram-v2
     state "Today / first launch" as TodayFirst
     state "Today / has history" as TodayHasHistory
     state "Today / in-progress banner" as TodayInProgress
+    state "In-workout / pending (pre-start)" as ActiveWorkoutPending
 
     TodayFirst --> Builder: tap Start workout
     TodayHasHistory --> Builder: tap Repeat last (clone)
@@ -32,7 +33,8 @@ stateDiagram-v2
     ConfirmDiscard --> TodayHasHistory: confirm
 
     HistoryPicker --> Builder: tap workout (clone)
-    Builder --> ActiveWorkout: tap Start workout
+    Builder --> ActiveWorkoutPending: tap Start workout
+    ActiveWorkoutPending --> ActiveWorkout: first set logged / tap Begin (soft start)
     Builder --> TodayHasHistory: tap back / Discard setup
     ActiveWorkout --> CompletionScreen: tap Finish (≥1 set logged)
     ActiveWorkout --> ConfirmDiscard: tap Finish (0 sets logged)
@@ -135,7 +137,8 @@ stateDiagram-v2
     PickerAdd --> Builder: pick
     PickerAdd --> ExerciseCreate: + Create custom
     SupersetConfig --> Builder: Save
-    Builder --> ActiveWorkout: Start workout
+    Builder --> ActiveWorkoutPending: Start workout
+    ActiveWorkoutPending --> ActiveWorkout: first log / Begin (soft start)
 
     state "Builder (default)" as Builder
     state "Builder w/ superset" as BuilderSS
@@ -144,6 +147,7 @@ stateDiagram-v2
     state "Superset config" as SupersetConfig
     state "Exercise create" as ExerciseCreate
     state "Active In-workout" as ActiveWorkout
+    state "In-workout pending (pre-start)" as ActiveWorkoutPending
 ```
 
 Файли: [builder.html](builder.html) · [builder-with-supersets.html](builder-with-supersets.html) · [exercise-picker-add.html](exercise-picker-add.html) · [superset-config-sheet.html](superset-config-sheet.html) · [builder-row-menu-sheet.html](builder-row-menu-sheet.html) · [exercise-create.html](exercise-create.html)
@@ -178,7 +182,7 @@ stateDiagram-v2
     state "Discard confirm" as ConfirmDiscard
 ```
 
-Файли: [in-workout.html](in-workout.html) · [in-workout-with-supersets.html](in-workout-with-supersets.html) · [numpad.html](numpad.html) · [set-actions-sheet.html](set-actions-sheet.html) · [rest-timer.html](rest-timer.html) · [pull-to-cursor.html](pull-to-cursor.html)
+Файли: [in-workout.html](in-workout.html) · [in-workout-pending.html](in-workout-pending.html) · [in-workout-with-supersets.html](in-workout-with-supersets.html) · [numpad.html](numpad.html) · [set-actions-sheet.html](set-actions-sheet.html) · [rest-timer.html](rest-timer.html) · [pull-to-cursor.html](pull-to-cursor.html)
 
 ---
 

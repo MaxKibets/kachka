@@ -247,12 +247,12 @@ Per spec §1 — all menus and confirmations via bottom sheets. The visual detai
 
 ## 6. Iconography
 
-**Working choice**: thin-line, weight `1.8–2px`, rounded `line-cap` and `line-join`. Lucide-style.
+**Style**: thin-line, weight `1.8–2px`, rounded `line-cap` and `line-join`. Lucide-style.
 
 - Size: `16–20px` in compact places, `24px` in hero contexts, `12–13px` for inline modifier-affordance (edit-pencil)
 - Color: inherit from `currentColor`
 - No filled / duotone icons in v1
-- Candidate library: **Lucide** (RN-compatible, OFL). Confirm at implementation — alternative is Phosphor (also OFL, RN-compatible, has several weight variants)
+- Library: **Lucide** — **locked for v1** (RN-compatible, OFL). Phosphor (also OFL, RN-compatible, multiple weights) was considered but not chosen — one consistent set keeps the chrome legible at arm's length.
 
 Icons are needed for: back, edit, ⋮ (3 dots), checkmark, plus, chevron (right/down/up), close, search, filter, share, settings, info. Muscle-group icons — TBD (text-only may be enough).
 
@@ -312,7 +312,7 @@ Not planned: a full character system with reactions, mascot-driven onboarding to
 | Action sheets style | High | container, divider, destructive button pattern |
 | Custom numpad style | High | a separate component, its own button grid (per spec §7.2) |
 | Semantic colors | Medium | Resolve conflicts with the brand and letter palette |
-| Iconography library lock | Medium | Lucide vs Phosphor, confirm at implementation |
+| Iconography library lock | ✅ Done | Locked: **Lucide** (v1). Phosphor considered, not chosen |
 | Motion specifics | Medium | concrete easing / durations |
 | Set actions visual (warmup, RPE, note, delete) | Medium | per spec §8 |
 | Mascot character | Low | a separate session |

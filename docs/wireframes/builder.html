@@ -243,7 +243,7 @@
             </div>
             <div>
               <div class="ex-name">Bench press</div>
-              <div class="ex-sub"><span class="num">3</span> sets · 8 reps</div>
+              <div class="ex-sub">Chest · Triceps · Shoulders</div>
             </div>
             <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
               <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
@@ -258,7 +258,7 @@
             </div>
             <div>
               <div class="ex-name">Pull-up</div>
-              <div class="ex-sub"><span class="num">3</span> sets · 8 reps · bodyweight</div>
+              <div class="ex-sub">Back · Biceps</div>
             </div>
             <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
               <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
@@ -273,7 +273,7 @@
             </div>
             <div>
               <div class="ex-name">Tricep pushdown</div>
-              <div class="ex-sub"><span class="num">3</span> sets · 8 reps</div>
+              <div class="ex-sub">Triceps</div>
             </div>
             <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
               <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
@@ -312,11 +312,11 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap chip → додає вправу з default 3×8 (per spec §4.3)</li>
+          <li>Tap chip → додає вправу <strong>без сетів</strong> (кількість сетів/повторень налаштовується пізніше у In-workout pending, per spec §4.3 + §5)</li>
           <li>Tap <code>+ Add exercise</code> → exercise picker у Add mode (<a href="exercise-picker-add.html">exercise-picker-add.html</a>)</li>
           <li>Tap row <code>⋮</code> → <a href="builder-row-menu-sheet.html">builder-row-menu-sheet.html</a></li>
           <li>Tap <code>Add to superset</code> у row menu → партнер picker → <a href="superset-config-sheet.html">superset-config-sheet.html</a></li>
-          <li>Tap <code>Start workout</code> → Active Workout modal (<a href="in-workout.html">in-workout.html</a> — TBD у Batch 3)</li>
+          <li>Tap <code>Start workout</code> → In-workout у <strong>pending state</strong> (pre-start). Годинник тривалості <strong>не</strong> запускається на тап — soft start: відлік стартує з першого залогованого сету або явного <code>Begin</code> (per spec §5.9). Live-стан: <a href="in-workout.html">in-workout.html</a></li>
           <li>Tap <code>←</code> back / <code>Discard</code> → confirmation sheet (<code>Discard workout setup?</code>) → Today</li>
         </ul>
       </section>
@@ -348,7 +348,7 @@
         <ul>
           <li>З суперсетом — <a href="builder-with-supersets.html">builder-with-supersets.html</a></li>
           <li>Empty list — header лишається, chips видимі, замість карток — copy <code>No exercises yet · Tap a chip above or "+ Add exercise"</code> (per spec §4.7), Start workout disabled</li>
-          <li>Bodyweight вправа додається без kg-поля автоматично (per spec §4.3 — на основі <code>isBodyweight</code> прапора)</li>
+          <li>Bodyweight вправа в Builder показує лише назву + м'язові групи; обробка ваги (<code>isBodyweight</code> → без kg-поля) — вже in-workout concern (per spec §5)</li>
         </ul>
       </section>
 

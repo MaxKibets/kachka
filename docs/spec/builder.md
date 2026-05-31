@@ -27,7 +27,7 @@
 │  ─ Exercises ──────     │
 │                         │
 │  Bench press        ⋮   │
-│   4 × 8 · RPE 7-8       │
+│   Chest · Triceps       │
 │                         │
 │  ┌── A · Superset ──┐   │  group block
 │  │ 3 rounds · 2:00  │   │
@@ -46,10 +46,10 @@
 
 - **Header**: back button, screen title `Build workout`. Swipe down closes (with confirmation if something was changed).
 - **Workout name**: editable inline. With Repeat last / Choose from history it is filled from the source. With Start blank — auto `Workout · 2026-05-02`, the user can overwrite it.
-- **Quick add chips**: 7 popular exercises (§4.2). Tap adds the exercise with default sets.
-- **Exercises list**: exercises + groups in performance order. Each exercise is a section with a one-liner summary and a `⋮` menu.
-- **+ Add exercise**: opens the exercise picker (full list + search + custom).
-- **Start workout** sticky button: launches the Active Workout modal. Disabled while the list is empty.
+- **Quick add chips**: 7 popular exercises (§4.2). Tap adds the exercise without sets — set count / reps are configured later in the In-workout pending state (§4.3, §5).
+- **Exercises list**: exercises + groups in performance order. Each exercise is a section showing the exercise name + a muscle-group subtitle (e.g. `Chest · Triceps`) and a `⋮` menu — no set/rep info, since sets are not defined in the Builder (§4.3, §5).
+- **+ Add exercise**: opens the exercise picker (full list + search + custom). The exercise is added without sets — sets are configured in the In-workout pending state (§4.3, §5).
+- **Start workout** sticky button: launches the Active Workout modal. Disabled while the list is empty. It leads into the In-workout pending state — the duration clock starts later (soft start, see §5), not when this is tapped.
 
 ### 4.2 Quick-add chips
 
@@ -67,20 +67,21 @@ A hardcoded v1 list of 7 exercises (powerlifting + basic set):
 
 - Chips are always visible (permanent UX, not onboarding)
 - Localized from the system exercise database via `exerciseId`
-- Tap → adds the exercise with default sets to the end of the list
+- Tap → adds the exercise to the end of the list (without sets — configured later in the In-workout pending state, §4.3)
 - No local ranking in v1 (a possible future improvement — for now the chips are static)
 
-### 4.3 Default sets for a new exercise
+### 4.3 Sets for a new exercise
 
-When an exercise is added via Quick-add or via the picker — 3 sets with `reps: 8`, no RPE, no warmup are created automatically. The user can adjust them in the exercise's `⋮` menu.
+When an exercise is added — via Quick-add or via the picker — it is added to the Builder **without any sets**. The Builder is composition-only: it captures which exercises are in the workout and their order, not their set/rep scheme.
 
-Bodyweight exercises (from the system db `isBodyweight: true`) are added without the kg field.
+Set count and reps are configured in the In-workout **pending state**, where each exercise starts with a default of **1** pending set (§5, §5.5). `Add set` copies the previous set's values, so building up a scheme is one tap per set.
+
+Bodyweight exercises (from the system db `isBodyweight: true`) still hide the kg field — now in the in-workout numpad rather than on a Builder card.
 
 ### 4.4 Exercise menu `⋮` (in Builder)
 
 | Action | Result |
 |---|---|
-| Edit sets | Sheet with a list of sets. Each set — `reps` (single or range) + optional `rpe` + warmup toggle + delete. + Add set |
 | Add to superset | Multi-select picker from other standalone exercises → config sheet (rounds, rest) → creates a group. §6 |
 | Move up / Move down | Move within the list |
 | Remove exercise | Remove the exercise with confirmation |

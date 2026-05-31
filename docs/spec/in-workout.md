@@ -54,8 +54,8 @@ An active workout is a full editor on top of the initial structure.
 |---|---|---|
 | Add set | `+ add set` button at the end of the exercise's set table | New pending set with the same targets as the last one |
 | Remove set | Set actions sheet → Delete | With confirmation |
-| Add exercise (at the end) | Top bar `⋯` → Add exercise → picker | Default 3×8 sets |
-| Insert exercise after current | Per-exercise `⋯` → Insert after | Added after the current exercise |
+| Add exercise (at the end) | Top bar `⋯` → Add exercise → picker | Added with 1 pending set (`Add set` copies prev as the list grows, §5.9) |
+| Insert exercise after current | Per-exercise `⋯` → Insert after | Added after the current exercise, with 1 pending set (§5.9) |
 | Remove exercise | Per-exercise `⋯` → Remove | With confirmation. If the exercise has logged sets — a warning |
 | Skip exercise | Per-exercise `⋯` → Skip | Soft variant: the exercise stays in the structure, marked `Skipped` |
 | Reorder | Drag handle on the right edge of the section | The cursor stays on the same set that was active |
@@ -122,6 +122,26 @@ A floating chip above the bottom bar, appears only when the active set is fully 
 A tap on the chip = re-engage auto-scroll: the viewport follows the cursor again after advance. If the user deliberately scrolls again — auto-scroll is paused again; when the cursor leaves the viewport — the chip appears again. The cycle is repeatable.
 
 A swipe-down gesture as an alternative we do not do in v1: poor discoverability, the top of the screen is unreachable for the thumb on a 6+" phone, and the risk of collision with a future pull-to-refresh in History. We can add it as a power-user shortcut later — as a separate option.
+
+### 5.9 Pending (pre-start) state + soft start
+
+In-workout is one screen with two states: a **pending (pre-start) state** and the live state. It is not a separate screen — it is a state, the way `today-in-progress.html` documents a state of Today.
+
+**Pending (pre-start) state.** The screen lands here when opened from the Builder or a clone:
+
+- All sets are `pending` (§5.3). Nothing is logged yet.
+- The **cursor is off** — there is no active/next set highlight.
+- The **rest timer and the workout-duration clock are not running.** Setup and planning time is not counted toward duration.
+
+This serves both personas: the Planner can lay out the full scheme (sets/reps, optional weights) before lifting; the Improviser can just start logging.
+
+**Soft start.** The workout "begins" — the cursor moves onto the first set, the rest timer becomes armable, and the duration clock starts — at the **first logged set OR an explicit `Begin` tap, whichever happens first**. The boundary is soft, not a hard gate: logging a set is itself a start.
+
+**Sets in the pending state.**
+
+- **Default 1 pending set** per exercise when it is added (from the Builder, a quick-add chip, or mid-workout `⋯ → Add exercise`). The set list grows from there.
+- **`Add set` copies the previous set's values** (reps / weight), so growing the set list is a single tap.
+- **Pre-set weights are optional.** A pending set shows the reps target + `prev` (last workout's value, §5.2) as guidance; the weight field is blank but fillable. "Weight chosen live, guided by `prev`" remains the norm — the Planner may pre-fill weights, the Improviser need not.
 
 
 ---

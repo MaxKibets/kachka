@@ -314,7 +314,7 @@
             </div>
             <div>
               <div class="ex-name">Bench press</div>
-              <div class="ex-sub"><span class="num">3</span> sets · 8 reps</div>
+              <div class="ex-sub">Chest · Triceps · Shoulders</div>
             </div>
             <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
               <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
@@ -350,7 +350,7 @@
                   <span class="letter-prefix">A1</span>
                   <span class="ex-name" style="margin: 0;">Dumbbell row</span>
                 </div>
-                <div class="ex-sub" style="margin-top: 2px;"><span class="num">8</span> reps</div>
+                <div class="ex-sub" style="margin-top: 2px;">Back · Biceps</div>
               </div>
               <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
                 <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
@@ -368,7 +368,7 @@
                   <span class="letter-prefix">A2</span>
                   <span class="ex-name" style="margin: 0;">Face pull</span>
                 </div>
-                <div class="ex-sub" style="margin-top: 2px;"><span class="num">12</span> reps</div>
+                <div class="ex-sub" style="margin-top: 2px;">Rear delts · Traps</div>
               </div>
               <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
                 <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
@@ -385,7 +385,7 @@
             </div>
             <div>
               <div class="ex-name">Tricep pushdown</div>
-              <div class="ex-sub"><span class="num">3</span> sets · 8 reps</div>
+              <div class="ex-sub">Triceps</div>
             </div>
             <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
               <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
@@ -425,7 +425,7 @@
           <li>Tap group <code>⋮</code> (у group header) → group action sheet (TBD у Batch 3 — patterns в <code>builder-row-menu-sheet</code> і <code>set-actions-sheet</code>): Edit rounds/rest, Add exercise to group, Remove exercise from group, Reorder inside, Move group up/down, Ungroup (per spec §4.5)</li>
           <li>Tap row <code>⋮</code> на A1/A2 → row action sheet з контекстним <code>Add to superset</code> = inactive (вже у групі), додатково <code>Remove from group</code></li>
           <li>Tap row <code>⋮</code> на Bench press / Tricep pushdown → <a href="builder-row-menu-sheet.html">builder-row-menu-sheet.html</a> з <code>Add to superset · A</code> (індикатор що існує група A — додає до неї)</li>
-          <li>Tap <code>Start workout</code> → Active Workout (<a href="in-workout.html">in-workout.html</a> — TBD у Batch 3)</li>
+          <li>Tap <code>Start workout</code> → In-workout у <strong>pending state</strong> (pre-start). Сети/повторення — у тому числі reps для group children — налаштовуються там, не в Builder (per spec §4.3 + §5.9). Live-стан: <a href="in-workout-with-supersets.html">in-workout-with-supersets.html</a></li>
         </ul>
       </section>
 
@@ -443,9 +443,9 @@
         <h2>Notes</h2>
         <ul>
           <li>Letter chip <code>A</code> showing only on group header. Children-вправи мають tinted letter <code>A1</code>, <code>A2</code> — background <code>rgba(letter, 0.15)</code>, border <code>0.5px solid rgba(letter, 0.5)</code>, text сам letter color (per visual §2.5)</li>
-          <li>Group header subtitle: <code>Superset · 3 rounds · 90s rest</code>. У builder поки немає progress, у Active workout буде <code>round X of Y</code> (per spec §6.4)</li>
-          <li>Sets count для group children показано як <code>8 reps</code> / <code>12 reps</code> — без явної кількості сетів, бо у супер-сеті всі вправи мають однакову кількість раундів = група має <code>3 rounds</code> в header. Per round = 1 set кожної вправи</li>
-          <li><strong>Assumption</strong>: A1 = <code>Dumbbell row · 8 reps</code>, A2 = <code>Face pull · 12 reps</code>. Spec не дає конкретних reps для group children, ставимо reasonable defaults</li>
+          <li>Group header subtitle: <code>Superset · 3 rounds · 90s rest</code> — composition-level, лишається в Builder. У builder поки немає progress, у Active workout буде <code>round X of Y</code> (per spec §6.4)</li>
+          <li>Builder cards (standalone і group children) показують <strong>м'язові групи</strong>, не reps. Reps для group children налаштовуються в In-workout pending state, разом зі standalone сетами (per spec §4.3 + §5.9, resolved open detail #1). Groups не мають per-child <code>Add set</code> — кількість задають rounds</li>
+          <li>Кількість раундів керується group-level <code>rounds</code> (тут 3) — per round = 1 set кожної вправи групи. Це composition-level і лишається у <a href="superset-config-sheet.html">superset-config-sheet.html</a></li>
           <li><strong>Assumption</strong>: Group card has its own drag handle для перетягування групи цілком (на group header). Spec §4.6 каже "drag handle на правому краю", але візуально drag handle ліворуч консистентний з standalone exercises у цьому wireframe-batch</li>
         </ul>
       </section>
