@@ -104,7 +104,7 @@ A shortened list — details in the md files:
 **Profile + Settings**
 - Profile root = hybrid hub: inline preferences + grouped sections (PREFERENCES / WORKOUT / DATA / About)
 - Theme: System / Dark / Light (default System); Language: System / English / Ukrainian (default System, fallback English)
-- Show RPE toggle (default ON); Rest haptic (default ON), Rest sound (default OFF)
+- Show RPE toggle (default ON); Rest haptic (default ON), Rest sound (default OFF); Default rest (default 90s, presets 60/90/120/180 + Off)
 - Exercise database, Backup & restore — separate sub-screens
 - About: app version + GitHub + privacy note
 - No push notifications, no Delete all data, no units toggle in v1

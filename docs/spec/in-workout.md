@@ -152,6 +152,7 @@ The rest timer is the bottom bar's `rest` mode (§5.1), not a floating element. 
 - Inline controls: `−15s` / `+15s` to adjust, `Skip` to advance immediately (§6.6 state machine).
 - When Rest haptic is ON (§12.3) a subtle pulse sits by the label; hidden when OFF.
 - When rest ends or is skipped, the bar returns to `idle` (progress + `Finish workout`).
+- **Initial duration** comes from `Default rest` in Profile (§12.3, default `90 s`). Supersets use their own per-group rest from the superset config (§6.2) instead. If `Default rest` is `Off`, closing a set does not auto-start a countdown — the bar stays `idle`.
 
 A large floating ring was considered and rejected: it costs ~180px, pushes the set list down, and collides with the return-to-cursor chip (§5.8). The accented bottom bar stays glanceable without a separate floating layer.
 

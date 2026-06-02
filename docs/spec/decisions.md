@@ -126,6 +126,7 @@
 - [x] Tap → detail (read-only full snapshot)
 - [x] Detail body: all exercises with all sets, group rendering for supersets with letter labels
 - [x] Volume in row — `sum(weight × reps)`, warmups excluded
+- [x] Volume / tonnage rendered without a thousands separator (`4540 kg`, not `4 540 kg`) — locale-independent, avoids the `·` meta collision (design-review X2/X3, visual §3.4)
 - [x] Discarded workouts are not saved; partial-completed are saved
 - [x] Empty state: text + a simple icon
 - [x] Filter / search / export / PR badges / charts — in v2
@@ -150,6 +151,7 @@
 - [x] Show RPE: toggle, default ON. OFF hides the picker from §8.2 and the `@8` badges, does not delete logged RPE values
 - [x] Rest haptic: toggle, default ON
 - [x] Rest sound: toggle, default OFF
+- [x] Default rest: action sheet (presets `60 / 90 / 120 / 180` s + `Off`, instant-apply), default `90 s`; sets the auto-start rest-timer duration for standalone exercises, supersets keep per-group rest; per-exercise override → v2 (design-review F5.3, spec §12.3, in-workout §5.10)
 - [x] No push notifications in v1 (background → v2)
 - [x] Exercise database, Backup & restore — separate sub-screens
 - [x] About: app version + GitHub link + privacy note (without acknowledgements in v1)

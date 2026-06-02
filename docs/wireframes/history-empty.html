@@ -6,32 +6,6 @@
   <title>History · Empty · Kachka wireframes</title>
   <link rel="stylesheet" href="shared/tokens.css">
   <script src="shared/proto-mode.js" defer></script>
-  <style>
-    .secondary-cta {
-      background: transparent;
-      border: 0.5px solid var(--border-subtle);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      font-size: 14px;
-      font-weight: 500;
-      padding: 11px 22px;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-    .secondary-cta svg {
-      width: 14px;
-      height: 14px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-  </style>
 </head>
 <body>
   <header class="wf-header">
@@ -62,14 +36,9 @@
 
             <div style="font-size: 20px; font-weight: 500; line-height: 1.3; margin-bottom: 10px;">No workouts yet</div>
 
-            <div class="text-sub" style="font-size: 14px; line-height: 1.5; margin-bottom: 24px;">
+            <div class="text-sub" style="font-size: 14px; line-height: 1.5;">
               Finished workouts will show up here. Start your first one from Today.
             </div>
-
-            <button class="secondary-cta" data-href="today-first.html">
-              Go to Today
-              <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
           </div>
 
         </div>
@@ -104,8 +73,7 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap <code>Go to Today</code> → перехід на <code>Today</code> tab → <a href="today-first.html">today-first.html</a> (first launch state) або <a href="today-has-history.html">today-has-history.html</a> (якщо history був стертий, але це не основний use case)</li>
-          <li>Tap <code>Today</code> tab → теж <a href="today-first.html">today-first.html</a></li>
+          <li>Tap <code>Today</code> tab → <a href="today-first.html">today-first.html</a> (first launch state) або <a href="today-has-history.html">today-has-history.html</a> (якщо history був стертий, але це не основний use case)</li>
           <li>Tap <code>Profile</code> tab → <a href="profile.html">profile.html</a> — TBD</li>
         </ul>
       </section>
@@ -113,7 +81,7 @@
       <section>
         <h2>Interactions</h2>
         <ul>
-          <li>Жодних окрім CTA + tab bar</li>
+          <li>Жодних окрім tab bar</li>
           <li>Без top-bar <code>⋯</code> у цьому стані — немає чого робити з порожньою історією</li>
         </ul>
       </section>
@@ -122,7 +90,7 @@
         <h2>Notes</h2>
         <ul>
           <li>Mascot тут — placeholder. Реальна empty-state ілюстрація — окрема сесія per visual §8 + §9</li>
-          <li><code>Go to Today</code> — secondary CTA, не amber primary. Per task spec: <em>не main action</em> (юзер уже у Today flow природньо, цей button — shortcut, не "the action of this screen"). Тут стилізовано через <code>border + transparent bg</code>, без власного класу в tokens.css щоб не плодити токени без потреби. Якщо стане canonical secondary button — окремий клас у наступній ітерації токенів</li>
+          <li><code>Go to Today</code> CTA <strong>прибрано</strong> (design-review F4.2): per spec §10.4 без CTA — Today вже за один тап у tab bar, окрема кнопка надлишкова. Текст subtitle лишається текстовим нудженням до Today</li>
           <li>Microcopy <code>"Finished workouts will show up here. Start your first one from Today."</code> — per task spec, тримає утилітарний тон без celebratory шуму. Per visual §8 — `playful але не Duolingo-ниючий`; цей варіант ближче до утилітарного, без playful — open question чи додавати jokey варіант</li>
           <li>Title <code>"No workouts yet"</code> — per spec §10.4 + task spec, нейтральне формулювання</li>
         </ul>
