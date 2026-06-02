@@ -22,7 +22,20 @@ single backlog. IDs match the review report.
 | F2.2 | ✅ done | Superset config sheet not mode-aware | [F2.2-superset-sheet-mode-aware.md](F2.2-superset-sheet-mode-aware.md) |
 | F5.2 | ✅ done | Settings: instant-apply vs Cancel/Done | [F5.2-settings-apply-model.md](F5.2-settings-apply-model.md) |
 
-## P2 / P3 — decisions & polish
+## P2 — consistency / spec divergence
 
-See [BACKLOG-p2-p3.md](BACKLOG-p2-p3.md): X2, X3, F4.1, F4.2, F5.3 (P2);
-F3.2, F2.3, F5.4, F3.3, F2.4, F1.2, F4.4, F5.5 (P3).
+All resolved 2026-06-02. Decisions live inline in
+[BACKLOG-p2-p3.md](BACKLOG-p2-p3.md).
+
+| ID | Status | Resolution |
+|----|--------|------------|
+| X2 | ✅ closed | Duplicate of X3 (no exercise-count token; the bare `4` was the volume's leading digit) |
+| X3 | ✅ done | Volume rendered without a thousands separator (`4540 kg`); rule in visual §3.4 |
+| F4.1 | ✅ done | Dropped the History top-bar `⋯` (spec already said no actions) |
+| F4.2 | ✅ done | Cut the `history-empty` "Go to Today" CTA (spec already said none) |
+| F5.3 | ✅ done | Added `Default rest` to spec — 90 s default, presets 60/90/120/180 + Off |
+
+## P3 — copy / polish
+
+Still open. See [BACKLOG-p2-p3.md](BACKLOG-p2-p3.md):
+F3.2, F2.3, F5.4, F3.3, F2.4, F1.2, F4.4, F5.5.

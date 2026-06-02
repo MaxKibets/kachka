@@ -152,10 +152,10 @@
               <span class="label">Rest sound</span>
               <span class="switch" aria-label="Rest sound off"></span>
             </div>
-            <div class="pref-row">
+            <div class="pref-row" data-href="#">
               <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
               <span class="label">Default rest</span>
-              <span class="value text-dim" style="font-size: 13px;">— <svg class="chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
+              <span class="value"><span class="num">90</span> s <svg class="chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
             </div>
           </div>
 
@@ -228,7 +228,7 @@
         <ul>
           <li>Tap <code>Theme</code> або <code>Language</code> → <a href="settings-theme-language-sheet.html">settings-theme-language-sheet.html</a> (bottom sheet picker)</li>
           <li>Tap <code>Show RPE</code> / <code>Rest haptic</code> / <code>Rest sound</code> → toggle in place, без navigation</li>
-          <li>Tap <code>Default rest</code> → picker sheet з опціями (TBD — поки placeholder)</li>
+          <li>Tap <code>Default rest</code> → action sheet з пресетами <code>60 / 90 / 120 / 180 s + Off</code> (default <code>90 s</code>), той самий instant-apply pattern, що Theme / Language</li>
           <li>Tap <code>Exercise database</code> → <a href="exercise-database-list.html">exercise-database-list.html</a> (Browse mode push на Profile stack)</li>
           <li>Tap <code>Backup &amp; restore</code> → <a href="backup-restore.html">backup-restore.html</a></li>
           <li>Tap <code>App version</code> або <code>Privacy</code> → <a href="about.html">about.html</a></li>
@@ -251,7 +251,7 @@
           <li>Per spec §12.1 — preferences inline на root, без nested settings menu. Грубовані секції замість окремих sub-screens</li>
           <li>Section labels (PREFERENCES / WORKOUT / DATA / ABOUT) — uppercase 11px у <code>text-tertiary</code>, узгоджено з Builder section labels</li>
           <li>Кожна row — 56px tall з icon prefix (Lucide-style line). Іконки <code>20px</code> у <code>text-secondary</code></li>
-          <li><code>Default rest</code> у WORKOUT — поки placeholder. Spec згадує WORKOUT секцію але без конкретики default rest. Якщо не плануємо у v1 — прибрати в impl</li>
+          <li><code>Default rest</code> у WORKOUT — локнуто (design-review F5.3): default <code>90 s</code>, action sheet з пресетами <code>60 / 90 / 120 / 180 + Off</code>. Керує тривалістю auto-start rest-таймера (spec §12.3, поведінка таймера — in-workout §5.10)</li>
           <li><code>App version</code> показується як inline value (<code>1.0.0</code> в Plex Mono), тап на ту ж row веде в <a href="about.html">about.html</a> для повного списку</li>
           <li>Privacy — окремий row, веде в About sub-screen з повним текстом privacy note</li>
           <li>Без <code>Delete all data</code> у v1 (per spec §12.6)</li>

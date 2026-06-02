@@ -268,9 +268,7 @@
             <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
           <h1 style="flex: 1; text-align: center;">Push A</h1>
-          <button class="icon-btn" aria-label="More options" data-href="#">
-            <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
-          </button>
+          <div style="width: 28px;"></div>
         </div>
 
         <div class="scroll-area">
@@ -279,7 +277,7 @@
             <div class="when">Tuesday, <span class="num">28</span> April <span class="num">2026</span> · <span class="num">7:24</span> PM</div>
             <div class="stats">
               <span class="stat"><span class="lbl">Duration</span><span class="num">52</span> min</span>
-              <span class="stat"><span class="lbl">Volume</span><span class="num">4 540</span> kg</span>
+              <span class="stat"><span class="lbl">Volume</span><span class="num">4540</span> kg</span>
               <span class="stat"><span class="lbl">Sets</span><span class="num">12</span></span>
             </div>
           </div>
@@ -414,7 +412,7 @@
         <h2>Opens to</h2>
         <ul>
           <li>Tap <code>←</code> back → <a href="history-list.html">history-list.html</a></li>
-          <li>Tap <code>⋯</code> → top-bar action sheet (placeholder для v2: re-do workout / share / export). У v1 поки nothing per spec §10.3 (`Без actions: немає edit, repeat workout from this entry, export`)</li>
+          <li>Top-bar без actions у v1 (per spec §10.3: `Без actions: немає edit, repeat workout from this entry, export`). Re-do / share / export → v2</li>
         </ul>
       </section>
 
@@ -436,7 +434,7 @@
           <li><strong>RPE</strong> рендериться як <code>@8</code> (per visual §8.3) — text-tertiary щоб не змагатись з основними числами</li>
           <li><strong>Note block</strong> — per spec §10.3 `Workout note (якщо була залогована при completion)`. Стиль — звичайна card з <code>NOTE</code> uppercase label</li>
           <li><strong>Header stats</strong> — спрощений варіант 4-stats grid з spec §9.2 (там для completion screen). Тут компактний inline-row, без PR card (PR badges у v2 per spec §16). Three stats: Duration / Volume / Sets — мінімум що завжди є</li>
-          <li><strong>Top-bar <code>⋯</code></strong> — як в Builder, placeholder. Spec §10.3 явно проти actions у v1, але іконка лишена для майбутнього (можна сховати у impl)</li>
+          <li><strong>Top-bar <code>⋯</code> прибрано</strong> (design-review F4.1): spec §10.3 явно проти actions у v1. Справа лишено <code>28px</code> spacer (та сама балансувальна конвенція, що в about.html та інших sub-screens), щоб центрований заголовок не зсувався</li>
         </ul>
       </section>
 

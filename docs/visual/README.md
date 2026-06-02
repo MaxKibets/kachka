@@ -166,6 +166,11 @@ Non-numeric meta like `Round 2 of 3 · Rest 90s` — numbers inline in Plex Mono
 
 OpenType: for Inter we force-enable `tnum` (tabular figures) so that inline numbers in meta rows don't "jump" in width.
 
+### 3.4 Number formatting
+
+- **No thousands separator** for volume / tonnage and other large counters: render `4540 kg`, not `4 540 kg` or `4,540 kg`. A space-grouped `4 540` collides with the `·` meta separator and reads as two numbers (the leading digit gets mistaken for a count); a comma is anglo-centric and clashes with the UA convention (space as the grouping mark). Workout values are 3–5 digits and stay legible ungrouped (design-review X2 / X3 / F4.3).
+- Decimal separator is locale-driven (no user-facing toggle, spec §7.5); the no-grouping rule above is locale-independent.
+
 ---
 
 ## 4. Layout & density

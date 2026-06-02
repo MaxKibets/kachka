@@ -32,7 +32,7 @@ Row (medium density), two rows:
 ```
 
 - *Date format*: relative for the last 7 days (`Today`, `Yesterday`, `Mon`), absolute beyond that (`28 Apr 2026`)
-- *Volume*: `sum(weight × reps)` over working sets, warmups excluded (aligned with §9.4)
+- *Volume*: `sum(weight × reps)` over working sets, warmups excluded (aligned with §9.4). Rendered without a thousands separator — `4540 kg`, not `4 540 kg` (visual §3.4, design-review X2 / X3)
 - *Bodyweight*: exercises without weight contribute 0 to volume
 
 Tap on a row → push detail screen.

@@ -23,6 +23,7 @@
 │  WORKOUT                │
 │  Rest haptic       [✓]  │
 │  Rest sound        [⚪] │
+│  Default rest    90s ▾  │
 ├─────────────────────────┤
 │  DATA                   │
 │  Exercise database  >   │
@@ -39,7 +40,7 @@ Four blocks with grouped section headers:
 | Section | Content | Control type |
 |---|---|---|
 | `PREFERENCES` | Theme, Language, Show RPE | Picker rows + toggle |
-| `WORKOUT` | Rest haptic, Rest sound | Toggles |
+| `WORKOUT` | Rest haptic, Rest sound, Default rest | Toggles + picker row |
 | `DATA` | Exercise database, Backup & restore | Sub-screen rows |
 | `About` | About | Sub-screen row (no section prefix) |
 
@@ -64,7 +65,17 @@ Toggle, default ON.
 
 ### 12.3 WORKOUT
 
-Signals when the rest timer ends.
+#### Default rest
+
+The starting duration for the rest countdown (in-workout §5.10). Tap → action sheet with presets `60` / `90` / `120` / `180` s + `Off`, applied instantly (same pattern as Theme / Language, §12.2). Default `90 s`.
+
+- Drives the auto-start rest timer for standalone exercises. Supersets carry their own per-group rest set in the superset config (§6.2), independent of this default.
+- `Off` — closing a set does not auto-start a countdown; the bottom bar stays `idle`.
+- Per-exercise rest override → v2.
+
+#### Rest end signals
+
+Signals when the rest timer reaches 0:00.
 
 | Toggle | Default | Behavior when ON |
 |---|---|---|
