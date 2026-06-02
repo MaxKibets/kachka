@@ -9,7 +9,7 @@
   <style>
     /* Re-use in-workout shell minimal version */
     .iw-app-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 14px 10px; flex-shrink: 0; }
-    .iw-app-bar .iw-back { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--text-primary); flex-shrink: 0; }
+    .iw-app-bar .iw-back { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: none; border: none; padding: 0; cursor: pointer; color: var(--text-primary); flex-shrink: 0; }
     .iw-app-bar .iw-back svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .iw-title-block { flex: 1; min-width: 0; }
     .iw-title-row { display: flex; align-items: center; gap: 6px; }
@@ -19,7 +19,7 @@
     .iw-timer-chip { background: var(--surface-1); border: 0.5px solid var(--border-subtle); border-radius: 9px; padding: 6px 10px; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
     .iw-timer-chip svg { width: 12px; height: 12px; stroke: var(--amber); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .iw-timer-chip .num { color: var(--amber); font-size: 16px; font-weight: 500; }
-    .iw-overflow { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--text-primary); flex-shrink: 0; }
+    .iw-overflow { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: none; border: none; padding: 0; cursor: pointer; color: var(--text-primary); flex-shrink: 0; }
     .iw-overflow svg { width: 20px; height: 20px; }
 
     .ex-card { background: var(--surface-1); border: 0.5px solid var(--border-subtle); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
@@ -69,81 +69,30 @@
     }
     .add-set-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* Floating circular timer */
-    .rest-floating {
-      position: absolute;
-      left: 50%; transform: translateX(-50%);
-      bottom: 92px;  /* above bottom action bar */
-      display: flex; flex-direction: column; align-items: center;
-      pointer-events: auto;
-    }
-    .rest-circle {
-      width: 132px; height: 132px;
-      position: relative;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .rest-circle svg.ring { width: 132px; height: 132px; transform: rotate(-90deg); }
-    .rest-circle .ring-bg { stroke: rgba(255,255,255,0.06); fill: none; stroke-width: 6; }
-    .rest-circle .ring-progress {
-      stroke: var(--mallard); fill: none; stroke-width: 6;
-      stroke-linecap: round;
-      stroke-dasharray: 396;     /* 2π × 63 ≈ 396 */
-      stroke-dashoffset: 132;    /* ~2/3 progress remaining of 1:24 from 2:00 */
-    }
-    .rest-circle .center {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 2px;
-    }
-    .rest-circle .center .label {
-      font-size: 10px; color: var(--text-tertiary);
-      letter-spacing: 0.08em; text-transform: uppercase;
-    }
-    .rest-circle .center .time {
-      font-family: var(--font-mono); font-variant-numeric: tabular-nums;
-      font-size: 30px; font-weight: 500; color: var(--text-primary);
-      line-height: 1;
-    }
-    .rest-circle .center .haptic-pulse {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--mallard);
-      margin-top: 2px;
-      box-shadow: 0 0 0 0 rgba(31,110,92,0.5);
-      animation: pulse 1.6s ease-out infinite;
-    }
+    /* Rest = bottom bar's accented countdown mode (spec §5.1 / §5.10 / §6.6).
+       No floating ring — keeps the set list unobstructed and clears the 92px
+       slot for the return-to-cursor chip (design-review F3.1). */
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 rgba(31,110,92,0.5); }
-      70% { box-shadow: 0 0 0 8px rgba(31,110,92,0); }
+      70% { box-shadow: 0 0 0 7px rgba(31,110,92,0); }
       100% { box-shadow: 0 0 0 0 rgba(31,110,92,0); }
     }
-
-    .rest-actions {
-      margin-top: 10px;
-      display: flex; gap: 8px; align-items: center;
-      background: var(--surface-1);
-      border: 0.5px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 4px;
+    .iw-action-bar.rest { flex-direction: column; align-items: stretch; gap: 0; padding: 0; }
+    .rest-progress { height: 3px; background: rgba(255,255,255,0.06); flex-shrink: 0; }
+    .rest-progress .fill { height: 100%; width: 62%; background: var(--mallard); border-radius: 0 2px 2px 0; }
+    .rest-main { display: flex; align-items: center; gap: 12px; padding: 10px 14px 18px; }
+    .rest-label-time { display: flex; align-items: baseline; gap: 10px; flex: 1; min-width: 0; }
+    .rest-ctx { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .rest-ctx .haptic-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--mallard); box-shadow: 0 0 0 0 rgba(31,110,92,0.5); animation: pulse 1.6s ease-out infinite; }
+    .rest-time { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 26px; font-weight: 500; color: var(--text-primary); line-height: 1; }
+    .rest-controls { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .rest-controls button {
+      background: var(--surface-2); border: 0.5px solid var(--border-subtle);
+      border-radius: 9px; padding: 8px 10px; color: var(--text-primary);
+      font-family: var(--font-sans); font-size: 13px; font-weight: 500; cursor: pointer;
     }
-    .rest-action-btn {
-      background: transparent;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 9px;
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .rest-action-btn.skip { color: var(--text-secondary); }
-    .rest-action-btn.adjust {
-      font-family: var(--font-mono); font-variant-numeric: tabular-nums;
-      font-size: 13px; padding: 8px 10px;
-    }
-    .rest-action-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .rest-controls button.adjust { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .rest-controls button.skip { color: var(--text-secondary); background: transparent; border-color: transparent; }
 
     /* Bottom action bar */
     .iw-action-bar {
@@ -159,8 +108,8 @@
 </head>
 <body>
   <header class="wf-header">
-    <h1>Rest timer · Floating circular</h1>
-    <p class="wf-meta">spec §6.6 + visual §7 · countdown after set ✓</p>
+    <h1>Rest timer · Bottom-bar countdown</h1>
+    <p class="wf-meta">spec §5.1 / §5.10 / §6.6 + visual §7 · accented rest mode in the bottom bar (no floating ring)</p>
   </header>
 
   <main class="wf-layout">
@@ -242,41 +191,23 @@
 
         </div>
 
-        <!-- Floating rest timer -->
-        <div class="rest-floating">
-          <div class="rest-circle">
-            <svg class="ring" viewBox="0 0 132 132">
-              <circle class="ring-bg" cx="66" cy="66" r="63"/>
-              <circle class="ring-progress" cx="66" cy="66" r="63"/>
-            </svg>
-            <div class="center">
-              <div class="label">Rest</div>
-              <div class="time">01:24</div>
-              <div class="haptic-pulse" title="Rest haptic on"></div>
+        <!-- Bottom bar in REST mode (spec §5.1 idle↔rest · §5.10 presentation).
+             Accented countdown: large mono MM:SS + full-width progress bar +
+             inline adjust/skip. Replaces the idle progress + Finish CTA, which
+             returns when rest ends (idle mode is shown in in-workout.html). -->
+        <div class="iw-action-bar rest">
+          <div class="rest-progress"><div class="fill"></div></div>
+          <div class="rest-main">
+            <div class="rest-label-time">
+              <span class="rest-ctx">Rest <span class="haptic-pulse" title="Rest haptic on"></span></span>
+              <span class="rest-time">01:24</span>
+            </div>
+            <div class="rest-controls">
+              <button class="adjust">−15s</button>
+              <button class="adjust">+15s</button>
+              <button class="skip" data-href="in-workout.html">Skip</button>
             </div>
           </div>
-
-          <div class="rest-actions">
-            <button class="rest-action-btn adjust">
-              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span>15s</span>
-            </button>
-            <button class="rest-action-btn adjust">
-              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span>15s</span>
-            </button>
-            <button class="rest-action-btn skip" data-href="in-workout.html">
-              Skip
-            </button>
-          </div>
-        </div>
-
-        <div class="iw-action-bar">
-          <div class="iw-progress"><span class="num">12</span> / <span class="num">24</span> sets logged</div>
-          <button class="cta-primary">
-            Finish workout
-            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
         </div>
 
       </div>
@@ -304,41 +235,40 @@
       <section>
         <h2>Interactions</h2>
         <ul>
-          <li>Ring progress = mallard, fills counter-clockwise as time elapses (started full → empty at 0:00)</li>
-          <li>Mallard pulse-dot під часом — subtle indicator що Rest haptic ON (per visual §7 + spec §12.3). Якщо Rest haptic OFF — pulse-dot прихований</li>
-          <li>Floating timer перекриває нижню частину scroll list — context active set частково схований, але scroll все одно доступний (можна прокрутити timer повз)</li>
-          <li>Drag-to-collapse / dismiss — TBD у v1.x; зараз tap Skip або wait для closure</li>
-          <li>Per spec §6.6 state machine: Idle → Rest → Idle. Rest can be extended by tap +15s</li>
+          <li>Rest = bottom bar's <code>rest</code> mode (§5.1): accented countdown з великим mono <code>MM:SS</code> + тонка progress-смуга (mallard) на всю ширину бару, depletes as time elapses</li>
+          <li>Mallard pulse-dot біля лейбла <code>Rest</code> — subtle indicator що Rest haptic ON (visual §7 + spec §12.3). Якщо Rest haptic OFF — pulse-dot прихований</li>
+          <li>Не плаває над списком — сети не перекриті; бар фіксований унизу як завжди</li>
+          <li>Coexists з return-to-cursor chip (§5.8): chip плаває <em>над</em> баром, rest — <em>у</em> барі. Різні шари, без колізії — обидва можуть бути видимі одночасно</li>
+          <li>Per spec §6.6 state machine: Idle → Rest → Idle. Rest can be extended by tap +15s, або Skip → advance</li>
         </ul>
       </section>
 
       <section>
         <h2>Edge cases · related states</h2>
         <ul>
-          <li>Group rest — label у center має letter-color tinted: <code>A · Rest</code> з amber-pulse (per spec §6.6: <code>A · Rest 2:00</code>). Не показано в цьому мокапі, але імплементація — letter chip ліворуч від <code>Rest</code></li>
+          <li>Group rest — лейбл зліва letter-color tinted: <code>A · Rest</code> (spec §6.3/§6.6: <code>A · Rest 2:00</code>). Standalone = просто <code>Rest</code>. Letter chip префіксує <code>Rest</code> у барі</li>
           <li>Rest haptic OFF + sound OFF — pulse-dot прихований, тільки візуальний countdown (per spec §12.3)</li>
-          <li>Timer expired — ring повний green, time = <code>00:00</code>, haptic + опц. sound, dock автоматично ховається через ~1.5s</li>
-          <li>Юзер skipped → cursor advances, dock disappears</li>
-          <li>Two timers одночасно (workout elapsed + rest) — workout chip у header лишається тікати; rest — окремий floating circle. Конфлікт відсутній</li>
+          <li>Timer expired — <code>00:00</code>, haptic + опц. sound, бар повертається в <code>idle</code> mode (progress + Finish, як у in-workout.html) через ~1.5s</li>
+          <li>Юзер skipped → cursor advances, бар → idle</li>
+          <li>Two timers одночасно (workout elapsed + rest) — workout chip у header тікає; rest — у bottom bar. Різні зони, конфлікт відсутній</li>
         </ul>
       </section>
 
       <section>
         <h2>Notes</h2>
         <ul>
-          <li>Reasonable default per brief — spec не дає точного візуалу. Floating circular dock над bottom action bar обрано (а не bottom-anchored bar) тому що: (1) не блокує існуючий action bar, (2) circular ring = очевидний countdown affordance, (3) pulse-dot під часом дає channel для rest haptic indicator</li>
-          <li>Альтернатива (не показана) — full bottom dock над action bar з прямою прогресбаром і inline кнопками. Простіша, але "з'їдає" вертикальний простір; у Hevy/Strong використовується саме circular floating, для нашої density-orientованої системи теж працює краще</li>
-          <li>Color: ring у mallard — primary success, не amber (бо amber вже = active focus у set row). Pulse-dot теж mallard для consistency</li>
-          <li>Time format: <code>MM:SS</code>, Plex Mono Medium 30pt — найбільший number в системі (per visual §3.3 number large), бо це primary signal "коли наступний сет"</li>
+          <li>Decision (design-review F3.1): rest = <strong>accented bottom-bar countdown</strong>, не плаваюче коло. Узгоджено зі spec §5.1/§6.3/§6.6 (bottom bar несе rest state) і прибирає колізію з return-to-cursor chip (§5.8), який ділив той самий 92px-слот</li>
+          <li>Rejected: велике floating circular ring. Glanceable здалеку, але ~180px висоти, штовхає список сетів, і колізить з chip. Hybrid bottom bar (великий mono number + full-width progress) лишається glanceable без окремого шару</li>
+          <li>Color: progress-смуга у mallard — primary success, не amber (amber = active focus у set row). Pulse-dot теж mallard</li>
+          <li>Time format: <code>MM:SS</code>, Plex Mono Medium ~26pt — великий number, бо це primary signal "коли наступний сет"</li>
           <li>Open question: чи треба <code>Pause</code>? У типовому use-case rest не паузиться (юзер скаже Skip). Поки опускаю; додамо за запитом</li>
-          <li>Open question: позиція floating timer — чи overlap зі scroll або вище. Поки 92px from bottom (above action bar). На малих екранах може треба зменшити circle до 110px</li>
         </ul>
       </section>
 
       <footer>
         <a href="flow.md">Flow</a>
         <a href="INDEX.md">Index</a>
-        <a href="../spec/README.md">Spec §5.1, §6.6</a>
+        <a href="../spec/README.md">Spec §5.1, §5.10, §6.6</a>
         <a href="../visual/README.md">Visual §7</a>
       </footer>
     </aside>

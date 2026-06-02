@@ -38,3 +38,13 @@ tap targets" promise is made or broken.
 
 - Icon library is recorded as decided in `visual/README.md` §6.
 - close / `⋯` / `⋮` / note render as real glyphs on both in-workout wireframes.
+
+## Follow-up (2026-06-02)
+
+The same white-square defect surfaced in two sibling wireframes that reuse the
+in-workout shell but were not in the original affected list:
+`rest-timer.html` and `pull-to-cursor.html`. Root cause there was not the icon
+set but missing button-chrome resets — `.iw-back` / `.iw-overflow` are
+`<button>`s without `background: none; border: none; padding: 0`, so the browser
+drew the default light button background as a white square over the glyph. Fixed
+by matching the resets already present in `in-workout.html`.

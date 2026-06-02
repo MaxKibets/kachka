@@ -143,6 +143,20 @@ This serves both personas: the Planner can lay out the full scheme (sets/reps, o
 - **`Add set` copies the previous set's values** (reps / weight), so growing the set list is a single tap.
 - **Pre-set weights are optional.** A pending set shows the reps target + `prev` (last workout's value, §5.2) as guidance; the weight field is blank but fillable. "Weight chosen live, guided by `prev`" remains the norm — the Planner may pre-fill weights, the Improviser need not.
 
+### 5.10 Rest timer presentation
+
+The rest timer is the bottom bar's `rest` mode (§5.1), not a floating element. When a set is closed and rest starts:
+
+- The bottom bar switches from `idle` to an **accented countdown**: a large mono `MM:SS` number + a thin progress bar spanning the bar's width (mallard, depletes as time elapses).
+- Context label on the left: `Rest` for a standalone exercise, `A · Rest` (letter-colored) for a group (§6.3, §6.6).
+- Inline controls: `−15s` / `+15s` to adjust, `Skip` to advance immediately (§6.6 state machine).
+- When Rest haptic is ON (§12.3) a subtle pulse sits by the label; hidden when OFF.
+- When rest ends or is skipped, the bar returns to `idle` (progress + `Finish workout`).
+
+A large floating ring was considered and rejected: it costs ~180px, pushes the set list down, and collides with the return-to-cursor chip (§5.8). The accented bottom bar stays glanceable without a separate floating layer.
+
+**Coexistence with the return-to-cursor chip (§5.8).** The chip floats in the content area *above* the bottom bar; the rest countdown lives *in* the bar. They sit on different layers and never collide — both can be visible at once (resting while scrolled away from the cursor): chip above, rest bar below.
+
 
 ---
 

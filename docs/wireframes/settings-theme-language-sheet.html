@@ -60,15 +60,6 @@
       align-items: center;
       gap: 10px;
     }
-    .sheet-row .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: transparent;
-    }
-    .sheet-row.active .dot {
-      background: var(--mallard);
-    }
     .sheet-row .check {
       width: 18px;
       height: 18px;
@@ -83,26 +74,6 @@
       visibility: visible;
     }
     .sheet-row.active .label {
-      color: var(--mallard);
-      font-weight: 500;
-    }
-    .sheet-actions {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 16px 0;
-      border-top: 0.5px solid var(--border-divider);
-      margin-top: 4px;
-    }
-    .sheet-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      font-size: 15px;
-      padding: 12px 8px;
-      cursor: pointer;
-    }
-    .sheet-btn.primary {
       color: var(--mallard);
       font-weight: 500;
     }
@@ -145,21 +116,16 @@
               <div class="sheet-title">Theme</div>
 
               <div class="sheet-row active" data-href="profile.html">
-                <span class="label"><span class="dot"></span>System</span>
+                <span class="label">System</span>
                 <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div class="sheet-row" data-href="profile.html">
-                <span class="label"><span class="dot"></span>Dark</span>
+                <span class="label">Dark</span>
                 <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div class="sheet-row" data-href="profile.html">
-                <span class="label"><span class="dot"></span>Light</span>
+                <span class="label">Light</span>
                 <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-
-              <div class="sheet-actions">
-                <button class="sheet-btn" data-href="profile.html">Cancel</button>
-                <button class="sheet-btn primary" data-href="profile.html">Done</button>
               </div>
             </div>
           </div>
@@ -184,21 +150,16 @@
               <div class="sheet-title">Language</div>
 
               <div class="sheet-row active" data-href="profile.html">
-                <span class="label"><span class="dot"></span>System (English)</span>
+                <span class="label">System (English)</span>
                 <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div class="sheet-row" data-href="profile.html">
-                <span class="label"><span class="dot"></span>English</span>
+                <span class="label">English</span>
                 <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div class="sheet-row" data-href="profile.html">
-                <span class="label"><span class="dot"></span>Українська</span>
+                <span class="label">Українська</span>
                 <svg class="check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-
-              <div class="sheet-actions">
-                <button class="sheet-btn" data-href="profile.html">Cancel</button>
-                <button class="sheet-btn primary" data-href="profile.html">Done</button>
               </div>
             </div>
           </div>
@@ -220,18 +181,17 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap radio row → визначає selection (з mallard accent + checkmark)</li>
-          <li>Tap <code>Done</code> або swipe-down → застосовує миттєво (per spec §12.2 — "вибір застосовується миттєво") і повертає в Profile</li>
-          <li>Tap <code>Cancel</code> → закриває sheet без змін</li>
+          <li>Tap option row → <strong>instant apply</strong> + dismiss sheet → повертає в Profile (spec §12.2 "applies instantly", design-review F5.2). Без footer/commit-кроку</li>
+          <li>Swipe-down або backdrop tap → закриває sheet (поточний вибір уже застосований)</li>
         </ul>
       </section>
 
       <section>
         <h2>Interactions</h2>
         <ul>
-          <li>Grab handle угорі — swipe down dismisses (per spec §1 — bottom sheets pattern)</li>
-          <li>Backdrop tap = Cancel</li>
-          <li>Single-select — лише один радіо активний за раз. Активний row має mallard dot + checkmark</li>
+          <li>Grab handle угорі — swipe down dismisses (spec §1 — bottom sheets)</li>
+          <li>Backdrop tap — закриває sheet (вибір уже застосовано instant)</li>
+          <li>Single-select — один активний row за раз. Маркер вибраного — <strong>тільки checkmark справа</strong> + mallard-тінт лейбла (design-review F5.2: прибрано дубль-маркер, була ще крапка зліва)</li>
         </ul>
       </section>
 
@@ -242,7 +202,7 @@
           <li>Default selection — <code>System</code> у обох (per spec §12.2)</li>
           <li>Language <code>System</code> auto-detect-ить локаль; якщо locale не EN і не UK — fallback English (per spec §12.2). Тут показано як "<code>System (English)</code>" — резолвлене значення показується в дужках для clarity</li>
           <li>Чому bottom sheet а не push-screen для 3-row picker — узгоджено з §1 spec: усі action menus / pickers через bottom sheets. Економить навігаційну глибину для тривіальних виборів</li>
-          <li><code>Cancel</code> вгорі / <code>Done</code> внизу справа — узгоджено з confirmations pattern (§1: Cancel вгорі), але тут sheet не destructive, тому використовуємо звичайний горизонтальний layout</li>
+          <li>Без footer (<code>Cancel/Done</code> прибрано, design-review F5.2): для 3-опційного picker instant-apply — нативний iOS-патерн; theme/language тривіально оборотні, commit-крок зайвий. Узгоджено зі spec §12.2</li>
           <li>Висота sheet — content-driven (drag handle + title + 3 rows + actions). Якщо у v2 додасться більше опцій — sheet просто виростає</li>
         </ul>
       </section>

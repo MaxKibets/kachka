@@ -61,7 +61,7 @@ wireframes/
 - [x] [in-workout-with-supersets.html](in-workout-with-supersets.html) — приклад з суперсетом і round indicator
 - [x] [numpad.html](numpad.html) — custom numpad (bottom sheet)
 - [x] [set-actions-sheet.html](set-actions-sheet.html) — bottom sheet після тапу на номер сета
-- [x] [rest-timer.html](rest-timer.html) — rest timer overlay/state
+- [x] [rest-timer.html](rest-timer.html) — rest timer bottom-bar countdown state
 - [x] [pull-to-cursor.html](pull-to-cursor.html) — floating chip коли cursor поза viewport
 
 ### Batch 4 — Finish · History ✅
@@ -159,7 +159,7 @@ wireframes/
 - **About tagline `Качайся.`** — playful, ua-only. Англійський variant потребує decision.
 - ~~**Builder row menu обсяг**~~ — RESOLVED (redesign): row menu стало композиційним (`Add note` / `Add to superset` / `Move` / `Remove`); `Edit sets` прибрано — сети тепер налаштовуються в In-workout pending-стані (spec §5.9). Див. `../issues/REDESIGN-builder-inworkout.md`.
 - **Group active row через negative margin** — production cleanup TBD; production варіант через grid layout без margin tricks.
-- **Floating timer + pull-to-cursor конфлікт** — обидва на 92px-bottom. Layout не вирішено в межах wireframe.
+- ~~**Floating timer + pull-to-cursor конфлікт**~~ — RESOLVED (design-review F3.1): rest = bottom bar's `rest` mode (accented countdown), не плаваюче коло; chip плаває над баром. Різні шари, без колізії. Spec §5.10 додано.
 - **RPE remove value** через tap selected ще раз — поведінка TBD.
 - **Pause на rest timer** — не доданий (типовий use-case = Skip або wait).
 - **Default reps for group children** у builder-with-supersets: 8 для Dumbbell row, 12 для Face pull (reasonable).
