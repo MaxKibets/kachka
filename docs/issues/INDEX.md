@@ -37,5 +37,16 @@ All resolved 2026-06-02. Decisions live inline in
 
 ## P3 — copy / polish
 
-Still open. See [BACKLOG-p2-p3.md](BACKLOG-p2-p3.md):
-F3.2, F2.3, F5.4, F3.3, F2.4, F1.2, F4.4, F5.5.
+Copy items resolved 2026-06-02; decisions inline in
+[BACKLOG-p2-p3.md](BACKLOG-p2-p3.md).
+
+| ID | Status | Resolution |
+|----|--------|------------|
+| F3.2 | ✅ done | Numpad button `Done` → `Save set` (spec §7.2 already said so) |
+| F1.2 | ✅ done | Bare `Or` → thin divider + centered `or` |
+| F5.4 | ✅ done | Cut `Report an issue` + `Open source licenses`; tagline localized (EN `Get lifting.` / UA `Качайся.`) |
+| F5.5 | ✅ done | Restored `Settings included` row in import preview (spec §13.3) |
+| F2.3 | ⏳ open | Rest control below the fold in superset config sheet |
+| F3.3 | ⏳ open | Failed-reps (0) + warmup row treatment (pairs with visual style) |
+| F2.4 | ⏳ open | Builder `Discard` sits under the primary CTA |
+| F4.4 | ⏳ open | Completion "Add a note" placement |

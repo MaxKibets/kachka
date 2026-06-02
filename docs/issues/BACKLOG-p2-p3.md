@@ -4,7 +4,9 @@ Lower-priority items from the design review 2026-05-23. Each is a one-line
 decision or a small mock tweak. Promote any item to its own file when picked up.
 IDs match the review report.
 
-**Status:** all P2 resolved 2026-06-02 (decisions inline below). P3 still open.
+**Status:** all P2 resolved 2026-06-02. P3 copy items (F3.2, F1.2, F5.4, F5.5)
+resolved 2026-06-02; remaining P3 layout/mock items (F2.3, F3.3, F2.4, F4.4)
+still open. Decisions inline below.
 
 ---
 
@@ -69,24 +71,32 @@ IDs match the review report.
 
 ---
 
-## P3 — copy / polish
+## P3 — copy / polish (copy items ✅ resolved 2026-06-02; layout items open)
 
-### F3.2 — Numpad "Done" → "Save set"
+### F3.2 — Numpad "Done" → "Save set" ✅ resolved 2026-06-02
 - **Where:** `numpad`. Spec `docs/spec/in-workout.md` §7.2.
 - **Action:** rename to "Save set" — names the consequence (set logged, cursor
   advances, rest starts).
+- **✅ Resolution:** renamed the numpad primary button `Done` → `Save set` in the
+  wireframe. Spec §7.2 already said `Save set` — this was a mock-only divergence,
+  no spec change. Annotations de-staled.
 
 ### F2.3 — Rest control below the fold in superset config sheet
 - **Where:** `superset-config-sheet`. Spec `docs/spec/supersets.md` §6.2.
 - **Action:** compress the exercise list so Rounds + Rest + Create sit above the
   fold. Ref: Ladder constrained multi-select (`ref-ladder-multiselect.png`).
 
-### F5.4 — About scope creep
+### F5.4 — About scope creep ✅ resolved 2026-06-02
 - **Where:** `about`. Spec `docs/spec/profile.md` §12.5.
 - **Problem:** `Report an issue` + `Open source licenses` appear though §12.5
   defers acknowledgements post-v1; `Качайся.` tagline is UA-only.
 - **Action:** reconcile against v1 scope; add an EN tagline variant or accept it
   as a deliberate brand-ism.
+- **✅ Resolution:** **cut both** `Report an issue` and `Open source licenses`
+  rows (and the now-empty Legal section) — About is back to version + Source code
+  + Privacy per §12.5; licenses need a fixed stack + dep list → v1.x. **Tagline
+  localized:** EN `Get lifting.` / UA `Качайся.` (string key, not hardcoded).
+  Recorded in `profile.md` §12.5; wireframe + annotations updated.
 
 ### F3.3 — Failed-reps (0) + warmup row treatment still TBD
 - **Where:** in-workout rows. Spec `docs/spec/in-workout.md` §5.7; visual §5.1.
@@ -99,17 +109,25 @@ IDs match the review report.
   (`Start workout`) invites mis-taps.
 - **Action:** move/space `Discard` away from the primary CTA.
 
-### F1.2 — "Or" connector polish
+### F1.2 — "Or" connector polish ✅ resolved 2026-06-02
 - **Where:** `today-has-history`.
 - **Action:** use a thin divider with centered "or", or drop it and let spacing
   separate.
+- **✅ Resolution:** replaced the bare `Or` with a thin hairline divider + centered
+  lowercase `or` (border-divider rules on both sides) between the primary CTA and
+  the alternative links. Same treatment applied to `today-in-progress` (the dimmed
+  in-progress copy of the same layout) for consistency.
 
 ### F4.4 — Completion "Add a note" placement
 - **Where:** `completion-screen`.
 - **Action:** move the note textarea below the exercise summary (notes are
   usually written last). Low priority.
 
-### F5.5 — Keep "Settings" line in import preview
+### F5.5 — Keep "Settings" line in import preview ✅ resolved 2026-06-02
 - **Where:** `backup-import-preview`. Spec `docs/spec/profile.md` §13.3.
 - **Action:** restore the "Settings included" line so users know settings get
   replaced/merged too.
+- **✅ Resolution:** added a `Settings included` row (gear icon, no number — a
+  presence indicator, not a count) to the preview Contents card, matching spec
+  §13.3. Annotation de-staled (the old reasoning was about *counting* settings,
+  which we still don't).

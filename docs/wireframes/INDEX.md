@@ -154,9 +154,9 @@ wireframes/
 - **Round indicator dots** у group meta — current round = amber. Альтернатива — letter color opacity. Поки amber.
 - ~~**Combined picker + config sheet** для суперсету~~ — RESOLVED: один обʼєднаний sheet (multi-select + rounds + rest), не двоступеневий. Spec §6.2 переписано під combined flow.
 - **Settings Theme + Language** — об'єднано в один файл для compact reference (у app це два незалежні sheets).
-- **Profile WORKOUT секція** — додано placeholder `Default rest` row. Spec §12.3 згадує лише Rest haptic + Rest sound. Прибрати?
-- **About: Report an issue + Licenses** — додано хоча per spec §12.5 acknowledgements відкладено. Тримати чи зрізати до v1 scope?
-- **About tagline `Качайся.`** — playful, ua-only. Англійський variant потребує decision.
+- ~~**Profile WORKOUT секція — `Default rest`**~~ — RESOLVED (design-review F5.3): локнуто у v1, default `90 s`, action sheet `60/90/120/180 + Off`. Spec §12.3 + in-workout §5.10.
+- ~~**About: Report an issue + Licenses**~~ — RESOLVED (design-review F5.4): обидва рядки зрізано до §12.5 scope (licenses потребують стек → v1.x).
+- ~~**About tagline `Качайся.`**~~ — RESOLVED (design-review F5.4): локалізовано — EN `Get lifting.` / UA `Качайся.`.
 - ~~**Builder row menu обсяг**~~ — RESOLVED (redesign): row menu стало композиційним (`Add note` / `Add to superset` / `Move` / `Remove`); `Edit sets` прибрано — сети тепер налаштовуються в In-workout pending-стані (spec §5.9). Див. `../issues/REDESIGN-builder-inworkout.md`.
 - **Group active row через negative margin** — production cleanup TBD; production варіант через grid layout без margin tricks.
 - ~~**Floating timer + pull-to-cursor конфлікт**~~ — RESOLVED (design-review F3.1): rest = bottom bar's `rest` mode (accented countdown), не плаваюче коло; chip плаває над баром. Різні шари, без колізії. Spec §5.10 додано.

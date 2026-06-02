@@ -263,6 +263,10 @@
               <span class="num-val">18</span>
               <span class="label">custom exercises</span>
             </div>
+            <div class="count-row">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span class="label">Settings included</span>
+            </div>
           </div>
 
           <div class="section-label">Import mode</div>
@@ -339,7 +343,7 @@
           <li>Без tab bar (sub-screen на Profile stack)</li>
           <li>Filename у Plex Mono — узгоджено з visual §3.2 (data-as-text в mono)</li>
           <li>Дата у file card — повний human-readable (April 28, 2026 · 7:24 PM) для одноразового context, не для skim</li>
-          <li>Counts: <code>42 workouts</code>, <code>127 sets total</code>, <code>18 custom exercises</code> — три ключові цифри, без дрібниць типу "12 settings" (settings — single-shot, не варто рахувати)</li>
+          <li>Counts: <code>42 workouts</code>, <code>127 sets total</code>, <code>18 custom exercises</code> — три ключові цифри. <code>Settings included</code> — рядок без числа (присутність, не лічильник): сигналізує, що налаштування теж попадуть під replace/merge (design-review F5.5, spec §13.3)</li>
         </ul>
       </section>
 
