@@ -102,6 +102,7 @@
 - [x] Skip exercise — soft remove that preserves the structure for clone
 - [x] Failed reps (0 reps) — allowed, save + green ✓, does not go into volume and PR
 - [x] Auto-scroll pauses on manual scroll; return via a floating "return to current set" chip above the bottom bar (appears when the cursor is outside the viewport, tap → smooth scroll + auto-scroll re-engages). Swipe-down — in v2 as a power-user option
+- [x] Rest timer = the bottom bar's accented `rest` mode (large mono `MM:SS` + full-width progress + inline `−15s/+15s/Skip`), not a floating ring. Coexists with the return-to-cursor chip on separate layers — chip above the bar, rest countdown in the bar (design-review F3.1, spec §5.10)
 
 **Supersets**
 - [x] Must-have in v1
@@ -145,6 +146,7 @@
 - [x] Profile root = hybrid hub: inline preferences + grouped sections (PREFERENCES / WORKOUT / DATA / About)
 - [x] Theme: `System` / `Dark` / `Light`, default `System` (action sheet)
 - [x] Language: `System` / `English` / `Ukrainian`, default `System` (auto-detect locale, fallback English)
+- [x] Theme / Language pickers apply instantly (tap option → apply + dismiss, no `Cancel/Done` footer); the selected row shows a single marker — a trailing checkmark (design-review F5.2)
 - [x] Show RPE: toggle, default ON. OFF hides the picker from §8.2 and the `@8` badges, does not delete logged RPE values
 - [x] Rest haptic: toggle, default ON
 - [x] Rest sound: toggle, default OFF

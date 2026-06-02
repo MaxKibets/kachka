@@ -264,7 +264,7 @@ TBD in the next iteration. Expected principles:
 
 - **Easing**: `ease-out` for appearance, `ease-in-out` for transitions, `ease-in` for disappearance
 - **Durations**: 150ms tap feedback, 220ms component state, 300ms screen transitions
-- **What animates**: state transitions (set done/active), sheet open/close, screen push/pop, rest timer countdown ring, pull-to-cursor chip
+- **What animates**: state transitions (set done/active), sheet open/close, screen push/pop, rest timer bottom-bar countdown (progress bar depletion), pull-to-cursor chip
 - **What does NOT animate**: data updates, list reorderings — no artificial delay
 - **Haptics**: per spec — rest haptic ON by default, sound OFF
 

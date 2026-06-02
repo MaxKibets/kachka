@@ -258,7 +258,7 @@
 <body>
   <header class="wf-header">
     <h1>Superset config sheet · Create / Edit</h1>
-    <p class="wf-meta">spec §6.2 · bottom sheet над Builder з затемненим backdrop-ом</p>
+    <p class="wf-meta">spec §6.2 · bottom sheet над Builder з затемненим backdrop-ом · create mode shown (edit mode swaps primary → Save + adds Ungroup)</p>
   </header>
 
   <main class="wf-layout">
@@ -372,12 +372,14 @@
 
           </div>
 
+          <!-- Footer is mode-aware (design-review F2.2). Create mode shown:
+               Cancel + Create group, no Ungroup. Edit mode swaps the primary to
+               Save and appends a destructive Ungroup (see annotations). -->
           <div class="sheet-footer">
             <button class="sheet-cancel" data-href="builder-with-supersets.html">Cancel</button>
             <button class="cta-primary" data-href="builder-with-supersets.html">
-              Save
+              Create group
             </button>
-            <button class="sheet-destructive" data-href="builder.html">Ungroup</button>
           </div>
         </div>
 
@@ -397,7 +399,7 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap <code>Save</code> → group створено / оновлено → закриває sheet → Builder з <a href="builder-with-supersets.html">builder-with-supersets.html</a></li>
+          <li>Tap <code>Create group</code> (create mode) → group створено → закриває sheet → Builder з <a href="builder-with-supersets.html">builder-with-supersets.html</a>. В edit mode primary = <code>Save</code> (оновлює існуючу групу)</li>
           <li>Tap <code>Cancel</code> → закриває sheet без змін → повертається на Builder</li>
           <li>Tap <code>Ungroup</code> (edit mode тільки) → confirmation sheet → Розпадається на флет вправи (per spec §6.7)</li>
           <li>Свайп вниз = Cancel (per spec §1)</li>
@@ -422,8 +424,7 @@
           <li>Sheet конфігурує <strong>тільки</strong> склад (partner-select) + rounds + rest. Reps для group children тут <strong>не</strong> задаються — вони налаштовуються в In-workout pending state, разом зі standalone сетами (per spec §5.9, resolved open detail #1)</li>
           <li>Sheet title <code>Configure superset A</code> — letter уже відомий бо літери присвоюються при створенні (per spec §6.3)</li>
           <li>Subtitle expects 2–5 exercises explicit (per spec §6.1) — щоб юзер бачив constraint без помилок</li>
-          <li>Footer order top-to-bottom: <code>Cancel</code> (ghost) → <code>Save</code> (primary amber CTA) → <code>Ungroup</code> (destructive, edit mode тільки). Per spec §1 — Cancel вгорі, destructive внизу. Save як primary action — between them</li>
-          <li>Edit mode додає <code>Ungroup</code> у footer (per prompt). Create mode (нова група) — без цієї кнопки</li>
+          <li><strong>Footer per mode</strong> (design-review F2.2): <em>create</em> → <code>Cancel</code> (ghost) + <code>Create group</code> (primary amber, label matches spec §6.2); <em>edit</em> → <code>Cancel</code> + <code>Save</code> (primary) + <code>Ungroup</code> (destructive, bottom). Per spec §1 — Cancel вгорі, destructive внизу. Create mode has <strong>no</strong> <code>Ungroup</code> — нема чого розгруповувати</li>
           <li><strong>Assumption</strong>: Per spec §6.2 у create flow є окремий партнер-picker screen перед config sheet. У цьому wireframe показано <strong>combined</strong> sheet — multi-select picker + config в одному. Це reasonable simplification: для 2-5 candidates з тим самим контекстом окремий screen виглядає overkill, sheet вміщає все. Якщо юзер хоче двоступеневий flow — можна додати в наступну ітерацію</li>
           <li><strong>Assumption</strong>: Rounds picker = stepper (per prompt дозволяє "numeric stepper або dropdown"); ставлю stepper бо швидший для thumb (один тап = ±1)</li>
           <li><strong>Assumption</strong>: Rest picker = preset chips (per prompt). Якщо потрібно custom value — TBD у impl (можна додати <code>Custom…</code> chip який відкриває numpad)</li>

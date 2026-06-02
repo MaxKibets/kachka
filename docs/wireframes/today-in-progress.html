@@ -49,29 +49,30 @@
             </div>
           </div>
 
+          <!-- Start paths disabled while in-progress banner shows (spec §3.1.c) -->
           <div style="margin-top: 16px;">
-            <div class="card" style="padding: 16px 18px;">
+            <div class="card" style="padding: 16px 18px; opacity: 0.4; pointer-events: none;" aria-disabled="true">
               <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 4px;">
                 <div style="font-size: 18px; font-weight: 500;">Pull A</div>
                 <div class="text-dim" style="font-size: 12px;"><span class="num">3</span>d ago</div>
               </div>
               <div class="text-sub" style="font-size: 12px; margin-bottom: 12px;"><span class="num">14</span> sets · <span class="num">3 980</span> kg · <span class="num">48</span> min</div>
               <div class="text-sub" style="font-size: 13px; margin-bottom: 16px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Pull-ups, Barbell row, Lat pulldown, Bicep curl</div>
-              <button class="cta-primary" data-href="builder.html">
+              <button class="cta-primary" disabled aria-disabled="true" style="cursor: default;">
                 Repeat last
                 <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
             </div>
           </div>
 
-          <div class="text-dim" style="font-size: 12px; margin: 22px 6px 6px;">Or</div>
+          <div class="text-dim" style="font-size: 12px; margin: 22px 6px 6px; opacity: 0.4;">Or</div>
 
-          <div style="padding: 0 6px;">
-            <div class="row-link" data-href="history-picker.html">
+          <div style="padding: 0 6px; opacity: 0.4; pointer-events: none;" aria-disabled="true">
+            <div class="row-link">
               <span>Choose from history</span>
               <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
-            <div class="row-link" data-href="builder.html">
+            <div class="row-link">
               <span>Start blank workout</span>
               <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
@@ -111,7 +112,7 @@
         <ul>
           <li>Tap <code>Resume</code> → Active workout modal на збереженому state (<a href="in-workout.html">in-workout.html</a> — TBD у Batch 3)</li>
           <li>Tap <code>Discard</code> → bottom sheet confirmation (<code>Discard workout?</code>) → видаляє in-progress, banner зникає, екран стає <a href="today-has-history.html">today-has-history.html</a></li>
-          <li>Tap <code>Repeat last</code> / <code>Choose from history</code> / <code>Start blank workout</code> → Workout Builder. Spec не уточнює, що відбувається з in-progress workout у цьому випадку — TBD: ймовірно блокується (можна тільки Resume або Discard) або теж confirm</li>
+          <li><code>Repeat last</code> / <code>Choose from history</code> / <code>Start blank workout</code> — <strong>disabled</strong> (dimmed, non-tappable) поки висить banner. Per spec §3.1.c єдиний шлях далі — Resume або Discard. Constraint "one active workout at a time"; навмисно НЕ confirm-діалог — banner уже несе Resume/Discard</li>
           <li>Tap <code>⋯</code> → top-bar action sheet: Exercise database / Settings</li>
         </ul>
       </section>

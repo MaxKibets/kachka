@@ -24,9 +24,9 @@ UI/UX is **conceptually locked** for v1:
 - Exercise picker / Database (one component, two modes, 7 muscle groups, custom with soft delete)
 - Profile + Settings (hybrid hub: PREFERENCES / WORKOUT / DATA / About)
 
-**Locked**: technical and product decisions. The program JSON format is also locked at the field level — frozen, returns in v2. Visual system — the foundation is locked (mood, brand, palette, typography, letter rotation, basic component patterns).
+**Locked**: technical and product decisions. The program JSON format is also locked at the field level — frozen, returns in v2. Visual system — the foundation is locked (mood, brand, palette, typography, letter rotation, iconography (Lucide), basic component patterns).
 
-Still to work out: the formal data model; visually — mockups of the other screens (Today / History / Builder / Profile), action sheets, custom numpad, iconography lock, motion, mascot character + empty state illustrations. Technically: exercise database seed list.
+Still to work out: the formal data model; visually — mockups of the other screens (Today / History / Builder / Profile), action sheets, custom numpad, motion, mascot character + empty state illustrations. Technically: exercise database seed list.
 
 ## Project documentation
 
@@ -76,6 +76,7 @@ A shortened list — details in the md files:
 - Active workout = full editor: add/remove set, add/insert/remove exercise, skip, reorder
 - Skip exercise — soft remove that preserves the structure for clone
 - Failed reps (0 reps) — allowed
+- Rest timer — accented countdown in the bottom bar (not a floating ring); coexists with the pull-to-cursor chip on separate layers
 
 **Supersets (must-have in v1)**
 - Only alternating, 2-5 exercises, 2-10 rounds, one rest per group
