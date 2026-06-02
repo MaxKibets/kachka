@@ -99,10 +99,11 @@ Tap → a separate sub-screen. Details — §13.
 Tap → push sub-screen with static content:
 
 - App name + version: `Kachka · 1.0.0 (build 42)` (build number from CI)
+- Tagline (localized): EN `Get lifting.` / UA `Качайся.` (brand pun, visual §1.2)
 - Source code link → GitHub (open source)
 - Privacy note: `Your data stays on this device. No accounts, no servers, no analytics.`
 
-No acknowledgements in v1 — we will add them once the stack is chosen and the dependency list is fixed.
+No acknowledgements, `Open source licenses`, or `Report an issue` rows in v1 (design-review F5.4) — acknowledgements need a fixed stack + dependency list, added in v1.x once chosen.
 
 ### 12.6 Deliberately NOT doing in v1
 

@@ -222,7 +222,7 @@
 
           <div class="np-cta-row">
             <button class="cta-primary" data-href="in-workout.html">
-              Done
+              Save set
               <svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg>
             </button>
           </div>
@@ -243,7 +243,7 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap <code>Done</code> → коміт значення в active set, sheet закривається. Якщо обидва поля заповнені і ✓ tapped — save + advance cursor + start rest</li>
+          <li>Tap <code>Save set</code> → коміт значення в active set, sheet закривається. Якщо обидва поля заповнені і ✓ tapped — save + advance cursor + start rest. Label називає наслідок (set залогований), not generic "Done" (design-review F3.2, spec §7.2)</li>
           <li>Swipe down (через grab handle) → закриває sheet без коміту</li>
           <li>Tap on alternate field tab (REPS) → перемикає focus, quick-adjust ряд оновлюється на <code>−5 −1 +1 +5</code> (per spec §7.2)</li>
         </ul>
@@ -264,7 +264,7 @@
         <ul>
           <li>Reps mode — quick-adjust перемикається. Можна показати в alt-варіанті (TBD)</li>
           <li>Bodyweight вправа (per spec §7.4) — kg-поле сховане, тільки reps tab. Опц. <code>+extra weight</code> tab якщо юзер тицьнув</li>
-          <li>Failed reps — юзер набирає <code>0</code> і Done. Сет вважається завершеним (per spec §5.7)</li>
+          <li>Failed reps — юзер набирає <code>0</code> і <code>Save set</code>. Сет вважається завершеним (per spec §5.7)</li>
           <li>Locale-driven decimal separator — позиція <code>.</code> на key може бути <code>,</code>. Поки показую <code>.</code> як default (en locale)</li>
         </ul>
       </section>
@@ -276,7 +276,7 @@
           <li>Backdrop затемнений ~60% (canvas з dim overlay) щоб in-workout context лишався читабельним але secondary</li>
           <li>Field tabs — surface-2 default, surface-3 + 1.5px amber border коли active. Active value у amber, inactive у secondary text</li>
           <li>Quick-adjust та digit keys — surface-2 з 0.5px subtle border, radius 10–12. Plex Mono Medium для цифр</li>
-          <li>Done CTA — amber primary, full width, з check icon</li>
+          <li><code>Save set</code> CTA — amber primary, full width, з check icon</li>
           <li>Open question: чи показувати field tabs `kg` і `reps` як SEPARATE field readouts, чи об'єднувати в один великий read-out з перемикачем. Поки — два tab-fields. Перевага — обидва значення видно одразу, можна тапати між полями без закриття</li>
           <li>Open question: <code>±0.5</code> кнопка для дробових інкрементів (gym plates 0.5kg) — поки не додаю, додамо в v1.x якщо буде запит</li>
         </ul>

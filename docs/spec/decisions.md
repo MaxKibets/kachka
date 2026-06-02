@@ -154,7 +154,7 @@
 - [x] Default rest: action sheet (presets `60 / 90 / 120 / 180` s + `Off`, instant-apply), default `90 s`; sets the auto-start rest-timer duration for standalone exercises, supersets keep per-group rest; per-exercise override → v2 (design-review F5.3, spec §12.3, in-workout §5.10)
 - [x] No push notifications in v1 (background → v2)
 - [x] Exercise database, Backup & restore — separate sub-screens
-- [x] About: app version + GitHub link + privacy note (without acknowledgements in v1)
+- [x] About: app version + localized tagline (EN `Get lifting.` / UA `Качайся.`) + GitHub link + privacy note. No acknowledgements / `Open source licenses` / `Report an issue` rows in v1 — acknowledgements need a fixed stack + dep list, v1.x (design-review F5.4, spec §12.5)
 - [x] No `Delete all data` in v1 (user reinstalls the app)
 
 **Backup & restore**
