@@ -65,7 +65,7 @@ A shortened list — details in the md files:
 
 **Workout Builder**
 - Quick-add chips: 7 popular exercises (Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl), en + uk
-- Default sets for a new exercise: 3 × 8
+- New exercise is added without sets in the Builder (composition-only); default 1 pending set in In-workout pending (was 3 × 8)
 - Editable workout name, reorder via drag, supersets via action menu
 
 **In-workout**
