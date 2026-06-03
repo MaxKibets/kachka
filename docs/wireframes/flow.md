@@ -35,7 +35,7 @@ stateDiagram-v2
     HistoryPicker --> Builder: tap workout (clone)
     Builder --> ActiveWorkoutPending: tap Start workout
     ActiveWorkoutPending --> ActiveWorkout: first set logged / tap Begin (soft start)
-    Builder --> TodayHasHistory: tap × (discard setup)
+    Builder --> TodayHasHistory: tap ← (discard setup)
     ActiveWorkout --> CompletionScreen: tap Finish (≥1 set logged)
     ActiveWorkout --> ConfirmDiscard: tap Finish (0 sets logged)
     CompletionScreen --> HistoryList: tap Save to history

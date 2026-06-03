@@ -108,16 +108,13 @@ still open. Decisions inline below.
 - **Problem:** destructive verb directly under the thumb's primary target
   (`Start workout`) invites mis-taps.
 - **Action:** move/space `Discard` away from the primary CTA.
-- **✅ Resolution:** **dropped `Discard` entirely** — it duplicated the header
-  exit (back `←` and the bottom `Discard` both opened the same
+- **✅ Resolution:** **dropped the bottom `Discard`** — it duplicated the header
+  exit (the back `←` and the bottom `Discard` both opened the same
   `Discard workout setup?` confirmation → Today). The sticky bottom is now the
-  single primary `Start workout`; exit is the header close, swapped `←` → `×`
-  to match the modal-close convention (`exercise-picker-add`, §11). Removed from
-  `builder` + `builder-with-supersets` (and the dimmed Builder backdrops in
-  `builder-row-menu-sheet` / `superset-config-sheet`), with the unused
-  `.ghost-btn` style. Spec §4.1 header updated (back button → close `×`);
-  `flow.md` edge de-staled. The §4.8 discard-on-close behavior (with
-  confirmation) is unchanged.
+  single primary `Start workout`; the header back `←` (return to Today,
+  consistent with the in-workout modal §5) is the single exit. Removed the
+  button from `builder` + `builder-with-supersets`, with the unused `.ghost-btn`
+  style. The §4.8 discard-on-close behavior (with confirmation) is unchanged.
 
 ### F1.2 — "Or" connector polish ✅ resolved 2026-06-02
 - **Where:** `today-has-history`.
