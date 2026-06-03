@@ -19,11 +19,6 @@
 │  Push Day               │
 ├─────────────────────────┤
 │                         │
-│  Quick add:             │
-│  [Squat][Bench][Dead]   │  chips (popular exercises)
-│  [Row][OHP][Pull-up]    │
-│  [Curl]                 │
-│                         │
 │  ─ Exercises ──────     │
 │                         │
 │  Bench press        ⋮   │
@@ -37,6 +32,11 @@
 │  │  [10-15]         │   │
 │  └─────────────── ⋮ ┘   │  group menu
 │                         │
+│  ─ Quick add ──────     │
+│  [Squat][Bench][Dead]   │  chips (popular), by + Add
+│  [Row][OHP][Pull-up]    │
+│  [Curl]                 │
+│                         │
 │  + Add exercise         │
 │                         │
 ├─────────────────────────┤
@@ -46,8 +46,8 @@
 
 - **Header**: back button, screen title `Build workout`. Swipe down closes (with confirmation if something was changed).
 - **Workout name**: editable inline. With Repeat last / Choose from history it is filled from the source. With Build from scratch — auto `Workout · 2026-05-02`, the user can overwrite it.
-- **Quick add chips**: 7 popular exercises (§4.2). Tap adds the exercise without sets — set count / reps are configured later in the In-workout pending state (§4.3, §5).
 - **Exercises list**: exercises + groups in performance order. Each exercise is a section showing the exercise name + a muscle-group subtitle (e.g. `Chest · Triceps`) and a `⋮` menu — no set/rep info, since sets are not defined in the Builder (§4.3, §5).
+- **Quick add chips**: 7 popular exercises (§4.2). They sit at the end of the list, next to **+ Add exercise**, so both ways to add stay together in thumb reach as the list grows. Tap adds the exercise without sets — set count / reps are configured later in the In-workout pending state (§4.3, §5).
 - **+ Add exercise**: opens the exercise picker (full list + search + custom). The exercise is added without sets — sets are configured in the In-workout pending state (§4.3, §5).
 - **Start workout** sticky button: launches the Active Workout modal. Disabled while the list is empty. It leads into the In-workout pending state — the duration clock starts later (soft start, see §5), not when this is tapped.
 
@@ -65,7 +65,7 @@ A hardcoded v1 list of 7 exercises (powerlifting + basic set):
 | Pull-up | Підтягування |
 | Bicep Curl | Згинання на біцепс |
 
-- Chips are always visible (permanent UX, not onboarding)
+- A permanent affordance (not onboarding) — the chip rail lives at the end of the exercise list, next to **+ Add exercise**, and stays available for every build
 - Localized from the system exercise database via `exerciseId`
 - Tap → adds the exercise to the end of the list (without sets — configured later in the In-workout pending state, §4.3)
 - No local ranking in v1 (a possible future improvement — for now the chips are static)
@@ -110,7 +110,7 @@ If the list is empty:
 
 ```
   No exercises yet
-  Tap a chip above or "+ Add exercise"
+  Tap a chip below or "+ Add exercise"
 ```
 
 Start workout button disabled.

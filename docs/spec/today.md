@@ -66,7 +66,7 @@ Today has three possible states:
 └─────────────────────────┘
 ```
 
-CTA → Workout Builder with an empty list. Quick-add chips (§4.2) are visible at the top — the user sees 7 familiar exercises and starts with one tap.
+CTA → Workout Builder with an empty list. Quick-add chips (§4.2) are visible — the user sees 7 familiar exercises and starts with one tap.
 
 #### 3.1.c In-progress workout
 
@@ -114,7 +114,7 @@ The `prev` values in the cloned workout are taken from the chosen source, not fr
 
 ### 3.4 Build from scratch — Workout Builder
 
-Tap → Workout Builder with an empty list. Quick-add chips are visible at the top for a quick start. You can also call the full exercise picker via "+ Add exercise".
+Tap → Workout Builder with an empty list. Quick-add chips are visible for a quick start. You can also call the full exercise picker via "+ Add exercise".
 
 Builder details — in §4.
 
