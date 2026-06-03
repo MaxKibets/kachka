@@ -50,7 +50,6 @@ stateDiagram-v2
 
     state "Workout Builder" as Builder
     state "Exercise picker (Add mode)" as ExercisePickerAdd
-    state "Exercise picker (Browse mode)" as ExercisePickerBrowse
     state "Active In-workout" as ActiveWorkout
     state "Completion screen (full screen)" as CompletionScreen
     state "History list" as HistoryList
@@ -66,8 +65,7 @@ stateDiagram-v2
     ActiveWorkout --> ExercisePickerAdd: tap + Add exercise
     ExercisePickerAdd --> Builder: pick exercise
     ExercisePickerAdd --> ActiveWorkout: pick exercise (mid-workout)
-    Profile --> ExercisePickerBrowse: tap Exercise database
-    ExercisePickerBrowse --> ExerciseCreate: tap Create custom
+    ExerciseDatabase --> ExerciseCreate: tap Create custom
     state "Exercise create" as ExerciseCreate
 
     ActiveWorkout --> Numpad: tap kg/Reps tile
