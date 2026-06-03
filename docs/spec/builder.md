@@ -13,7 +13,7 @@
 
 ```
 ┌─────────────────────────┐
-│ ← Build workout         │  modal header
+│ × Build workout         │  modal header
 ├─────────────────────────┤
 │  Workout name           │  editable text
 │  Push Day               │
@@ -44,7 +44,7 @@
 └─────────────────────────┘
 ```
 
-- **Header**: back button, screen title `Build workout`. Swipe down closes (with confirmation if something was changed).
+- **Header**: a close button (`×`, not a back chevron — the Builder is a modal, §11), screen title `Build workout`. Tapping `×` or swiping down closes the builder (with confirmation if anything was added — §4.8). There is no separate bottom `Discard` button: the close affordance is the single exit, so the sticky bottom carries only **Start workout**.
 - **Workout name**: editable inline. With Repeat last / Choose from history it is filled from the source. With Build from scratch — auto `Workout · 2026-05-02`, the user can overwrite it.
 - **Exercises list**: exercises + groups in performance order. Each exercise is a section showing the exercise name + a muscle-group subtitle (e.g. `Chest · Triceps`) and a `⋮` menu — no set/rep info, since sets are not defined in the Builder (§4.3, §5).
 - **Quick add chips**: 7 popular exercises (§4.2). They sit at the end of the list, next to **+ Add exercise**, so both ways to add stay together in thumb reach as the list grows. Tap adds the exercise without sets — set count / reps are configured later in the In-workout pending state (§4.3, §5).

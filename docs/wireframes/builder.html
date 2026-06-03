@@ -176,15 +176,6 @@
       flex-direction: column;
       gap: 8px;
     }
-    .ghost-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      font-family: var(--font-sans);
-      font-size: 14px;
-      padding: 8px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
@@ -207,7 +198,7 @@
 
         <div class="app-bar">
           <button class="wf-back-btn" aria-label="Close builder" data-href="today-has-history.html">
-            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
           <h1 style="flex: 1; text-align: center;">Build workout</h1>
           <div style="width: 30px;"></div>
@@ -292,7 +283,6 @@
             Start workout
             <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
-          <button class="ghost-btn" data-href="today-has-history.html">Discard</button>
         </div>
 
       </div>
@@ -317,7 +307,7 @@
           <li>Tap row <code>⋮</code> → <a href="builder-row-menu-sheet.html">builder-row-menu-sheet.html</a></li>
           <li>Tap <code>Add to superset</code> у row menu → партнер picker → <a href="superset-config-sheet.html">superset-config-sheet.html</a></li>
           <li>Tap <code>Start workout</code> → In-workout у <strong>pending state</strong> (pre-start). Годинник тривалості <strong>не</strong> запускається на тап — soft start: відлік стартує з першого залогованого сету або явного <code>Begin</code> (per spec §5.9). Live-стан: <a href="in-workout.html">in-workout.html</a></li>
-          <li>Tap <code>←</code> back / <code>Discard</code> → confirmation sheet (<code>Discard workout setup?</code>) → Today</li>
+          <li>Tap <code>×</code> close (або swipe-down) → confirmation sheet (<code>Discard workout setup?</code>) → Today (per spec §4.8)</li>
         </ul>
       </section>
 
@@ -335,7 +325,7 @@
       <section>
         <h2>Notes</h2>
         <ul>
-          <li>Modal full takeover — без bottom tab bar (per spec §2.3). Bottom — sticky <code>Start workout</code> + ghost <code>Discard</code></li>
+          <li>Modal full takeover — без bottom tab bar (per spec §2.3). Bottom — лише sticky <code>Start workout</code>. Вихід — <code>×</code> close (modal convention, як exercise-picker-add §11) або swipe-down, обидва через confirmation (per spec §4.8). Прибрано дубль-кнопку <code>Discard</code> — resolves F2.4</li>
           <li>Назва за замовчуванням <code>Push A</code> у demo. При Build from scratch — <code>Workout · 2026-05-03</code> (per spec §4.1). При Repeat last — з джерела</li>
           <li>Quick-add chips у кінці списку, поруч із <code>+ Add exercise</code> — обидва способи додати в одній зоні, у thumb-reach коли список росте. Статичні в v1, без локального ranking-у (per spec §4.2)</li>
           <li>Drag handle — 6 dots в 3 рядки по 2, як стандартна Material/iOS reorder affordance. Position зліва щоб thumb-reach, name-area по центру, <code>⋮</code> справа симетрично</li>
