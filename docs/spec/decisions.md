@@ -76,7 +76,7 @@
 - [x] Crash restoration — banner on Today (Resume / Discard)
 
 **Workout Builder**
-- [x] Modal overlay over the Tab Navigator
+- [x] Flow screen pushed from Today — full-screen step, tab bar hidden, `←` back (per §2.3; not a modal overlay)
 - [x] Quick-add chips: Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl
 - [x] Default 1 pending set when an exercise is added (replaces the earlier 3 × 8 default; sets are configured in the In-workout pending state, see Builder & in-workout flow)
 - [x] Editable workout name (from the source when cloning, auto-name when blank)
