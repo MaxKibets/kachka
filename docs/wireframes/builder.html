@@ -181,7 +181,7 @@
 <body>
   <header class="wf-header">
     <h1>Workout Builder · Default</h1>
-    <p class="wf-meta">spec §4 · pre-workout modal full takeover, без tab bar</p>
+    <p class="wf-meta">spec §4 · pre-workout flow screen (pushed з Today), без tab bar</p>
   </header>
 
   <main class="wf-layout">
@@ -307,7 +307,7 @@
           <li>Tap row <code>⋮</code> → <a href="builder-row-menu-sheet.html">builder-row-menu-sheet.html</a></li>
           <li>Tap <code>Add to superset</code> у row menu → партнер picker → <a href="superset-config-sheet.html">superset-config-sheet.html</a></li>
           <li>Tap <code>Start workout</code> → In-workout у <strong>pending state</strong> (pre-start). Годинник тривалості <strong>не</strong> запускається на тап — soft start: відлік стартує з першого залогованого сету або явного <code>Begin</code> (per spec §5.9). Live-стан: <a href="in-workout.html">in-workout.html</a></li>
-          <li>Tap <code>←</code> (або swipe-down) → confirmation sheet (<code>Discard workout setup?</code>) → Today (per spec §4.8)</li>
+          <li>Tap <code>←</code> (або свайп від лівого краю) → confirmation sheet (<code>Discard workout setup?</code>) → Today (per spec §4.8)</li>
         </ul>
       </section>
 
@@ -317,7 +317,7 @@
           <li>Drag handle (≡ зліва) — long-press grab → reorder вправ. Картка піднімається trace-ефектом (TBD у impl)</li>
           <li>Tap pencil біля назви — inline edit поля з системною клавіатурою</li>
           <li>Quick-add chips — горизонтальний scroll (overflow-x), 7 штук, fades справа якщо overflow</li>
-          <li>Свайп вниз від header — закриває builder з confirmation якщо щось змінено (per spec §4)</li>
+          <li>Свайп від лівого краю — back до Today з confirmation якщо щось додано (per spec §4.8)</li>
           <li>Start workout disabled поки список порожній (тут active бо 3 вправи)</li>
         </ul>
       </section>
@@ -325,7 +325,7 @@
       <section>
         <h2>Notes</h2>
         <ul>
-          <li>Modal full takeover — без bottom tab bar (per spec §2.3). Bottom — лише sticky <code>Start workout</code>. Вихід — <code>←</code> back to Today (консистентно з in-workout модалкою §5) або swipe-down, обидва через confirmation discard (per spec §4.8). Прибрано дубль-кнопку <code>Discard</code> (вона вела в той самий confirmation) — resolves F2.4</li>
+          <li>Flow screen (pushed з Today) — без bottom tab bar (per spec §2.3). Bottom — лише sticky <code>Start workout</code>. Вихід — <code>←</code> back to Today (консистентно з in-workout flow §5) або свайп від лівого краю, обидва через confirmation discard (per spec §4.8). Прибрано дубль-кнопку <code>Discard</code> (вона вела в той самий confirmation) — resolves F2.4</li>
           <li>Назва за замовчуванням <code>Push A</code> у demo. При Build from scratch — <code>Workout · 2026-05-03</code> (per spec §4.1). При Repeat last — з джерела</li>
           <li>Quick-add chips у кінці списку, поруч із <code>+ Add exercise</code> — обидва способи додати в одній зоні, у thumb-reach коли список росте. Статичні в v1, без локального ranking-у (per spec §4.2)</li>
           <li>Drag handle — 6 dots в 3 рядки по 2, як стандартна Material/iOS reorder affordance. Position зліва щоб thumb-reach, name-area по центру, <code>⋮</code> справа симетрично</li>

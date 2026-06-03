@@ -40,20 +40,17 @@ From this follow the base constraints for the in-workout UI:
 
 Exercise database lives inside Profile (not as a separate 4th tab). Profile — generic hub for everything that is not workout / history.
 
-### 2.2 Active workout — modal full takeover
+### 2.2 Active workout — flow screen
 
-In-workout screen — modal on top of the tab navigator. Tab bar hides. You can exit only through a deliberate action: `Finish` or `Discard`.
+The In-workout screen is a full-screen step in the workout flow (Today → Builder → Active workout → Completion). It is reached by pushing forward (slide-in from the right, `←` back); the bottom tab bar is hidden — a focused path, not a tab sub-screen, but navigable back rather than a sealed modal.
 
-Deliberate refusal of mini-bar / minimize mode:
+`←` back returns to Today **without ending the workout**: it stays in-progress, an in-progress banner appears on Today, and the user resumes from there (§3.1.c). Ending the workout is a deliberate action: `Finish` (→ Completion → Save) or `Discard` (delete).
 
-- Maximum focus, no distractions
-- Simpler architecture, fewer edge cases
+Only one workout is active at a time — while one is in-progress, Today shows the banner and the start CTAs are disabled until Resume or Discard (§3.1.c). App backgrounded → state preserved → on return it opens in the same place. The flow stays focused (no tab bar, no mini-player), but leaving via `←` is safe because the in-progress banner always brings the user back.
 
-App backgrounded → state preserved → on return it opens in the same place. Starting a new workout while one is active is impossible: on Today an in-progress banner is shown, the main CTAs disabled, until the user does Resume or Discard (see §3.1.c).
+### 2.3 Workout Builder — flow screen
 
-### 2.3 Workout Builder — modal pre-workout
-
-Pre-workout screen where the user assembles the list of exercises and groups — also a modal overlay above the Tab Navigator. Details — §4.
+The pre-workout screen where the user assembles the list of exercises and groups — the first step of the workout flow (Today → Builder → Active workout). A full-screen step reached by pushing forward from Today (slide-in from the right, `←` back), with the tab bar hidden. `←` back returns to Today and discards the setup, with confirmation if anything was added (§4.8 — the Builder keeps no draft). Details — §4.
 
 ### 2.4 Navigation tree
 
@@ -63,8 +60,8 @@ flowchart TB
     App --> Onb[Onboarding<br/>one-shot first launch]
     App --> Main[Main]
     Main --> TabNav[Tab Navigator]
-    Main --> Builder[Workout Builder<br/>modal overlay]
-    Main --> Modal[Active Workout<br/>modal overlay]
+    Main --> Builder[Workout Builder<br/>flow screen]
+    Main --> Active[Active Workout<br/>flow screen]
 
     TabNav --> Today[Today]
     TabNav --> History[History Stack]
@@ -82,10 +79,10 @@ flowchart TB
     Builder --> B2[Exercise picker]
     Builder --> B3[Superset config sheet — partners + rounds + rest]
 
-    Modal --> M1[Workout screen]
-    Modal --> M2[Sheets: numpad / set actions / exercise actions]
-    Modal --> M3[Superset config sheet — partners + rounds + rest]
-    Modal --> M4[Completion screen]
+    Active --> M1[Workout screen]
+    Active --> M2[Sheets: numpad / set actions / exercise actions]
+    Active --> M3[Superset config sheet — partners + rounds + rest]
+    Active --> M4[Completion screen]
 ```
 
-Today — single screen without a stack. Workout Builder and Active Workout — modals. The rest of the tabs have their own stacks.
+Today — single screen without a stack. Workout Builder and Active Workout — full-screen steps of the workout flow (pushed from Today, tab bar hidden), not modals. The rest of the tabs have their own stacks.

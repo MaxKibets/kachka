@@ -266,7 +266,7 @@ Confirmation і action sheets рендеряться як окремі ноди 
 
 ### Modal screens
 
-Workout Builder і Active In-workout — modal full-takeover (per spec §1). У state-машині це звичайні переходи; візуально на phone це slide-up.
+Workout Builder і Active In-workout — full-screen кроки workout-флоу (pushed з Today, tab bar схований; per spec §2.2/§2.3). У state-машині це звичайні переходи; візуально на phone це slide-in справа (push), `←` back.
 
 ---
 
