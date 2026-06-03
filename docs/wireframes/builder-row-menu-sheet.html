@@ -253,28 +253,6 @@
               </div>
               <div class="letter-chip a">A</div>
             </div>
-
-            <!-- Move up -->
-            <div class="action-row" data-href="builder.html">
-              <svg class="icon" viewBox="0 0 24 24">
-                <line x1="12" y1="19" x2="12" y2="5"/>
-                <polyline points="5 12 12 5 19 12"/>
-              </svg>
-              <div class="label-block">
-                <span>Move up</span>
-              </div>
-            </div>
-
-            <!-- Move down -->
-            <div class="action-row" data-href="builder.html">
-              <svg class="icon" viewBox="0 0 24 24">
-                <line x1="12" y1="5" x2="12" y2="19"/>
-                <polyline points="19 12 12 19 5 12"/>
-              </svg>
-              <div class="label-block">
-                <span>Move down</span>
-              </div>
-            </div>
           </div>
 
           <div class="divider-section"></div>
@@ -312,7 +290,6 @@
           <li>Tap <code>Add note</code> → per-exercise note editor; note показується author hint-ом в Active workout (per spec §4.4) — окремий wireframe TBD</li>
           <li>Tap <code>Add to superset</code> → партнер picker → <a href="superset-config-sheet.html">superset-config-sheet.html</a></li>
           <li>Якщо в workout-і вже є група A — letter chip <code>A</code> indicator. Tap → додає вправу до існуючої групи A (skip step partner picker, відкривається config sheet з prefilled candidates per spec §6.2)</li>
-          <li>Tap <code>Move up</code> / <code>Move down</code> → переміщує вправу в списку, sheet закривається</li>
           <li>Tap <code>Remove from workout</code> → confirmation sheet (<code>Remove this exercise?</code>) → видаляє вправу з Builder</li>
           <li>Свайп вниз або тап на scrim → close (per spec §1)</li>
         </ul>
@@ -332,7 +309,7 @@
         <ul>
           <li>Sheet header дублює контекст: name <code>Bench press</code> + subtitle <code>Chest · Triceps · Shoulders</code> — щоб юзер не плутався який саме exercise редагує. Sets у subtitle більше немає — у Builder сети не визначаються (per redesign)</li>
           <li><strong>Letter chip A</strong> показано як indicator на <code>Add to superset</code> — означає що в workout-і вже є група <code>A</code> (per prompt). Якщо тап → додасть до неї. Якщо груп немає — chip відсутній, тап → партнер picker (нова група)</li>
-          <li><code>Move up</code> / <code>Move down</code> — secondary affordance. Per spec §4.4 + §4.6 drag є primary. Корисно для accessibility (folks без drag), і фолбек коли drag важко (точність thumb)</li>
+          <li><strong>Reorder тут навмисно НЕ дублюється.</strong> Переміщення вправ — лише drag-handle зліва (per spec §4.6); меню composition-only. <code>Move up/down</code> прибрано: списки короткі, ручка зліва зроблена під one-hand thumb-drag, тож кнопки лише дублювали б жест і подовжували меню. A11y-reorder віддається на platform accessibility actions (невидимі custom actions на row), не на видимі рядки меню</li>
           <li><code>Remove from workout</code> — destructive (rust color <code>--letter-e</code>). Окрема divider-section з canvas-кольором візуально відмежовує destructive від neutral actions (per spec §1 — destructive внизу)</li>
           <li>Row menu тепер <strong>composition-only</strong> per spec §4.4 (redesign, supersedes F2.1 — див. <a href="../issues/REDESIGN-builder-inworkout.md">REDESIGN-builder-inworkout.md</a>). <code>Edit sets</code> прибрано: редагування сетів переїхало в In-workout pending state (per spec §5.9), бо у Builder сети більше не визначаються. <code>Add note</code> лишається — author hint, що рендериться в Active workout; відкриває окремий per-exercise note editor (destination wireframe TBD)</li>
           <li><strong>Assumption</strong>: Confirmation для <code>Remove from workout</code> per spec §1 — окремий confirmation sheet (TBD у Batch 3-4 — той самий компонент з <code>Cancel</code> вгорі і destructive внизу)</li>
@@ -342,8 +319,8 @@
       <section>
         <h2>Edge cases · related states</h2>
         <ul>
-          <li>Якщо вправа вже в групі (children A1/A2 у <a href="builder-with-supersets.html">builder-with-supersets.html</a>) — sheet адаптується: замість <code>Add to superset</code> з'являється <code>Remove from group</code>; <code>Move up/down</code> в межах групи</li>
-          <li>Group <code>⋮</code> menu — інший sheet (TBD): Edit rounds/rest, Add exercise to group, Reorder inside, Move group up/down, Ungroup (per spec §4.5)</li>
+          <li>Якщо вправа вже в групі (children A1/A2 у <a href="builder-with-supersets.html">builder-with-supersets.html</a>) — sheet адаптується: замість <code>Add to superset</code> з'являється <code>Remove from group</code>. Reorder в межах групи — теж drag (per spec §4.5 Reorder inside)</li>
+          <li>Group <code>⋮</code> menu — інший sheet (TBD): Edit rounds/rest, Add exercise to group, Reorder inside (drag), Ungroup (per spec §4.5)</li>
           <li>Active workout row menu — спорідений компонент з додатковими actions (Skip, Insert after) per spec §5.5 — TBD у Batch 3</li>
           <li>Якщо в workout-і кілька груп (A, B) — chip indicator показує літеру першої групи, або show selector (TBD UX-варіант якщо понадобиться)</li>
         </ul>

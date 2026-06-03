@@ -80,7 +80,7 @@
 - [x] Quick-add chips: Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl
 - [x] Default 1 pending set when an exercise is added (replaces the earlier 3 × 8 default; sets are configured in the In-workout pending state, see Builder & in-workout flow)
 - [x] Editable workout name (from the source when cloning, auto-name when blank)
-- [x] Reorder via drag, supersets via action menu
+- [x] Reorder via drag only — no menu `Move up / Move down`; a11y reorder via row accessibility actions. Supersets via action menu
 - [x] Continue button (`Continue →`) disabled while the list is empty
 
 **Builder & in-workout flow**

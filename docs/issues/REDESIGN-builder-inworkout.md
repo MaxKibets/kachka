@@ -51,7 +51,8 @@ pre-workout/workout boundary:
 - `spec/builder.md §4.3` — rewrite: exercises are added **without sets** in the
   Builder; sets are configured in the In-workout pending state (default 1).
 - `spec/builder.md §4.4` — row menu = composition only: `Add note`,
-  `Add to superset`, `Move up / Move down`, `Remove`. **Remove `Edit sets`.**
+  `Add to superset`, `Remove`. **Remove `Edit sets`.** Reorder is drag-only
+  (§4.6) — no menu `Move up / Move down`.
 - `spec/in-workout.md §5` — add the **pending/pre-start state** + the
   **soft-start** definition; default 1 set; `Add set` copies prev; optional
   pre-set weight with `prev` guidance.

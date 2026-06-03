@@ -83,7 +83,6 @@ Bodyweight exercises (from the system db `isBodyweight: true`) still hide the kg
 | Action | Result |
 |---|---|
 | Add to superset | Multi-select picker from other standalone exercises → config sheet (rounds, rest) → creates a group. §6 |
-| Move up / Move down | Move within the list |
 | Remove exercise | Remove the exercise with confirmation |
 | Add note | Per-exercise note — author hint shown in Active workout |
 
@@ -95,7 +94,6 @@ Bodyweight exercises (from the system db `isBodyweight: true`) still hide the kg
 | Add exercise to group | Picker → adds to the group (up to the limit of 5) |
 | Remove exercise from group | With confirmation. If 1 remains — auto-ungroup |
 | Reorder inside | Drag handles within the group |
-| Move group up / down | As a single whole |
 | Ungroup | Breaks apart into flat exercises in the same order |
 
 ### 4.6 Reorder of the outer list
@@ -103,6 +101,8 @@ Bodyweight exercises (from the system db `isBodyweight: true`) still hide the kg
 Drag handle on the **left** edge of each section (exercise or group). Drag changes the order. Groups move as a whole.
 
 The handle on the left (rather than on the trailing edge per the iOS convention) is deliberate: the `⋮` menu is already on the right edge, so spreading the two controls across different edges removes clustering and yields unambiguous tap targets.
+
+Reorder is **drag-only** — there are no `Move up / Move down` rows in the `⋮` menu (exercise or group). Builder lists are short (ad-hoc, a handful of exercises) and the left handle is built for one-handed thumb dragging, so discrete move buttons would only duplicate the gesture and lengthen the menu. For assistive tech, reorder is exposed via row **accessibility actions** ("Move up" / "Move down" custom actions on each row), not as visible menu rows — keeping the `⋮` menu composition-only.
 
 ### 4.7 Empty list
 
