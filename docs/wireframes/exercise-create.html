@@ -36,7 +36,7 @@
       font-weight: 500;
     }
     .input-wrap {
-      background: var(--surface-1);
+      background: var(--surface-2);
       border: 0.5px solid var(--border-subtle);
       border-radius: 12px;
       padding: 12px 14px;
@@ -66,7 +66,7 @@
       gap: 8px;
     }
     .chip {
-      background: var(--surface-1);
+      background: transparent;
       border: 0.5px solid var(--border-subtle);
       color: var(--text-secondary);
       font-family: var(--font-sans);
@@ -86,7 +86,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--surface-1);
+      background: var(--surface-2);
       border: 0.5px solid var(--border-subtle);
       border-radius: 12px;
       padding: 14px;
@@ -121,30 +121,75 @@
       background: var(--text-primary);
     }
     .switch.on::after { transform: translateX(18px); }
-    .bottom-actions {
-      flex-shrink: 0;
-      padding: 12px 16px 18px;
-      background: var(--canvas);
+    /* Bottom-sheet chrome — create is a form sheet (visual §5.7), matching superset-config */
+    .parent-bg {
+      position: relative;
+      opacity: 0.4;
+      pointer-events: none;
+      color: var(--text-primary);
+    }
+    .scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+    }
+    .parent-row-bg {
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .sheet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--surface-1);
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
       border-top: 0.5px solid var(--border-subtle);
+      padding: 8px 0 18px;
+      max-height: 82%;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+      z-index: 10;
+    }
+    .grab-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.16);
+      margin: 4px auto 12px;
+      flex-shrink: 0;
+    }
+    .sheet-header {
+      padding: 0 20px 12px;
+      border-bottom: 0.5px solid var(--border-divider);
+    }
+    .sheet-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .sheet-body {
+      padding: 0 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .sheet-footer {
+      padding: 12px 20px 0;
+      border-top: 0.5px solid var(--border-divider);
       display: flex;
       flex-direction: column;
       gap: 8px;
-    }
-    .ghost-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      font-family: var(--font-sans);
-      font-size: 14px;
-      padding: 8px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header class="wf-header">
     <h1>Create custom exercise</h1>
-    <p class="wf-meta">spec §11.7 · sub-screen / modal створення custom</p>
+    <p class="wf-meta">spec §11.7 · form bottom sheet (create / edit custom)</p>
   </header>
 
   <main class="wf-layout">
@@ -159,15 +204,36 @@
           </span>
         </div>
 
-        <div class="app-bar">
-          <button class="wf-back-btn" aria-label="Close" data-href="exercise-database-list.html">
-            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-          <h1 style="flex: 1; text-align: center;">Create custom exercise</h1>
-          <div style="width: 28px;"></div>
+        <!-- Dimmed Exercise database (Browse) backdrop -->
+        <div class="parent-bg">
+          <div class="app-bar">
+            <button class="wf-back-btn" aria-label="Exercise database" tabindex="-1">
+              <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <h1 style="flex: 1; text-align: center; font-size: 17px; font-weight: 500;">Exercise database</h1>
+            <div style="width: 30px;"></div>
+          </div>
+          <div class="parent-row-bg">Bench press</div>
+          <div class="parent-row-bg">Deadlift</div>
+          <div class="parent-row-bg">Squat</div>
         </div>
+        <div class="scrim" data-href="exercise-database-list.html"></div>
 
-        <div class="scroll-area">
+        <!-- Bottom sheet: create custom exercise form (visual §5.7) -->
+        <div class="sheet">
+          <div class="grab-handle"></div>
+          <div class="app-bar">
+            <button class="wf-back-btn" aria-label="Cancel" data-href="exercise-database-list.html">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <h1 style="flex: 1; text-align: center;">Create custom exercise</h1>
+            <div style="width: 30px;"></div>
+          </div>
+          <div class="sheet-header">
+            <div class="sheet-subtitle" style="text-align: center;">Your own exercise, available in every workout.</div>
+          </div>
+
+          <div class="sheet-body">
 
           <div class="field-label">Name</div>
           <div class="input-wrap">
@@ -196,16 +262,16 @@
             <span class="switch" aria-label="Bodyweight off" data-href="#"></span>
           </div>
 
-          <div style="height: 24px;"></div>
+          <div style="height: 8px;"></div>
 
-        </div>
+          </div>
 
-        <div class="bottom-actions">
-          <button class="cta-primary" data-href="exercise-database-list.html">
-            Save
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </button>
-          <button class="ghost-btn" data-href="exercise-database-list.html">Cancel</button>
+          <div class="sheet-footer">
+            <button class="cta-primary" data-href="exercise-database-list.html">
+              Save
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -226,7 +292,7 @@
         <h2>Opens to</h2>
         <ul>
           <li>Tap <code>Save</code> → нова custom вправа в db, modal закривається. Якщо викликалось з Add mode — вправа автоматично селектиться і повертається в caller (per spec §11.7)</li>
-          <li>Tap <code>Cancel</code> або <code>✕</code> → закриває без збереження. Якщо form modified — confirmation TBD (consistent з §1 Discard pattern)</li>
+          <li>Tap <code>×</code> (header) / свайп вниз / scrim → закриває без збереження; якщо форма змінена — confirm <code>Discard changes?</code> (per spec §1)</li>
         </ul>
       </section>
 
@@ -237,18 +303,18 @@
           <li>Tap на muscle chip → single-select. Активний chip — Mallard tint</li>
           <li>Tap на Bodyweight toggle → switches state, не блокує save</li>
           <li>Save disabled поки Name empty (тут показано як neutral state, без error indicator поки юзер ще не намагався save)</li>
-          <li>Top-bar <code>✕</code> close — modal-style dismiss</li>
+          <li>Dismiss форми — header <code>×</code> / свайп вниз / тап scrim (form sheet, per visual §5.7)</li>
         </ul>
       </section>
 
       <section>
         <h2>Notes</h2>
         <ul>
-          <li>Top-bar <code>✕</code> close замість <code>←</code> back — натяк на modal-character (sub-screen, але контекст modal-overlay)</li>
+          <li><strong>Form bottom sheet</strong> (не повноекранний sub-screen): grab-handle + заокруглений верх + scrim із dimmed parent — той самий sheet-вигляд, що й superset-config (per visual §5.7). Тому header має <code>×</code> (cancel/close), не <code>←</code></li>
           <li>Чому Legs preselected у demo: для візуального showcase активного chip-state. Реальний impl — нічого не selected на open</li>
           <li><strong>Validation</strong>: name unique (case-insensitive) per spec §11.7. У neutral state (поки юзер тільки зайшов або ще не save-ив) — без error indicator. Після Save з duplicate-name — inline error під input-ом (TBD як окремий error-state мокап)</li>
           <li>Bodyweight toggle з description під label-ом — пояснює effect (kg field ховається у workout per spec §7.4)</li>
-          <li>Save button — primary CTA з checkmark icon (per visual §5.4 Primary), Cancel — ghost text-only нижче (мала destructive-вага, симетрично з Builder bottom-actions)</li>
+          <li>Save button — primary CTA з checkmark icon (per visual §5.4 Primary); окремої footer-кнопки Cancel немає — cancel це header <code>×</code> (unify-on-× decision, як у superset-config)</li>
           <li>Поля у v1: name, muscle group, isBodyweight (per spec §11.7). Notes / equipment — v1.x (відкладено per spec §11.10)</li>
         </ul>
       </section>

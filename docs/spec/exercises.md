@@ -123,7 +123,9 @@ Invoked from:
 
 ```
 ┌─────────────────────────┐
-│ ← New custom exercise   │
+│           ───           │  grab handle
+│ ×  New custom exercise  │  form sheet header (× close)
+│ Your own exercise       │  subtitle, divider below
 ├─────────────────────────┤
 │  Name                   │
 │  [_______________]      │
@@ -146,7 +148,9 @@ Fields:
 
 Validation: name unique (case-insensitive). If such an exercise already exists (system or non-deleted custom) — warning + Create disabled.
 
-Create → new custom exercise in the db. The modal closes. If invoked from Add mode — the exercise is automatically selected and returned to the caller.
+Presentation: a form **bottom sheet** — grab handle, rounded top, dimmed parent behind a scrim, leading `×` (cancel/close) + a single primary, **no** footer `Cancel`. The same chrome as the superset config sheet (§6.2, visual §5.7). Cancelling a changed form confirms per §1.
+
+Create → new custom exercise in the db. The form sheet closes. If invoked from Add mode — the exercise is automatically selected and returned to the caller.
 
 ### 11.8 Custom exercise actions (Browse mode)
 
