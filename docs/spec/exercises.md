@@ -20,15 +20,16 @@
 
 One screen-component, two modes:
 
-- **Add mode** — modal overlay. Tapping a row selects an exercise and returns to the caller with a payload. Header: `← Add exercise` + `[×]` close
+- **Add mode** — **page sheet** (full-screen modal; foundations §2.5, visual §5.7). Tapping a row selects an exercise and returns to the caller with a payload. Header inside the sheet: grab handle + `Add exercise` title + `[×]` close — **no** back arrow; dismiss via `×` or swipe-down
 - **Browse mode** — pushed sub-screen in the Profile stack (from Profile root → DATA → Exercise database). A custom row has `⋮` → action sheet (Edit / Delete). Tapping the row body (both custom and system) — nothing: there is no separate detail screen in v1. Header: `← Exercise database` (with back button)
 
 ### 11.2 Screen structure
 
 ```
 ┌─────────────────────────┐
-│ ← Add exercise      [×] │  Add mode header
-│ ← Exercise database     │  Browse mode header
+│         ───             │  grab handle — Add (page sheet)
+│   Add exercise      [×] │  Add mode header (× close, no back)
+│ ← Exercise database     │  Browse mode header (push, back)
 ├─────────────────────────┤
 │  🔍 Search exercises    │
 ├─────────────────────────┤

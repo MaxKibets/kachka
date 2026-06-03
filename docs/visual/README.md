@@ -244,9 +244,21 @@ Structural consistency is more important than "isolating" the group. The letter 
 - **Tinted letter**: see §2.5
 - **Timer chip** (header): `surface.1` background, `0.5px` subtle border, radius 9, padding `6×10`, Plex Mono Medium 16
 
-### 5.7 Action sheets
+### 5.7 Sheets (bottom sheet + page sheet)
 
-Per spec §1 — all menus and confirmations via bottom sheets. The visual details of the container, divider, destructive button — TBD in the sheets mockup.
+Two sizes of one family, sharing one container so they read as the same surface:
+
+- Background `surface.1`, **top corners** radius 18, top border `0.5px` subtle.
+- **Grab handle**: `36×4`, radius 2, `rgba(255,255,255,0.16)`, centered — 4px below the top edge / 12px above the content.
+- **Scrim** over the dimmed parent (opacity 0.4): `rgba(0,0,0,0.6)`. **Elevation** shadow `0 -8px 24px rgba(0,0,0,0.45)`.
+- **Dismiss**: swipe-down or scrim-tap on every sheet. **Content / form sheets** also carry a leading `[×]` — *close* on a selection sheet (exercise picker), *cancel* on a form (superset config), where it pairs with the primary commit and confirms per §1 if there are unsaved edits. Menus and confirmations (§1) have no `×`; they dismiss via their own actions or swipe-down.
+
+This shared "grab handle + rounded top + scrim" chrome is what reads as **modal** — a surface you dismiss to return to the caller — versus a pushed screen (full-bleed, slides in from the side, `←` back).
+
+- **Bottom sheet** — menus and confirmations (spec §1). Height hugs its content; the parent shows above. Divider / destructive-button details — TBD in the sheets mockup.
+- **Page sheet** — a full-screen modal for substantial value-selection: the exercise picker in **Add mode** (§11, opened from Builder / Active workout). Near-full height; a strip of the dimmed parent peeks at the very top. Header **inside** the sheet: title + `[×]` close on the leading edge — **no** back arrow (dismiss is `×` or swipe-down). Same `surface.1` container; inputs inside step up to `surface.2` so they stay legible.
+
+Push screens (Builder, Active workout, History detail, Exercise database / Browse) do **not** get this chrome: full-bleed, slide-in from the right, `←` back. So the same content can read two ways by role — the exercise list is a **page sheet** in Add mode (pick & return) but a **pushed** Profile screen in Browse mode. See foundations §2.5 for the full surface taxonomy.
 
 ---
 
