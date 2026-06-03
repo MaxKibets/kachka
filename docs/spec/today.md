@@ -21,7 +21,7 @@ Today has three possible states:
 
 ```
 ┌─────────────────────────┐
-│ Today              ⋯    │
+│ Today                   │
 ├─────────────────────────┤
 │                         │
 │  ┌───────────────────┐  │
@@ -49,7 +49,7 @@ Today has three possible states:
 
 ```
 ┌─────────────────────────┐
-│ Today              ⋯    │
+│ Today                   │
 ├─────────────────────────┤
 │                         │
 │         💪              │
@@ -74,7 +74,7 @@ Banner above the main content (overlaid on top of mode (a) or (b)):
 
 ```
 ┌─────────────────────────┐
-│ Today              ⋯    │
+│ Today                   │
 ├─────────────────────────┤
 │  ┌───────────────────┐  │
 │  │ In-progress       │  │
@@ -127,8 +127,3 @@ First launch:
 3. Tap "Start workout" → Workout Builder with chips
 
 No welcome screens, no feature tour, no language selection (auto-detect from locale), no units selection (kg in MVP). Onboarding is functional, not marketing.
-
-### 3.6 Top-bar `⋯` menu Today
-
-- Exercise database → Profile/Exercise db
-- Settings → Profile (root)
