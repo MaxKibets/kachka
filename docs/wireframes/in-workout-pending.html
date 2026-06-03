@@ -436,7 +436,7 @@
       <section>
         <h2>Opens from</h2>
         <ul>
-          <li>Workout Builder → tap <code>Start workout</code> (<a href="builder.html">builder.html</a>). Це перший екран In-workout — landing у pending стані</li>
+          <li>Workout Builder → tap <code>Continue</code> (<a href="builder.html">builder.html</a>). Це перший екран In-workout — landing у pending стані</li>
           <li>Clone / Repeat last → теж приземляється тут (усі сети pending з <code>prev</code> як орієнтиром)</li>
           <li>Today banner → tap <code>Resume</code> якщо нічого ще не залоговано (<a href="today-in-progress.html">today-in-progress.html</a>)</li>
         </ul>
@@ -491,7 +491,7 @@
           <li>Вправа без історії (Incline DB press) → <code>prev</code> = <code>—</code>; reps target все одно є, вага blank</li>
           <li>Обслуговує обидві персони: Planner розкладає повну схему до підйому; Improviser просто починає логати (per redesign brief)</li>
           <li>Bottom bar: одна повноширинна amber CTA <code>Begin workout</code> (reuse <code>cta-primary</code>), без <code>logged / total</code> лічильника (нічого ще не залоговано)</li>
-          <li><strong>OPEN DETAIL #2:</strong> нейминг не вирішено — <code>Begin workout</code> тут vs <code>Start workout</code> у Builder перекриваються. Clock стартує пізніше (на першому лозі), тож Builder-CTA можливо стане <code>Open workout</code> / <code>Continue →</code>. Розв'язати під час wireframing (per redesign brief, open detail #2)</li>
+          <li><strong>OPEN DETAIL #2 — RESOLVED (2026-06-03):</strong> Builder-CTA = <code>Continue →</code> (нічого не стартує — лише веде сюди, у pending), а справжній soft-start тут лишається <code>Begin workout</code>. Так зникає перекриття двох start/begin-дієслів і кнопка не бреше про годинник (per redesign brief, open detail #2)</li>
         </ul>
       </section>
 

@@ -83,9 +83,12 @@ pre-workout/workout boundary:
    guidance). `superset-config-sheet` keeps ONLY rounds + rest (no per-child
    reps). `builder-with-supersets` cards show muscle groups, not reps. Groups
    have no per-child `Add set` — rounds govern the count.
-2. **Builder CTA name — RESOLVED: keep `Start workout`.** Builder → `Start
-   workout` enters the In-workout pending state; the explicit soft-start control
-   inside pending is `Begin workout`.
+2. **Builder CTA name — RESOLVED: `Continue →` (revised 2026-06-03).** The
+   Builder CTA is `Continue →`, not `Start workout`: tapping it does not start
+   the workout (the clock is soft), it only enters the In-workout pending state.
+   The explicit soft-start control inside pending stays `Begin workout`. The
+   earlier "keep `Start workout`" call was reversed — `Start` overlapped with
+   `Begin` and falsely implied the timer started on tap.
 3. **In-progress banner (§3.1.c) — RESOLVED: pending-only is NOT in-progress.**
    The banner appears only after the workout has begun (first logged set or
    `Begin`). Closing a pending-only workout discards the setup, like leaving the

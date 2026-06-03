@@ -111,7 +111,8 @@ still open. Decisions inline below.
 - **✅ Resolution:** **dropped the bottom `Discard`** — it duplicated the header
   exit (the back `←` and the bottom `Discard` both opened the same
   `Discard workout setup?` confirmation → Today). The sticky bottom is now the
-  single primary `Start workout`; the header back `←` (return to Today,
+  single primary CTA — `Continue →` (renamed from `Start workout`, open
+  detail #2); the header back `←` (return to Today,
   consistent with the in-workout modal §5) is the single exit. Removed the
   button from `builder` + `builder-with-supersets`, with the unused `.ghost-btn`
   style. The §4.8 discard-on-close behavior (with confirmation) is unchanged.

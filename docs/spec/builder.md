@@ -40,16 +40,16 @@
 │  + Add exercise         │
 │                         │
 ├─────────────────────────┤
-│  [   Start workout   ]  │  sticky bottom
+│  [     Continue →    ]  │  sticky bottom
 └─────────────────────────┘
 ```
 
-- **Header**: a back button (`←` → Today), screen title `Build workout`. Tapping `←` (or the swipe-from-left-edge back gesture) returns to Today and discards the setup, with confirmation if anything was added (§4.8). There is no separate bottom `Discard` button: back is the single exit, so the sticky bottom carries only **Start workout**.
+- **Header**: a back button (`←` → Today), screen title `Build workout`. Tapping `←` (or the swipe-from-left-edge back gesture) returns to Today and discards the setup, with confirmation if anything was added (§4.8). There is no separate bottom `Discard` button: back is the single exit, so the sticky bottom carries only **Continue**.
 - **Workout name**: editable inline. With Repeat last / Choose from history it is filled from the source. With Build from scratch — auto `Workout · 2026-05-02`, the user can overwrite it.
 - **Exercises list**: exercises + groups in performance order. Each exercise is a section showing the exercise name + a muscle-group subtitle (e.g. `Chest · Triceps`) and a `⋮` menu — no set/rep info, since sets are not defined in the Builder (§4.3, §5).
 - **Quick add chips**: 7 popular exercises (§4.2). They sit at the end of the list, next to **+ Add exercise**, so both ways to add stay together in thumb reach as the list grows. Tap adds the exercise without sets — set count / reps are configured later in the In-workout pending state (§4.3, §5).
 - **+ Add exercise**: opens the exercise picker (full list + search + custom). The exercise is added without sets — sets are configured in the In-workout pending state (§4.3, §5).
-- **Start workout** sticky button: opens the Active Workout screen — the next step of the flow. Disabled while the list is empty. It leads into the In-workout pending state — the duration clock starts later (soft start, see §5), not when this is tapped.
+- **Continue** sticky button: opens the Active Workout screen — the next step of the flow. Disabled while the list is empty. It leads into the In-workout **pending** state, where sets are configured; the workout itself begins later (soft start, see §5) — at the first logged set or an explicit **Begin workout**, not when this is tapped. The label is `Continue`, not `Start`, precisely because tapping it does not start the workout: `Start`/`Begin` would overlap with the pending state's real soft-start control (`Begin workout`, §5.9).
 
 ### 4.2 Quick-add chips
 
@@ -113,7 +113,7 @@ If the list is empty:
   Tap a chip below or "+ Add exercise"
 ```
 
-Start workout button disabled.
+Continue button disabled.
 
 ### 4.8 Discard / save for later
 

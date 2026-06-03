@@ -33,7 +33,7 @@ stateDiagram-v2
     ConfirmDiscard --> TodayHasHistory: confirm
 
     HistoryPicker --> Builder: tap workout (clone)
-    Builder --> ActiveWorkoutPending: tap Start workout
+    Builder --> ActiveWorkoutPending: tap Continue
     ActiveWorkoutPending --> ActiveWorkout: first set logged / tap Begin (soft start)
     Builder --> TodayHasHistory: tap ← (discard setup)
     ActiveWorkout --> CompletionScreen: tap Finish (≥1 set logged)
@@ -137,7 +137,7 @@ stateDiagram-v2
     PickerAdd --> Builder: pick
     PickerAdd --> ExerciseCreate: + Create custom
     SupersetConfig --> Builder: Save
-    Builder --> ActiveWorkoutPending: Start workout
+    Builder --> ActiveWorkoutPending: Continue
     ActiveWorkoutPending --> ActiveWorkout: first log / Begin (soft start)
 
     state "Builder (default)" as Builder

@@ -81,7 +81,7 @@
 - [x] Default 1 pending set when an exercise is added (replaces the earlier 3 × 8 default; sets are configured in the In-workout pending state, see Builder & in-workout flow)
 - [x] Editable workout name (from the source when cloning, auto-name when blank)
 - [x] Reorder via drag, supersets via action menu
-- [x] Start workout button disabled while the list is empty
+- [x] Continue button (`Continue →`) disabled while the list is empty
 
 **Builder & in-workout flow**
 - [x] Builder is composition-only: name + muscle groups per card, reorder, add via chips/picker + supersets. No set presets in the Builder
