@@ -16,7 +16,7 @@ Discussion language: **Ukrainian**. Technical terms (RPE, PR, superset, set) sta
 
 UI/UX is **conceptually locked** for v1:
 - Navigation / IA (3 tabs: Today · History · Profile)
-- Today flow (Repeat last / Choose from history / Start blank)
+- Today flow (Repeat last / Choose from history / Build from scratch)
 - Workout Builder (pre-workout list + Quick-add chips + supersets)
 - In-workout zone (everything, including editing mid-workout)
 - Ad-hoc supersets with color-coded letter labels
@@ -58,7 +58,7 @@ A shortened list — details in the md files:
 - Exercise database — inside Profile
 
 **Today flow**
-- 3 modes: has history (Repeat last + Choose from history + Start blank) / first launch (single CTA) / in-progress (banner)
+- 3 modes: has history (Repeat last + Choose from history + Build from scratch) / first launch (single CTA) / in-progress (banner)
 - Repeat last — primary CTA, clones structure + name + targets, prev = from the clone source
 - Choose from history — list of all completed for split routines
 - Crash restoration — banner on Today (Resume / Discard), not auto-resume

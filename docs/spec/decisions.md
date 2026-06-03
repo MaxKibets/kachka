@@ -71,7 +71,7 @@
 - [x] Three modes: has history / first launch / in-progress
 - [x] Repeat last as primary CTA
 - [x] Choose from history for split routines
-- [x] Start blank → Workout Builder
+- [x] Build from scratch → Workout Builder
 - [x] Onboarding — straight to empty Today, without welcome screens
 - [x] Crash restoration — banner on Today (Resume / Discard)
 

@@ -34,7 +34,7 @@ From this follow the base constraints for the in-workout UI:
 
 | Tab | Content |
 |-----|-----|
-| **Today** | Start workout: Repeat last / Choose from history / Start blank. Banner when there is an in-progress workout |
+| **Today** | Start workout: Repeat last / Choose from history / Build from scratch. Banner when there is an in-progress workout |
 | **History** | Past workouts chronologically, detail |
 | **Profile** | Preferences, exercise database, backup/restore, about |
 

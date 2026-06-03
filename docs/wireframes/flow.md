@@ -24,10 +24,10 @@ stateDiagram-v2
     state "Today / in-progress banner" as TodayInProgress
     state "In-workout / pending (pre-start)" as ActiveWorkoutPending
 
-    TodayFirst --> Builder: tap Start workout
+    TodayFirst --> Builder: tap Build workout
     TodayHasHistory --> Builder: tap Repeat last (clone)
     TodayHasHistory --> HistoryPicker: tap Choose from history
-    TodayHasHistory --> Builder: tap Start blank workout
+    TodayHasHistory --> Builder: tap Build from scratch
     TodayInProgress --> ActiveWorkout: tap Resume
     TodayInProgress --> ConfirmDiscard: tap Discard
     ConfirmDiscard --> TodayHasHistory: confirm
@@ -106,8 +106,8 @@ stateDiagram-v2
         state "In-progress banner" as TodayInProgress
     }
 
-    TodayFirst --> Builder: Start workout
-    TodayHasHistory --> Builder: Repeat last / Start blank
+    TodayFirst --> Builder: Build workout
+    TodayHasHistory --> Builder: Repeat last / Build from scratch
     TodayHasHistory --> HistoryPicker: Choose from history
     TodayInProgress --> ActiveWorkout: Resume
     TodayInProgress --> DiscardSheet: Discard

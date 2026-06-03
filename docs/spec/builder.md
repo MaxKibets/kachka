@@ -7,7 +7,7 @@
 
 ## 4. Workout Builder
 
-> Pre-workout screen where the user assembles the list of exercises before starting the workout. Entry points: Start blank (§3.4), Repeat last (§3.2), Choose from history (§3.3).
+> Pre-workout screen where the user assembles the list of exercises before starting the workout. Entry points: Build from scratch (§3.4), Repeat last (§3.2), Choose from history (§3.3).
 
 ### 4.1 Screen structure
 
@@ -45,7 +45,7 @@
 ```
 
 - **Header**: back button, screen title `Build workout`. Swipe down closes (with confirmation if something was changed).
-- **Workout name**: editable inline. With Repeat last / Choose from history it is filled from the source. With Start blank — auto `Workout · 2026-05-02`, the user can overwrite it.
+- **Workout name**: editable inline. With Repeat last / Choose from history it is filled from the source. With Build from scratch — auto `Workout · 2026-05-02`, the user can overwrite it.
 - **Quick add chips**: 7 popular exercises (§4.2). Tap adds the exercise without sets — set count / reps are configured later in the In-workout pending state (§4.3, §5).
 - **Exercises list**: exercises + groups in performance order. Each exercise is a section showing the exercise name + a muscle-group subtitle (e.g. `Chest · Triceps`) and a `⋮` menu — no set/rep info, since sets are not defined in the Builder (§4.3, §5).
 - **+ Add exercise**: opens the exercise picker (full list + search + custom). The exercise is added without sets — sets are configured in the In-workout pending state (§4.3, §5).

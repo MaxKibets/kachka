@@ -102,16 +102,14 @@ v0) і **не** статистичне дослідження. Це малень
 - **Кажеш:** «Минулого разу ти робив тренування "Push A". Сьогодні хочеш
   зробити точно таке саме. Покажи, як.»
 - **Правильний шлях:** тап **Repeat last**.
-- **Success:** обирає *Repeat last*, а не *Choose from history* / *Start
-  blank*, без вагань.
+- **Success:** обирає *Repeat last*, а не *Choose from history* / *Build from scratch*, без вагань.
 - **Лови:** Чи розуміють, що три опції різні? Чи «Repeat last» читається як
   «те саме тренування знову»? Плутанина між *Choose from history* і *Repeat
   last*.
 - **Пробиває:** Today IA, основний флоу для юзера, що повертається (spec §3).
 
 ### T2 — Зібрати тренування, додати вправу (CORE)
-- **Старт:** з T1 продовжити, або `today-has-history.html` → **Start blank
-  workout** → `builder.html`.
+- **Старт:** з T1 продовжити, або `today-has-history.html` → **Build from scratch** → `builder.html`.
 - **Кажеш:** «Тепер збери тренування з нуля. Додай вправу Bench Press.»
 - **Правильний шлях:** Quick-add chip *Bench Press*, **або** `+ Add exercise`
   → picker → тап по рядку.

@@ -303,8 +303,8 @@
         <h2>Opens from</h2>
         <ul>
           <li>Today (<a href="today-has-history.html">today-has-history.html</a>) → <code>Repeat last</code> (з prefilled списком, тут показано саме такий стан)</li>
-          <li>Today → <code>Start blank workout</code> (порожній список + chips)</li>
-          <li>Today (<a href="today-first.html">today-first.html</a>) → <code>Start workout</code> (порожній список + chips, first launch)</li>
+          <li>Today → <code>Build from scratch</code> (порожній список + chips)</li>
+          <li>Today (<a href="today-first.html">today-first.html</a>) → <code>Build workout</code> (порожній список + chips, first launch)</li>
           <li>History picker → tap на тренування → клонується (<a href="history-picker.html">history-picker.html</a> — TBD у Batch 4)</li>
         </ul>
       </section>
@@ -336,7 +336,7 @@
         <h2>Notes</h2>
         <ul>
           <li>Modal full takeover — без bottom tab bar (per spec §2.3). Bottom — sticky <code>Start workout</code> + ghost <code>Discard</code></li>
-          <li>Назва за замовчуванням <code>Push A</code> у demo. При Start blank — <code>Workout · 2026-05-03</code> (per spec §4.1). При Repeat last — з джерела</li>
+          <li>Назва за замовчуванням <code>Push A</code> у demo. При Build from scratch — <code>Workout · 2026-05-03</code> (per spec §4.1). При Repeat last — з джерела</li>
           <li>Quick-add chips статичні в v1, без локального ranking-у (per spec §4.2)</li>
           <li>Drag handle — 6 dots в 3 рядки по 2, як стандартна Material/iOS reorder affordance. Position зліва щоб thumb-reach, name-area по центру, <code>⋮</code> справа симетрично</li>
           <li>Top-bar <code>⋯</code> опційний (резерв для майбутніх per-screen actions). У v1 поки нічого критичного — можна прибрати в impl</li>
