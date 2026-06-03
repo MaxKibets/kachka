@@ -34,7 +34,7 @@ Combined sheet:
 
 ```
 ┌─────────────────────────┐
-│ Configure superset A    │
+│ ×  Configure superset A │
 │ Pick 2–5 · same rounds  │
 ├─────────────────────────┤
 │  ☑ Pull-ups             │
@@ -54,6 +54,8 @@ Combined sheet:
 ```
 
 Disabled exercises are shown with a reason ("Already started" if there are logged sets, "In another superset" if already in a group). `Create group` is disabled while the group has < 2 exercises.
+
+The sheet dismisses via the leading `×` (cancel/close), swipe-down, or scrim-tap; `Create group` (edit mode: `Save`) is the commit. There is no separate footer `Cancel` — the `×` is the single cancel affordance, consistent with the picker (sheet chrome: visual §5.7). Cancelling mid-edit confirms per §1 if anything was changed.
 
 ### 6.3 Color-coded letter labels
 
