@@ -252,6 +252,7 @@ Two sizes of one family, sharing one container so they read as the same surface:
 - **Grab handle**: `36×4`, radius 2, `rgba(255,255,255,0.16)`, centered — 4px below the top edge / 12px above the content.
 - **Scrim** over the dimmed parent (opacity 0.4): `rgba(0,0,0,0.6)`. **Elevation** shadow `0 -8px 24px rgba(0,0,0,0.45)`.
 - **Dismiss**: swipe-down or scrim-tap on every sheet. **Content / form sheets** also carry a leading `[×]` — *close* on a selection sheet (exercise picker), *cancel* on a form (superset config), where it pairs with the primary commit and confirms per §1 if there are unsaved edits. Menus and confirmations (§1) have no `×`; they dismiss via their own actions or swipe-down.
+- **Header**: the title (and optional description) is **centered**; on a content/form sheet the leading `[×]` and a trailing spacer balance it. A destructive action sits at the bottom, set off by a `0.5px` hairline (`border-divider`) + a small gap — never a heavy fill band.
 
 This shared "grab handle + rounded top + scrim" chrome is what reads as **modal** — a surface you dismiss to return to the caller — versus a pushed screen (full-bleed, slides in from the side, `←` back).
 
