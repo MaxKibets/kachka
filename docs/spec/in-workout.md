@@ -19,7 +19,7 @@
 
 Each exercise in the list is a section with:
 
-- Exercise name + `note` and `⋯` icons (per-exercise actions)
+- Exercise name + `⋯` icon. A `note` icon shows only when the exercise has an author note — filled, and tapping it toggles an inline hint banner (note text + `Edit`) under the name; default collapsed. With no note there is no icon; add via `⋯` → `Add note` or the Builder row menu. Editor: `exercise-note-sheet`. Workout-level author notes (program-format §139) are deferred to v2
 - Set table with columns `№ | prev | kg | reps | ✓`
 - `+ add set` button
 

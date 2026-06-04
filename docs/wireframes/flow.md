@@ -78,7 +78,7 @@ stateDiagram-v2
     SupersetConfig --> ActiveWorkout: confirm
 
     Builder --> NoteEditor: tap ⋮ → Add note
-    ActiveWorkout --> NoteEditor: tap note icon
+    ActiveWorkout --> NoteEditor: note edit
     NoteEditor --> Builder: Save / Cancel
     NoteEditor --> ActiveWorkout: Save / Cancel
 
@@ -172,7 +172,7 @@ stateDiagram-v2
     InWorkout --> SetActions: tap set number
     InWorkout --> RestTimer: set logged
     InWorkout --> PullToCursor: cursor off-screen
-    InWorkout --> NoteEditor: tap note icon
+    InWorkout --> NoteEditor: note edit
     Numpad --> InWorkout: Done
     SetActions --> InWorkout: pick action / dismiss
     RestTimer --> InWorkout: skip / timeout
