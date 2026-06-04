@@ -77,9 +77,15 @@ stateDiagram-v2
     SupersetConfig --> Builder: confirm
     SupersetConfig --> ActiveWorkout: confirm
 
+    Builder --> NoteEditor: tap ⋮ → Add note
+    ActiveWorkout --> NoteEditor: tap note icon
+    NoteEditor --> Builder: Save / Cancel
+    NoteEditor --> ActiveWorkout: Save / Cancel
+
     state "Custom numpad" as Numpad
     state "Set actions sheet" as SetActionsSheet
     state "Superset config sheet" as SupersetConfig
+    state "Exercise note editor" as NoteEditor
 ```
 
 ---
@@ -131,10 +137,12 @@ stateDiagram-v2
     BuilderSS --> SupersetConfig: tap ⋮ on group
     Builder --> RowMenu: tap ⋮ on exercise
     RowMenu --> SupersetConfig: Add to superset
+    RowMenu --> NoteEditor: Add note
     Builder --> PickerAdd: + Add exercise
     PickerAdd --> Builder: pick
     PickerAdd --> ExerciseCreate: + Create custom
     SupersetConfig --> Builder: Save
+    NoteEditor --> Builder: Save / Cancel
     Builder --> ActiveWorkoutPending: Continue
     ActiveWorkoutPending --> ActiveWorkout: first log / Begin (soft start)
 
@@ -144,11 +152,12 @@ stateDiagram-v2
     state "Picker (Add)" as PickerAdd
     state "Superset config" as SupersetConfig
     state "Exercise create" as ExerciseCreate
+    state "Exercise note editor" as NoteEditor
     state "Active In-workout" as ActiveWorkout
     state "In-workout pending (pre-start)" as ActiveWorkoutPending
 ```
 
-Файли: [builder.html](builder.html) · [builder-with-supersets.html](builder-with-supersets.html) · [exercise-picker-add.html](exercise-picker-add.html) · [superset-config-sheet.html](superset-config-sheet.html) · [builder-row-menu-sheet.html](builder-row-menu-sheet.html) · [exercise-create.html](exercise-create.html)
+Файли: [builder.html](builder.html) · [builder-with-supersets.html](builder-with-supersets.html) · [exercise-picker-add.html](exercise-picker-add.html) · [superset-config-sheet.html](superset-config-sheet.html) · [builder-row-menu-sheet.html](builder-row-menu-sheet.html) · [exercise-create.html](exercise-create.html) · [exercise-note-sheet.html](exercise-note-sheet.html)
 
 ---
 
@@ -163,10 +172,12 @@ stateDiagram-v2
     InWorkout --> SetActions: tap set number
     InWorkout --> RestTimer: set logged
     InWorkout --> PullToCursor: cursor off-screen
+    InWorkout --> NoteEditor: tap note icon
     Numpad --> InWorkout: Done
     SetActions --> InWorkout: pick action / dismiss
     RestTimer --> InWorkout: skip / timeout
     PullToCursor --> InWorkout: tap → scroll to cursor
+    NoteEditor --> InWorkout: Save / Cancel
     InWorkout --> CompletionScreen: tap Finish (≥1 set logged)
     InWorkout --> ConfirmDiscard: tap Finish (0 sets logged)
 
@@ -176,11 +187,12 @@ stateDiagram-v2
     state "Set actions sheet" as SetActions
     state "Rest timer" as RestTimer
     state "Pull-to-cursor chip" as PullToCursor
+    state "Exercise note editor" as NoteEditor
     state "Completion screen (full screen)" as CompletionScreen
     state "Discard confirm" as ConfirmDiscard
 ```
 
-Файли: [in-workout.html](in-workout.html) · [in-workout-pending.html](in-workout-pending.html) · [in-workout-with-supersets.html](in-workout-with-supersets.html) · [numpad.html](numpad.html) · [set-actions-sheet.html](set-actions-sheet.html) · [rest-timer.html](rest-timer.html) · [pull-to-cursor.html](pull-to-cursor.html)
+Файли: [in-workout.html](in-workout.html) · [in-workout-pending.html](in-workout-pending.html) · [in-workout-with-supersets.html](in-workout-with-supersets.html) · [numpad.html](numpad.html) · [set-actions-sheet.html](set-actions-sheet.html) · [rest-timer.html](rest-timer.html) · [pull-to-cursor.html](pull-to-cursor.html) · [exercise-note-sheet.html](exercise-note-sheet.html)
 
 ---
 

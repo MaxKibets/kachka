@@ -52,6 +52,7 @@ wireframes/
 - [x] [exercise-picker-add.html](exercise-picker-add.html) — picker у Add режимі (з Builder/Active). Browse режим — Profile-екран бази вправ (Batch 5: exercise-database-list / -empty)
 - [x] [superset-config-sheet.html](superset-config-sheet.html) — bottom sheet створення/edit суперсету
 - [x] [builder-row-menu-sheet.html](builder-row-menu-sheet.html) — per-row action sheet
+- [x] [exercise-note-sheet.html](exercise-note-sheet.html) — per-exercise note editor (form bottom sheet, shared with Active-workout note icon)
 
 ### Batch 3 — In-workout family ✅
 

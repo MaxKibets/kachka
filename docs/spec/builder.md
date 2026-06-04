@@ -84,7 +84,7 @@ Bodyweight exercises (from the system db `isBodyweight: true`) still hide the kg
 |---|---|
 | Add to superset | Multi-select picker from other standalone exercises → config sheet (rounds, rest) → creates a group. §6 |
 | Remove exercise | Remove the exercise with confirmation |
-| Add note | Per-exercise note — author hint shown in Active workout |
+| Add note | Per-exercise note — author hint shown in Active workout. Opens a form bottom sheet (shared editor, also reached from the Active-workout note icon) |
 
 ### 4.5 Group menu `⋮` (in Builder)
 
