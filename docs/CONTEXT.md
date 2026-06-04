@@ -72,7 +72,7 @@ A shortened list — details in the md files:
 - Exercise list — scroll, not carousel
 - Sets with an optional target — ghost text in the fields (from the clone source)
 - Custom numpad instead of the system keyboard with quick-adjust ±2.5/±5
-- Set actions via tap on the set number — warmup, RPE, note, delete
+- Set actions via tap on the set number — warmup, RPE, delete
 - Active workout = full editor: add/remove set, add/insert/remove exercise, skip, reorder
 - Skip exercise — soft remove that preserves the structure for clone
 - Failed reps (0 reps) — allowed

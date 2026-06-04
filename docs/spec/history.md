@@ -48,7 +48,7 @@ Read-only snapshot of a workout. No editing actions.
 
 *Body* — full snapshot:
 - All exercises in execution order
-- For each set: number (or `W` for warmup), `weight × reps`, RPE (if any), note marker
+- For each set: number (or `W` for warmup), `weight × reps`, RPE (if any)
 - Workout note (if one was logged at completion)
 
 *Supersets* — group rendering as in-workout, but read-only:

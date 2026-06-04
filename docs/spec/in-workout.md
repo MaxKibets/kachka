@@ -232,7 +232,6 @@ Pull-ups, push-ups, etc. — the kg field is redundant or optional:
 |---|---|---|
 | Mark as warmup | Toggle | Excludes the set from volume and PR |
 | RPE | Picker 1–10 | Optional, hides in settings if the user does not use it |
-| Add note | Text input | System keyboard (a rare action, economy of attention matters more than speed) |
 | Delete set | Destructive | With confirmation |
 
 ### 8.3 Visual markers on the row
@@ -241,6 +240,5 @@ After configuration the set shows minimal badges:
 
 - `W` next to the set number — warmup
 - `@8` — RPE
-- a small dot — a note exists
 
 Without cluttering the main flow — readable at a glance.

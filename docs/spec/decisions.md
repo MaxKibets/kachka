@@ -97,7 +97,7 @@
 - [x] Custom numpad instead of the system keyboard
 - [x] Quick-adjust buttons on the numpad (`±2.5`, `±5`)
 - [x] Tap on a set number → set actions sheet
-- [x] Set actions: warmup toggle, RPE 1–10, note, delete
+- [x] Set actions: warmup toggle, RPE 1–10, delete
 - [x] Active workout = full editor: add/remove set, add/insert/remove exercise, reorder
 - [x] Skip exercise — soft remove that preserves the structure for clone
 - [x] Failed reps (0 reps) — allowed, save + green ✓, does not go into volume and PR
