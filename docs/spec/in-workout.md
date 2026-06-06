@@ -60,6 +60,7 @@ An active workout is a full editor on top of the initial structure.
 | Skip exercise | Per-exercise `⋯` → Skip | Soft variant: the exercise stays in the structure, marked `Skipped` |
 | Reorder | Drag handle on the right edge of the section | The cursor stays on the same set that was active |
 | Add to superset | Per-exercise `⋯` → Add to superset | §6 (with constraint: 0 logged sets in candidates) |
+| Add / Edit note | Per-exercise `⋯` → Add note | Shared note editor sheet (§4.4 · `exercise-note-sheet`); the `⋯` menu dismisses first — editor over the screen, not stacked on the menu (§2.5) |
 | Edit superset | Group `⋯` | §6.7 |
 | Ungroup | Group `⋯` → Ungroup | Always allowed. §6.7 |
 

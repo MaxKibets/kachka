@@ -256,6 +256,7 @@
         <ul>
           <li>Tap у textarea → системна клавіатура (free text, multi-line). Sheet піднімається над клавіатурою (per visual §5.7)</li>
           <li>Dismiss форми — header <code>×</code> / свайп вниз / тап scrim (form sheet, per visual §5.7)</li>
+          <li><strong>Без стека sheet'ів</strong>: коли вхід — меню-sheet (row <code>⋮</code> у Builder / exercise <code>⋮</code> в Active), воно закривається <em>першим</em>, а вже потім editor підіймається над екраном (Builder / Active workout), не над меню. Scrim дімить екран, не меню; закриття editor повертає на екран, а не в меню (per spec §2.5 — sheets never stack). Вхід через <code>✎</code> hint-банер — прямо з екрана, без меню</li>
           <li><strong>Mode-aware</strong>: порожня нотатка → title <code>Add note</code>, <code>Clear</code> прихований, <code>Save</code> disabled (нема чого зберігати). Існуюча нотатка → title <code>Edit note</code> + видимий <code>Clear</code> (показано тут)</li>
         </ul>
       </section>
