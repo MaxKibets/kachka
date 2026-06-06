@@ -71,17 +71,17 @@
 - [x] Three modes: has history / first launch / in-progress
 - [x] Repeat last as primary CTA
 - [x] Choose from history for split routines
-- [x] Start blank → Workout Builder
+- [x] Build from scratch → Workout Builder
 - [x] Onboarding — straight to empty Today, without welcome screens
 - [x] Crash restoration — banner on Today (Resume / Discard)
 
 **Workout Builder**
-- [x] Modal overlay over the Tab Navigator
+- [x] Flow screen pushed from Today — full-screen step, tab bar hidden, `←` back (per §2.3; not a modal overlay)
 - [x] Quick-add chips: Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl
 - [x] Default 1 pending set when an exercise is added (replaces the earlier 3 × 8 default; sets are configured in the In-workout pending state, see Builder & in-workout flow)
 - [x] Editable workout name (from the source when cloning, auto-name when blank)
-- [x] Reorder via drag, supersets via action menu
-- [x] Start workout button disabled while the list is empty
+- [x] Reorder via drag only — no menu `Move up / Move down`; a11y reorder via row accessibility actions. Supersets via action menu
+- [x] Continue button (`Continue →`) disabled while the list is empty
 
 **Builder & in-workout flow**
 - [x] Builder is composition-only: name + muscle groups per card, reorder, add via chips/picker + supersets. No set presets in the Builder
@@ -97,7 +97,7 @@
 - [x] Custom numpad instead of the system keyboard
 - [x] Quick-adjust buttons on the numpad (`±2.5`, `±5`)
 - [x] Tap on a set number → set actions sheet
-- [x] Set actions: warmup toggle, RPE 1–10, note, delete
+- [x] Set actions: warmup toggle, RPE 1–10, delete
 - [x] Active workout = full editor: add/remove set, add/insert/remove exercise, reorder
 - [x] Skip exercise — soft remove that preserves the structure for clone
 - [x] Failed reps (0 reps) — allowed, save + green ✓, does not go into volume and PR

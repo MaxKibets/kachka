@@ -34,7 +34,7 @@ Combined sheet:
 
 ```
 ┌─────────────────────────┐
-│ Configure superset A    │
+│ ×  Configure superset A │
 │ Pick 2–5 · same rounds  │
 ├─────────────────────────┤
 │  ☑ Pull-ups             │
@@ -55,6 +55,8 @@ Combined sheet:
 
 Disabled exercises are shown with a reason ("Already started" if there are logged sets, "In another superset" if already in a group). `Create group` is disabled while the group has < 2 exercises.
 
+The sheet dismisses via the leading `×` (cancel/close), swipe-down, or scrim-tap; `Create group` (edit mode: `Save`) is the commit. There is no separate footer `Cancel` — the `×` is the single cancel affordance, consistent with the picker (sheet chrome: visual §5.7). Cancelling mid-edit confirms per §1 if anything was changed.
+
 ### 6.3 Color-coded letter labels
 
 Each group within a single workout gets a letter and a color. A · color 1, B · color 2, C · color 3. If there are more than 3 groups (rare) — colors repeat rotationally, letters continue.
@@ -62,11 +64,11 @@ Each group within a single workout gets a letter and a color. A · color 1, B ·
 The label is displayed in Builder, Active workout and History detail:
 
 ```
-A · Superset · Round 2 of 3
+Superset A · Round 2 of 3
 ●●○ (round indicators)
 ```
 
-Exercises inside a group have the prefix `A1 · Pull-ups`, `A2 · Push-ups`.
+The letter is a small inline chip on the header title (`Superset A`, visual §2.5). Inside the group card exercises are shown in order with **no boxed per-letter**; the `A1 · Pull-ups`, `A2 · Push-ups` ordinal is the cross-reference notation used where there is no card frame — History detail and compact labels (rest bar, return-to-cursor chip).
 
 The color is applied to:
 - Group header background tint
@@ -77,10 +79,10 @@ Specific colors — TBD with the visual style.
 
 ### 6.4 Group structure in the list
 
-- Header label: `A · Superset · round X of Y`
+- Header label: `Superset A · round X of Y` (letter = small inline chip, visual §2.5)
 - Round indicator dots: `● ○ ○`
 - Side vertical bar in the group's color connects the group's exercises
-- Each exercise inside the group has the prefix `A1`, `A2`, `A3` next to its name
+- Exercises are shown in order — no boxed per-letter in the card; the `A1`/`A2`/`A3` ordinal stays as the cross-reference notation in History and compact labels
 
 ### 6.5 Cursor cycling
 

@@ -24,18 +24,18 @@ stateDiagram-v2
     state "Today / in-progress banner" as TodayInProgress
     state "In-workout / pending (pre-start)" as ActiveWorkoutPending
 
-    TodayFirst --> Builder: tap Start workout
+    TodayFirst --> Builder: tap Build workout
     TodayHasHistory --> Builder: tap Repeat last (clone)
     TodayHasHistory --> HistoryPicker: tap Choose from history
-    TodayHasHistory --> Builder: tap Start blank workout
+    TodayHasHistory --> Builder: tap Build from scratch
     TodayInProgress --> ActiveWorkout: tap Resume
     TodayInProgress --> ConfirmDiscard: tap Discard
     ConfirmDiscard --> TodayHasHistory: confirm
 
     HistoryPicker --> Builder: tap workout (clone)
-    Builder --> ActiveWorkoutPending: tap Start workout
+    Builder --> ActiveWorkoutPending: tap Continue
     ActiveWorkoutPending --> ActiveWorkout: first set logged / tap Begin (soft start)
-    Builder --> TodayHasHistory: tap back / Discard setup
+    Builder --> TodayHasHistory: tap ← (discard setup)
     ActiveWorkout --> CompletionScreen: tap Finish (≥1 set logged)
     ActiveWorkout --> ConfirmDiscard: tap Finish (0 sets logged)
     CompletionScreen --> HistoryList: tap Save to history
@@ -50,7 +50,6 @@ stateDiagram-v2
 
     state "Workout Builder" as Builder
     state "Exercise picker (Add mode)" as ExercisePickerAdd
-    state "Exercise picker (Browse mode)" as ExercisePickerBrowse
     state "Active In-workout" as ActiveWorkout
     state "Completion screen (full screen)" as CompletionScreen
     state "History list" as HistoryList
@@ -66,8 +65,7 @@ stateDiagram-v2
     ActiveWorkout --> ExercisePickerAdd: tap + Add exercise
     ExercisePickerAdd --> Builder: pick exercise
     ExercisePickerAdd --> ActiveWorkout: pick exercise (mid-workout)
-    Profile --> ExercisePickerBrowse: tap Exercise database
-    ExercisePickerBrowse --> ExerciseCreate: tap Create custom
+    ExerciseDatabase --> ExerciseCreate: tap Create custom
     state "Exercise create" as ExerciseCreate
 
     ActiveWorkout --> Numpad: tap kg/Reps tile
@@ -79,9 +77,15 @@ stateDiagram-v2
     SupersetConfig --> Builder: confirm
     SupersetConfig --> ActiveWorkout: confirm
 
+    Builder --> NoteEditor: tap ⋮ → Add note
+    ActiveWorkout --> NoteEditor: note edit
+    NoteEditor --> Builder: Save / Cancel
+    NoteEditor --> ActiveWorkout: Save / Cancel
+
     state "Custom numpad" as Numpad
     state "Set actions sheet" as SetActionsSheet
     state "Superset config sheet" as SupersetConfig
+    state "Exercise note editor" as NoteEditor
 ```
 
 ---
@@ -106,8 +110,8 @@ stateDiagram-v2
         state "In-progress banner" as TodayInProgress
     }
 
-    TodayFirst --> Builder: Start workout
-    TodayHasHistory --> Builder: Repeat last / Start blank
+    TodayFirst --> Builder: Build workout
+    TodayHasHistory --> Builder: Repeat last / Build from scratch
     TodayHasHistory --> HistoryPicker: Choose from history
     TodayInProgress --> ActiveWorkout: Resume
     TodayInProgress --> DiscardSheet: Discard
@@ -133,11 +137,13 @@ stateDiagram-v2
     BuilderSS --> SupersetConfig: tap ⋮ on group
     Builder --> RowMenu: tap ⋮ on exercise
     RowMenu --> SupersetConfig: Add to superset
+    RowMenu --> NoteEditor: Add note
     Builder --> PickerAdd: + Add exercise
     PickerAdd --> Builder: pick
     PickerAdd --> ExerciseCreate: + Create custom
     SupersetConfig --> Builder: Save
-    Builder --> ActiveWorkoutPending: Start workout
+    NoteEditor --> Builder: Save / Cancel
+    Builder --> ActiveWorkoutPending: Continue
     ActiveWorkoutPending --> ActiveWorkout: first log / Begin (soft start)
 
     state "Builder (default)" as Builder
@@ -146,11 +152,12 @@ stateDiagram-v2
     state "Picker (Add)" as PickerAdd
     state "Superset config" as SupersetConfig
     state "Exercise create" as ExerciseCreate
+    state "Exercise note editor" as NoteEditor
     state "Active In-workout" as ActiveWorkout
     state "In-workout pending (pre-start)" as ActiveWorkoutPending
 ```
 
-Файли: [builder.html](builder.html) · [builder-with-supersets.html](builder-with-supersets.html) · [exercise-picker-add.html](exercise-picker-add.html) · [superset-config-sheet.html](superset-config-sheet.html) · [builder-row-menu-sheet.html](builder-row-menu-sheet.html) · [exercise-create.html](exercise-create.html)
+Файли: [builder.html](builder.html) · [builder-with-supersets.html](builder-with-supersets.html) · [exercise-picker-add.html](exercise-picker-add.html) · [superset-config-sheet.html](superset-config-sheet.html) · [builder-row-menu-sheet.html](builder-row-menu-sheet.html) · [exercise-create.html](exercise-create.html) · [exercise-note-sheet.html](exercise-note-sheet.html)
 
 ---
 
@@ -165,10 +172,12 @@ stateDiagram-v2
     InWorkout --> SetActions: tap set number
     InWorkout --> RestTimer: set logged
     InWorkout --> PullToCursor: cursor off-screen
+    InWorkout --> NoteEditor: note edit
     Numpad --> InWorkout: Done
     SetActions --> InWorkout: pick action / dismiss
     RestTimer --> InWorkout: skip / timeout
     PullToCursor --> InWorkout: tap → scroll to cursor
+    NoteEditor --> InWorkout: Save / Cancel
     InWorkout --> CompletionScreen: tap Finish (≥1 set logged)
     InWorkout --> ConfirmDiscard: tap Finish (0 sets logged)
 
@@ -178,11 +187,12 @@ stateDiagram-v2
     state "Set actions sheet" as SetActions
     state "Rest timer" as RestTimer
     state "Pull-to-cursor chip" as PullToCursor
+    state "Exercise note editor" as NoteEditor
     state "Completion screen (full screen)" as CompletionScreen
     state "Discard confirm" as ConfirmDiscard
 ```
 
-Файли: [in-workout.html](in-workout.html) · [in-workout-pending.html](in-workout-pending.html) · [in-workout-with-supersets.html](in-workout-with-supersets.html) · [numpad.html](numpad.html) · [set-actions-sheet.html](set-actions-sheet.html) · [rest-timer.html](rest-timer.html) · [pull-to-cursor.html](pull-to-cursor.html)
+Файли: [in-workout.html](in-workout.html) · [in-workout-pending.html](in-workout-pending.html) · [in-workout-with-supersets.html](in-workout-with-supersets.html) · [numpad.html](numpad.html) · [set-actions-sheet.html](set-actions-sheet.html) · [rest-timer.html](rest-timer.html) · [pull-to-cursor.html](pull-to-cursor.html) · [exercise-note-sheet.html](exercise-note-sheet.html)
 
 ---
 
@@ -266,7 +276,7 @@ Confirmation і action sheets рендеряться як окремі ноди 
 
 ### Modal screens
 
-Workout Builder і Active In-workout — modal full-takeover (per spec §1). У state-машині це звичайні переходи; візуально на phone це slide-up.
+Workout Builder і Active In-workout — full-screen кроки workout-флоу (pushed з Today, tab bar схований; per spec §2.2/§2.3). У state-машині це звичайні переходи; візуально на phone це slide-in справа (push), `←` back.
 
 ---
 

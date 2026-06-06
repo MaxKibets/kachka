@@ -19,7 +19,7 @@
 
 Each exercise in the list is a section with:
 
-- Exercise name + `note` and `⋯` icons (per-exercise actions)
+- Exercise name + `⋯` icon. A `note` icon shows only when the exercise has an author note — filled, and tapping it toggles an inline hint banner (note text + `Edit`) under the name; default collapsed. With no note there is no icon; add via `⋯` → `Add note` or the Builder row menu. Editor: `exercise-note-sheet`. Workout-level author notes (program-format §139) are deferred to v2
 - Set table with columns `№ | prev | kg | reps | ✓`
 - `+ add set` button
 
@@ -60,6 +60,7 @@ An active workout is a full editor on top of the initial structure.
 | Skip exercise | Per-exercise `⋯` → Skip | Soft variant: the exercise stays in the structure, marked `Skipped` |
 | Reorder | Drag handle on the right edge of the section | The cursor stays on the same set that was active |
 | Add to superset | Per-exercise `⋯` → Add to superset | §6 (with constraint: 0 logged sets in candidates) |
+| Add / Edit note | Per-exercise `⋯` → Add note | Shared note editor sheet (§4.4 · `exercise-note-sheet`); the `⋯` menu dismisses first — editor over the screen, not stacked on the menu (§2.5) |
 | Edit superset | Group `⋯` | §6.7 |
 | Ungroup | Group `⋯` → Ungroup | Always allowed. §6.7 |
 
@@ -232,7 +233,6 @@ Pull-ups, push-ups, etc. — the kg field is redundant or optional:
 |---|---|---|
 | Mark as warmup | Toggle | Excludes the set from volume and PR |
 | RPE | Picker 1–10 | Optional, hides in settings if the user does not use it |
-| Add note | Text input | System keyboard (a rare action, economy of attention matters more than speed) |
 | Delete set | Destructive | With confirmation |
 
 ### 8.3 Visual markers on the row
@@ -241,6 +241,5 @@ After configuration the set shows minimal badges:
 
 - `W` next to the set number — warmup
 - `@8` — RPE
-- a small dot — a note exists
 
 Without cluttering the main flow — readable at a glance.

@@ -11,7 +11,7 @@
 
 Today has three possible states:
 
-**(a) Has history, no in-progress workout** — main flow. "Repeat last" card + links `Choose from history` and `Start blank`.
+**(a) Has history, no in-progress workout** — main flow. "Repeat last" card + links `Choose from history` and `Build from scratch`.
 
 **(b) No history (first launch)** — empty state. A single CTA "Start your first workout".
 
@@ -21,7 +21,7 @@ Today has three possible states:
 
 ```
 ┌─────────────────────────┐
-│ Today              ⋯    │
+│ Today                   │
 ├─────────────────────────┤
 │                         │
 │  ┌───────────────────┐  │
@@ -36,20 +36,20 @@ Today has three possible states:
 │                         │
 │  Or                     │
 │  > Choose from history  │
-│  > Start blank workout  │
+│  > Build from scratch   │
 │                         │
 └─────────────────────────┘
 ```
 
 - **Repeat last** card shows a summary of the last completed workout: name, relative date (`5d ago`, `2 weeks ago`), one-liner exercise list.
 - **Choose from history** — tap → list of all completed workouts (chronological). Tap on a workout → it is cloned. Useful for split routines (PPL, upper/lower) — the user picks "last upper day".
-- **Start blank workout** — tap → Workout Builder with an empty list + Quick-add chips.
+- **Build from scratch** — tap → Workout Builder with an empty list + Quick-add chips.
 
 #### 3.1.b No history (first launch)
 
 ```
 ┌─────────────────────────┐
-│ Today              ⋯    │
+│ Today                   │
 ├─────────────────────────┤
 │                         │
 │         💪              │
@@ -61,12 +61,12 @@ Today has three possible states:
 │  or pick from suggested │
 │  exercises              │
 │                         │
-│  [ Start workout ]      │
+│  [ Build workout ]      │
 │                         │
 └─────────────────────────┘
 ```
 
-CTA → Workout Builder with an empty list. Quick-add chips (§4.2) are visible at the top — the user sees 7 familiar exercises and starts with one tap.
+CTA → Workout Builder with an empty list. Quick-add chips (§4.2) are visible — the user sees 7 familiar exercises and starts with one tap.
 
 #### 3.1.c In-progress workout
 
@@ -74,7 +74,7 @@ Banner above the main content (overlaid on top of mode (a) or (b)):
 
 ```
 ┌─────────────────────────┐
-│ Today              ⋯    │
+│ Today                   │
 ├─────────────────────────┤
 │  ┌───────────────────┐  │
 │  │ In-progress       │  │
@@ -89,7 +89,7 @@ Banner above the main content (overlaid on top of mode (a) or (b)):
 - Resume → Active workout modal opens at the saved state
 - Discard → workout is removed with confirmation
 
-While the banner is present, the main CTAs of modes (a)/(b) — `Repeat last`, `Choose from history`, `Start blank` — are **disabled** (dimmed, do not respond to tap). The only way forward is Resume or Discard via the banner. Constraint: one active workout at a time; a new one does not start until the old one is completed or discarded.
+While the banner is present, the main CTAs of modes (a)/(b) — `Repeat last`, `Choose from history`, `Build from scratch` — are **disabled** (dimmed, do not respond to tap). The only way forward is Resume or Discard via the banner. Constraint: one active workout at a time; a new one does not start until the old one is completed or discarded.
 
 Deliberately NOT auto-resume: risk of landing in a forgotten old workout right when opening. We deliberately block the CTAs instead of a confirm dialog: the banner already carries Resume/Discard, duplicating the choice in a sheet would be a redundant state.
 
@@ -112,9 +112,9 @@ A separate screen with a list of completed workouts (chronological). Same render
 
 The `prev` values in the cloned workout are taken from the chosen source, not from the most recent identical workout. Deliberate — the user chose this specific day as the reference point.
 
-### 3.4 Start blank — Workout Builder
+### 3.4 Build from scratch — Workout Builder
 
-Tap → Workout Builder with an empty list. Quick-add chips are visible at the top for a quick start. You can also call the full exercise picker via "+ Add exercise".
+Tap → Workout Builder with an empty list. Quick-add chips are visible for a quick start. You can also call the full exercise picker via "+ Add exercise".
 
 Builder details — in §4.
 
@@ -124,11 +124,6 @@ First launch:
 
 1. App launches
 2. Today screen → empty state (3.1.b)
-3. Tap "Start workout" → Workout Builder with chips
+3. Tap "Build workout" → Workout Builder with chips
 
 No welcome screens, no feature tour, no language selection (auto-detect from locale), no units selection (kg in MVP). Onboarding is functional, not marketing.
-
-### 3.6 Top-bar `⋯` menu Today
-
-- Exercise database → Profile/Exercise db
-- Settings → Profile (root)

@@ -232,8 +232,7 @@ One set of a single exercise.
 {
   "reps": 8,
   "rpe": 8,
-  "isWarmup": false,
-  "notes": "Last set: AMRAP if feeling good"
+  "isWarmup": false
 }
 ```
 
@@ -242,7 +241,6 @@ One set of a single exercise.
 | `reps` | number \| [min, max] | yes | Target reps. `8` or `[8, 12]` for ranges. A range is valid when `min < max`, both `> 0` |
 | `rpe` | number | no | Target RPE 1–10. Decimals allowed (`8.5`) |
 | `isWarmup` | boolean | no | A marker that the set is a warmup. Excluded from volume and PR detection. Default `false` |
-| `notes` | string | no | Author note for this set |
 
 **Why there is no weight field.** A fixed decision: programs define structure, not weight. The user picks the weight themselves during the workout, guided by `prev` (the previous workout) and the RPE target.
 

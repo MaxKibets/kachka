@@ -30,13 +30,13 @@
     .picker-search {
       flex-shrink: 0;
       padding: 0 16px 8px;
-      background: var(--canvas);
+      background: transparent;
     }
     .search-input {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: var(--surface-1);
+      background: var(--surface-2);
       border: 0.5px solid var(--border-subtle);
       border-radius: 10px;
       padding: 9px 12px;
@@ -56,7 +56,7 @@
     .picker-filters {
       flex-shrink: 0;
       padding: 6px 16px 12px;
-      background: var(--canvas);
+      background: transparent;
       border-bottom: 0.5px solid var(--border-divider);
     }
     .filter-chips {
@@ -111,7 +111,7 @@
     .picker-bottom {
       flex-shrink: 0;
       padding: 12px 16px 18px;
-      background: var(--canvas);
+      background: transparent;
       border-top: 0.5px solid var(--border-subtle);
     }
     .secondary-btn {
@@ -138,17 +138,59 @@
       stroke-linecap: round;
       stroke-linejoin: round;
     }
+    /* Page-sheet: Add mode is a full-screen modal, not a push (foundations §2.5, visual §5.7) */
+    .builder-bg {
+      flex-shrink: 0;
+      position: relative;
+      opacity: 0.4;
+      color: var(--text-primary);
+      pointer-events: none;
+    }
+    .builder-bg .name-row-bg {
+      padding: 10px 16px 14px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .builder-bg .scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+    }
+    .page-sheet {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-1);
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      border-top: 0.5px solid var(--border-subtle);
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+      margin-top: -10px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .grab-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.16);
+      margin: 4px auto 12px;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
   <header class="wf-header">
     <h1>Exercise picker · Add mode</h1>
-    <p class="wf-meta">spec §11 · modal з Builder/Active workout</p>
+    <p class="wf-meta">spec §11 · page-sheet (full-screen modal) з Builder/Active workout</p>
   </header>
 
   <main class="wf-layout">
     <section class="wf-frame">
-      <div class="phone">
+      <div class="phone" style="position: relative; overflow: hidden;">
 
         <div class="status-bar">
           <span class="clock">9:41</span>
@@ -158,13 +200,30 @@
           </span>
         </div>
 
-        <div class="app-bar">
-          <button class="wf-back-btn" aria-label="Close picker" data-href="builder.html">
-            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-          <h1 style="flex: 1; text-align: center;">Add exercise</h1>
-          <div style="width: 30px;"></div>
+        <!-- Dimmed parent (Builder) peeking above the page sheet -->
+        <div class="builder-bg">
+          <div class="app-bar">
+            <button class="wf-back-btn" aria-label="Build workout" tabindex="-1">
+              <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <h1 style="flex: 1; text-align: center; font-size: 17px; font-weight: 500;">Build workout</h1>
+            <div style="width: 30px;"></div>
+          </div>
+          <div class="name-row-bg">Push A</div>
+          <div class="scrim"></div>
         </div>
+
+        <!-- Page sheet: Add mode is a full-screen modal, dismissible (× / swipe-down) -->
+        <div class="page-sheet">
+          <div class="grab-handle"></div>
+
+          <div class="app-bar">
+            <button class="wf-back-btn" aria-label="Close picker" data-href="builder.html">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <h1 style="flex: 1; text-align: center;">Add exercise</h1>
+            <div style="width: 30px;"></div>
+          </div>
 
         <div class="picker-search">
           <div class="search-input">
@@ -274,6 +333,7 @@
           </button>
         </div>
 
+        </div>
       </div>
     </section>
 
@@ -290,9 +350,9 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap row → returns selected exercise to caller (closes modal). Builder додає 3×8, Active додає 3×8 і ставить cursor</li>
+          <li>Tap row → returns selected exercise to caller (closes modal). Builder додає вправу <strong>без сетів</strong> (per spec §4.3); Active додає з <strong>1 pending-сетом</strong> і ставить cursor (per spec §5.5). Сети налаштовуються в In-workout pending</li>
           <li>Tap <code>+ Create custom</code> → custom creation sheet (<a href="exercise-create.html">exercise-create.html</a> — TBD у Batch 5) з порожнім name</li>
-          <li>Tap <code>×</code> → closes modal без selection, повертається на caller</li>
+          <li>Tap <code>×</code> (або swipe-down по sheet) → закриває page-sheet без selection, повертається на caller</li>
           <li>Search results empty → inline <code>Create as 'X'</code> affordance (no-results state, per spec §11.6) — окремий wireframe TBD; sticky <code>+ Create custom</code> завжди доступний</li>
         </ul>
       </section>
@@ -300,6 +360,7 @@
       <section>
         <h2>Interactions</h2>
         <ul>
+          <li>Page-sheet presentation: grab-handle зверху, заокруглений верх, dimmed Builder підглядає над sheet-ом. Dismiss — swipe-down / тап по parent-peek / <code>×</code> (per visual §5.7)</li>
           <li>Sticky search input + filter chips під ним. Скролиться тільки список</li>
           <li>Filter chips — single-select, sticky <code>All</code> першим і selected by default (per spec §11.4). Тап на групу звужує; тап на <code>All</code> повертає весь каталог</li>
           <li>Filter scroll горизонтально якщо chips не вміщаються</li>
@@ -311,7 +372,7 @@
       <section>
         <h2>Notes</h2>
         <ul>
-          <li>Header: close <code>×</code> зліва (не back chevron) щоб підкреслити modal-нічність — це не push, це modal який можна dismiss-нути</li>
+          <li><strong>Page-sheet</strong> (не push): grab-handle + заокруглений верх + scrim із dimmed Builder, що підглядає згори; header усередині sheet-а — <code>×</code> close зліва, <strong>без</strong> back-chevron (dismiss = <code>×</code> / swipe-down). Це відрізняє modal від push сильніше за саму іконку (per foundations §2.5, visual §5.7). Контраст: Browse-режим того ж списку — push-екран Profile (<a href="exercise-database-list.html">exercise-database-list.html</a>)</li>
           <li>Single-select Add mode у v1 (multi-select → v1.x per spec §11.10)</li>
           <li>Bodyweight показано як inline-tag <code>bodyweight</code> в muscle list — мінімалістично, без окремого badge</li>
           <li>System exercises у Add mode — без <code>⋮</code>, без chevron, без custom badge (read-only, тап на рядку селектить)</li>
@@ -323,7 +384,7 @@
       <section>
         <h2>Edge cases · related states</h2>
         <ul>
-          <li>Browse mode (з Profile/DATA) — <a href="exercise-picker-browse.html">exercise-picker-browse.html</a></li>
+          <li>Browse mode (з Profile/DATA) — <a href="exercise-database-list.html">exercise-database-list.html</a> (+ <a href="exercise-database-empty.html">exercise-database-empty.html</a>)</li>
           <li>Empty search results з <code>+ Create as 'X'</code> — окремий state, TBD якщо потрібно</li>
           <li>Active workout context: вправи що мають залоговані сети у поточному workout-і не disabled — picker дозволяє додати ту ж вправу повторно (свідомо, юзер може хотіти додати її після іншої)</li>
         </ul>

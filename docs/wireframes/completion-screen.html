@@ -162,17 +162,22 @@
       gap: 8px;
       margin-bottom: 6px;
     }
-    .sum-group .letter-chip {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      background: var(--letter-a);
-      color: var(--canvas);
-      font-size: 12px;
-      font-weight: 500;
+    /* Small inline letter chip — sits on the title line, reads "Superset A" (visual §2.5) */
+    .sum-group .letter-chip-sm {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 6px;
+      background: var(--letter-a);
+      color: var(--canvas);
+      font-size: 11px;
+      font-weight: 500;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
     }
     .sum-group .g-title {
       font-size: 13px;
@@ -191,12 +196,6 @@
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-    .sum-group .g-ex .pref {
-      font-size: 11px;
-      color: var(--letter-a);
-      font-weight: 500;
-      width: 22px;
     }
 
     /* Bottom action bar (fixed, outside scroll) */
@@ -286,12 +285,11 @@
 
               <div class="sum-group">
                 <div class="g-head">
-                  <span class="letter-chip">A</span>
-                  <span class="g-title">Superset</span>
+                  <span class="g-title">Superset <span class="letter-chip-sm">A</span></span>
                   <span class="g-meta"><span class="num">3</span> rounds</span>
                 </div>
-                <div class="g-ex"><span class="pref">A1</span>Dumbbell row</div>
-                <div class="g-ex"><span class="pref">A2</span>Face pull</div>
+                <div class="g-ex">Dumbbell row</div>
+                <div class="g-ex">Face pull</div>
               </div>
 
               <div class="sum-row">
@@ -352,7 +350,7 @@
           <li><strong>PR marker <code>◆</code></strong> біля назви вправи в summary і на stats card — per spec §9.3</li>
           <li><strong>Primary CTA = amber</strong> <code>Save to history</code> (visual §5.4 — primary CTA amber; mallard несе success/done, але кнопка тут конструктивна-нейтральна)</li>
           <li><strong>Discard = rust text</strong> <code>--letter-e #B85842</code> — secondary text button per spec §9.2; rust як destructive default (узгоджено з row-menu/INDEX semantic-default)</li>
-          <li><strong>Group rendering у summary</strong>: компактний — letter chip A + title + <code>3 rounds</code> meta + A1/A2 mini-list. Повна round-by-round розбивка — у History detail (§10.3), не тут (summary = per-exercise counts per spec §9.2)</li>
+          <li><strong>Group rendering у summary</strong>: компактний — інлайн чіп <code>Superset A</code> + <code>3 rounds</code> meta + mini-list вправ у порядку (без per-row A1/A2). Повна round-by-round розбивка з A1/A2 крос-реф — у History detail (§10.3), не тут (summary = per-exercise counts per spec §9.2)</li>
           <li><strong>App-bar</strong> — лише centered title <code>Workout complete</code>, без back / <code>⋯</code> (термінальний екран)</li>
         </ul>
       </section>
@@ -365,7 +363,7 @@
           <li><strong>Без note</strong>: textarea лишається порожня з placeholder; при Save note не зберігається (умовно)</li>
           <li><strong>Skipped exercise з сетами</strong>: показується як звичайна вправа з тими сетами що залогувались; skipped marker не йде в History (spec §5.6)</li>
           <li><strong>0 sets logged</strong>: цей екран НЕ показується — Finish веде одразу в Discard confirm (spec §9.1). Тут не моделюється свідомо</li>
-          <li><strong>Кілька груп</strong>: letter rotation A/B/C, letter-chip колір змінюється відповідно (visual §2.5)</li>
+          <li><strong>Кілька груп</strong>: letter rotation A/B/C, інлайн letter-chip колір змінюється відповідно (<code>Superset B</code>, <code>Superset C</code>, visual §2.5)</li>
         </ul>
       </section>
 

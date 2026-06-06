@@ -16,7 +16,7 @@ Discussion language: **Ukrainian**. Technical terms (RPE, PR, superset, set) sta
 
 UI/UX is **conceptually locked** for v1:
 - Navigation / IA (3 tabs: Today · History · Profile)
-- Today flow (Repeat last / Choose from history / Start blank)
+- Today flow (Repeat last / Choose from history / Build from scratch)
 - Workout Builder (pre-workout list + Quick-add chips + supersets)
 - In-workout zone (everything, including editing mid-workout)
 - Ad-hoc supersets with color-coded letter labels
@@ -58,21 +58,21 @@ A shortened list — details in the md files:
 - Exercise database — inside Profile
 
 **Today flow**
-- 3 modes: has history (Repeat last + Choose from history + Start blank) / first launch (single CTA) / in-progress (banner)
+- 3 modes: has history (Repeat last + Choose from history + Build from scratch) / first launch (single CTA) / in-progress (banner)
 - Repeat last — primary CTA, clones structure + name + targets, prev = from the clone source
 - Choose from history — list of all completed for split routines
 - Crash restoration — banner on Today (Resume / Discard), not auto-resume
 
 **Workout Builder**
 - Quick-add chips: 7 popular exercises (Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl), en + uk
-- Default sets for a new exercise: 3 × 8
+- New exercise is added without sets in the Builder (composition-only); default 1 pending set in In-workout pending (was 3 × 8)
 - Editable workout name, reorder via drag, supersets via action menu
 
 **In-workout**
 - Exercise list — scroll, not carousel
 - Sets with an optional target — ghost text in the fields (from the clone source)
 - Custom numpad instead of the system keyboard with quick-adjust ±2.5/±5
-- Set actions via tap on the set number — warmup, RPE, note, delete
+- Set actions via tap on the set number — warmup, RPE, delete
 - Active workout = full editor: add/remove set, add/insert/remove exercise, skip, reorder
 - Skip exercise — soft remove that preserves the structure for clone
 - Failed reps (0 reps) — allowed

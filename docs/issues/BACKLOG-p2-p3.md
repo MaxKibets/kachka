@@ -103,11 +103,19 @@ still open. Decisions inline below.
 - **Action:** mock the row-level treatment for a failed set (`0 reps`) so logging
   it has clear feedback.
 
-### F2.4 — Builder `Discard` sits under the primary CTA
+### F2.4 — Builder `Discard` sits under the primary CTA ✅ resolved 2026-06-03
 - **Where:** `builder`.
 - **Problem:** destructive verb directly under the thumb's primary target
   (`Start workout`) invites mis-taps.
 - **Action:** move/space `Discard` away from the primary CTA.
+- **✅ Resolution:** **dropped the bottom `Discard`** — it duplicated the header
+  exit (the back `←` and the bottom `Discard` both opened the same
+  `Discard workout setup?` confirmation → Today). The sticky bottom is now the
+  single primary CTA — `Continue →` (renamed from `Start workout`, open
+  detail #2); the header back `←` (return to Today,
+  consistent with the in-workout modal §5) is the single exit. Removed the
+  button from `builder` + `builder-with-supersets`, with the unused `.ghost-btn`
+  style. The §4.8 discard-on-close behavior (with confirmation) is unchanged.
 
 ### F1.2 — "Or" connector polish ✅ resolved 2026-06-02
 - **Where:** `today-has-history`.

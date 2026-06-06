@@ -48,5 +48,5 @@ Copy items resolved 2026-06-02; decisions inline in
 | F5.5 | ✅ done | Restored `Settings included` row in import preview (spec §13.3) |
 | F2.3 | ⏳ open | Rest control below the fold in superset config sheet |
 | F3.3 | ⏳ open | Failed-reps (0) + warmup row treatment (pairs with visual style) |
-| F2.4 | ⏳ open | Builder `Discard` sits under the primary CTA |
+| F2.4 | ✅ done | Dropped duplicate Builder `Discard`; header `←` back is the single exit |
 | F4.4 | ⏳ open | Completion "Add a note" placement |

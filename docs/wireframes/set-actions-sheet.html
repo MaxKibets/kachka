@@ -52,6 +52,7 @@
     .sheet-header {
       padding: 0 18px 12px;
       border-bottom: 0.5px solid var(--border-divider);
+      text-align: center;
     }
     .sheet-header .sh-label {
       font-size: 11px; color: var(--text-secondary);
@@ -92,7 +93,6 @@
     /* Inline RPE picker */
     .rpe-inline {
       padding: 10px 18px 14px;
-      border-bottom: 0.5px solid var(--border-divider);
       background: var(--surface-2);
     }
     .rpe-inline .rpe-label {
@@ -138,8 +138,9 @@
     }
 
     .section-divider {
-      height: 6px;
-      background: var(--canvas);
+      height: 0.5px;
+      background: var(--border-divider);
+      margin: 6px 0;
     }
   </style>
 </head>
@@ -212,14 +213,6 @@
             </div>
           </div>
 
-          <!-- Add note -->
-          <div class="action-row" data-href="in-workout.html">
-            <div class="ar-icon">
-              <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="14 3 14 9 20 9"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
-            </div>
-            <div class="ar-text">Add note</div>
-          </div>
-
           <div class="section-divider"></div>
 
           <!-- Delete set (destructive) -->
@@ -249,7 +242,6 @@
         <ul>
           <li>Tap <code>Mark as warm-up</code> → toggle warmup на сеті, sheet закривається. Сет помічається <code>W</code>-бейджем (per spec §8.3)</li>
           <li>Tap RPE value → коміт RPE на сет, sheet закривається. Бейдж <code>@8</code> у рядку</li>
-          <li>Tap <code>Add note</code> → системна клавіатура text input (per spec §8.2). Сет помічається крапкою</li>
           <li>Tap <code>Delete set</code> → bottom sheet confirmation (per spec §1: <code>Cancel</code> вгорі + destructive внизу). Підтвердження → видалення сета</li>
           <li>Swipe down / tap на dim → закриває sheet без змін</li>
         </ul>
@@ -270,7 +262,6 @@
         <ul>
           <li>Сет ще не залогований (pending/active) — Delete доступний, прибирає сет з вправи. Якщо сет вже done — Delete теж доступний, але треба явне confirm (per spec §8 + §5.5)</li>
           <li>Last set у вправі — Delete vs add: видалити можна; якщо вправа лишилась з 0 сетами — TBD (видалити вправу? показати empty стан?)</li>
-          <li>Note вже існує → рядок <code>Add note</code> змінюється на <code>Edit note</code></li>
           <li>RPE off у settings — рядок прихований (per spec §12.2)</li>
           <li>Warmup сет — у volume і PR не йде (per spec §8.2)</li>
         </ul>
@@ -284,7 +275,7 @@
           <li>RPE inline (а не submenu): rare action але важливий для тих хто RPE юзає; краще одразу tap-to-commit без додаткових екранів</li>
           <li>Range RPE 6 — 10 свідомо (per common gym usage — нижче 6 малоінформативно). 0.5 step як в загальній практиці. Якщо юзер запросить 1 — додамо в v1.x</li>
           <li>Destructive Delete — у нашій мові #B85842 (letter E rust). Resolves visual §2.4 TBD: для destructive перевикористовуємо rust-letter-color як warning/danger у v1 (semantic colors TBD у visual §2.4)</li>
-          <li>Section divider між standard actions і destructive — 6px canvas band (per common iOS pattern)</li>
+          <li>Section divider між standard actions і destructive — тонкий hairline (<code>0.5px var(--border-divider)</code>) + відступ, у стилі sheet-сімейства (per visual §5.7)</li>
           <li>Open question: показувати rest timer override як action (start rest now / skip rest)? Поки не включаю — rest auto-start після ✓ tap, окремий action sheet не потрібен</li>
         </ul>
       </section>

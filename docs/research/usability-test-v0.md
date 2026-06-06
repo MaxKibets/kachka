@@ -102,7 +102,7 @@ hesitation/backtrack · **Fail** = wrong path or gave up.
 - **Say:** «Минулого разу ти робив тренування "Push A". Сьогодні хочеш зробити
   точно таке саме. Покажи, як.»
 - **Right path:** tap **Repeat last**.
-- **Success:** chooses *Repeat last* over *Choose from history* / *Start blank*
+- **Success:** chooses *Repeat last* over *Choose from history* / *Build from scratch*
   without dithering.
 - **Watch:** Do they understand the three options differ? Does "Repeat last"
   read as "same workout again"? Confusion between *Choose from history* and
@@ -110,8 +110,7 @@ hesitation/backtrack · **Fail** = wrong path or gave up.
 - **Probes:** Today IA, the primary returning-user flow (spec §3).
 
 ### T2 — Build a workout, add an exercise (CORE)
-- **Start:** from T1 continue, or `today-has-history.html` → **Start blank
-  workout** → `builder.html`.
+- **Start:** from T1 continue, or `today-has-history.html` → **Build from scratch** → `builder.html`.
 - **Say:** «Тепер збери тренування з нуля. Додай вправу Bench Press.»
 - **Right path:** Quick-add chip *Bench Press*, **or** `+ Add exercise` →
   picker → tap the row.

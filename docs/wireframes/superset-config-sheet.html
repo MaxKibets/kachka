@@ -223,15 +223,6 @@
       flex-direction: column;
       gap: 8px;
     }
-    .sheet-cancel {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      font-family: var(--font-sans);
-      font-size: 14px;
-      padding: 10px;
-      cursor: pointer;
-    }
     .sheet-destructive {
       background: transparent;
       border: 0.5px solid var(--border-subtle);
@@ -308,9 +299,15 @@
         <!-- Bottom sheet -->
         <div class="sheet">
           <div class="grab-handle"></div>
+          <div class="app-bar">
+            <button class="wf-back-btn" aria-label="Cancel" data-href="builder-with-supersets.html">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <h1 style="flex: 1; text-align: center; font-size: 17px; font-weight: 500;">Configure superset A</h1>
+            <div style="width: 30px;"></div>
+          </div>
           <div class="sheet-header">
-            <div class="sheet-title">Configure superset A</div>
-            <div class="sheet-subtitle">Pick 2–5 exercises. Same rounds and rest apply to all.</div>
+            <div class="sheet-subtitle" style="text-align: center;">Pick 2–5 exercises. Same rounds and rest apply to all.</div>
           </div>
 
           <div class="sheet-body">
@@ -373,10 +370,10 @@
           </div>
 
           <!-- Footer is mode-aware (design-review F2.2). Create mode shown:
-               Cancel + Create group, no Ungroup. Edit mode swaps the primary to
-               Save and appends a destructive Ungroup (see annotations). -->
+               Create group only — cancel is the header × (unify-on-× decision).
+               Edit mode swaps the primary to Save and appends a destructive
+               Ungroup (see annotations). -->
           <div class="sheet-footer">
-            <button class="sheet-cancel" data-href="builder-with-supersets.html">Cancel</button>
             <button class="cta-primary" data-href="builder-with-supersets.html">
               Create group
             </button>
@@ -400,9 +397,9 @@
         <h2>Opens to</h2>
         <ul>
           <li>Tap <code>Create group</code> (create mode) → group створено → закриває sheet → Builder з <a href="builder-with-supersets.html">builder-with-supersets.html</a>. В edit mode primary = <code>Save</code> (оновлює існуючу групу)</li>
-          <li>Tap <code>Cancel</code> → закриває sheet без змін → повертається на Builder</li>
+          <li>Tap <code>×</code> (header) → закриває sheet → Builder; якщо були зміни (вибір / rounds / rest) — спершу confirm <code>Discard changes?</code> (per spec §1)</li>
           <li>Tap <code>Ungroup</code> (edit mode тільки) → confirmation sheet → Розпадається на флет вправи (per spec §6.7)</li>
-          <li>Свайп вниз = Cancel (per spec §1)</li>
+          <li>Свайп вниз / тап scrim / <code>×</code> = cancel (per spec §1, §5.7)</li>
         </ul>
       </section>
 
@@ -413,7 +410,7 @@
           <li>Disabled candidates показані з reason inline (<code>Already started</code> якщо є залоговані сети, <code>In another superset</code> якщо вже в групі — per spec §6.2)</li>
           <li>Rounds stepper: <span class="num">2</span>–<span class="num">10</span>, default <span class="num">3</span>. Кнопка − disabled на <span class="num">2</span>, кнопка + disabled на <span class="num">10</span></li>
           <li>Rest presets: <span class="num">60</span>s / <span class="num">90</span>s / <span class="num">120</span>s / <span class="num">180</span>s, default <span class="num">90</span>s. Single-select chip-стилі</li>
-          <li>Свайп вниз або тап на scrim — dismiss = Cancel</li>
+          <li>Свайп вниз або тап на scrim — dismiss (= header <code>×</code>)</li>
           <li>Backdrop затемнений (scrim + builder opacity 0.4) — фокус на sheet</li>
         </ul>
       </section>
@@ -424,7 +421,7 @@
           <li>Sheet конфігурує <strong>тільки</strong> склад (partner-select) + rounds + rest. Reps для group children тут <strong>не</strong> задаються — вони налаштовуються в In-workout pending state, разом зі standalone сетами (per spec §5.9, resolved open detail #1)</li>
           <li>Sheet title <code>Configure superset A</code> — letter уже відомий бо літери присвоюються при створенні (per spec §6.3)</li>
           <li>Subtitle expects 2–5 exercises explicit (per spec §6.1) — щоб юзер бачив constraint без помилок</li>
-          <li><strong>Footer per mode</strong> (design-review F2.2): <em>create</em> → <code>Cancel</code> (ghost) + <code>Create group</code> (primary amber, label matches spec §6.2); <em>edit</em> → <code>Cancel</code> + <code>Save</code> (primary) + <code>Ungroup</code> (destructive, bottom). Per spec §1 — Cancel вгорі, destructive внизу. Create mode has <strong>no</strong> <code>Ungroup</code> — нема чого розгруповувати</li>
+          <li><strong>Footer per mode</strong> (design-review F2.2): <em>create</em> → <code>Create group</code> (primary amber, label matches spec §6.2); <em>edit</em> → <code>Save</code> (primary) + <code>Ungroup</code> (destructive, bottom). Cancel — це header <code>×</code> (unify-on-× decision, не у footer). Create mode has <strong>no</strong> <code>Ungroup</code> — нема чого розгруповувати</li>
           <li><strong>Assumption</strong>: Per spec §6.2 у create flow є окремий партнер-picker screen перед config sheet. У цьому wireframe показано <strong>combined</strong> sheet — multi-select picker + config в одному. Це reasonable simplification: для 2-5 candidates з тим самим контекстом окремий screen виглядає overkill, sheet вміщає все. Якщо юзер хоче двоступеневий flow — можна додати в наступну ітерацію</li>
           <li><strong>Assumption</strong>: Rounds picker = stepper (per prompt дозволяє "numeric stepper або dropdown"); ставлю stepper бо швидший для thumb (один тап = ±1)</li>
           <li><strong>Assumption</strong>: Rest picker = preset chips (per prompt). Якщо потрібно custom value — TBD у impl (можна додати <code>Custom…</code> chip який відкриває numpad)</li>

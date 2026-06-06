@@ -20,15 +20,16 @@
 
 One screen-component, two modes:
 
-- **Add mode** — modal overlay. Tapping a row selects an exercise and returns to the caller with a payload. Header: `← Add exercise` + `[×]` close
+- **Add mode** — **page sheet** (full-screen modal; foundations §2.5, visual §5.7). Tapping a row selects an exercise and returns to the caller with a payload. Header inside the sheet: grab handle + `Add exercise` title + `[×]` close — **no** back arrow; dismiss via `×` or swipe-down
 - **Browse mode** — pushed sub-screen in the Profile stack (from Profile root → DATA → Exercise database). A custom row has `⋮` → action sheet (Edit / Delete). Tapping the row body (both custom and system) — nothing: there is no separate detail screen in v1. Header: `← Exercise database` (with back button)
 
 ### 11.2 Screen structure
 
 ```
 ┌─────────────────────────┐
-│ ← Add exercise      [×] │  Add mode header
-│ ← Exercise database     │  Browse mode header
+│         ───             │  grab handle — Add (page sheet)
+│   Add exercise      [×] │  Add mode header (× close, no back)
+│ ← Exercise database     │  Browse mode header (push, back)
 ├─────────────────────────┤
 │  🔍 Search exercises    │
 ├─────────────────────────┤
@@ -122,7 +123,9 @@ Invoked from:
 
 ```
 ┌─────────────────────────┐
-│ ← New custom exercise   │
+│           ───           │  grab handle
+│ ×  New custom exercise  │  form sheet header (× close)
+│ Your own exercise       │  subtitle, divider below
 ├─────────────────────────┤
 │  Name                   │
 │  [_______________]      │
@@ -145,7 +148,9 @@ Fields:
 
 Validation: name unique (case-insensitive). If such an exercise already exists (system or non-deleted custom) — warning + Create disabled.
 
-Create → new custom exercise in the db. The modal closes. If invoked from Add mode — the exercise is automatically selected and returned to the caller.
+Presentation: a form **bottom sheet** — grab handle, rounded top, dimmed parent behind a scrim, leading `×` (cancel/close) + a single primary, **no** footer `Cancel`. The same chrome as the superset config sheet (§6.2, visual §5.7). Cancelling a changed form confirms per §1.
+
+Create → new custom exercise in the db. The form sheet closes. If invoked from Add mode — the exercise is automatically selected and returned to the caller.
 
 ### 11.8 Custom exercise actions (Browse mode)
 

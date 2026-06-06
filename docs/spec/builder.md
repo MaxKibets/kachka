@@ -7,22 +7,17 @@
 
 ## 4. Workout Builder
 
-> Pre-workout screen where the user assembles the list of exercises before starting the workout. Entry points: Start blank (§3.4), Repeat last (§3.2), Choose from history (§3.3).
+> Pre-workout screen where the user assembles the list of exercises before starting the workout. Entry points: Build from scratch (§3.4), Repeat last (§3.2), Choose from history (§3.3).
 
 ### 4.1 Screen structure
 
 ```
 ┌─────────────────────────┐
-│ ← Build workout         │  modal header
+│ ← Build workout         │  screen header
 ├─────────────────────────┤
 │  Workout name           │  editable text
 │  Push Day               │
 ├─────────────────────────┤
-│                         │
-│  Quick add:             │
-│  [Squat][Bench][Dead]   │  chips (popular exercises)
-│  [Row][OHP][Pull-up]    │
-│  [Curl]                 │
 │                         │
 │  ─ Exercises ──────     │
 │                         │
@@ -37,19 +32,24 @@
 │  │  [10-15]         │   │
 │  └─────────────── ⋮ ┘   │  group menu
 │                         │
+│  ─ Quick add ──────     │
+│  [Squat][Bench][Dead]   │  chips (popular), by + Add
+│  [Row][OHP][Pull-up]    │
+│  [Curl]                 │
+│                         │
 │  + Add exercise         │
 │                         │
 ├─────────────────────────┤
-│  [   Start workout   ]  │  sticky bottom
+│  [     Continue →    ]  │  sticky bottom
 └─────────────────────────┘
 ```
 
-- **Header**: back button, screen title `Build workout`. Swipe down closes (with confirmation if something was changed).
-- **Workout name**: editable inline. With Repeat last / Choose from history it is filled from the source. With Start blank — auto `Workout · 2026-05-02`, the user can overwrite it.
-- **Quick add chips**: 7 popular exercises (§4.2). Tap adds the exercise without sets — set count / reps are configured later in the In-workout pending state (§4.3, §5).
+- **Header**: a back button (`←` → Today), screen title `Build workout`. Tapping `←` (or the swipe-from-left-edge back gesture) returns to Today and discards the setup, with confirmation if anything was added (§4.8). There is no separate bottom `Discard` button: back is the single exit, so the sticky bottom carries only **Continue**.
+- **Workout name**: editable inline. With Repeat last / Choose from history it is filled from the source. With Build from scratch — auto `Workout · 2026-05-02`, the user can overwrite it.
 - **Exercises list**: exercises + groups in performance order. Each exercise is a section showing the exercise name + a muscle-group subtitle (e.g. `Chest · Triceps`) and a `⋮` menu — no set/rep info, since sets are not defined in the Builder (§4.3, §5).
+- **Quick add chips**: 7 popular exercises (§4.2). They sit at the end of the list, next to **+ Add exercise**, so both ways to add stay together in thumb reach as the list grows. Tap adds the exercise without sets — set count / reps are configured later in the In-workout pending state (§4.3, §5).
 - **+ Add exercise**: opens the exercise picker (full list + search + custom). The exercise is added without sets — sets are configured in the In-workout pending state (§4.3, §5).
-- **Start workout** sticky button: launches the Active Workout modal. Disabled while the list is empty. It leads into the In-workout pending state — the duration clock starts later (soft start, see §5), not when this is tapped.
+- **Continue** sticky button: opens the Active Workout screen — the next step of the flow. Disabled while the list is empty. It leads into the In-workout **pending** state, where sets are configured; the workout itself begins later (soft start, see §5) — at the first logged set or an explicit **Begin workout**, not when this is tapped. The label is `Continue`, not `Start`, precisely because tapping it does not start the workout: `Start`/`Begin` would overlap with the pending state's real soft-start control (`Begin workout`, §5.9).
 
 ### 4.2 Quick-add chips
 
@@ -65,7 +65,7 @@ A hardcoded v1 list of 7 exercises (powerlifting + basic set):
 | Pull-up | Підтягування |
 | Bicep Curl | Згинання на біцепс |
 
-- Chips are always visible (permanent UX, not onboarding)
+- A permanent affordance (not onboarding) — the chip rail lives at the end of the exercise list, next to **+ Add exercise**, and stays available for every build
 - Localized from the system exercise database via `exerciseId`
 - Tap → adds the exercise to the end of the list (without sets — configured later in the In-workout pending state, §4.3)
 - No local ranking in v1 (a possible future improvement — for now the chips are static)
@@ -83,9 +83,8 @@ Bodyweight exercises (from the system db `isBodyweight: true`) still hide the kg
 | Action | Result |
 |---|---|
 | Add to superset | Multi-select picker from other standalone exercises → config sheet (rounds, rest) → creates a group. §6 |
-| Move up / Move down | Move within the list |
 | Remove exercise | Remove the exercise with confirmation |
-| Add note | Per-exercise note — author hint shown in Active workout |
+| Add note | Per-exercise note — author hint shown in Active workout. Opens a form bottom sheet (shared editor, also reached from the Active-workout note icon). This `⋮` menu dismisses first, so the editor sits over the Builder, not stacked on the menu (§2.5) |
 
 ### 4.5 Group menu `⋮` (in Builder)
 
@@ -95,7 +94,6 @@ Bodyweight exercises (from the system db `isBodyweight: true`) still hide the kg
 | Add exercise to group | Picker → adds to the group (up to the limit of 5) |
 | Remove exercise from group | With confirmation. If 1 remains — auto-ungroup |
 | Reorder inside | Drag handles within the group |
-| Move group up / down | As a single whole |
 | Ungroup | Breaks apart into flat exercises in the same order |
 
 ### 4.6 Reorder of the outer list
@@ -104,16 +102,18 @@ Drag handle on the **left** edge of each section (exercise or group). Drag chang
 
 The handle on the left (rather than on the trailing edge per the iOS convention) is deliberate: the `⋮` menu is already on the right edge, so spreading the two controls across different edges removes clustering and yields unambiguous tap targets.
 
+Reorder is **drag-only** — there are no `Move up / Move down` rows in the `⋮` menu (exercise or group). Builder lists are short (ad-hoc, a handful of exercises) and the left handle is built for one-handed thumb dragging, so discrete move buttons would only duplicate the gesture and lengthen the menu. For assistive tech, reorder is exposed via row **accessibility actions** ("Move up" / "Move down" custom actions on each row), not as visible menu rows — keeping the `⋮` menu composition-only.
+
 ### 4.7 Empty list
 
 If the list is empty:
 
 ```
   No exercises yet
-  Tap a chip above or "+ Add exercise"
+  Tap a chip below or "+ Add exercise"
 ```
 
-Start workout button disabled.
+Continue button disabled.
 
 ### 4.8 Discard / save for later
 
