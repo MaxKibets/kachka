@@ -144,36 +144,38 @@
     /* Group card (visual §5.3) — surface-1 + 3px solid mallard left-border + 0.5px subtle on others */
     .group-card {
       background: var(--surface-1);
-      border-left: 3px solid var(--mallard);
-      border-top: 0.5px solid var(--border-subtle);
-      border-right: 0.5px solid var(--border-subtle);
-      border-bottom: 0.5px solid var(--border-subtle);
+      border: 0.5px solid var(--border-subtle);
       border-radius: 14px;
-      padding: 12px 14px 8px;
+      padding: 12px 14px 0;   /* no bottom padding — the rail reaches the card's bottom edge (like in-workout) */
       margin-bottom: 10px;
+      overflow: hidden;
     }
     .group-header {
       display: grid;
-      grid-template-columns: 16px 24px 1fr 28px;
+      grid-template-columns: 16px 1fr 28px;
       align-items: center;
       gap: 10px;
       padding-bottom: 10px;
-      border-bottom: 0.5px solid var(--border-divider);
-      margin-bottom: 6px;
+      margin-bottom: 0;
     }
-    .letter-chip {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      display: flex;
+    /* Small inline letter chip — sits on the title line, reads "Superset A" (visual §2.5) */
+    .letter-chip-sm {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 6px;
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 500;
       color: #0A0F0E;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
     }
-    .letter-chip.a { background: var(--letter-a); }
+    .letter-chip-sm.a { background: var(--letter-a); }
     .group-header .meta-name {
       font-size: 14px;
       font-weight: 500;
@@ -184,33 +186,25 @@
       font-size: 12px;
       color: var(--text-secondary);
     }
+    /* Mallard rail runs flush along the card's left edge, alongside the exercises only.
+       It starts under the header and meets the header/exercises divider (first row's top
+       border), which spans full-width from the rail to the card's right edge — mirroring
+       in-workout-with-supersets. A child row's drag handle sits the same distance from the
+       rail as the header handle sits from the card edge — the rail carries the nesting. */
+    .group-children {
+      margin: 0 -14px;   /* full-bleed: rail flush left, dividers reach the right edge */
+      border-left: 3px solid var(--mallard);
+    }
     .group-row {
       display: grid;
       grid-template-columns: 16px 1fr 28px;
       align-items: center;
       gap: 10px;
-      padding: 10px 0;
-      border-bottom: 0.5px solid var(--border-divider);
+      padding: 10px 14px;   /* drag handle sits 14px from the rail — same gap the header handle has from the card edge */
+      border-top: 0.5px solid var(--border-divider);
     }
-    .group-row:last-child {
-      border-bottom: none;
-    }
-    /* tinted letter prefix per visual §2.5 */
-    .ex-name-prefixed {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-    .letter-prefix {
-      font-family: var(--font-sans);
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--letter-a);
-      background: rgba(92, 123, 149, 0.15);
-      border: 0.5px solid rgba(92, 123, 149, 0.5);
-      border-radius: 4px;
-      padding: 1px 5px;
-      letter-spacing: 0.02em;
+    .group-row:first-of-type {
+      border-top: 0.5px solid var(--border-subtle);
     }
     .add-ex-btn {
       width: 100%;
@@ -251,7 +245,7 @@
 <body>
   <header class="wf-header">
     <h1>Workout Builder · With superset A</h1>
-    <p class="wf-meta">spec §4 + §6 · group card pattern (visual §5.3) + letter chip A</p>
+    <p class="wf-meta">spec §4 + §6 · group card pattern (visual §5.3) · inline letter chip «Superset A»</p>
   </header>
 
   <main class="wf-layout">
@@ -307,9 +301,8 @@
                 <div class="row"><div class="dot"></div><div class="dot"></div></div>
                 <div class="row"><div class="dot"></div><div class="dot"></div></div>
               </div>
-              <div class="letter-chip a">A</div>
               <div>
-                <div class="meta-name">Superset</div>
+                <div class="meta-name">Superset <span class="letter-chip-sm a">A</span></div>
                 <div class="meta-sub"><span class="num">3</span> rounds · <span class="num">90</span>s rest</div>
               </div>
               <button class="row-menu-btn" aria-label="Group menu" data-href="superset-config-sheet.html">
@@ -317,6 +310,7 @@
               </button>
             </div>
 
+            <div class="group-children">
             <div class="group-row">
               <div class="drag-handle">
                 <div class="row"><div class="dot"></div><div class="dot"></div></div>
@@ -324,10 +318,7 @@
                 <div class="row"><div class="dot"></div><div class="dot"></div></div>
               </div>
               <div>
-                <div class="ex-name-prefixed">
-                  <span class="letter-prefix">A1</span>
-                  <span class="ex-name" style="margin: 0;">Dumbbell row</span>
-                </div>
+                <div class="ex-name" style="margin: 0;">Dumbbell row</div>
                 <div class="ex-sub" style="margin-top: 2px;">Back · Biceps</div>
               </div>
               <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
@@ -342,15 +333,13 @@
                 <div class="row"><div class="dot"></div><div class="dot"></div></div>
               </div>
               <div>
-                <div class="ex-name-prefixed">
-                  <span class="letter-prefix">A2</span>
-                  <span class="ex-name" style="margin: 0;">Face pull</span>
-                </div>
+                <div class="ex-name" style="margin: 0;">Face pull</div>
                 <div class="ex-sub" style="margin-top: 2px;">Rear delts · Traps</div>
               </div>
               <button class="row-menu-btn" aria-label="Exercise menu" data-href="builder-row-menu-sheet.html">
                 <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
               </button>
+            </div>
             </div>
           </div>
 
@@ -422,21 +411,21 @@
       <section>
         <h2>Interactions</h2>
         <ul>
-          <li>Drag handle на group header — рухає всю групу як одне ціле (per spec §4.6)</li>
-          <li>Drag handle всередині group rows — reorder тільки в межах групи (per spec §4.5)</li>
-          <li>Group card спадково відрізняється: 3px solid mallard left-border + 0.5px subtle borders на трьох інших сторонах (per visual §5.3)</li>
-          <li>Letter chip <code>A</code> — square 24×24, radius 6, color <code>--letter-a</code> dusty blue, text <code>#0A0F0E</code> (per visual §2.5)</li>
+          <li>Drag handle на group header (зовнішній лівий край) — рухає всю групу як одне ціле (per spec §4.6)</li>
+          <li>Drag handle всередині group rows — reorder тільки в межах групи (per spec §4.5). <strong>Хендл дітей — на тій самій відстані від рейки, що й хендл хедера від краю картки</strong>; вкладеність несе сама рейка, тож дитину не сплутати з хедером</li>
+          <li>Group card: surface-1 + 0.5px subtle border з усіх боків. <strong>3px mallard-рейка — впритул до лівого краю картки, але лише вздовж вправ</strong> (стартує під хедером). Роздільник хедер/вправи — верхній бордер першого рядка, на всю ширину від рейки до правого краю, стикається з рейкою (еталон — in-workout, per visual §5.3)</li>
+          <li>Letter chip <code>A</code> — маленький інлайн-чіп на рядку тайтлу, читається <code>Superset A</code> (height 16, radius 6, color <code>--letter-a</code> dusty blue, text <code>#0A0F0E</code>). Refinement visual §2.5</li>
         </ul>
       </section>
 
       <section>
         <h2>Notes</h2>
         <ul>
-          <li>Letter chip <code>A</code> showing only on group header. Children-вправи мають tinted letter <code>A1</code>, <code>A2</code> — background <code>rgba(letter, 0.15)</code>, border <code>0.5px solid rgba(letter, 0.5)</code>, text сам letter color (per visual §2.5)</li>
+          <li>Letter chip <code>A</code> лишається <strong>лише на хедері</strong>, інлайн у тайтлі (<code>Superset A</code>). Children-вправи <strong>без per-row літери</strong> — порядок задає позиція в картці. Крос-реф <code>A1/A2</code> лишається у History та компактних текстових лейблах (rest <code>A · Rest</code>, return-to-cursor <code>A · Set 3</code>), де немає рамки картки (refinement visual §2.5)</li>
           <li>Group header subtitle: <code>Superset · 3 rounds · 90s rest</code> — composition-level, лишається в Builder. У builder поки немає progress, у Active workout буде <code>round X of Y</code> (per spec §6.4)</li>
           <li>Builder cards (standalone і group children) показують <strong>м'язові групи</strong>, не reps. Reps для group children налаштовуються в In-workout pending state, разом зі standalone сетами (per spec §4.3 + §5.9, resolved open detail #1). Groups не мають per-child <code>Add set</code> — кількість задають rounds</li>
           <li>Кількість раундів керується group-level <code>rounds</code> (тут 3) — per round = 1 set кожної вправи групи. Це composition-level і лишається у <a href="superset-config-sheet.html">superset-config-sheet.html</a></li>
-          <li><strong>Assumption</strong>: Group card has its own drag handle для перетягування групи цілком (на group header). Spec §4.6 каже "drag handle на правому краю", але візуально drag handle ліворуч консистентний з standalone exercises у цьому wireframe-batch</li>
+          <li><strong>Assumption</strong>: Group card has its own drag handle для перетягування групи цілком (на group header). Spec §4.6 каже "drag handle на лівому краю" — діти за рейкою, тож два рівні drag (вся група vs reorder всередині) читаються як ієрархія, а не як один список</li>
         </ul>
       </section>
 
@@ -444,7 +433,7 @@
         <h2>Edge cases · related states</h2>
         <ul>
           <li>Без групи — <a href="builder.html">builder.html</a></li>
-          <li>2+ групи (B, C) — letter chip і tinted letter ротуються по visual §2.5 (B = ochre, C = plum, D = sage, E = rust)</li>
+          <li>2+ групи (B, C) — інлайн letter chip на хедері ротується по visual §2.5 (B = ochre, C = plum, D = sage, E = rust); читається <code>Superset B</code>, <code>Superset C</code> тощо</li>
           <li>Група розпалась до 1 вправи через Remove (per spec §4.5) — auto-ungroup, картка стає звичайною ex-card</li>
         </ul>
       </section>

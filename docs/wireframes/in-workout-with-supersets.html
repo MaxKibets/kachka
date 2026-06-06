@@ -76,11 +76,11 @@
     }
     .add-set-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* Group card per visual §5.3 — surface-1 + 3px mallard left-border */
+    /* Group card per visual §5.3 — surface-1 + 0.5px subtle border all around.
+       The 3px mallard rail runs along the exercises only (see .group-children). */
     .group-card {
       background: var(--surface-1);
       border: 0.5px solid var(--border-subtle);
-      border-left: 3px solid var(--mallard);
       border-radius: 14px;
       margin-bottom: 10px;
       overflow: hidden;
@@ -89,15 +89,20 @@
       display: flex; align-items: center; gap: 10px;
       padding: 12px 14px 8px;
     }
-    .letter-chip {
-      width: 24px; height: 24px;
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      color: #0A0F0E;
-      font-size: 13px; font-weight: 500;
-      flex-shrink: 0;
+    /* Mallard rail — starts under the header, alongside the exercises only */
+    .group-children {
+      border-left: 3px solid var(--mallard);
     }
-    .letter-chip.a { background: var(--letter-a); }
+    /* Small inline letter chip — sits on the title line, reads "Superset A" (visual §2.5) */
+    .letter-chip-sm {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 16px; height: 16px; padding: 0 4px;
+      border-radius: 6px;
+      color: #0A0F0E;
+      font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+      vertical-align: middle; position: relative; top: -1px;
+    }
+    .letter-chip-sm.a { background: var(--letter-a); }
 
     .group-title-block { flex: 1; min-width: 0; }
     .group-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
@@ -122,21 +127,12 @@
       margin-bottom: 6px;
     }
     .group-child-name { display: flex; align-items: center; gap: 8px; }
-    .tinted-letter {
-      width: 20px; height: 20px;
-      border-radius: 6px;
-      background: rgba(92, 123, 149, 0.15);
-      border: 0.5px solid rgba(92, 123, 149, 0.5);
-      color: var(--letter-a);
-      font-size: 11px; font-weight: 500;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
     .group-child-name .ex-name { font-size: 14px; font-weight: 500; }
 
-    /* Group active row — full card width, no side borders, no radius (visual §5.2) */
+    /* Group active row — bleeds across the exercises block, flush from the mallard rail
+       to the card's right edge (visual §5.2) */
     .group-active-wrap {
-      margin: 0 -14px 0 -17px; /* extend across full card width incl. left mallard border + right edge */
+      margin: 0;
       background: var(--surface-2);
       border-top: 1px solid rgba(242, 165, 58, 0.4);
       border-bottom: 1px solid rgba(242, 165, 58, 0.4);
@@ -210,9 +206,8 @@
           <!-- Group A: Dumbbell row + Face pull -->
           <div class="group-card">
             <div class="group-header">
-              <div class="letter-chip a">A</div>
               <div class="group-title-block">
-                <div class="group-title">Superset · Round <span class="num" style="font-family: var(--font-mono);">2</span> of <span class="num" style="font-family: var(--font-mono);">3</span></div>
+                <div class="group-title">Superset <span class="letter-chip-sm a">A</span> · Round <span class="num" style="font-family: var(--font-mono);">2</span> of <span class="num" style="font-family: var(--font-mono);">3</span></div>
                 <div class="group-meta">
                   <span class="round-dots">
                     <span class="dot done"></span>
@@ -227,11 +222,11 @@
               </button>
             </div>
 
+            <div class="group-children">
             <!-- A1 Dumbbell row -->
             <div class="group-child">
               <div class="group-child-header">
                 <div class="group-child-name">
-                  <div class="tinted-letter">A</div>
                   <div class="ex-name">Dumbbell row</div>
                 </div>
                 <button class="icon-btn" aria-label="Exercise actions" style="padding: 4px; color: var(--text-tertiary);" data-href="set-actions-sheet.html">
@@ -254,10 +249,10 @@
                   <div class="set-cell"><span class="num">10</span></div>
                   <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
                 </div>
-                <!-- Set 2 active (round 2) — full card width per visual §5.2 -->
+                <!-- Set 2 active (round 2) — bleeds from the rail to the card's right edge (visual §5.2) -->
                 <div class="group-active-wrap">
                   <div class="set-row active">
-                    <div class="set-num" style="padding-left: 17px;" data-href="set-actions-sheet.html">2</div>
+                    <div class="set-num" data-href="set-actions-sheet.html">2</div>
                     <div class="set-prev">22.5 × 10</div>
                     <div class="set-cell tile" data-href="numpad.html"><span class="num">22.5</span></div>
                     <div class="set-cell tile" data-href="numpad.html"><span class="num">10</span></div>
@@ -279,7 +274,6 @@
             <div class="group-child" style="padding-bottom: 10px;">
               <div class="group-child-header">
                 <div class="group-child-name">
-                  <div class="tinted-letter">A</div>
                   <div class="ex-name">Face pull</div>
                 </div>
                 <button class="icon-btn" aria-label="Exercise actions" style="padding: 4px; color: var(--text-tertiary);" data-href="set-actions-sheet.html">
@@ -316,6 +310,7 @@
                   <div class="set-check"><div class="check-pending"></div></div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
 
@@ -400,8 +395,8 @@
         <ul>
           <li>Cursor cycling: A1 set 2 done → миттєвий перехід на A2 set 2, без rest. Після A2 set 2 done → стартує rest 90s, наступний цикл — A1 set 3 (per spec §6.5)</li>
           <li>Round dots оновлюються тільки коли всі вправи раунду закриті</li>
-          <li>Group active row — full card width, top/bottom amber borders, без бічних бордерів і без round corners (per visual §5.2)</li>
-          <li>Group active row "обтікає" 3px mallard left-border — negative margin extends across full card</li>
+          <li>Group active row — bleed по блоку вправ: впритул від mallard-рейки ліворуч до правого краю картки, top/bottom amber borders, без round corners (per visual §5.2)</li>
+          <li>Рейка не «обтікається» активним рядком — рейка лишається лівою рамкою блоку вправ, активний рядок стартує впритул до неї (<code>margin: 0</code>, без компенсацій)</li>
         </ul>
       </section>
 
@@ -414,19 +409,19 @@
           <li>Set actions → <a href="set-actions-sheet.html">set-actions-sheet.html</a></li>
           <li>Pull-to-cursor chip → <a href="pull-to-cursor.html">pull-to-cursor.html</a> (для group cursor префікс <code>A · Set 2 · Dumbbell row</code>)</li>
           <li>Ungroup mid-workout → set numbers стають sequential (per spec §6.7) — рендер як standalone exercise card</li>
-          <li>Group з 3+ вправами (B, C) — letter chip кольору ротації (B = ochre, C = plum, per visual §2.5). Не показано в цьому мокапі</li>
+          <li>Group з 3+ вправами (B, C) — інлайн letter chip кольору ротації (B = ochre, C = plum, per visual §2.5), читається <code>Superset B</code> / <code>Superset C</code>. Не показано в цьому мокапі</li>
         </ul>
       </section>
 
       <section>
         <h2>Notes</h2>
         <ul>
-          <li>Letter chip A = dusty blue <code>#5C7B95</code> per visual §2.5. На child exercises — tinted letter (background <code>rgba(letter, 0.15)</code> + 0.5px border)</li>
-          <li>Group card = surface-1 + 3px solid mallard left-border + 0.5px subtle border на інших сторонах (per visual §5.3)</li>
+          <li>Letter chip A = dusty blue <code>#5C7B95</code> per visual §2.5 — <strong>маленький інлайн-чіп на рядку тайтлу</strong> (<code>Superset A · Round 2 of 3</code>), не окрема колонка. Child exercises <strong>без per-row літери</strong> — порядок задає позиція. Крос-реф <code>A1/A2</code> лишається у History + компактних лейблах (rest bar <code>A · Rest</code>, return-to-cursor <code>A · Set 2 · Dumbbell row</code>)</li>
+          <li>Group card = surface-1 + 0.5px subtle border з усіх боків. <strong>3px mallard-рейка — лише вздовж вправ</strong>, стартує під хедером (обгортка <code>.group-children</code>), трохи зсуває рядки й відмежовує їх від хедера (per visual §5.3)</li>
           <li>Round indicators (●●○): першa точка зелена-A (round 1 done), друга amber (current round 2), третя приглушена-A (pending). Альтернатива — всі три у letter color з opacity варіаціями. Поки amber для current round щоб корелювало з amber active set</li>
           <li>Bench press показано як collapsed completed card (per spec §5.4) — single row, mallard ✓ + summary</li>
           <li>Rest <code>90</code>s — інлайн у group meta. На bottom bar під час running rest — окремий dock (TBD у <a href="rest-timer.html">rest-timer.html</a>)</li>
-          <li>Open question: у group active wrap треба перевірити що padding-left set number компенсує мінус-маргін акуратно — у production імплементації cleaner-варіант через grid template overflow</li>
+          <li>Active wrap спрощено: рейка тепер на <code>.group-children</code>, тож активний рядок просто <code>margin: 0</code> (flush до рейки) — компенсаційний <code>padding-left</code> у номера сета більше не потрібен</li>
         </ul>
       </section>
 

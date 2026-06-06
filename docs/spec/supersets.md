@@ -64,11 +64,11 @@ Each group within a single workout gets a letter and a color. A · color 1, B ·
 The label is displayed in Builder, Active workout and History detail:
 
 ```
-A · Superset · Round 2 of 3
+Superset A · Round 2 of 3
 ●●○ (round indicators)
 ```
 
-Exercises inside a group have the prefix `A1 · Pull-ups`, `A2 · Push-ups`.
+The letter is a small inline chip on the header title (`Superset A`, visual §2.5). Inside the group card exercises are shown in order with **no boxed per-letter**; the `A1 · Pull-ups`, `A2 · Push-ups` ordinal is the cross-reference notation used where there is no card frame — History detail and compact labels (rest bar, return-to-cursor chip).
 
 The color is applied to:
 - Group header background tint
@@ -79,10 +79,10 @@ Specific colors — TBD with the visual style.
 
 ### 6.4 Group structure in the list
 
-- Header label: `A · Superset · round X of Y`
+- Header label: `Superset A · round X of Y` (letter = small inline chip, visual §2.5)
 - Round indicator dots: `● ○ ○`
 - Side vertical bar in the group's color connects the group's exercises
-- Each exercise inside the group has the prefix `A1`, `A2`, `A3` next to its name
+- Exercises are shown in order — no boxed per-letter in the card; the `A1`/`A2`/`A3` ordinal stays as the cross-reference notation in History and compact labels
 
 ### 6.5 Cursor cycling
 

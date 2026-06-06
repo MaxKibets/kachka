@@ -61,6 +61,7 @@
       border-radius: 14px;
       padding: 12px 14px;
       margin-bottom: 10px;
+      overflow: hidden;
     }
     .ex-card .ex-header {
       display: flex;
@@ -78,12 +79,14 @@
       color: var(--text-tertiary);
     }
 
+    /* Full-bleed: the divider (border-top) spans edge to edge; content re-inset by padding */
     .set-row {
       display: grid;
       grid-template-columns: 28px 1fr auto;
       align-items: center;
       gap: 10px;
-      padding: 8px 0;
+      margin: 0 -14px;
+      padding: 8px 14px;
       border-top: 0.5px solid var(--border-divider);
     }
     .set-row .num-col {
@@ -118,28 +121,42 @@
     .group-card {
       background: var(--surface-1);
       border: 0.5px solid var(--border-subtle);
-      border-left: 3px solid var(--letter-a);
       border-radius: 14px;
-      padding: 12px 14px;
+      padding: 12px 14px 0;   /* no bottom padding — the rail reaches the card's bottom edge (like in-workout) */
       margin-bottom: 10px;
+      overflow: hidden;
+    }
+    /* Letter-color rail — flush to the card's left edge, alongside the exercises/rounds only.
+       It meets the header/exercises divider (this wrapper's top border), full-width to the
+       card's right edge — mirroring in-workout-with-supersets. */
+    .group-card .group-children {
+      margin: 0 -14px;   /* full-bleed: rail flush left, divider reaches the right edge */
+      padding: 0 0 12px;   /* no side padding — inner elements inset themselves so round dividers stay full-bleed */
+      border-left: 3px solid var(--letter-a);
+      border-top: 0.5px solid var(--border-subtle);
     }
     .group-card .group-header {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 10px;
+      padding-bottom: 10px;
+      margin-bottom: 0;
     }
-    .group-card .letter-chip {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      background: var(--letter-a);
-      color: var(--canvas);
-      font-size: 13px;
-      font-weight: 500;
+    .group-card .letter-chip-sm {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 6px;
+      background: var(--letter-a);
+      color: var(--canvas);
+      font-size: 11px;
+      font-weight: 500;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
     }
     .group-card .group-title {
       font-size: 14px;
@@ -156,7 +173,7 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      margin-bottom: 10px;
+      margin: 12px 14px 10px 20px;   /* boxed roster inset from the rail and edges */
       padding: 8px 10px;
       background: var(--canvas);
       border-radius: 10px;
@@ -169,22 +186,14 @@
       align-items: center;
       gap: 6px;
     }
-    .group-exercises .gex .pref {
-      font-size: 11px;
-      color: var(--letter-a);
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      width: 22px;
-    }
 
+    /* Full-bleed: divider (border-top) spans rail-to-edge; content inset by padding */
     .round-block {
       border-top: 0.5px solid var(--border-divider);
-      padding-top: 8px;
-      margin-top: 8px;
+      padding: 8px 14px 8px 20px;
     }
     .round-block:first-of-type {
       border-top: none;
-      margin-top: 0;
       padding-top: 0;
     }
     .round-block .round-label {
@@ -313,14 +322,14 @@
           <!-- Group A · Superset · 3 rounds -->
           <div class="group-card">
             <div class="group-header">
-              <span class="letter-chip">A</span>
-              <span class="group-title">Superset</span>
+              <span class="group-title">Superset <span class="letter-chip-sm">A</span></span>
               <span class="group-meta"><span class="num">3</span> rounds · rest <span class="num">2:00</span></span>
             </div>
 
+            <div class="group-children">
             <div class="group-exercises">
-              <div class="gex"><span class="pref">A1</span>Dumbbell row</div>
-              <div class="gex"><span class="pref">A2</span>Face pull</div>
+              <div class="gex">Dumbbell row</div>
+              <div class="gex">Face pull</div>
             </div>
 
             <div class="round-block">
@@ -363,6 +372,7 @@
                 <span class="ex-name-mini">Face pull</span>
                 <span class="value"><span class="num">15.0 × 12</span></span>
               </div>
+            </div>
             </div>
           </div>
 
@@ -429,7 +439,7 @@
         <h2>Notes</h2>
         <ul>
           <li><strong>Group rendering</strong>: вибрав <em>round-by-round</em> подачу як описано у task spec (`1 round, 2 round, 3 round per spec §10.3`). Зверху group card — header (letter chip A, title, rounds + rest meta) + nested mini-list <code>A1 Dumbbell row / A2 Face pull</code> для контексту що в групі. Далі по черзі round 1, 2, 3 з парами A1/A2-сетів. Це ближче до того, як юзер виконував сети в часі — спочатку A1 round 1, потім A2 round 1, далі rest, далі round 2 і т.д. (per spec §6.5 cursor cycling)</li>
-          <li><strong>Letter chip + 3px left border</strong> групи — з visual.md §5.3 (Group card spec) + §2.5 (letter chip 24×24, radius 6, dark text on color)</li>
+          <li><strong>Інлайн letter chip «Superset A» + 3px letter-color рейка</strong> — рейка впритул до лівого краю картки, але лише вздовж вправ/раундів (обгортка <code>.group-children</code>, стартує під хедером). Роздільник хедер/вправи — на всю ширину від рейки до правого краю, стикається з рейкою (еталон — in-workout, visual §5.3 + §2.5). Список вправ — у порядку без boxed A1/A2; round-by-round тримає A1/A2 як крос-реф</li>
           <li><strong>Set labels</strong>: <code>Working set</code> / <code>Warmup</code> явно на кожному рядку, бо detail — це довідкова сторінка, не logging UI; читабельність важливіша за щільність. Warmup ще додатково підсилюється бейджем <code>W</code> у label-area (per visual §5.1, §8.3)</li>
           <li><strong>RPE</strong> рендериться як <code>@8</code> (per visual §8.3) — text-tertiary щоб не змагатись з основними числами</li>
           <li><strong>Note block</strong> — per spec §10.3 `Workout note (якщо була залогована при completion)`. Стиль — звичайна card з <code>NOTE</code> uppercase label</li>
@@ -448,7 +458,7 @@
           <li><strong>Failed reps (0 reps)</strong>: рядок показується як <code>75.0 × 0</code> (per spec §7 — явно)</li>
           <li><strong>Soft-deleted custom exercise</strong>: назва і атрибути зберігаються тут через entity ID — workout не змінюється post-delete (per spec §11.9)</li>
           <li><strong>Bodyweight exercise з extra weight</strong>: формат TBD (можливо <code>BW + 10.0 × 8</code> або <code>10.0 × 8</code> з міткою BW). Не відображено тут — потрібен окремий приклад</li>
-          <li><strong>Кілька груп</strong> у одному workout-і — letter rotation A/B/C з different colors (visual §2.5, spec §6.3); group-card border-left + letter-chip background змінюються відповідно</li>
+          <li><strong>Кілька груп</strong> у одному workout-і — letter rotation A/B/C з different colors (visual §2.5, spec §6.3); рейка <code>.group-children</code> (letter-color) + інлайн letter-chip змінюються відповідно</li>
         </ul>
       </section>
 

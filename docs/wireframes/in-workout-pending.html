@@ -159,7 +159,6 @@
     .group-card {
       background: var(--surface-1);
       border: 0.5px solid var(--border-subtle);
-      border-left: 3px solid var(--mallard);
       border-radius: 14px;
       margin-bottom: 10px;
       overflow: hidden;
@@ -168,15 +167,20 @@
       display: flex; align-items: center; gap: 10px;
       padding: 12px 14px 8px;
     }
-    .letter-chip {
-      width: 24px; height: 24px;
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      color: #0A0F0E;
-      font-size: 13px; font-weight: 500;
-      flex-shrink: 0;
+    /* Mallard rail — starts under the header, alongside the exercises only */
+    .group-children {
+      border-left: 3px solid var(--mallard);
     }
-    .letter-chip.a { background: var(--letter-a); }
+    /* Small inline letter chip — sits on the title line, reads "Superset A" (visual §2.5) */
+    .letter-chip-sm {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 16px; height: 16px; padding: 0 4px;
+      border-radius: 6px;
+      color: #0A0F0E;
+      font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+      vertical-align: middle; position: relative; top: -1px;
+    }
+    .letter-chip-sm.a { background: var(--letter-a); }
 
     .group-title-block { flex: 1; min-width: 0; }
     .group-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
@@ -198,17 +202,6 @@
       margin-bottom: 6px;
     }
     .group-child-name { display: flex; align-items: center; gap: 8px; }
-    .tinted-letter {
-      min-width: 22px; height: 20px;
-      padding: 0 4px;
-      border-radius: 6px;
-      background: rgba(92, 123, 149, 0.15);
-      border: 0.5px solid rgba(92, 123, 149, 0.5);
-      color: var(--letter-a);
-      font-size: 11px; font-weight: 500;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
     .group-child-name .ex-name { font-size: 14px; font-weight: 500; }
     /* Small muscle-group subtitle under the child name */
     .group-child-name .ex-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
@@ -342,9 +335,8 @@
                plus prev guidance and an optional blank weight cell. -->
           <div class="group-card">
             <div class="group-header">
-              <div class="letter-chip a">A</div>
               <div class="group-title-block">
-                <div class="group-title">A · Superset</div>
+                <div class="group-title">Superset <span class="letter-chip-sm a">A</span></div>
                 <div class="group-meta"><span class="num">3</span> rounds · <span class="num">2:00</span> rest</div>
               </div>
               <button class="group-overflow" aria-label="Group actions" data-href="superset-config-sheet.html">
@@ -352,11 +344,11 @@
               </button>
             </div>
 
+            <div class="group-children">
             <!-- A1 Pull-ups: has history → prev guidance; reps target editable, weight blank -->
             <div class="group-child">
               <div class="group-child-header">
                 <div class="group-child-name">
-                  <div class="tinted-letter">A1</div>
                   <div class="ex-name-block">
                     <div class="ex-name">Pull-ups</div>
                     <div class="ex-sub">Back · Biceps</div>
@@ -376,7 +368,7 @@
               <div class="group-child-body">
                 <!-- ONE template reps row, applied to all 3 rounds. No Add set. -->
                 <div class="set-row pending">
-                  <div class="set-num">A1</div>
+                  <div class="set-num">1</div>
                   <div class="set-prev">10 × 8</div>
                   <div class="set-cell blank" data-href="numpad.html"><span class="num">—</span></div>
                   <div class="set-cell" data-href="numpad.html"><span class="num">8</span></div>
@@ -389,7 +381,6 @@
             <div class="group-child" style="padding-bottom: 10px;">
               <div class="group-child-header">
                 <div class="group-child-name">
-                  <div class="tinted-letter">A2</div>
                   <div class="ex-name-block">
                     <div class="ex-name">Incline push-ups</div>
                     <div class="ex-sub">Chest · Triceps</div>
@@ -409,13 +400,14 @@
               <div class="group-child-body">
                 <!-- No history → prev em-dash; reps target still shown, weight blank. No Add set. -->
                 <div class="set-row pending">
-                  <div class="set-num">A2</div>
+                  <div class="set-num">1</div>
                   <div class="set-prev">—</div>
                   <div class="set-cell blank" data-href="numpad.html"><span class="num">—</span></div>
                   <div class="set-cell" data-href="numpad.html"><span class="num">12</span></div>
                   <div class="set-check"><div class="check-pending"></div></div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
 
@@ -476,7 +468,7 @@
           <li><strong>Немає per-child <code>Add set</code></strong> у групі — кількість сетів задають rounds, не <code>Add set</code>. Це ключова відмінність від standalone вправ (де є <code>Add set</code>)</li>
           <li><code>prev</code> показано на кожну дочірню вправу окремо: A1 Pull-ups <code>prev 10 × 8</code> (є історія), A2 Incline push-ups <code>prev —</code> (no-history case)</li>
           <li>Вага опціональна і тут: <code>kg</code> blank/fillable (dashed ghost tile), орієнтир — <code>prev</code>, як і у standalone (per spec §5.9)</li>
-          <li>Візуал групи mirror'ить live-стан (<a href="in-workout-with-supersets.html">in-workout-with-supersets.html</a>): <code>group-card</code> = surface-1 + 3px mallard left-border, letter chip A, tinted A1/A2 на дітях (per visual §5.3). Без round-dots / active highlight — cursor вимкнено у pending</li>
+          <li>Візуал групи mirror'ить live-стан (<a href="in-workout-with-supersets.html">in-workout-with-supersets.html</a>): <code>group-card</code> = surface-1 + 0.5px subtle border, mallard-рейка вздовж вправ (стартує під хедером, обгортка <code>.group-children</code>), інлайн чіп «<code>Superset A</code>», діти без per-row літери (per visual §5.3). Без round-dots / active highlight — cursor вимкнено у pending</li>
         </ul>
       </section>
 
