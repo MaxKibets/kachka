@@ -394,6 +394,11 @@
               </div>
             </div>
             </div>
+            <!-- Group-level "add more": +1 round = +1 set to every child (even). Parallel of standalone Add set. -->
+            <button class="add-set-btn">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add round
+            </button>
           </div>
 
         </div>
@@ -450,7 +455,7 @@
           <li><strong>Reps дочірніх вправ редагуються тут, у pending</strong> — consistent зі standalone сетами, з <code>prev</code> як орієнтиром (RESOLVED per redesign brief, open detail #1)</li>
           <li><strong>Один template × rounds.</strong> Кожна дочірня вправа показує ОДИН reps target (A1 <code>8</code>, A2 <code>12</code>) — це шаблон, що застосовується до всіх раундів. Кількість раундів живе в хедері групи (<code>3 rounds</code>); колонка — звичайний <code>SET</code>, як у standalone</li>
           <li><strong>Rounds + rest живуть у superset-config-sheet</strong> (composition-level): header групи показує <code>3 rounds · 2:00 rest</code>; tap <code>⋮</code> групи → <a href="superset-config-sheet.html">superset-config-sheet.html</a> для зміни. Per-child reps там НЕ налаштовуються</li>
-          <li><strong>Немає per-child <code>Add set</code></strong> у групі — кількість сетів задають rounds, не <code>Add set</code>. Це ключова відмінність від standalone вправ (де є <code>Add set</code>)</li>
+          <li><strong>Немає per-child <code>Add set</code></strong> у групі — кількість сетів задають rounds. Натомість на рівні групи є <code>+ Add round</code> (внизу картки, симетрично до standalone <code>Add set</code>): +1 раунд = +1 сет одразу всім вправам, рівність збережена (per spec §6.7). Per-child <code>Add set</code> немає, бо нерівні сети заборонені</li>
           <li><code>prev</code> показано на кожну дочірню вправу окремо: A1 Pull-ups <code>prev 10 × 8</code> (є історія), A2 Incline push-ups <code>prev —</code> (no-history case)</li>
           <li>Вага опціональна і тут: <code>kg</code> порожнє/fillable (тапабельне → numpad, без окремого бордера), орієнтир — <code>prev</code>, як і у standalone (per spec §5.9)</li>
           <li>Візуал групи mirror'ить live-стан (<a href="in-workout-with-supersets.html">in-workout-with-supersets.html</a>): <code>group-card</code> = surface-1 + 0.5px subtle border, mallard-рейка вздовж вправ (стартує під хедером, обгортка <code>.group-children</code>), інлайн чіп «<code>Superset A</code>», діти без per-row літери (per visual §5.3). Без round-dots / active highlight — cursor вимкнено у pending</li>
