@@ -231,7 +231,7 @@ Pull-ups, push-ups, etc. — the kg field is redundant or optional:
 
 | Action | Type | Notes |
 |---|---|---|
-| Mark as warmup | Toggle | Excludes the set from volume and PR |
+| Set type | Picker — `Working` / `Warm-up` | Warm-up excludes the set from volume and PR; switching back to `Working` restores the set's sequential number. Inline single-select segment, same tap-to-commit pattern as RPE — both states always visible, so reverting an accidental warm-up is one tap |
 | RPE | Picker 1–10 | Optional, hides in settings if the user does not use it |
 | Delete set | Destructive | With confirmation |
 
