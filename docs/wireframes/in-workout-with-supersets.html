@@ -52,7 +52,6 @@
       background: var(--surface-2);
       border-top: 1px solid rgba(242, 165, 58, 0.4);
       border-bottom: 1px solid rgba(242, 165, 58, 0.4);
-      height: 52px;
       margin-top: -0.5px;
     }
     .set-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 14px; color: var(--text-primary); }
@@ -61,7 +60,8 @@
     .set-prev { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-tertiary); }
     .set-cell { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 15px; text-align: center; color: var(--text-primary); }
     .set-row.pending .set-cell { color: var(--text-tertiary); }
-    .set-cell.tile { background: var(--surface-3); border-radius: 8px; padding: 6px 0; font-size: 17px; font-weight: 500; }
+    /* Active set: kg/Reps flat (no fill, table size) but amber — the editable-field hint */
+    .set-row.active .set-cell { color: var(--amber); }
     .set-check { display: flex; align-items: center; justify-content: center; }
     .check-done { width: 24px; height: 24px; background: var(--mallard); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     .check-done svg { width: 14px; height: 14px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
@@ -254,8 +254,8 @@
                   <div class="set-row active">
                     <div class="set-num" data-href="set-actions-sheet.html">2</div>
                     <div class="set-prev">22.5 × 10</div>
-                    <div class="set-cell tile" data-href="numpad.html"><span class="num">22.5</span></div>
-                    <div class="set-cell tile" data-href="numpad.html"><span class="num">10</span></div>
+                    <div class="set-cell" data-href="numpad.html"><span class="num">22.5</span></div>
+                    <div class="set-cell" data-href="numpad.html"><span class="num">10</span></div>
                     <div class="set-check"><div class="check-active"></div></div>
                   </div>
                 </div>
@@ -382,7 +382,7 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap на set (kg/reps tile) → numpad (<a href="numpad.html">numpad.html</a>)</li>
+          <li>Tap на set (kg/reps поле) → numpad (<a href="numpad.html">numpad.html</a>)</li>
           <li>Tap на set number → set actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>)</li>
           <li>Tap ✓ → save + advance cursor (миттєво на A2 set 2 без rest, бо це ще mid-round per spec §6.5) → потім rest після set 2 of A2 (<a href="rest-timer.html">rest-timer.html</a>)</li>
           <li>Tap group <code>⋮</code> → group actions sheet (TBD — Edit rounds / Edit rest / Add to group / Remove / Ungroup, per spec §6.7)</li>

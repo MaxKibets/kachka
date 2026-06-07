@@ -68,7 +68,7 @@ stateDiagram-v2
     ExerciseDatabase --> ExerciseCreate: tap Create custom
     state "Exercise create" as ExerciseCreate
 
-    ActiveWorkout --> Numpad: tap kg/Reps tile
+    ActiveWorkout --> Numpad: tap kg/Reps cell
     Numpad --> ActiveWorkout: dismiss
     ActiveWorkout --> SetActionsSheet: tap set number
     SetActionsSheet --> ActiveWorkout: dismiss / pick action
@@ -168,7 +168,7 @@ stateDiagram-v2
     direction LR
     [*] --> InWorkout
     InWorkout --> InWorkoutSS: workout has superset
-    InWorkout --> Numpad: tap kg/Reps tile
+    InWorkout --> Numpad: tap kg/Reps cell
     InWorkout --> SetActions: tap set number
     InWorkout --> RestTimer: set logged
     InWorkout --> PullToCursor: cursor off-screen

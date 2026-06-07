@@ -121,7 +121,6 @@
       background: var(--surface-2);
       border-top: 1px solid rgba(242, 165, 58, 0.4);
       border-bottom: 1px solid rgba(242, 165, 58, 0.4);
-      height: 52px;
       margin-top: -0.5px; /* swallow divider above */
     }
     .set-row.active + .set-row { border-top: 1px solid rgba(242, 165, 58, 0.4); margin-top: -1px; }
@@ -153,13 +152,8 @@
       color: var(--text-primary);
     }
     .set-row.pending .set-cell { color: var(--text-tertiary); }
-    .set-cell.tile {
-      background: var(--surface-3);
-      border-radius: 8px;
-      padding: 6px 0;
-      font-size: 17px;
-      font-weight: 500;
-    }
+    /* Active set: kg/Reps are flat (no fill, table size) but amber — the editable-field hint */
+    .set-row.active .set-cell { color: var(--amber); }
 
     .set-check {
       display: flex; align-items: center; justify-content: center;
@@ -319,8 +313,8 @@
             <div class="set-row active">
               <div class="set-num" data-href="set-actions-sheet.html">3</div>
               <div class="set-prev">75 × 7</div>
-              <div class="set-cell tile" data-href="numpad.html"><span class="num">75.0</span></div>
-              <div class="set-cell tile" data-href="numpad.html"><span class="num">8</span></div>
+              <div class="set-cell" data-href="numpad.html"><span class="num">75.0</span></div>
+              <div class="set-cell" data-href="numpad.html"><span class="num">8</span></div>
               <div class="set-check"><div class="check-active"></div></div>
             </div>
 
@@ -411,7 +405,7 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap on set <code>kg</code> / <code>reps</code> tile → custom numpad sheet (<a href="numpad.html">numpad.html</a>)</li>
+          <li>Tap on set <code>kg</code> / <code>reps</code> cell → custom numpad sheet (<a href="numpad.html">numpad.html</a>)</li>
           <li>Tap on set number → set actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>)</li>
           <li>Tap on ✓ → save set + advance cursor + start rest timer (<a href="rest-timer.html">rest-timer.html</a>)</li>
           <li>Tap the filled <code>note</code> icon → toggle the exercise hint banner (expand/collapse); tap the banner <code>✎</code> → note editor (<a href="exercise-note-sheet.html">exercise-note-sheet.html</a>). Якщо нотатки нема — note-іконки нема, додати через <code>⋮</code> → <code>Add note</code></li>
@@ -429,7 +423,7 @@
           <li>Vertical scroll. Auto-scroll keeps active set in view; manual scroll override pauses auto-scroll (per spec §5.8)</li>
           <li>Tap ✓ on active set = save + advance cursor + start rest. Closing last set of last exercise = banner suggesting <code>Finish workout</code></li>
           <li>Long-press на set row = secondary trigger для set actions (per spec §8.1)</li>
-          <li>Active set: kg/Reps tiles тапабельні незалежно (numpad перемикає focus між полями)</li>
+          <li>Active set: kg/reps поля тапабельні незалежно (numpad перемикає focus між полями)</li>
           <li>Без bottom tab bar — modal full takeover (per spec §1, §2.2)</li>
           <li><strong>Soft start</strong>: цей live стан настає коли тренування «почалося» — на першому залогованому сеті АБО після явного <code>Begin</code> у pending стані (що раніше). Тоді вмикається cursor, армується rest timer, стартує duration clock (per spec §5.9). До того — <a href="in-workout-pending.html">pending стан</a></li>
           <li><code>Add set</code> копіює значення попереднього сету (reps/weight) — додати сет це один тап (per spec §5.5, §5.9)</li>
@@ -457,7 +451,7 @@
           <li>Header — назва + edit-pencil + meta-рядок під нею + amber timer chip + <code>⋮</code>. Timer chip — workout elapsed (per visual §5.6)</li>
           <li><strong>Exercise note (author hint)</strong> — inline-банер під назвою (surface-2, текст + <code>✎</code> edit). Дефолт <strong>згорнуто</strong>; filled note-іконка в хедері = є нотатка, tap розгортає/згортає (тут показано розгорнутим для демо). Вправа без нотатки (напр. Tricep pushdown) — без note-іконки, додавання через <code>⋮</code> (per spec §5.2, builder §4.4). Workout-level author note (program-format §139) — display у <strong>v2</strong></li>
           <li>Set row grid — <code>32px | 1fr | 78px | 60px | 40px</code> з 8px gaps, 14px padding (per visual §4.1)</li>
-          <li>Done state — opacity 0.55, mallard ✓ circle. Active state — top/bottom amber borders, surface-2 фон, surface-3 tile inputs, amber empty circle. Pending — text.tertiary values, 1px subtle empty circle (per visual §5.1)</li>
+          <li>Done state — opacity 0.55, mallard ✓ circle. Active state — top/bottom amber borders, surface-2 фон, amber empty circle; kg/reps — пласкі (без фону, розмір як у таблиці), але amber-кольором як підказка «редагується». Pending — text.tertiary values, 1px subtle empty circle (per visual §5.1)</li>
           <li><strong>Warm-up set</strong> — у колонці <code>SET</code> замість номера стоїть amber-гліф <code>W</code> (per spec §8.3). Рядок логується як звичайний (вага×повтори, ✓), але не йде у volume/PR; робочі сети нумеруються 1, 2, 3 без урахування розминок. Тип перемикається в set-actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>, segment <code>Working | Warm-up</code>)</li>
           <li>Active row "ковтає" border-divider зверху і знизу через negative margin — щоб не було подвійних ліній (subtle divider + amber border)</li>
           <li>Bottom action bar: <code>logged / total</code> ліворуч (Plex Mono, secondary text, Plex Mono numbers primary), amber CTA повна ширина праворуч (per brief)</li>
