@@ -239,7 +239,7 @@ Pull-ups, push-ups, etc. — the kg field is redundant or optional:
 
 After configuration the set shows minimal badges:
 
-- `W` next to the set number — warmup
+- `W` in place of the set number (amber) — warm-up. Working sets number 1, 2, 3…; warm-ups stay unnumbered (§8.2)
 - `@8` — RPE
 
 Without cluttering the main flow — readable at a glance.

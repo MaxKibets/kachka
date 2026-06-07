@@ -135,6 +135,8 @@
     }
     .set-row.active .set-num { color: var(--amber); font-weight: 500; }
     .set-row.pending .set-num { color: var(--text-tertiary); }
+    /* Warm-up marker — W in place of the set number (per spec §8.3) */
+    .set-num.warmup { color: var(--amber); font-weight: 500; }
 
     .set-prev {
       font-family: var(--font-mono);
@@ -284,6 +286,15 @@
               <div>KG</div>
               <div>REPS</div>
               <div></div>
+            </div>
+
+            <!-- Warm-up set: W in place of the number; logged like any set but excluded from volume/PR -->
+            <div class="set-row done">
+              <div class="set-num warmup">W</div>
+              <div class="set-prev">60 × 10</div>
+              <div class="set-cell"><span class="num">60.0</span></div>
+              <div class="set-cell"><span class="num">10</span></div>
+              <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
             </div>
 
             <!-- Set 1 done -->
@@ -447,6 +458,7 @@
           <li><strong>Exercise note (author hint)</strong> — inline-банер під назвою (surface-2, текст + <code>✎</code> edit). Дефолт <strong>згорнуто</strong>; filled note-іконка в хедері = є нотатка, tap розгортає/згортає (тут показано розгорнутим для демо). Вправа без нотатки (напр. Tricep pushdown) — без note-іконки, додавання через <code>⋮</code> (per spec §5.2, builder §4.4). Workout-level author note (program-format §139) — display у <strong>v2</strong></li>
           <li>Set row grid — <code>32px | 1fr | 78px | 60px | 40px</code> з 8px gaps, 14px padding (per visual §4.1)</li>
           <li>Done state — opacity 0.55, mallard ✓ circle. Active state — top/bottom amber borders, surface-2 фон, surface-3 tile inputs, amber empty circle. Pending — text.tertiary values, 1px subtle empty circle (per visual §5.1)</li>
+          <li><strong>Warm-up set</strong> — у колонці <code>SET</code> замість номера стоїть amber-гліф <code>W</code> (per spec §8.3). Рядок логується як звичайний (вага×повтори, ✓), але не йде у volume/PR; робочі сети нумеруються 1, 2, 3 без урахування розминок. Тип перемикається в set-actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>, segment <code>Working | Warm-up</code>)</li>
           <li>Active row "ковтає" border-divider зверху і знизу через negative margin — щоб не було подвійних ліній (subtle divider + amber border)</li>
           <li>Bottom action bar: <code>logged / total</code> ліворуч (Plex Mono, secondary text, Plex Mono numbers primary), amber CTA повна ширина праворуч (per brief)</li>
           <li>"Add set" — secondary button per visual §5.4 (dashed border, transparent bg). Копіює попередній сет (per spec §5.9)</li>
