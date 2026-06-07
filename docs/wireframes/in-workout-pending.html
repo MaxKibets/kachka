@@ -117,17 +117,6 @@
     }
     .set-row.pending .set-cell { color: var(--text-tertiary); }
 
-    /* Blank, tappable weight cell — pre-set weight is optional, prev is the guide.
-       A faint dashed ghost tile signalling "tap to enter, → numpad". */
-    .set-cell.blank {
-      border: 0.5px dashed #2C3833;
-      border-radius: 8px;
-      padding: 6px 0;
-      color: var(--text-tertiary);
-      font-size: 15px;
-      cursor: pointer;
-    }
-
     .set-check {
       display: flex; align-items: center; justify-content: center;
     }
@@ -203,8 +192,6 @@
     }
     .group-child-name { display: flex; align-items: center; gap: 8px; }
     .group-child-name .ex-name { font-size: 14px; font-weight: 500; }
-    /* Small muscle-group subtitle under the child name */
-    .group-child-name .ex-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
     .group-child-name .ex-name-block { min-width: 0; }
 
     .group-child-body { margin: 0 -14px; }
@@ -282,10 +269,10 @@
 
             <!-- Default 1 pending set; prev is the guide; weight blank/fillable -->
             <div class="set-row pending">
-              <div class="set-num">1</div>
+              <div class="set-num" data-href="set-actions-sheet.html">1</div>
               <div class="set-prev">75 × 8</div>
-              <div class="set-cell blank" data-href="numpad.html"><span class="num">—</span></div>
-              <div class="set-cell"><span class="num">8</span></div>
+              <div class="set-cell" data-href="numpad.html"><span class="num">—</span></div>
+              <div class="set-cell" data-href="numpad.html"><span class="num">8</span></div>
               <div class="set-check"><div class="check-pending"></div></div>
             </div>
 
@@ -315,10 +302,10 @@
 
             <!-- No history → prev em-dash; reps target still shown, weight blank -->
             <div class="set-row pending">
-              <div class="set-num">1</div>
+              <div class="set-num" data-href="set-actions-sheet.html">1</div>
               <div class="set-prev">—</div>
-              <div class="set-cell blank" data-href="numpad.html"><span class="num">—</span></div>
-              <div class="set-cell"><span class="num">10</span></div>
+              <div class="set-cell" data-href="numpad.html"><span class="num">—</span></div>
+              <div class="set-cell" data-href="numpad.html"><span class="num">10</span></div>
               <div class="set-check"><div class="check-pending"></div></div>
             </div>
 
@@ -351,7 +338,6 @@
                 <div class="group-child-name">
                   <div class="ex-name-block">
                     <div class="ex-name">Pull-ups</div>
-                    <div class="ex-sub">Back · Biceps</div>
                   </div>
                 </div>
                 <button class="icon-btn" aria-label="Exercise actions" style="padding: 4px; color: var(--text-tertiary);" data-href="set-actions-sheet.html">
@@ -359,7 +345,7 @@
                 </button>
               </div>
               <div class="ex-col-head" style="padding: 0 0 6px;">
-                <div>×3</div>
+                <div>SET</div>
                 <div>PREV</div>
                 <div>KG</div>
                 <div>REPS</div>
@@ -368,9 +354,9 @@
               <div class="group-child-body">
                 <!-- ONE template reps row, applied to all 3 rounds. No Add set. -->
                 <div class="set-row pending">
-                  <div class="set-num">1</div>
+                  <div class="set-num" data-href="set-actions-sheet.html">1</div>
                   <div class="set-prev">10 × 8</div>
-                  <div class="set-cell blank" data-href="numpad.html"><span class="num">—</span></div>
+                  <div class="set-cell" data-href="numpad.html"><span class="num">—</span></div>
                   <div class="set-cell" data-href="numpad.html"><span class="num">8</span></div>
                   <div class="set-check"><div class="check-pending"></div></div>
                 </div>
@@ -383,7 +369,6 @@
                 <div class="group-child-name">
                   <div class="ex-name-block">
                     <div class="ex-name">Incline push-ups</div>
-                    <div class="ex-sub">Chest · Triceps</div>
                   </div>
                 </div>
                 <button class="icon-btn" aria-label="Exercise actions" style="padding: 4px; color: var(--text-tertiary);" data-href="set-actions-sheet.html">
@@ -391,7 +376,7 @@
                 </button>
               </div>
               <div class="ex-col-head" style="padding: 0 0 6px;">
-                <div>×3</div>
+                <div>SET</div>
                 <div>PREV</div>
                 <div>KG</div>
                 <div>REPS</div>
@@ -400,9 +385,9 @@
               <div class="group-child-body">
                 <!-- No history → prev em-dash; reps target still shown, weight blank. No Add set. -->
                 <div class="set-row pending">
-                  <div class="set-num">1</div>
+                  <div class="set-num" data-href="set-actions-sheet.html">1</div>
                   <div class="set-prev">—</div>
-                  <div class="set-cell blank" data-href="numpad.html"><span class="num">—</span></div>
+                  <div class="set-cell" data-href="numpad.html"><span class="num">—</span></div>
                   <div class="set-cell" data-href="numpad.html"><span class="num">12</span></div>
                   <div class="set-check"><div class="check-pending"></div></div>
                 </div>
@@ -438,7 +423,7 @@
         <h2>Opens to</h2>
         <ul>
           <li>Tap <code>Begin workout</code> → live стан In-workout, cursor стає на сет 1, армується rest timer, стартує duration clock (<a href="in-workout.html">in-workout.html</a>) — explicit soft start</li>
-          <li>Tap на blank <code>kg</code> або <code>reps</code> → custom numpad (<a href="numpad.html">numpad.html</a>). Збереження значення на сеті 1 = неявний soft start → теж переходить у live</li>
+          <li>Tap на <code>kg</code> / <code>reps</code> → custom numpad (<a href="numpad.html">numpad.html</a>). Збереження значення на сеті 1 = неявний soft start → теж переходить у live</li>
           <li>Tap на ✓ pending-сету → лог сету = неявний soft start → live стан (<a href="in-workout.html">in-workout.html</a>)</li>
           <li>Tap <code>Add set</code> → новий pending сет з копією значень попереднього (per spec §5.5, §5.9)</li>
           <li>Tap на set № → set actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>)</li>
@@ -463,11 +448,11 @@
         <h2>Superset group у pending (group A)</h2>
         <ul>
           <li><strong>Reps дочірніх вправ редагуються тут, у pending</strong> — consistent зі standalone сетами, з <code>prev</code> як орієнтиром (RESOLVED per redesign brief, open detail #1)</li>
-          <li><strong>Один template × rounds.</strong> Кожна дочірня вправа показує ОДИН reps target (A1 <code>8</code>, A2 <code>12</code>) — це шаблон, що застосовується до всіх раундів. Колонка <code>×3</code> = template повторюється 3 рази</li>
+          <li><strong>Один template × rounds.</strong> Кожна дочірня вправа показує ОДИН reps target (A1 <code>8</code>, A2 <code>12</code>) — це шаблон, що застосовується до всіх раундів. Кількість раундів живе в хедері групи (<code>3 rounds</code>); колонка — звичайний <code>SET</code>, як у standalone</li>
           <li><strong>Rounds + rest живуть у superset-config-sheet</strong> (composition-level): header групи показує <code>3 rounds · 2:00 rest</code>; tap <code>⋮</code> групи → <a href="superset-config-sheet.html">superset-config-sheet.html</a> для зміни. Per-child reps там НЕ налаштовуються</li>
           <li><strong>Немає per-child <code>Add set</code></strong> у групі — кількість сетів задають rounds, не <code>Add set</code>. Це ключова відмінність від standalone вправ (де є <code>Add set</code>)</li>
           <li><code>prev</code> показано на кожну дочірню вправу окремо: A1 Pull-ups <code>prev 10 × 8</code> (є історія), A2 Incline push-ups <code>prev —</code> (no-history case)</li>
-          <li>Вага опціональна і тут: <code>kg</code> blank/fillable (dashed ghost tile), орієнтир — <code>prev</code>, як і у standalone (per spec §5.9)</li>
+          <li>Вага опціональна і тут: <code>kg</code> порожнє/fillable (тапабельне → numpad, без окремого бордера), орієнтир — <code>prev</code>, як і у standalone (per spec §5.9)</li>
           <li>Візуал групи mirror'ить live-стан (<a href="in-workout-with-supersets.html">in-workout-with-supersets.html</a>): <code>group-card</code> = surface-1 + 0.5px subtle border, mallard-рейка вздовж вправ (стартує під хедером, обгортка <code>.group-children</code>), інлайн чіп «<code>Superset A</code>», діти без per-row літери (per visual §5.3). Без round-dots / active highlight — cursor вимкнено у pending</li>
         </ul>
       </section>
@@ -479,7 +464,7 @@
           <li><strong>Default 1 pending set</strong> на вправу при додаванні (з Builder, quick-add chip, або mid-workout <code>⋯ → Add exercise</code>). Список росте через <code>Add set</code> (per spec §5.9)</li>
           <li>App bar: замість amber timer chip — нейтральний <code>Not started</code> chip (text-tertiary, не amber). Duration clock не йде — тренування ще не почалося</li>
           <li>Немає rest-timer dock / floating timer — таймер не запущений у pending</li>
-          <li>Blank <code>kg</code> — faint dashed ghost tile (тапабельний → numpad), сигналізує «введи ваги, орієнтир — prev». Reps target показаний завжди</li>
+          <li>Порожнє <code>kg</code> — <code>—</code> placeholder, тапабельне → numpad (без окремого бордера — як усі поля, consistent з in-workout). Орієнтир — <code>prev</code>; reps target показаний завжди</li>
           <li>Вправа без історії (Incline DB press) → <code>prev</code> = <code>—</code>; reps target все одно є, вага blank</li>
           <li>Обслуговує обидві персони: Planner розкладає повну схему до підйому; Improviser просто починає логати (per redesign brief)</li>
           <li>Bottom bar: одна повноширинна amber CTA <code>Begin workout</code> (reuse <code>cta-primary</code>), без <code>logged / total</code> лічильника (нічого ще не залоговано)</li>
