@@ -125,6 +125,8 @@ Group `⋮` menu in Active workout:
 | Remove exercise from group | If the group is left with 1 exercise — auto-ungroup. Confirmation if the exercise has logged sets |
 | Ungroup | Always allowed. Logged sets stay bound to their exercises; round numbers become sequential set numbers |
 
+Besides the `⋮` menu, the group card carries a **`+ Add round`** button at its bottom — the group-level parallel of a standalone exercise's `+ Add set`. It increments rounds by one (adding a set to every exercise in the group at once, keeping them even), so the common "one more round" action stays visible instead of buried in the menu. Per-exercise `Add set` does not exist inside a group: set count is governed by rounds, and uneven sets in a group are out of scope (§6.8).
+
 ### 6.8 Deferred to v2
 
 - AMRAP / time-based circulars (rounds replaced by timer)

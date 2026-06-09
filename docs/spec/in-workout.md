@@ -152,7 +152,7 @@ The rest timer is the bottom bar's `rest` mode (§5.1), not a floating element. 
 - Context label on the left: `Rest` for a standalone exercise, `A · Rest` (letter-colored) for a group (§6.3, §6.6).
 - Inline controls: `−15s` / `+15s` to adjust, `Skip` to advance immediately (§6.6 state machine).
 - When Rest haptic is ON (§12.3) a subtle pulse sits by the label; hidden when OFF.
-- When rest ends or is skipped, the bar returns to `idle` (progress + `Finish workout`).
+- When rest ends or is skipped, the bar returns to `idle` (progress + `Finish workout`). The `idle` bar reclaims the slot the `Skip` control sat in, so `Finish` completes on a **hold**, not a tap (§9.1) — absorbing a stray tap or double-tap that lands just as rest is skipped or expires.
 - **Initial duration** comes from `Default rest` in Profile (§12.3, default `90 s`). Supersets use their own per-group rest from the superset config (§6.2) instead. If `Default rest` is `Off`, closing a set does not auto-start a countdown — the bar stays `idle`.
 
 A large floating ring was considered and rejected: it costs ~180px, pushes the set list down, and collides with the return-to-cursor chip (§5.8). The accented bottom bar stays glanceable without a separate floating layer.
@@ -231,7 +231,7 @@ Pull-ups, push-ups, etc. — the kg field is redundant or optional:
 
 | Action | Type | Notes |
 |---|---|---|
-| Mark as warmup | Toggle | Excludes the set from volume and PR |
+| Set type | Picker — `Working` / `Warm-up` | Warm-up excludes the set from volume and PR; switching back to `Working` restores the set's sequential number. Inline single-select segment, same tap-to-commit pattern as RPE — both states always visible, so reverting an accidental warm-up is one tap |
 | RPE | Picker 1–10 | Optional, hides in settings if the user does not use it |
 | Delete set | Destructive | With confirmation |
 
@@ -239,7 +239,7 @@ Pull-ups, push-ups, etc. — the kg field is redundant or optional:
 
 After configuration the set shows minimal badges:
 
-- `W` next to the set number — warmup
+- `W` in place of the set number (amber) — warm-up. Working sets number 1, 2, 3…; warm-ups stay unnumbered (§8.2)
 - `@8` — RPE
 
 Without cluttering the main flow — readable at a glance.

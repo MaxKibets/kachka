@@ -45,7 +45,6 @@
       background: var(--surface-2);
       border-top: 1px solid rgba(242, 165, 58, 0.4);
       border-bottom: 1px solid rgba(242, 165, 58, 0.4);
-      height: 52px;
       margin-top: -0.5px;
     }
     .set-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 14px; color: var(--text-primary); }
@@ -54,7 +53,8 @@
     .set-prev { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-tertiary); }
     .set-cell { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 15px; text-align: center; color: var(--text-primary); }
     .set-row.pending .set-cell { color: var(--text-tertiary); }
-    .set-cell.tile { background: var(--surface-3); border-radius: 8px; padding: 6px 0; font-size: 17px; font-weight: 500; }
+    /* Active set: kg/Reps flat (no fill, table size) but amber — the editable-field hint */
+    .set-row.active .set-cell { color: var(--amber); }
     .set-check { display: flex; align-items: center; justify-content: center; }
     .check-done { width: 24px; height: 24px; background: var(--mallard); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     .check-done svg { width: 14px; height: 14px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
@@ -240,6 +240,7 @@
           <li>Не плаває над списком — сети не перекриті; бар фіксований унизу як завжди</li>
           <li>Coexists з return-to-cursor chip (§5.8): chip плаває <em>над</em> баром, rest — <em>у</em> барі. Різні шари, без колізії — обидва можуть бути видимі одночасно</li>
           <li>Per spec §6.6 state machine: Idle → Rest → Idle. Rest can be extended by tap +15s, або Skip → advance</li>
+          <li><strong>Skip/expiry морфить бар назад в <code>idle</code></strong> (progress + Finish). idle-бар відвойовує той самий слот, де щойно сидів <code>Skip</code>, тому <code>Finish</code> = <strong>hold to finish</strong> (press-and-hold, не тап, per spec §9.1 / §5.10) — випадковий double-tap одразу після Skip не запускає завершення тренування</li>
         </ul>
       </section>
 

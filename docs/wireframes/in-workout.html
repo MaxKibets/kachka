@@ -121,7 +121,6 @@
       background: var(--surface-2);
       border-top: 1px solid rgba(242, 165, 58, 0.4);
       border-bottom: 1px solid rgba(242, 165, 58, 0.4);
-      height: 52px;
       margin-top: -0.5px; /* swallow divider above */
     }
     .set-row.active + .set-row { border-top: 1px solid rgba(242, 165, 58, 0.4); margin-top: -1px; }
@@ -135,6 +134,8 @@
     }
     .set-row.active .set-num { color: var(--amber); font-weight: 500; }
     .set-row.pending .set-num { color: var(--text-tertiary); }
+    /* Warm-up marker — W in place of the set number (per spec §8.3) */
+    .set-num.warmup { color: var(--amber); font-weight: 500; }
 
     .set-prev {
       font-family: var(--font-mono);
@@ -151,13 +152,8 @@
       color: var(--text-primary);
     }
     .set-row.pending .set-cell { color: var(--text-tertiary); }
-    .set-cell.tile {
-      background: var(--surface-3);
-      border-radius: 8px;
-      padding: 6px 0;
-      font-size: 17px;
-      font-weight: 500;
-    }
+    /* Active set: kg/Reps are flat (no fill, table size) but amber — the editable-field hint */
+    .set-row.active .set-cell { color: var(--amber); }
 
     .set-check {
       display: flex; align-items: center; justify-content: center;
@@ -286,6 +282,15 @@
               <div></div>
             </div>
 
+            <!-- Warm-up set: W in place of the number; logged like any set but excluded from volume/PR -->
+            <div class="set-row done">
+              <div class="set-num warmup">W</div>
+              <div class="set-prev">60 × 10</div>
+              <div class="set-cell"><span class="num">60.0</span></div>
+              <div class="set-cell"><span class="num">10</span></div>
+              <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
+            </div>
+
             <!-- Set 1 done -->
             <div class="set-row done">
               <div class="set-num">1</div>
@@ -308,8 +313,8 @@
             <div class="set-row active">
               <div class="set-num" data-href="set-actions-sheet.html">3</div>
               <div class="set-prev">75 × 7</div>
-              <div class="set-cell tile" data-href="numpad.html"><span class="num">75.0</span></div>
-              <div class="set-cell tile" data-href="numpad.html"><span class="num">8</span></div>
+              <div class="set-cell" data-href="numpad.html"><span class="num">75.0</span></div>
+              <div class="set-cell" data-href="numpad.html"><span class="num">8</span></div>
               <div class="set-check"><div class="check-active"></div></div>
             </div>
 
@@ -379,7 +384,7 @@
         <div class="iw-action-bar">
           <div class="iw-progress"><span class="num">12</span> / <span class="num">24</span> sets logged</div>
           <button class="cta-primary" data-href="completion-screen.html">
-            Finish workout
+            Hold to finish
             <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
@@ -400,14 +405,14 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap on set <code>kg</code> / <code>reps</code> tile → custom numpad sheet (<a href="numpad.html">numpad.html</a>)</li>
+          <li>Tap on set <code>kg</code> / <code>reps</code> cell → custom numpad sheet (<a href="numpad.html">numpad.html</a>)</li>
           <li>Tap on set number → set actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>)</li>
           <li>Tap on ✓ → save set + advance cursor + start rest timer (<a href="rest-timer.html">rest-timer.html</a>)</li>
           <li>Tap the filled <code>note</code> icon → toggle the exercise hint banner (expand/collapse); tap the banner <code>✎</code> → note editor (<a href="exercise-note-sheet.html">exercise-note-sheet.html</a>). Якщо нотатки нема — note-іконки нема, додати через <code>⋮</code> → <code>Add note</code></li>
           <li>Tap exercise <code>⋮</code> → exercise actions sheet (TBD — Insert after / Skip / Remove / Add to superset / Add note)</li>
           <li>Tap top-bar <code>⋮</code> → workout actions sheet (TBD — Add exercise / Reorder / Discard)</li>
           <li>Tap <code>←</code> back → закриває modal без discard, банер на Today (<a href="today-in-progress.html">today-in-progress.html</a>)</li>
-          <li>Tap <code>Finish workout</code> → повноекранний <a href="completion-screen.html">completion-screen.html</a> (≥1 set logged; 0 sets → одразу Discard confirm per spec §9.1)</li>
+          <li><strong>Hold</strong> <code>Finish</code> (press-and-hold ~600 мс, не тап) → повноекранний <a href="completion-screen.html">completion-screen.html</a> (≥1 set logged; 0 sets → одразу Discard confirm per spec §9.1, §9.2)</li>
           <li>Cursor exits viewport → return chip (<a href="pull-to-cursor.html">pull-to-cursor.html</a>)</li>
         </ul>
       </section>
@@ -418,7 +423,7 @@
           <li>Vertical scroll. Auto-scroll keeps active set in view; manual scroll override pauses auto-scroll (per spec §5.8)</li>
           <li>Tap ✓ on active set = save + advance cursor + start rest. Closing last set of last exercise = banner suggesting <code>Finish workout</code></li>
           <li>Long-press на set row = secondary trigger для set actions (per spec §8.1)</li>
-          <li>Active set: kg/Reps tiles тапабельні незалежно (numpad перемикає focus між полями)</li>
+          <li>Active set: kg/reps поля тапабельні незалежно (numpad перемикає focus між полями)</li>
           <li>Без bottom tab bar — modal full takeover (per spec §1, §2.2)</li>
           <li><strong>Soft start</strong>: цей live стан настає коли тренування «почалося» — на першому залогованому сеті АБО після явного <code>Begin</code> у pending стані (що раніше). Тоді вмикається cursor, армується rest timer, стартує duration clock (per spec §5.9). До того — <a href="in-workout-pending.html">pending стан</a></li>
           <li><code>Add set</code> копіює значення попереднього сету (reps/weight) — додати сет це один тап (per spec §5.5, §5.9)</li>
@@ -446,9 +451,11 @@
           <li>Header — назва + edit-pencil + meta-рядок під нею + amber timer chip + <code>⋮</code>. Timer chip — workout elapsed (per visual §5.6)</li>
           <li><strong>Exercise note (author hint)</strong> — inline-банер під назвою (surface-2, текст + <code>✎</code> edit). Дефолт <strong>згорнуто</strong>; filled note-іконка в хедері = є нотатка, tap розгортає/згортає (тут показано розгорнутим для демо). Вправа без нотатки (напр. Tricep pushdown) — без note-іконки, додавання через <code>⋮</code> (per spec §5.2, builder §4.4). Workout-level author note (program-format §139) — display у <strong>v2</strong></li>
           <li>Set row grid — <code>32px | 1fr | 78px | 60px | 40px</code> з 8px gaps, 14px padding (per visual §4.1)</li>
-          <li>Done state — opacity 0.55, mallard ✓ circle. Active state — top/bottom amber borders, surface-2 фон, surface-3 tile inputs, amber empty circle. Pending — text.tertiary values, 1px subtle empty circle (per visual §5.1)</li>
+          <li>Done state — opacity 0.55, mallard ✓ circle. Active state — top/bottom amber borders, surface-2 фон, amber empty circle; kg/reps — пласкі (без фону, розмір як у таблиці), але amber-кольором як підказка «редагується». Pending — text.tertiary values, 1px subtle empty circle (per visual §5.1)</li>
+          <li><strong>Warm-up set</strong> — у колонці <code>SET</code> замість номера стоїть amber-гліф <code>W</code> (per spec §8.3). Рядок логується як звичайний (вага×повтори, ✓), але не йде у volume/PR; робочі сети нумеруються 1, 2, 3 без урахування розминок. Тип перемикається в set-actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>, segment <code>Working | Warm-up</code>)</li>
           <li>Active row "ковтає" border-divider зверху і знизу через negative margin — щоб не було подвійних ліній (subtle divider + amber border)</li>
           <li>Bottom action bar: <code>logged / total</code> ліворуч (Plex Mono, secondary text, Plex Mono numbers primary), amber CTA повна ширина праворуч (per brief)</li>
+          <li><strong>Hold to finish</strong> — завершення = press-and-hold (~600 мс) з fill-індикатором, не одиночний тап (per spec §9.1). Причини: flow-ending дія раз на тренування + idle-бар відвойовує той самий слот, де в rest-режимі сидить <code>Skip</code> (§5.10), тож холд поглинає випадковий/подвійний тап одразу після Skip. Прецедент — Strava / Nike Run Club «hold to finish». Ранній відпуск скасовує без ефекту</li>
           <li>"Add set" — secondary button per visual §5.4 (dashed border, transparent bg). Копіює попередній сет (per spec §5.9)</li>
           <li><strong>Перед цим екраном</strong> — pending (pre-start) стан (<a href="in-workout-pending.html">in-workout-pending.html</a>): усі сети pending, cursor вимкнено, timer/clock не йдуть, час підготовки не рахується в duration. Soft start (перший лог АБО <code>Begin</code>) переводить екран у цей live стан (per spec §5.9)</li>
         </ul>

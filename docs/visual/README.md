@@ -61,7 +61,7 @@ All tokens are for the dark theme (mandatory per spec §1). The light theme is a
 | `surface.canvas` | `#0A0F0E` | App background, status bar, bottom action bar, modal background |
 | `surface.1` | `#131A18` | Primary cards (exercise card, group card, profile sections) |
 | `surface.2` | `#1C2521` | Active row background, raised secondary surfaces |
-| `surface.3` | `#28332E` | Tile inputs (active kg/Reps cells), interactive hover, focus rings |
+| `surface.3` | `#28332E` | Raised controls, interactive hover, focus rings |
 | `border.subtle` | `rgba(255,255,255, 0.04–0.06)` | Card outlines |
 | `border.divider` | `rgba(255,255,255, 0.05)` | Set row separators, list dividers |
 
@@ -161,7 +161,7 @@ Non-numeric meta like `Round 2 of 3 · Rest 90s` — numbers inline in Plex Mono
 | Body | Inter | 14 | 400 | Default text |
 | Meta / subtitle | Inter | 12 | 400 | "Working set 3 of 4", subtitles |
 | Caption | Inter | 11 | 400 | Column headers, status meta |
-| Number large | Plex Mono | 17–18 | 500 | Active set values, timer |
+| Number large | Plex Mono | 17–18 | 500 | Timer, large numeric displays |
 | Number medium | Plex Mono | 15–16 | 400 | Set values (kg, Reps) |
 | Number small | Plex Mono | 12–14 | 400 | Set numbers, prev values, meta numbers |
 
@@ -178,12 +178,12 @@ OpenType: for Inter we force-enable `tnum` (tabular figures) so that inline numb
 
 - Base grid **4px**. Padding/margins are multiples of 4 (4, 8, 12, 16, 20, 24, 32).
 - Min touch target — `44×44pt` iOS / `48×48dp` Android (per spec §1: one hand, sweaty).
-- Card radius scale: `14` (exercise/group cards), `12` (CTA, large buttons), `10` (timer chip), `8` (input tiles, secondary buttons), `6` (letter chip), `50%` (✓ button).
+- Card radius scale: `14` (exercise/group cards), `12` (CTA, large buttons), `10` (timer chip), `8` (secondary buttons), `6` (letter chip), `50%` (✓ button).
 - Card outline: `0.5px` subtle alpha-white border. **No shadows.**
 
 ### 4.1 In-workout metrics
 
-- Set row height: `52px` (active) / `44px` (done / pending), 8–10px vertical padding.
+- Set row height: `44px` (all states), 8–10px vertical padding.
 - Set row grid: `32px [Set#] | 1fr [Prev] | 78px [kg] | 60px [Reps] | 40px [✓]` with 8px gaps, 14px horizontal card padding.
 - Exercise card: ~280–320px tall with 4 sets + add-set button.
 
@@ -203,7 +203,7 @@ OpenType: for Inter we force-enable `tnum` (tabular figures) so that inline numb
 | State | Treatment |
 |---|---|
 | **Done** | Opacity `0.5–0.55` on all values. ✓ in a solid mallard `#1F6E5C` circle (`28×28` main / `24×24` in a group), icon `#0A0F0E` strokeWidth 3.2 |
-| **Active** | Full row width, top + bottom amber `rgba(242,165,58, 0.4)` borders, surface-2 background, amber `#F2A53A` set number weight 500. kg/Reps cells = "tile": surface-3 background, radius 8, padding 6×0, Plex Mono Medium 17. Empty active circle: `1.5px solid #F2A53A`, transparent fill |
+| **Active** | Full row width, top + bottom amber `rgba(242,165,58, 0.4)` borders, surface-2 background, amber `#F2A53A` set number weight 500. kg/Reps cells: flat (no fill), table-size Plex Mono `15`, in amber `#F2A53A` as the editable-field hint. Empty active circle: `1.5px solid #F2A53A`, transparent fill |
 | **Pending** | Opacity 1.0, but all values in `text.tertiary`. Empty pending circle: `1px solid #2C3833`, transparent fill |
 | **Failed reps (0)** | Allowed per spec §7. Visual trigger TBD |
 | **Warmup** | Per spec §8 — set actions via a tap on the number. Visual trigger TBD |
@@ -236,7 +236,7 @@ Structural consistency is more important than "isolating" the group. The header 
 
 ### 5.5 Inputs
 
-- **Tile input** (active set kg/Reps): surface-3 background, radius 8, Plex Mono Medium 17. Custom numpad on focus per spec §7
+- **Active set kg/Reps**: flat (no fill), table-size Plex Mono `15` in amber `#F2A53A` — the editable-field hint, not a boxed input. Custom numpad on focus per spec §7
 - **Edit-pencil**: a thin `12–13px` line icon in `text.tertiary` — affordance next to editable text
 
 ### 5.6 Chips & badges

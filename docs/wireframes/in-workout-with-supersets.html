@@ -52,7 +52,6 @@
       background: var(--surface-2);
       border-top: 1px solid rgba(242, 165, 58, 0.4);
       border-bottom: 1px solid rgba(242, 165, 58, 0.4);
-      height: 52px;
       margin-top: -0.5px;
     }
     .set-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 14px; color: var(--text-primary); }
@@ -61,7 +60,8 @@
     .set-prev { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-tertiary); }
     .set-cell { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 15px; text-align: center; color: var(--text-primary); }
     .set-row.pending .set-cell { color: var(--text-tertiary); }
-    .set-cell.tile { background: var(--surface-3); border-radius: 8px; padding: 6px 0; font-size: 17px; font-weight: 500; }
+    /* Active set: kg/Reps flat (no fill, table size) but amber — the editable-field hint */
+    .set-row.active .set-cell { color: var(--amber); }
     .set-check { display: flex; align-items: center; justify-content: center; }
     .check-done { width: 24px; height: 24px; background: var(--mallard); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     .check-done svg { width: 14px; height: 14px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
@@ -254,8 +254,8 @@
                   <div class="set-row active">
                     <div class="set-num" data-href="set-actions-sheet.html">2</div>
                     <div class="set-prev">22.5 × 10</div>
-                    <div class="set-cell tile" data-href="numpad.html"><span class="num">22.5</span></div>
-                    <div class="set-cell tile" data-href="numpad.html"><span class="num">10</span></div>
+                    <div class="set-cell" data-href="numpad.html"><span class="num">22.5</span></div>
+                    <div class="set-cell" data-href="numpad.html"><span class="num">10</span></div>
                     <div class="set-check"><div class="check-active"></div></div>
                   </div>
                 </div>
@@ -312,6 +312,11 @@
               </div>
             </div>
             </div>
+            <!-- Group-level "add more": +1 round = +1 set to every child (even). Parallel of standalone Add set. -->
+            <button class="add-set-btn">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add round
+            </button>
           </div>
 
           <!-- Tricep pushdown (pending) -->
@@ -363,7 +368,7 @@
         <div class="iw-action-bar">
           <div class="iw-progress"><span class="num">5</span> / <span class="num">14</span> sets logged</div>
           <button class="cta-primary" data-href="completion-screen.html">
-            Finish workout
+            Hold to finish
             <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
@@ -382,10 +387,11 @@
       <section>
         <h2>Opens to</h2>
         <ul>
-          <li>Tap на set (kg/reps tile) → numpad (<a href="numpad.html">numpad.html</a>)</li>
+          <li>Tap на set (kg/reps поле) → numpad (<a href="numpad.html">numpad.html</a>)</li>
           <li>Tap на set number → set actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>)</li>
           <li>Tap ✓ → save + advance cursor (миттєво на A2 set 2 без rest, бо це ще mid-round per spec §6.5) → потім rest після set 2 of A2 (<a href="rest-timer.html">rest-timer.html</a>)</li>
           <li>Tap group <code>⋮</code> → group actions sheet (TBD — Edit rounds / Edit rest / Add to group / Remove / Ungroup, per spec §6.7)</li>
+          <li>Tap <code>+ Add round</code> (внизу картки групи) → <code>rounds + 1</code> = додає один сет одразу всім вправам групи (рівність збережена). Груповий аналог standalone <code>Add set</code>; per-child <code>Add set</code> у групі немає (per spec §6.7)</li>
           <li>Tap exercise <code>⋮</code> в межах групи → exercise-in-group actions (Remove from group / тощо)</li>
         </ul>
       </section>
@@ -421,6 +427,7 @@
           <li>Round indicators (●●○): першa точка зелена-A (round 1 done), друга amber (current round 2), третя приглушена-A (pending). Альтернатива — всі три у letter color з opacity варіаціями. Поки amber для current round щоб корелювало з amber active set</li>
           <li>Bench press показано як collapsed completed card (per spec §5.4) — single row, mallard ✓ + summary</li>
           <li>Rest <code>90</code>s — інлайн у group meta. На bottom bar під час running rest — окремий dock (TBD у <a href="rest-timer.html">rest-timer.html</a>)</li>
+          <li>Bottom-bar <code>Finish</code> = <strong>hold to finish</strong> (press-and-hold, не тап) — як в <a href="in-workout.html">in-workout.html</a>; холд гардить колізію зі слотом <code>Skip</code> при morph rest→idle (per spec §9.1, §5.10)</li>
           <li>Active wrap спрощено: рейка тепер на <code>.group-children</code>, тож активний рядок просто <code>margin: 0</code> (flush до рейки) — компенсаційний <code>padding-left</code> у номера сета більше не потрібен</li>
         </ul>
       </section>
