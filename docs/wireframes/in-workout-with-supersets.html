@@ -368,7 +368,7 @@
         <div class="iw-action-bar">
           <div class="iw-progress"><span class="num">5</span> / <span class="num">14</span> sets logged</div>
           <button class="cta-primary" data-href="completion-screen.html">
-            Finish workout
+            Hold to finish
             <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
@@ -427,6 +427,7 @@
           <li>Round indicators (●●○): першa точка зелена-A (round 1 done), друга amber (current round 2), третя приглушена-A (pending). Альтернатива — всі три у letter color з opacity варіаціями. Поки amber для current round щоб корелювало з amber active set</li>
           <li>Bench press показано як collapsed completed card (per spec §5.4) — single row, mallard ✓ + summary</li>
           <li>Rest <code>90</code>s — інлайн у group meta. На bottom bar під час running rest — окремий dock (TBD у <a href="rest-timer.html">rest-timer.html</a>)</li>
+          <li>Bottom-bar <code>Finish</code> = <strong>hold to finish</strong> (press-and-hold, не тап) — як в <a href="in-workout.html">in-workout.html</a>; холд гардить колізію зі слотом <code>Skip</code> при morph rest→idle (per spec §9.1, §5.10)</li>
           <li>Active wrap спрощено: рейка тепер на <code>.group-children</code>, тож активний рядок просто <code>margin: 0</code> (flush до рейки) — компенсаційний <code>padding-left</code> у номера сета більше не потрібен</li>
         </ul>
       </section>

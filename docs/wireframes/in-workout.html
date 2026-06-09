@@ -384,7 +384,7 @@
         <div class="iw-action-bar">
           <div class="iw-progress"><span class="num">12</span> / <span class="num">24</span> sets logged</div>
           <button class="cta-primary" data-href="completion-screen.html">
-            Finish workout
+            Hold to finish
             <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
@@ -412,7 +412,7 @@
           <li>Tap exercise <code>⋮</code> → exercise actions sheet (TBD — Insert after / Skip / Remove / Add to superset / Add note)</li>
           <li>Tap top-bar <code>⋮</code> → workout actions sheet (TBD — Add exercise / Reorder / Discard)</li>
           <li>Tap <code>←</code> back → закриває modal без discard, банер на Today (<a href="today-in-progress.html">today-in-progress.html</a>)</li>
-          <li>Tap <code>Finish workout</code> → повноекранний <a href="completion-screen.html">completion-screen.html</a> (≥1 set logged; 0 sets → одразу Discard confirm per spec §9.1)</li>
+          <li><strong>Hold</strong> <code>Finish</code> (press-and-hold ~600 мс, не тап) → повноекранний <a href="completion-screen.html">completion-screen.html</a> (≥1 set logged; 0 sets → одразу Discard confirm per spec §9.1, §9.2)</li>
           <li>Cursor exits viewport → return chip (<a href="pull-to-cursor.html">pull-to-cursor.html</a>)</li>
         </ul>
       </section>
@@ -455,6 +455,7 @@
           <li><strong>Warm-up set</strong> — у колонці <code>SET</code> замість номера стоїть amber-гліф <code>W</code> (per spec §8.3). Рядок логується як звичайний (вага×повтори, ✓), але не йде у volume/PR; робочі сети нумеруються 1, 2, 3 без урахування розминок. Тип перемикається в set-actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>, segment <code>Working | Warm-up</code>)</li>
           <li>Active row "ковтає" border-divider зверху і знизу через negative margin — щоб не було подвійних ліній (subtle divider + amber border)</li>
           <li>Bottom action bar: <code>logged / total</code> ліворуч (Plex Mono, secondary text, Plex Mono numbers primary), amber CTA повна ширина праворуч (per brief)</li>
+          <li><strong>Hold to finish</strong> — завершення = press-and-hold (~600 мс) з fill-індикатором, не одиночний тап (per spec §9.1). Причини: flow-ending дія раз на тренування + idle-бар відвойовує той самий слот, де в rest-режимі сидить <code>Skip</code> (§5.10), тож холд поглинає випадковий/подвійний тап одразу після Skip. Прецедент — Strava / Nike Run Club «hold to finish». Ранній відпуск скасовує без ефекту</li>
           <li>"Add set" — secondary button per visual §5.4 (dashed border, transparent bg). Копіює попередній сет (per spec §5.9)</li>
           <li><strong>Перед цим екраном</strong> — pending (pre-start) стан (<a href="in-workout-pending.html">in-workout-pending.html</a>): усі сети pending, cursor вимкнено, timer/clock не йдуть, час підготовки не рахується в duration. Soft start (перший лог АБО <code>Begin</code>) переводить екран у цей live стан (per spec §5.9)</li>
         </ul>

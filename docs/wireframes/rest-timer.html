@@ -240,6 +240,7 @@
           <li>Не плаває над списком — сети не перекриті; бар фіксований унизу як завжди</li>
           <li>Coexists з return-to-cursor chip (§5.8): chip плаває <em>над</em> баром, rest — <em>у</em> барі. Різні шари, без колізії — обидва можуть бути видимі одночасно</li>
           <li>Per spec §6.6 state machine: Idle → Rest → Idle. Rest can be extended by tap +15s, або Skip → advance</li>
+          <li><strong>Skip/expiry морфить бар назад в <code>idle</code></strong> (progress + Finish). idle-бар відвойовує той самий слот, де щойно сидів <code>Skip</code>, тому <code>Finish</code> = <strong>hold to finish</strong> (press-and-hold, не тап, per spec §9.1 / §5.10) — випадковий double-tap одразу після Skip не запускає завершення тренування</li>
         </ul>
       </section>
 
