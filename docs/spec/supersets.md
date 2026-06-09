@@ -68,7 +68,7 @@ Superset A · Round 2 of 3
 ●●○ (round indicators)
 ```
 
-The letter is a small inline chip on the header title (`Superset A`, visual §2.5). Inside the group card exercises are shown in order with **no boxed per-letter**; the `A1 · Pull-ups`, `A2 · Push-ups` ordinal is the cross-reference notation used where there is no card frame — History detail and compact labels (rest bar, return-to-cursor chip).
+The letter is a small inline chip on the header title (`Superset A`, visual §2.5). Inside a **framed** group card (Builder, Active workout, History detail) that title carries the letter, so exercises are listed in order with **no per-row letter**; where a per-row ordinal is shown (e.g. History detail's round-by-round, §10.3) it is a plain `1`/`2` — the exercise's position in the round. Repeating the letter on every row would be noise. The combined `A1`/`A2` ordinal (`A1 · Pull-ups`, `A2 · Push-ups`) is the cross-reference notation for **frameless inline references**, where no title anchors the letter — describing cursor cycling (`A1 → A2`) or naming a set in flat prose. Compact UI labels use the short letter-prefix form instead: the rest bar `A · Rest`, the return-to-cursor chip `A · Set 2 · Dumbbell row`.
 
 The color is applied to:
 - Group header background tint
@@ -82,7 +82,7 @@ Specific colors — TBD with the visual style.
 - Header label: `Superset A · round X of Y` (letter = small inline chip, visual §2.5)
 - Round indicator dots: `● ○ ○`
 - Side vertical bar in the group's color connects the group's exercises
-- Exercises are shown in order — no boxed per-letter in the card; the `A1`/`A2`/`A3` ordinal stays as the cross-reference notation in History and compact labels
+- Exercises are shown in order — no per-row letter in the card (the header title carries the group letter). Where a per-row ordinal appears (History detail's round-by-round, §10.3) it is a plain `1`/`2`/`3` — position in the round; the combined `A1`/`A2`/`A3` form stays as the cross-reference notation only for frameless inline references and compact labels (§6.3)
 
 ### 6.5 Cursor cycling
 

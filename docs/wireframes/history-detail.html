@@ -221,10 +221,12 @@
       padding: 4px 0;
       font-size: 13px;
     }
+    /* Round ordinal — same treatment as a standalone exercise's set number
+       (text-tertiary, 12px, no bold). The group letter lives in the card
+       title ("Superset A"); repeating it per row would be noise. */
     .round-block .round-set .pref {
-      font-size: 11px;
-      color: var(--letter-a);
-      font-weight: 500;
+      font-size: 12px;
+      color: var(--text-tertiary);
     }
     .round-block .round-set .ex-name-mini {
       color: var(--text-secondary);
@@ -335,12 +337,12 @@
             <div class="round-block">
               <div class="round-label"><span class="dot"></span>Round <span class="num">1</span></div>
               <div class="round-set">
-                <span class="pref"><span class="num">A1</span></span>
+                <span class="pref"><span class="num">1</span></span>
                 <span class="ex-name-mini">Dumbbell row</span>
                 <span class="value"><span class="num">22.5 × 10</span></span>
               </div>
               <div class="round-set">
-                <span class="pref"><span class="num">A2</span></span>
+                <span class="pref"><span class="num">2</span></span>
                 <span class="ex-name-mini">Face pull</span>
                 <span class="value"><span class="num">15.0 × 15</span></span>
               </div>
@@ -349,12 +351,12 @@
             <div class="round-block">
               <div class="round-label"><span class="dot"></span>Round <span class="num">2</span></div>
               <div class="round-set">
-                <span class="pref"><span class="num">A1</span></span>
+                <span class="pref"><span class="num">1</span></span>
                 <span class="ex-name-mini">Dumbbell row</span>
                 <span class="value"><span class="num">22.5 × 10</span></span>
               </div>
               <div class="round-set">
-                <span class="pref"><span class="num">A2</span></span>
+                <span class="pref"><span class="num">2</span></span>
                 <span class="ex-name-mini">Face pull</span>
                 <span class="value"><span class="num">15.0 × 14</span></span>
               </div>
@@ -363,12 +365,12 @@
             <div class="round-block">
               <div class="round-label"><span class="dot"></span>Round <span class="num">3</span></div>
               <div class="round-set">
-                <span class="pref"><span class="num">A1</span></span>
+                <span class="pref"><span class="num">1</span></span>
                 <span class="ex-name-mini">Dumbbell row</span>
                 <span class="value"><span class="num">22.5 × 9</span></span>
               </div>
               <div class="round-set">
-                <span class="pref"><span class="num">A2</span></span>
+                <span class="pref"><span class="num">2</span></span>
                 <span class="ex-name-mini">Face pull</span>
                 <span class="value"><span class="num">15.0 × 12</span></span>
               </div>
@@ -438,8 +440,8 @@
       <section>
         <h2>Notes</h2>
         <ul>
-          <li><strong>Group rendering</strong>: вибрав <em>round-by-round</em> подачу як описано у task spec (`1 round, 2 round, 3 round per spec §10.3`). Зверху group card — header (letter chip A, title, rounds + rest meta) + nested mini-list <code>A1 Dumbbell row / A2 Face pull</code> для контексту що в групі. Далі по черзі round 1, 2, 3 з парами A1/A2-сетів. Це ближче до того, як юзер виконував сети в часі — спочатку A1 round 1, потім A2 round 1, далі rest, далі round 2 і т.д. (per spec §6.5 cursor cycling)</li>
-          <li><strong>Інлайн letter chip «Superset A» + 3px letter-color рейка</strong> — рейка впритул до лівого краю картки, але лише вздовж вправ/раундів (обгортка <code>.group-children</code>, стартує під хедером). Роздільник хедер/вправи — на всю ширину від рейки до правого краю, стикається з рейкою (еталон — in-workout, visual §5.3 + §2.5). Список вправ — у порядку без boxed A1/A2; round-by-round тримає A1/A2 як крос-реф</li>
+          <li><strong>Group rendering</strong>: вибрав <em>round-by-round</em> подачу як описано у task spec (`1 round, 2 round, 3 round per spec §10.3`). Зверху group card — header (letter chip A, title, rounds + rest meta) + nested mini-list <code>Dumbbell row / Face pull</code> для контексту що в групі. Далі по черзі round 1, 2, 3, де вправи в раунді нумеруються <code>1</code>/<code>2</code> (позиція в раунді). Це ближче до того, як юзер виконував сети в часі — спочатку вправа 1 round 1, потім вправа 2 round 1, далі rest, далі round 2 і т.д. (per spec §6.5 cursor cycling)</li>
+          <li><strong>Інлайн letter chip «Superset A» + 3px letter-color рейка</strong> — рейка впритул до лівого краю картки, але лише вздовж вправ/раундів (обгортка <code>.group-children</code>, стартує під хедером). Роздільник хедер/вправи — на всю ширину від рейки до правого краю, стикається з рейкою (еталон — in-workout, visual §5.3 + §2.5). Список вправ — у порядку без boxed літери; round-by-round нумерує вправи в раунді як <code>1</code>/<code>2</code> у стилі сет-номерів standalone (12px, text-tertiary). Літера групи <code>A</code> живе лише в тайтлі «Superset A», тож не дублюється на кожному рядку — інакше це шум</li>
           <li><strong>Set labels</strong>: <code>Working set</code> / <code>Warmup</code> явно на кожному рядку, бо detail — це довідкова сторінка, не logging UI; читабельність важливіша за щільність. Warmup ще додатково підсилюється бейджем <code>W</code> у label-area (per visual §5.1, §8.3)</li>
           <li><strong>RPE</strong> рендериться як <code>@8</code> (per visual §8.3) — text-tertiary щоб не змагатись з основними числами</li>
           <li><strong>Note block</strong> — per spec §10.3 `Workout note (якщо була залогована при completion)`. Стиль — звичайна card з <code>NOTE</code> uppercase label</li>
