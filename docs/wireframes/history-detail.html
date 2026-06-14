@@ -79,42 +79,68 @@
       color: var(--text-tertiary);
     }
 
-    /* Full-bleed: the divider (border-top) spans edge to edge; content re-inset by padding */
-    .set-row {
+    /* Read-only set table — columns mirror in-workout (KG / REPS); the unit is
+       named once in the per-exercise header instead of on every row (spec §10.3).
+       Shared grid for standalone exercises and superset children. */
+    .set-row,
+    .group-child .gset {
       display: grid;
-      grid-template-columns: 28px 1fr auto;
+      grid-template-columns: 28px 1fr 56px 40px 30px;
       align-items: center;
       gap: 10px;
+    }
+    .set-row .num-col,
+    .group-child .gset .num-col {
+      grid-column: 1;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+    .set-row .kg,
+    .group-child .gset .kg {
+      grid-column: 3;
+      justify-self: end;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+    .set-row .reps,
+    .group-child .gset .reps {
+      grid-column: 4;
+      justify-self: end;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+    .set-row .rpe,
+    .group-child .gset .rpe {
+      grid-column: 5;
+      justify-self: end;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+    /* Standalone rows: full-bleed divider (border-top) spans edge to edge */
+    .set-row {
       margin: 0 -14px;
       padding: 8px 14px;
       border-top: 0.5px solid var(--border-divider);
     }
-    .set-row .num-col {
-      font-size: 12px;
+    /* Column header — KG / REPS, one per exercise, like in-workout's ex-col-head */
+    .col-head {
+      display: grid;
+      grid-template-columns: 28px 1fr 56px 40px 30px;
+      gap: 10px;
+      padding-bottom: 6px;
+      font-size: 11px;
+      letter-spacing: 0.04em;
       color: var(--text-tertiary);
     }
-    .set-row .label {
-      font-size: 13px;
-      color: var(--text-primary);
-    }
-    .set-row .value {
-      font-size: 14px;
-      color: var(--text-primary);
-    }
-    .set-row .rpe {
-      font-size: 12px;
-      color: var(--text-tertiary);
-      margin-left: 6px;
-    }
-    .set-row .warmup-badge {
-      display: inline-block;
-      font-size: 10px;
+    .col-head .ch-set { grid-column: 1; }
+    .col-head .ch-kg { grid-column: 3; justify-self: end; }
+    .col-head .ch-reps { grid-column: 4; justify-self: end; }
+    .col-head .ch-rpe { grid-column: 5; justify-self: end; }
+    /* Warm-up marker — amber W in place of the set number (spec §8.3) */
+    .set-row .num-col.warmup,
+    .group-child .gset .num-col.warmup {
+      color: var(--amber);
       font-weight: 500;
-      color: var(--text-secondary);
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 4px;
-      padding: 1px 5px;
-      margin-left: 4px;
     }
 
     /* Group card */
@@ -169,70 +195,31 @@
       margin-left: auto;
     }
 
-    .group-exercises {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin: 12px 14px 10px 20px;   /* boxed roster inset from the rail and edges */
-      padding: 8px 10px;
-      background: var(--canvas);
-      border-radius: 10px;
-      border: 0.5px solid var(--border-subtle);
-    }
-    .group-exercises .gex {
-      font-size: 13px;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Full-bleed: divider (border-top) spans rail-to-edge; content inset by padding */
-    .round-block {
+    /* Superset child — an exercise sub-block inside the group card: name + its
+       sets, rendered like a standalone exercise but read-only (spec §10.3,
+       "group rendering as in-workout"). Children separated by a divider; the
+       group letter stays in the header only. */
+    .group-child {
+      padding: 10px 14px 6px 20px;   /* inset from the rail */
       border-top: 0.5px solid var(--border-divider);
-      padding: 8px 14px 8px 20px;
     }
-    .round-block:first-of-type {
+    .group-child:first-of-type {
       border-top: none;
-      padding-top: 0;
     }
-    .round-block .round-label {
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .round-block .round-label .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--letter-a);
-      display: inline-block;
-    }
-    .round-block .round-set {
-      display: grid;
-      grid-template-columns: 22px 1fr auto;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 0;
-      font-size: 13px;
-    }
-    /* Round ordinal — same treatment as a standalone exercise's set number
-       (text-tertiary, 12px, no bold). The group letter lives in the card
-       title ("Superset A"); repeating it per row would be noise. */
-    .round-block .round-set .pref {
-      font-size: 12px;
-      color: var(--text-tertiary);
-    }
-    .round-block .round-set .ex-name-mini {
-      color: var(--text-secondary);
-    }
-    .round-block .round-set .value {
+    .group-child .child-name {
+      font-size: 14px;
+      font-weight: 500;
       color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    /* Superset child rows: same divider as standalone rows, bled to the rail
+       (left) and the card's right edge — so header/row and row/row separators
+       match the standalone table. Columns/cells come from the shared rule;
+       padding re-insets the grid to the child's content width. */
+    .group-child .gset {
+      margin: 0 -14px 0 -20px;
+      padding: 8px 14px 8px 20px;
+      border-top: 0.5px solid var(--border-divider);
     }
 
     .note-block {
@@ -299,25 +286,34 @@
               <div class="ex-name">Bench press</div>
               <div class="ex-meta"><span class="num">4</span> sets</div>
             </div>
+            <div class="col-head">
+              <span class="ch-set">SET</span>
+              <span class="ch-kg">KG</span>
+              <span class="ch-reps">REPS</span>
+              <span class="ch-rpe">RPE</span>
+            </div>
             <div class="set-row">
-              <span class="num-col"><span class="num">W</span></span>
-              <span class="label">Warmup<span class="warmup-badge">W</span></span>
-              <span class="value"><span class="num">40.0 × 10</span></span>
+              <span class="num-col warmup"><span class="num">W</span></span>
+              <span class="kg"><span class="num">40.0</span></span>
+              <span class="reps"><span class="num">10</span></span>
             </div>
             <div class="set-row">
               <span class="num-col"><span class="num">1</span></span>
-              <span class="label">Working set</span>
-              <span class="value"><span class="num">75.0 × 6</span><span class="rpe">@<span class="num">8</span></span></span>
+              <span class="kg"><span class="num">75.0</span></span>
+              <span class="reps"><span class="num">6</span></span>
+              <span class="rpe">@<span class="num">8</span></span>
             </div>
             <div class="set-row">
               <span class="num-col"><span class="num">2</span></span>
-              <span class="label">Working set</span>
-              <span class="value"><span class="num">75.0 × 6</span><span class="rpe">@<span class="num">8</span></span></span>
+              <span class="kg"><span class="num">75.0</span></span>
+              <span class="reps"><span class="num">6</span></span>
+              <span class="rpe">@<span class="num">8</span></span>
             </div>
             <div class="set-row">
               <span class="num-col"><span class="num">3</span></span>
-              <span class="label">Working set</span>
-              <span class="value"><span class="num">75.0 × 5</span><span class="rpe">@<span class="num">9</span></span></span>
+              <span class="kg"><span class="num">75.0</span></span>
+              <span class="reps"><span class="num">5</span></span>
+              <span class="rpe">@<span class="num">9</span></span>
             </div>
           </div>
 
@@ -329,51 +325,31 @@
             </div>
 
             <div class="group-children">
-            <div class="group-exercises">
-              <div class="gex">Dumbbell row</div>
-              <div class="gex">Face pull</div>
+            <!-- Per-exercise blocks (group rendering as in-workout, read-only):
+                 each child = name + its sets numbered by round (spec §10.3) -->
+            <div class="group-child">
+              <div class="child-name">Dumbbell row</div>
+              <div class="col-head">
+                <span class="ch-set">SET</span>
+                <span class="ch-kg">KG</span>
+                <span class="ch-reps">REPS</span>
+                <span class="ch-rpe">RPE</span>
+              </div>
+              <div class="gset"><span class="num-col"><span class="num">1</span></span><span class="kg"><span class="num">22.5</span></span><span class="reps"><span class="num">10</span></span></div>
+              <div class="gset"><span class="num-col"><span class="num">2</span></span><span class="kg"><span class="num">22.5</span></span><span class="reps"><span class="num">10</span></span></div>
+              <div class="gset"><span class="num-col"><span class="num">3</span></span><span class="kg"><span class="num">22.5</span></span><span class="reps"><span class="num">9</span></span></div>
             </div>
-
-            <div class="round-block">
-              <div class="round-label"><span class="dot"></span>Round <span class="num">1</span></div>
-              <div class="round-set">
-                <span class="pref"><span class="num">1</span></span>
-                <span class="ex-name-mini">Dumbbell row</span>
-                <span class="value"><span class="num">22.5 × 10</span></span>
+            <div class="group-child">
+              <div class="child-name">Face pull</div>
+              <div class="col-head">
+                <span class="ch-set">SET</span>
+                <span class="ch-kg">KG</span>
+                <span class="ch-reps">REPS</span>
+                <span class="ch-rpe">RPE</span>
               </div>
-              <div class="round-set">
-                <span class="pref"><span class="num">2</span></span>
-                <span class="ex-name-mini">Face pull</span>
-                <span class="value"><span class="num">15.0 × 15</span></span>
-              </div>
-            </div>
-
-            <div class="round-block">
-              <div class="round-label"><span class="dot"></span>Round <span class="num">2</span></div>
-              <div class="round-set">
-                <span class="pref"><span class="num">1</span></span>
-                <span class="ex-name-mini">Dumbbell row</span>
-                <span class="value"><span class="num">22.5 × 10</span></span>
-              </div>
-              <div class="round-set">
-                <span class="pref"><span class="num">2</span></span>
-                <span class="ex-name-mini">Face pull</span>
-                <span class="value"><span class="num">15.0 × 14</span></span>
-              </div>
-            </div>
-
-            <div class="round-block">
-              <div class="round-label"><span class="dot"></span>Round <span class="num">3</span></div>
-              <div class="round-set">
-                <span class="pref"><span class="num">1</span></span>
-                <span class="ex-name-mini">Dumbbell row</span>
-                <span class="value"><span class="num">22.5 × 9</span></span>
-              </div>
-              <div class="round-set">
-                <span class="pref"><span class="num">2</span></span>
-                <span class="ex-name-mini">Face pull</span>
-                <span class="value"><span class="num">15.0 × 12</span></span>
-              </div>
+              <div class="gset"><span class="num-col"><span class="num">1</span></span><span class="kg"><span class="num">15.0</span></span><span class="reps"><span class="num">15</span></span></div>
+              <div class="gset"><span class="num-col"><span class="num">2</span></span><span class="kg"><span class="num">15.0</span></span><span class="reps"><span class="num">14</span></span></div>
+              <div class="gset"><span class="num-col"><span class="num">3</span></span><span class="kg"><span class="num">15.0</span></span><span class="reps"><span class="num">12</span></span></div>
             </div>
             </div>
           </div>
@@ -384,20 +360,27 @@
               <div class="ex-name">Tricep pushdown</div>
               <div class="ex-meta"><span class="num">3</span> sets</div>
             </div>
+            <div class="col-head">
+              <span class="ch-set">SET</span>
+              <span class="ch-kg">KG</span>
+              <span class="ch-reps">REPS</span>
+              <span class="ch-rpe">RPE</span>
+            </div>
             <div class="set-row">
               <span class="num-col"><span class="num">1</span></span>
-              <span class="label">Working set</span>
-              <span class="value"><span class="num">25.0 × 12</span></span>
+              <span class="kg"><span class="num">25.0</span></span>
+              <span class="reps"><span class="num">12</span></span>
             </div>
             <div class="set-row">
               <span class="num-col"><span class="num">2</span></span>
-              <span class="label">Working set</span>
-              <span class="value"><span class="num">25.0 × 12</span></span>
+              <span class="kg"><span class="num">25.0</span></span>
+              <span class="reps"><span class="num">12</span></span>
             </div>
             <div class="set-row">
               <span class="num-col"><span class="num">3</span></span>
-              <span class="label">Working set</span>
-              <span class="value"><span class="num">25.0 × 10</span><span class="rpe">@<span class="num">8</span></span></span>
+              <span class="kg"><span class="num">25.0</span></span>
+              <span class="reps"><span class="num">10</span></span>
+              <span class="rpe">@<span class="num">8</span></span>
             </div>
           </div>
 
@@ -440,9 +423,9 @@
       <section>
         <h2>Notes</h2>
         <ul>
-          <li><strong>Group rendering</strong>: вибрав <em>round-by-round</em> подачу як описано у task spec (`1 round, 2 round, 3 round per spec §10.3`). Зверху group card — header (letter chip A, title, rounds + rest meta) + nested mini-list <code>Dumbbell row / Face pull</code> для контексту що в групі. Далі по черзі round 1, 2, 3, де вправи в раунді нумеруються <code>1</code>/<code>2</code> (позиція в раунді). Це ближче до того, як юзер виконував сети в часі — спочатку вправа 1 round 1, потім вправа 2 round 1, далі rest, далі round 2 і т.д. (per spec §6.5 cursor cycling)</li>
-          <li><strong>Інлайн letter chip «Superset A» + 3px letter-color рейка</strong> — рейка впритул до лівого краю картки, але лише вздовж вправ/раундів (обгортка <code>.group-children</code>, стартує під хедером). Роздільник хедер/вправи — на всю ширину від рейки до правого краю, стикається з рейкою (еталон — in-workout, visual §5.3 + §2.5). Список вправ — у порядку без boxed літери; round-by-round нумерує вправи в раунді як <code>1</code>/<code>2</code> у стилі сет-номерів standalone (12px, text-tertiary). Літера групи <code>A</code> живе лише в тайтлі «Superset A», тож не дублюється на кожному рядку — інакше це шум</li>
-          <li><strong>Set labels</strong>: <code>Working set</code> / <code>Warmup</code> явно на кожному рядку, бо detail — це довідкова сторінка, не logging UI; читабельність важливіша за щільність. Warmup ще додатково підсилюється бейджем <code>W</code> у label-area (per visual §5.1, §8.3)</li>
+          <li><strong>Group rendering</strong>: <em>per-exercise</em> подача — як на in-workout (spec §10.3: «group rendering as in-workout»), але read-only. Кожна вправа групи — окремий під-блок: назва + її сети, пронумеровані за раундами (<code>1</code>/<code>2</code>/<code>3</code>), так само як standalone-вправа вище. Без roster-дубля і без round-by-round розбивки: назва вправи звучить раз — як заголовок блоку. Trade-off: губимо явний time-order (A1 r1 → A2 r1 → rest → r2…, §6.5), натомість виграємо консистентність із live-екраном і per-exercise прогресію (видно, як падали повтори в межах вправи). Round-count лишається в хедері (<code>3 rounds</code>)</li>
+          <li><strong>Інлайн letter chip «Superset A» + 3px letter-color рейка</strong> — рейка впритул до лівого краю картки, але лише вздовж вправ (обгортка <code>.group-children</code>, стартує під хедером). Роздільник хедер/вправи — на всю ширину від рейки до правого краю, стикається з рейкою (еталон — in-workout, visual §5.3 + §2.5). Вправи групи йдуть блоками, розділені тонким divider; сети нумеруються <code>1</code>/<code>2</code>/<code>3</code> у стилі сет-номерів standalone (12px, text-tertiary). Літера групи <code>A</code> живе лише в тайтлі «Superset A», тож не дублюється на кожному рядку — інакше це шум</li>
+          <li><strong>Set table = колонки <code>SET · KG · REPS · RPE</code></strong> (як in-workout, але read-only — без PREV/✓). Усі колонки підписані в per-вправа хедері; одиниця названа <strong>раз</strong> там, а не на кожному рядку; ваги й повтори вирівняні (tabular-nums) → прогресія видна одним поглядом. Номер сета (або amber <code>W</code> для warmup, §8.3) ліворуч, RPE <code>@N</code> — крайня права колонка (порожня, якщо нема). Хедер і рядки відмежовані full-bleed дивайдерами — у групі від рейки до правого краю, як у standalone. Текстові лейбли <code>Working set</code> прибрані як шум. Однаково для standalone і дітей групи (узгоджено зі spec §10.3)</li>
           <li><strong>RPE</strong> рендериться як <code>@8</code> (per visual §8.3) — text-tertiary щоб не змагатись з основними числами</li>
           <li><strong>Note block</strong> — per spec §10.3 `Workout note (якщо була залогована при completion)`. Стиль — звичайна card з <code>NOTE</code> uppercase label</li>
           <li><strong>Header stats</strong> — спрощений варіант 4-stats grid з spec §9.2 (там для completion screen). Тут компактний inline-row, без PR card (PR badges у v2 per spec §16). Three stats: Duration / Volume / Sets — мінімум що завжди є</li>
@@ -457,9 +440,9 @@
           <li><strong>Без RPE</strong> (Show RPE OFF або сет без RPE) — суфікс <code>@N</code> не показується (per spec §12.2 — RPE OFF ховає бейджі, але збережені значення лишаються в db; у Browse-з-OFF — теж не показуємо, узгоджено)</li>
           <li><strong>Партіально-завершений workout</strong>: показуємо тільки залоговані сети (per spec §10.5). Не залоговані просто відсутні. У header stats <code>Sets</code> = логованих, не запланованих</li>
           <li><strong>Skipped exercise з сетами</strong>: відображається як звичайна вправа з тими сетами, що залогувалися; skipped marker не потрапляє у History (per spec §5.6)</li>
-          <li><strong>Failed reps (0 reps)</strong>: рядок показується як <code>75.0 × 0</code> (per spec §7 — явно)</li>
+          <li><strong>Failed reps (0 reps)</strong>: у колонці <code>REPS</code> стоїть <code>0</code> (колонка <code>KG</code> лишається, напр. <code>75.0</code>) — явно, per spec §7</li>
           <li><strong>Soft-deleted custom exercise</strong>: назва і атрибути зберігаються тут через entity ID — workout не змінюється post-delete (per spec §11.9)</li>
-          <li><strong>Bodyweight exercise з extra weight</strong>: формат TBD (можливо <code>BW + 10.0 × 8</code> або <code>10.0 × 8</code> з міткою BW). Не відображено тут — потрібен окремий приклад</li>
+          <li><strong>Bodyweight exercise з extra weight</strong>: формат TBD — у колонковій подачі ймовірно <code>KG</code>-колонка показує <code>BW</code> (або <code>+10.0</code> для extra weight), <code>REPS</code> — повтори. Не відображено тут — потрібен окремий приклад</li>
           <li><strong>Кілька груп</strong> у одному workout-і — letter rotation A/B/C з different colors (visual §2.5, spec §6.3); рейка <code>.group-children</code> (letter-color) + інлайн letter-chip змінюються відповідно</li>
         </ul>
       </section>
