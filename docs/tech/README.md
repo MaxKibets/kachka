@@ -138,11 +138,24 @@ The system (ready-made) exercise list is stored multilingually:
 
 ## 5. Privacy and monetization
 
-### 5.1 Model: free, no ads
+### 5.1 Model: free in v1, monetization deferred to v2
 
-- Everything free, no feature gating, no crippled mode
-- No ads — doesn't fit the gym context (sweaty hands, 5 seconds per set, a banner is inappropriate)
-- A hobby project without monetization pressure
+- **v1 ships fully free** — no ads, no feature gating, no crippled mode. A
+  deliberate growth-first choice: a brand-new app with no reviews/audience needs
+  reach before revenue, and v1 has no natural paid feature (everything is core).
+- **Monetization is planned, not abandoned.** It switches on in v2, together with
+  the first features worth paying for (programs, charts, trends — see decisions §16).
+- **No ads, ever** — doesn't fit the gym context (sweaty hands, 5 seconds per set, a banner is inappropriate).
+- **Core stays free forever.** Paid = added v2 value, never crippling the core.
+
+**v2 model candidates** (not locked — exact model / price / which features are Pro
+are open, see decisions §15):
+
+- **One-time "Pro" unlock** — programs / charts / trends. Client-side, no backend
+  (non-consumable IAP, `Restore purchases` via the store account, ~15% Small
+  Business fee). Best fit for "reward for time spent" without recurring infra.
+- **Optional sync subscription** — cross-device sync / cloud backup, only if a
+  backend ever lands and demand is proven (per §2.4). Basic workout stays free.
 
 ### 5.2 Privacy-by-default
 
@@ -224,7 +237,7 @@ v1 does not use deep links. If there's ever single-workout / log sharing — we'
 - [x] Decimal separator depends on the system locale, not the UI language
 - [x] Multilingual system exercises: `names: { en, uk }`
 - [x] Privacy-by-default: no telemetry, no accounts
-- [x] Free, no ads, no paywall
+- [x] v1 free, no ads — monetization deferred to v2 (see §5)
 - [x] Distribution: App Store + Google Play, international
 - [x] v1 scope = ad-hoc workouts (programs / import / deep linking → v2)
 - [x] Exercise database with a seed list of 7 popular exercises (Squat, Bench Press, Deadlift, Barbell Row, Overhead Press, Pull-up, Bicep Curl) for Quick-add chips in the Builder

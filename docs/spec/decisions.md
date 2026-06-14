@@ -10,6 +10,7 @@
 - **Data model** — formal schema `Workout → Group | Exercise → Set` with field types and rules (TBD as a separate document; affects the backup JSON format §13)
 - **Visual style** — typography, colors (including letter-colors for groups), density, motion, illustrations for empty states
 - **Exercise database seed list** — full catalog of system exercises (besides the 7 chip exercises); where to source: wger or our own
+- **v2 monetization specifics** — exact model (one-time Pro vs subscription), price, and which features are Pro. Direction is set (tech §5); specifics deferred until there is something to sell and proven demand
 
 
 ---
@@ -53,6 +54,9 @@
 - Streak counters and motivational gamification
 - Progress charts, exercise trends, PR timeline
 
+**Monetization**
+- v2 revenue model: one-time Pro (programs / charts / trends) + optional sync subscription if a backend lands (tech §5, §2.4); v1 ships free
+
 
 ---
 
@@ -66,6 +70,7 @@
 - [x] v1 = ad-hoc workouts (build / execute / log to history)
 - [x] Programs / import / deep linking → v2
 - [x] 3 bottom tabs: Today · History · Profile
+- [x] v1 ships fully free (growth-first); revenue model deferred to v2 (tech §5)
 
 **Today / Pre-workout**
 - [x] Three modes: has history / first launch / in-progress
