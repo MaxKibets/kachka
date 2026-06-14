@@ -48,13 +48,13 @@ Read-only snapshot of a workout. No editing actions.
 
 *Body* — full snapshot:
 - All exercises in execution order
-- For each set: number (or `W` for warmup), `weight × reps`, RPE (if any)
+- For each set: number (or `W` for warmup), then weight and reps in aligned `KG` / `REPS` columns — the unit named once in the per-exercise header, not on every row — plus RPE (if any)
 - Workout note (if one was logged at completion)
 
 *Supersets* — group rendering as in-workout, but read-only:
 - Group header: letter label (`Superset A · 3 rounds`) — small inline chip (visual §2.5)
-- List of exercises in the group in execution order; the round-by-round recap reuses A1/A2 as the cross-reference notation (visual §2.5)
-- Sets shown by rounds
+- Each exercise in the group is its own sub-block (name + its sets), in group order — mirroring the in-workout group card, not a round-by-round recap. Per-row ordinals are plain `1`/`2`/`3` = the round that set belongs to (§6.3); the group letter stays in the header only
+- Sets read like a standalone exercise's — number · `KG` / `REPS` columns · optional RPE; the round count lives in the header
 - Letter color consistent with how it was in the workout
 
 *No actions*: there is no edit, repeat workout from this entry, export — all in §16.
