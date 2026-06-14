@@ -118,12 +118,12 @@
     }
     .set-row.done { opacity: 0.55; }
     .set-row.active {
-      background: var(--surface-2);
-      border-top: 1px solid rgba(242, 165, 58, 0.4);
-      border-bottom: 1px solid rgba(242, 165, 58, 0.4);
+      background: var(--accent-tint);
+      border-top: 1px solid rgba(255, 122, 64, 0.4);
+      border-bottom: 1px solid rgba(255, 122, 64, 0.4);
       margin-top: -0.5px; /* swallow divider above */
     }
-    .set-row.active + .set-row { border-top: 1px solid rgba(242, 165, 58, 0.4); margin-top: -1px; }
+    .set-row.active + .set-row { border-top: 1px solid rgba(255, 122, 64, 0.4); margin-top: -1px; }
 
     .set-num {
       font-family: var(--font-mono);
@@ -160,11 +160,11 @@
     }
     .check-done {
       width: 24px; height: 24px;
-      background: var(--mallard);
+      background: var(--done-circle);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
-    .check-done svg { width: 14px; height: 14px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+    .check-done svg { width: 14px; height: 14px; stroke: var(--done-check); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
     .check-active {
       width: 26px; height: 26px;
       border: 1.5px solid var(--amber);
@@ -173,7 +173,7 @@
     }
     .check-pending {
       width: 24px; height: 24px;
-      border: 1px solid #2C3833;
+      border: 1px solid #2A2A2A;
       border-radius: 50%;
       background: transparent;
     }
@@ -184,7 +184,7 @@
       margin: 10px 14px 12px;
       padding: 8px 12px;
       background: transparent;
-      border: 0.5px dashed #2C3833;
+      border: 0.5px dashed #2A2A2A;
       border-radius: 10px;
       color: var(--text-secondary);
       font-family: var(--font-sans);

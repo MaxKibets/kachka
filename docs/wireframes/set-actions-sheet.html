@@ -35,7 +35,7 @@
     }
     .iw-backdrop .stub-row:first-child { border-top: none; }
 
-    .dim-overlay { position: absolute; inset: 0; background: rgba(10, 15, 14, 0.6); }
+    .dim-overlay { position: absolute; inset: 0; background: rgba(10, 10, 10, 0.6); }
 
     /* Action sheet */
     .action-sheet {
@@ -87,7 +87,7 @@
     }
     .action-row.destructive .ar-icon,
     .action-row.destructive .ar-text {
-      color: #B85842;
+      color: var(--danger);
     }
 
     /* Inline RPE picker */
@@ -127,8 +127,8 @@
     /* Warmup preview indicator (W badge) */
     .warmup-preview {
       width: 18px; height: 18px;
-      background: rgba(242, 165, 58, 0.15);
-      border: 0.5px solid rgba(242, 165, 58, 0.5);
+      background: rgba(255, 122, 64, 0.15);
+      border: 0.5px solid rgba(255, 122, 64, 0.5);
       border-radius: 4px;
       display: inline-flex; align-items: center; justify-content: center;
       font-family: var(--font-mono);
@@ -313,7 +313,7 @@
           <li>Header label — Plex Mono number у контексті <code>Bench press · Set 3</code></li>
           <li>RPE inline (а не submenu): rare action але важливий для тих хто RPE юзає; краще одразу tap-to-commit без додаткових екранів</li>
           <li>Range RPE 6 — 10 свідомо (per common gym usage — нижче 6 малоінформативно). 0.5 step як в загальній практиці. Якщо юзер запросить 1 — додамо в v1.x</li>
-          <li>Destructive Delete — у нашій мові #B85842 (letter E rust). Resolves visual §2.4 TBD: для destructive перевикористовуємо rust-letter-color як warning/danger у v1 (semantic colors TBD у visual §2.4)</li>
+          <li>Destructive Delete — danger red <code>--danger #F5404C</code> (visual §2.4). Dedicated danger token, replaces the earlier rust-letter-color stopgap</li>
           <li><strong>Set type = сегмент, а не toggle</strong> (design-review, supersedes warmup-toggle): старий toggle ховав поточний стан і не давав явного шляху назад. Сегмент показує обидва типи завжди, revert у один тап, консистентно з inline-RPE й моделлю «set type» конкурентів (Hevy / Strong)</li>
           <li>Section divider — тонкий hairline (<code>0.5px var(--border-divider)</code>) + відступ: відділяє кожен inline-блок (<code>Set type</code> · <code>RPE</code>) один від одного та від destructive <code>Delete</code>, у стилі sheet-сімейства (per visual §5.7)</li>
           <li>Open question: показувати rest timer override як action (start rest now / skip rest)? Поки не включаю — rest auto-start після ✓ tap, окремий action sheet не потрібен</li>
