@@ -36,7 +36,7 @@ Four md files in the project, they should be read as a single whole:
 |------|---------|--------|
 | `spec/README.md` | UI/UX v1 — map + §-index. Zones in `spec/`: foundations, today, builder, in-workout, supersets, finish, history, exercises, profile, glossary, decisions | Active |
 | `tech/README.md` | Technical and product decisions — platform, storage, units, localization, monetization, distribution | Active |
-| `visual/README.md` | Visual system — palette, typography, density, component patterns, letter rotation, iconography/motion stubs | Active · v0 |
+| `visual/README.md` | Visual system — map + §-index. Zones in `visual/`: foundations (mood/positioning/brand/tone), color, typography, layout, components, brand (empty states + mascot), open-items | Active · v0 |
 | `program-format.md` | Program JSON format for import/export | **Frozen — v2** |
 
 **Before any response — read spec, tech, and visual.** Read the program format only if the request explicitly concerns v2 / sharing / import.
