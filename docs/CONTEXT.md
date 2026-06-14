@@ -6,7 +6,7 @@
 
 ## What this project is
 
-A React Native (iOS + Android) gym workout tracker. A hobby project without monetization. Target audience — international, release on App Store + Google Play.
+A React Native (iOS + Android) gym workout tracker. A hobby project; v1 ships free, monetization planned for v2 (see tech §5). Target audience — international, release on App Store + Google Play.
 
 Discussion language: **Ukrainian**. Technical terms (RPE, PR, superset, set) stay in English.
 
@@ -126,7 +126,7 @@ A shortened list — details in the md files:
 - Storage: local-only, sync-ready foundation (UUID, soft delete, timestamps)
 - Units: kg only for MVP, lb later via user setting
 - Localization: English (base) + Ukrainian, i18n from day one
-- Free, no ads, no accounts
+- v1 free, no ads, no accounts; monetization deferred to v2
 
 ## Deliberately deferred to v2 — do not discuss in v1
 
