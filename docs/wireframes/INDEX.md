@@ -16,7 +16,7 @@ wireframes/
 ├── flow.md                   ← Mermaid state-diagram, посилання на HTML
 ├── prototype.html            ← entry point для тестування (живий клікабельний прототип)
 ├── shared/
-│   ├── tokens.css            ← Mallard токени + wireframe page chrome (всі HTML імпортують)
+│   ├── tokens.css            ← Orange-on-black токени + wireframe page chrome (всі HTML імпортують)
 │   └── proto-mode.js         ← runtime який активує proto-режим за ?proto=1
 └── *.html                    ← один файл = один екран
 ```
@@ -30,7 +30,7 @@ wireframes/
 Що клікабельно (через `data-href` атрибут): tab bar, primary CTA, list rows, action sheet items, back chevrons, sheet backdrop. Що неактивно: toggle switches, search inputs, form fields, muscle group filter chips — це поза скоупом v0 prototype, тестер просто бачить статичний state.
 
 Кожен HTML:
-- 375px phone frame з dark Mallard
+- 375px phone frame, dark orange-on-black палітра
 - Side panel: Opens from · Opens to · Interactions · Notes · Edge cases · footer-посилання
 - Імпортує `shared/tokens.css`
 - Інтерактив декоративний (це wireframe, не прототип)
@@ -145,13 +145,13 @@ wireframes/
 
 ### Дизайн-рішення прийняті як defaults (можна переграти)
 
-- **Letter E rust `#B85842` як destructive color** — частково розв'язує semantic colors з visual §2.4. Перевірити.
+- **Destructive color** — виділений `danger #F5404C` (visual §2.4). Раніше тимчасово reused Letter E rust; тепер dedicated danger-токен.
 - **Rest timer**: floating circular dock над bottom action bar (агент Batch 3 обрав цей варіант, alt — bottom dock з horizontal bar — описаний у Notes файлу).
-- **Numpad layout**: bottom sheet з обома fields (kg + reps) одночасно видимими. Active field має amber border.
+- **Numpad layout**: bottom sheet з обома fields (kg + reps) одночасно видимими. Active field має orange border.
 - **Numpad ±0.5 quick-adjust** — не доданий, поки `±2.5/±5` для kg, `±1/±5` для reps.
 - **Numpad decimal separator** — `.` (English locale). Локалізація на uk → `,` per spec §7.5, але це impl detail.
 - **RPE picker у set-actions-sheet** — inline 6.0–10.0 з 0.5-step, не submenu.
-- **Round indicator dots** у group meta — current round = amber. Альтернатива — letter color opacity. Поки amber.
+- **Round indicator dots** у group meta — current round = orange. Альтернатива — letter color opacity. Поки orange.
 - ~~**Combined picker + config sheet** для суперсету~~ — RESOLVED: один обʼєднаний sheet (multi-select + rounds + rest), не двоступеневий. Spec §6.2 переписано під combined flow.
 - **Settings Theme + Language** — об'єднано в один файл для compact reference (у app це два незалежні sheets).
 - ~~**Profile WORKOUT секція — `Default rest`**~~ — RESOLVED (design-review F5.3): локнуто у v1, default `90 s`, action sheet `60/90/120/180 + Off`. Spec §12.3 + in-workout §5.10.
