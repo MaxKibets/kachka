@@ -207,6 +207,9 @@
       font-size: 12px;
       color: var(--text-secondary);
       flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.3;
     }
     .iw-action-bar .iw-progress .num { color: var(--text-primary); }
     .iw-action-bar .cta-primary { flex: 1; }
@@ -239,7 +242,6 @@
               <span class="iw-title">Push A</span>
               <span class="iw-pencil"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></span>
             </div>
-            <div class="iw-meta"><span class="num">3</span>/<span class="num">8</span> · <span class="num">12</span> sets · <span class="num">4540</span> kg</div>
           </div>
           <div class="iw-timer-chip">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
@@ -382,7 +384,7 @@
         </div>
 
         <div class="iw-action-bar">
-          <div class="iw-progress"><span class="num">12</span> / <span class="num">24</span> sets logged</div>
+          <div class="iw-progress"><span><span class="num">12</span> / <span class="num">24</span> sets</span><span><span class="num">4540</span> kg</span></div>
           <button class="cta-primary" data-href="completion-screen.html">
             Hold to finish
             <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
