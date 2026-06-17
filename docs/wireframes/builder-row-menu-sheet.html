@@ -38,7 +38,7 @@
     .scrim {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: var(--scrim);
       pointer-events: none;
     }
     .name-row-bg {
@@ -73,14 +73,14 @@
       padding: 8px 0 18px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+      box-shadow: var(--sheet-shadow);
       z-index: 10;
     }
     .grab-handle {
       width: 36px;
       height: 4px;
       border-radius: 2px;
-      background: rgba(255, 255, 255, 0.16);
+      background: var(--grab-handle);
       margin: 4px auto 12px;
       flex-shrink: 0;
     }

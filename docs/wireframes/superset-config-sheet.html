@@ -41,7 +41,7 @@
     .scrim {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: var(--scrim);
       pointer-events: none;
     }
     .name-row-bg {
@@ -73,14 +73,14 @@
       max-height: 88%;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+      box-shadow: var(--sheet-shadow);
       z-index: 10;
     }
     .grab-handle {
       width: 36px;
       height: 4px;
       border-radius: 2px;
-      background: rgba(255, 255, 255, 0.16);
+      background: var(--grab-handle);
       margin: 4px auto 12px;
       flex-shrink: 0;
     }
@@ -425,7 +425,7 @@
           <li><strong>Assumption</strong>: Per spec §6.2 у create flow є окремий партнер-picker screen перед config sheet. У цьому wireframe показано <strong>combined</strong> sheet — multi-select picker + config в одному. Це reasonable simplification: для 2-5 candidates з тим самим контекстом окремий screen виглядає overkill, sheet вміщає все. Якщо юзер хоче двоступеневий flow — можна додати в наступну ітерацію</li>
           <li><strong>Assumption</strong>: Rounds picker = stepper (per prompt дозволяє "numeric stepper або dropdown"); ставлю stepper бо швидший для thumb (один тап = ±1)</li>
           <li><strong>Assumption</strong>: Rest picker = preset chips (per prompt). Якщо потрібно custom value — TBD у impl (можна додати <code>Custom…</code> chip який відкриває numpad)</li>
-          <li>Грабхендл — 36×4 pill з <code>rgba(white, 0.16)</code> у верхньому центрі, стандартний iOS/Android indicator</li>
+          <li>Грабхендл — 36×4 pill з <code>var(--grab-handle)</code> у верхньому центрі, стандартний iOS/Android indicator</li>
           <li>Sheet visual — surface-1 background з 18px top corner radius, top border subtle. Drop-shadow для відриву від backdrop</li>
         </ul>
       </section>

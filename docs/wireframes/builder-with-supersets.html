@@ -170,7 +170,7 @@
       font-family: var(--font-sans);
       font-size: 11px;
       font-weight: 500;
-      color: #0A0A0A;
+      color: var(--canvas);
       vertical-align: middle;
       position: relative;
       top: -1px;
@@ -209,7 +209,7 @@
     .add-ex-btn {
       width: 100%;
       background: transparent;
-      border: 0.5px dashed #2A2A2A;
+      border: 0.5px dashed var(--surface-3);
       color: var(--text-secondary);
       font-family: var(--font-sans);
       font-size: 14px;
@@ -414,7 +414,7 @@
           <li>Drag handle на group header (зовнішній лівий край) — рухає всю групу як одне ціле (per spec §4.6)</li>
           <li>Drag handle всередині group rows — reorder тільки в межах групи (per spec §4.5). <strong>Хендл дітей — на тій самій відстані від рейки, що й хендл хедера від краю картки</strong>; вкладеність несе сама рейка, тож дитину не сплутати з хедером</li>
           <li>Group card: surface-1 + 0.5px subtle border з усіх боків. <strong>3px mallard-рейка — впритул до лівого краю картки, але лише вздовж вправ</strong> (стартує під хедером). Роздільник хедер/вправи — верхній бордер першого рядка, на всю ширину від рейки до правого краю, стикається з рейкою (еталон — in-workout, per visual §5.3)</li>
-          <li>Letter chip <code>A</code> — маленький інлайн-чіп на рядку тайтлу, читається <code>Superset A</code> (height 16, radius 6, color <code>--letter-a</code> dusty blue, text <code>#0A0A0A</code>). Refinement visual §2.5</li>
+          <li>Letter chip <code>A</code> — маленький інлайн-чіп на рядку тайтлу, читається <code>Superset A</code> (height 16, radius 6, color <code>--letter-a</code> dusty blue, text <code>var(--canvas)</code>). Refinement visual §2.5</li>
         </ul>
       </section>
 

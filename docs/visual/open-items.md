@@ -67,6 +67,33 @@ literal needs a per-declaration decision about which axis it belongs to.
 **Discipline rule (lock once Phase 1 lands):** no raw pixel/color literals in
 wireframe local styles — `var(--…)` only. Makes drift visible in the diff.
 
+**Phase 2 status (color cleanup) — done.** All recurring color literals across
+the 30 wireframes now resolve to tokens (`--surface-3`, `--canvas`, `--letter-a`,
+`--danger`, `--border-subtle`, `--scrim`, `--grab-handle`, `--accent-a40`,
+`--accent-a50`, `--sheet-shadow`). The `rgba(white, 0.16)` bug is fixed. A few
+near-duplicates were unified into one token (imperceptible: `rgba(10,10,10,0.6)`
+and `rgba(0,0,0,0.55)` → `--scrim`; `rgba(255,255,255,0.18)` → `--grab-handle`).
+
+Deliberately **left as literals** (genuine one-offs / intentional — each needs a
+small semantic decision, not a silent pixel change):
+
+- `#000` (prototype.html host-page background) — proto viewer frame, not an app token.
+- `rgba(255,122,64,0)` (rest-timer pulse keyframe) — alpha-0 animation endpoint.
+- `rgba(255,122,64,0.15)` (set-actions selected-fill) — accent tint; add `--accent-a15`?
+- `rgba(0,0,0,0.3)` ×2 (numpad / set-actions sheet shadow) — drifted lighter than
+  `--sheet-shadow` (0.45); unify or keep?
+- `rgba(0,0,0,0.35)` (pull-to-cursor chip) — *downward* floating-chip shadow,
+  distinct from the upward sheet shadow; needs its own `--chip-shadow`?
+- `rgba(255,255,255,0.55)` (about) — secondary text on a dark surface; map to an
+  `on-dark` text token?
+- `rgba(92,123,149,0.12 / 0.45)` (completion-screen) — slate/`letter-a` category
+  tints; part of the category-tint system (§2.5), one screen.
+
+**Doc/wireframe discrepancy logged:** components.md §5.1 says the pending-set
+circle border is `border.subtle`, but the wireframes render `#2A2A2A`
+(`--surface-3`, a solid grey). Phase 2 preserved the wireframe appearance
+(`--surface-3`); reconcile which is correct in the in-workout mockup pass.
+
 ## 10.2 Token-system reconciliation (resolved)
 
 Adding the named scales (Phase 1) surfaced pre-existing conflicts between the

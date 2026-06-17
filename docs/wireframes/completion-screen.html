@@ -346,10 +346,10 @@
         <ul>
           <li><strong>Повноекранний, не bottom sheet</strong> — per spec §9.2 (рішення зафіксоване: один крок Finish → цей екран → Save/Discard, без проміжного quick-confirm sheet). Замінив видалену lightweight-ітерацію <code>finish-sheet.html</code></li>
           <li><strong>Stats grid 2×2</strong>, 4 картки per spec §9.2: Volume / Duration / Sets / Personal records. Перші три — нейтральні surface-1; <code>Personal records</code> — info-accent</li>
-          <li><strong>PR card = info-accent</strong> (dusty blue <code>--letter-a #5C7B95</code>) per spec §9.2 "PR card візуально виділена info-кольором — єдиний motivational accent". Вибір кольору: visual §2.4 мапить info → dusty blue (конфлікт з letter A відмічений там як TBD; тут беремо як reasonable default до lock semantic palette). PR-вправи перелічені під лічильником</li>
+          <li><strong>PR card = info-accent</strong> (dusty blue <code>--letter-a var(--letter-a)</code>) per spec §9.2 "PR card візуально виділена info-кольором — єдиний motivational accent". Вибір кольору: visual §2.4 мапить info → dusty blue (конфлікт з letter A відмічений там як TBD; тут беремо як reasonable default до lock semantic palette). PR-вправи перелічені під лічильником</li>
           <li><strong>PR marker <code>◆</code></strong> біля назви вправи в summary і на stats card — per spec §9.3</li>
           <li><strong>Primary CTA = amber</strong> <code>Save to history</code> (visual §5.4 — primary CTA amber; mallard несе success/done, але кнопка тут конструктивна-нейтральна)</li>
-          <li><strong>Discard = danger text</strong> <code>--danger #F5404C</code> — secondary text button per spec §9.2; dedicated danger red (visual §2.4)</li>
+          <li><strong>Discard = danger text</strong> <code>--danger var(--danger)</code> — secondary text button per spec §9.2; dedicated danger red (visual §2.4)</li>
           <li><strong>Group rendering у summary</strong>: компактний — інлайн чіп <code>Superset A</code> + <code>3 rounds</code> meta + mini-list вправ у порядку (без per-row ординалів). Повна round-by-round розбивка (вправи в раунді нумеровані <code>1</code>/<code>2</code>, літера групи — лише в тайтлі) — у History detail (§10.3), не тут (summary = per-exercise counts per spec §9.2)</li>
           <li><strong>App-bar</strong> — лише centered title <code>Workout complete</code>, без back / <code>⋯</code> (термінальний екран)</li>
         </ul>
