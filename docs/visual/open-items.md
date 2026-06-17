@@ -132,6 +132,13 @@ re-decide the tie direction) once confirmed, so `tokens.css` stays the single
 source of truth. Before/after screenshots diffed — change is a subtle, uniform
 loosening, structure identical.
 
+**TODO — tokenize the icon axis (deferred).** Icon sizes are still raw px
+literals across the wireframes; Phase 1 reserved an `--icon-*` axis (`14/18/20/22`,
+never folded into `--space-*`) but the tokens were never added to `tokens.css`.
+The in-workout pass already surfaced a stray: two identical edit-pencils rendered
+at `13` vs `14` (unified to `14`). Follow-up: add `--icon-*` to `tokens.css` and
+route icon `width`/`height` through it (own pass, separate from spacing/radii/type).
+
 ## 10.2 Token-system reconciliation (resolved)
 
 Adding the named scales (Phase 1) surfaced pre-existing conflicts between the
