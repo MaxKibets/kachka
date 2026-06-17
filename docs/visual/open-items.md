@@ -94,6 +94,51 @@ circle border is `border.subtle`, but the wireframes render `#2A2A2A`
 (`--surface-3`, a solid grey). Phase 2 preserved the wireframe appearance
 (`--surface-3`); reconcile which is correct in the in-workout mockup pass.
 
+**Phase 3 status (spacing / radii / type) — in progress; `in-workout.html` done
+(reference screen).** Established the per-screen pattern: tokenize every
+spacing / radius / font-size that maps to a scale; fixed component dimensions
+(button/circle sizes, grid tracks `32/78/60/40`, row height `44`), border widths
+and icon sizes stay literal (separate axes, out of scope). All radii mapped
+cleanly (`14→--radius-card`, `12→--radius-button`, `10`/`9→--radius-chip`).
+
+*Off-scale spacing — snapped to the nearest 4-grid step (owner decision: snap,
+not keep-literal), ties rounded **up** to protect touch ergonomics (spec §1):*
+
+| was | → token | value | where |
+|-----|---------|-------|-------|
+| `2`  | `--space-1` | 4  | meta margin-top, note-edit padding |
+| `6`  | `--space-2` | 8  | title/chip/add-set gaps |
+| `9`  | `--space-2` | 8  | note padding (the 9px **radius** → `--radius-chip`) |
+| `10` | `--space-3` | 12 | card-to-card margin, chip/note padding |
+| `11` | `--space-3` | 12 | note padding |
+| `14` | `--space-4` | 16 | card horizontal padding (≈8×) |
+| `18` | `--space-5` | 20 | action-bar safe-area bottom |
+
+*Type left as literals (preserved + commented in-file; wireframe↔spec
+discrepancies for the owner to reconcile — same class as the circle-border case
+above, not silent pixel changes):*
+
+- `set-num` **14px** mono vs spec `--num-sm` (13, §3.3 "set numbers").
+- `set-prev` **12px** mono vs spec `--num-sm` (13, §3.3 "prev values").
+- `iw-progress` **12px** mono vs spec `--num-sm` (13, §3.3 "meta numbers").
+- timer chip **16px** mono — off the `--num-*` scale (15/18).
+- `en-text` / `add-set` label **13px** sans — off the `--text-*` sans scale (12/14).
+
+**Spec reconciliation flagged (needs owner OK before editing source):** the snap
+makes `layout.md §4.1/§4.2` literal metrics (`14px` card padding, `10px`
+card-to-card) diverge from the now-grid-aligned wireframe (`16` / `12`). Left
+`layout.md` unchanged for now; update those metrics to the grid values (or
+re-decide the tie direction) once confirmed, so `tokens.css` stays the single
+source of truth. Before/after screenshots diffed — change is a subtle, uniform
+loosening, structure identical.
+
+**TODO — tokenize the icon axis (deferred).** Icon sizes are still raw px
+literals across the wireframes; Phase 1 reserved an `--icon-*` axis (`14/18/20/22`,
+never folded into `--space-*`) but the tokens were never added to `tokens.css`.
+The in-workout pass already surfaced a stray: two identical edit-pencils rendered
+at `13` vs `14` (unified to `14`). Follow-up: add `--icon-*` to `tokens.css` and
+route icon `width`/`height` through it (own pass, separate from spacing/radii/type).
+
 ## 10.2 Token-system reconciliation (resolved)
 
 Adding the named scales (Phase 1) surfaced pre-existing conflicts between the

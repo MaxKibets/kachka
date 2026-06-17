@@ -12,8 +12,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding: 8px 14px 10px;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-4) var(--space-3);
       flex-shrink: 0;
     }
     .iw-app-bar .iw-back {
@@ -25,21 +25,22 @@
     }
     .iw-app-bar .iw-back svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .iw-title-block { flex: 1; min-width: 0; }
-    .iw-title-row { display: flex; align-items: center; gap: 6px; }
-    .iw-title-row .iw-title { font-size: 17px; font-weight: 500; color: var(--text-primary); }
-    .iw-title-row .iw-pencil svg { width: 13px; height: 13px; stroke: var(--text-tertiary); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .iw-meta { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+    .iw-title-row { display: flex; align-items: center; gap: var(--space-2); }
+    .iw-title-row .iw-title { font-size: var(--text-title); font-weight: 500; color: var(--text-primary); }
+    .iw-title-row .iw-pencil svg { width: 14px; height: 14px; stroke: var(--text-tertiary); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .iw-meta { font-size: var(--text-caption); color: var(--text-secondary); margin-top: var(--space-1); }
     .iw-meta .num { color: var(--text-secondary); }
 
     .iw-timer-chip {
       background: var(--surface-1);
       border: 0.5px solid var(--border-subtle);
-      border-radius: 9px;
-      padding: 6px 10px;
-      display: flex; align-items: center; gap: 6px;
+      border-radius: var(--radius-chip);
+      padding: var(--space-2) var(--space-3);
+      display: flex; align-items: center; gap: var(--space-2);
       flex-shrink: 0;
     }
     .iw-timer-chip svg { width: 12px; height: 12px; stroke: var(--amber); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    /* timer 16px (mono) sits off the --num-* scale (15/18); preserved as literal, logged in open-items §10.1 */
     .iw-timer-chip .num { color: var(--amber); font-size: 16px; font-weight: 500; }
 
     .iw-overflow {
@@ -55,17 +56,17 @@
     .ex-card {
       background: var(--surface-1);
       border: 0.5px solid var(--border-subtle);
-      border-radius: 14px;
-      margin-bottom: 10px;
+      border-radius: var(--radius-card);
+      margin-bottom: var(--space-3);
       overflow: hidden;
     }
     .ex-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 14px 10px;
+      padding: var(--space-3) var(--space-4) var(--space-3);
     }
-    .ex-name { font-size: 16px; font-weight: 500; color: var(--text-primary); }
-    .ex-icons { display: flex; gap: 4px; }
-    .ex-icons .icon-btn { padding: 4px; color: var(--text-tertiary); }
+    .ex-name { font-size: var(--text-section); font-weight: 500; color: var(--text-primary); }
+    .ex-icons { display: flex; gap: var(--space-1); }
+    .ex-icons .icon-btn { padding: var(--space-1); color: var(--text-tertiary); }
     .ex-icons .icon-btn svg { width: 18px; height: 18px; }
     .ex-icons .icon-btn.has-note { color: var(--mallard); }
 
@@ -73,20 +74,21 @@
     .ex-note {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
-      margin: 0 14px 10px;
-      padding: 9px 11px;
+      gap: var(--space-2);
+      margin: 0 var(--space-4) var(--space-3);
+      padding: var(--space-2) var(--space-3);
       background: var(--surface-2);
       border: 0.5px solid var(--border-subtle);
-      border-radius: 10px;
+      border-radius: var(--radius-chip);
     }
     .ex-note .en-text {
       flex: 1;
+      /* 13px sans sits off the --text-* scale (12/14); preserved, logged in open-items §10.1 */
       font-size: 13px; line-height: 1.45;
       color: var(--text-secondary);
     }
     .ex-note .en-edit {
-      padding: 2px; background: none; border: none;
+      padding: var(--space-1); background: none; border: none;
       color: var(--text-tertiary); flex-shrink: 0; cursor: pointer;
     }
     .ex-note .en-edit svg {
@@ -98,9 +100,9 @@
     .ex-col-head {
       display: grid;
       grid-template-columns: 32px 1fr 78px 60px 40px;
-      gap: 8px;
-      padding: 0 14px 6px;
-      font-size: 11px;
+      gap: var(--space-2);
+      padding: 0 var(--space-4) var(--space-2);
+      font-size: var(--text-caption);
       color: var(--text-tertiary);
       letter-spacing: 0.04em;
     }
@@ -110,9 +112,9 @@
     .set-row {
       display: grid;
       grid-template-columns: 32px 1fr 78px 60px 40px;
-      gap: 8px;
+      gap: var(--space-2);
       align-items: center;
-      padding: 0 14px;
+      padding: 0 var(--space-4);
       height: 44px;
       border-top: 0.5px solid var(--border-divider);
     }
@@ -128,6 +130,7 @@
     .set-num {
       font-family: var(--font-mono);
       font-variant-numeric: tabular-nums;
+      /* 14px (mono) — wireframe vs spec --num-sm (13); preserved, discrepancy logged in open-items §10.1 */
       font-size: 14px;
       color: var(--text-primary);
       text-align: left;
@@ -140,6 +143,7 @@
     .set-prev {
       font-family: var(--font-mono);
       font-variant-numeric: tabular-nums;
+      /* 12px (mono) — wireframe vs spec --num-sm (13); preserved, discrepancy logged in open-items §10.1 */
       font-size: 12px;
       color: var(--text-tertiary);
     }
@@ -147,7 +151,7 @@
     .set-cell {
       font-family: var(--font-mono);
       font-variant-numeric: tabular-nums;
-      font-size: 15px;
+      font-size: var(--num-md);
       text-align: center;
       color: var(--text-primary);
     }
@@ -179,15 +183,16 @@
     }
 
     .add-set-btn {
-      display: flex; align-items: center; justify-content: center; gap: 6px;
+      display: flex; align-items: center; justify-content: center; gap: var(--space-2);
       width: calc(100% - 28px);
-      margin: 10px 14px 12px;
-      padding: 8px 12px;
+      margin: var(--space-3) var(--space-4) var(--space-3);
+      padding: var(--space-2) var(--space-3);
       background: transparent;
       border: 0.5px dashed var(--surface-3);
-      border-radius: 10px;
+      border-radius: var(--radius-chip);
       color: var(--text-secondary);
       font-family: var(--font-sans);
+      /* 13px sans sits off the --text-* scale (12/14); preserved, logged in open-items §10.1 */
       font-size: 13px;
       cursor: pointer;
     }
@@ -198,12 +203,13 @@
       flex-shrink: 0;
       background: var(--canvas);
       border-top: 0.5px solid var(--border-subtle);
-      padding: 12px 14px 18px;
-      display: flex; align-items: center; gap: 12px;
+      padding: var(--space-3) var(--space-4) var(--space-5);
+      display: flex; align-items: center; gap: var(--space-3);
     }
     .iw-action-bar .iw-progress {
       font-family: var(--font-mono);
       font-variant-numeric: tabular-nums;
+      /* 12px (mono) — wireframe vs spec --num-sm (13); preserved, discrepancy logged in open-items §10.1 */
       font-size: 12px;
       color: var(--text-secondary);
       flex-shrink: 0;
@@ -252,7 +258,7 @@
           </button>
         </div>
 
-        <div class="scroll-area" style="padding: 4px 12px 12px;">
+        <div class="scroll-area" style="padding: var(--space-1) var(--space-3) var(--space-3);">
 
           <!-- Bench press card: 2 done, 1 active, 1 pending -->
           <div class="ex-card">
@@ -452,7 +458,7 @@
         <ul>
           <li>Header — назва + edit-pencil + meta-рядок під нею + amber timer chip + <code>⋮</code>. Timer chip — workout elapsed (per visual §5.6)</li>
           <li><strong>Exercise note (author hint)</strong> — inline-банер під назвою (surface-2, текст + <code>✎</code> edit). Дефолт <strong>згорнуто</strong>; filled note-іконка в хедері = є нотатка, tap розгортає/згортає (тут показано розгорнутим для демо). Вправа без нотатки (напр. Tricep pushdown) — без note-іконки, додавання через <code>⋮</code> (per spec §5.2, builder §4.4). Workout-level author note (program-format §139) — display у <strong>v2</strong></li>
-          <li>Set row grid — <code>32px | 1fr | 78px | 60px | 40px</code> з 8px gaps, 14px padding (per visual §4.1)</li>
+          <li>Set row grid — <code>32px | 1fr | 78px | 60px | 40px</code> (фіксовані треки); gaps та card padding — через <code>--space-*</code> токени (Phase 3 snap до 4-grid; per visual §4.1)</li>
           <li>Done state — opacity 0.55, mallard ✓ circle. Active state — top/bottom amber borders, surface-2 фон, amber empty circle; kg/reps — пласкі (без фону, розмір як у таблиці), але amber-кольором як підказка «редагується». Pending — text.tertiary values, 1px subtle empty circle (per visual §5.1)</li>
           <li><strong>Warm-up set</strong> — у колонці <code>SET</code> замість номера стоїть amber-гліф <code>W</code> (per spec §8.3). Рядок логується як звичайний (вага×повтори, ✓), але не йде у volume/PR; робочі сети нумеруються 1, 2, 3 без урахування розминок. Тип перемикається в set-actions sheet (<a href="set-actions-sheet.html">set-actions-sheet.html</a>, segment <code>Working | Warm-up</code>)</li>
           <li>Active row "ковтає" border-divider зверху і знизу через negative margin — щоб не було подвійних ліній (subtle divider + amber border)</li>
