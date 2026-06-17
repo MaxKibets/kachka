@@ -269,6 +269,17 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; }
   padding: 0 16px 16px;
 }
 
+/* Hide scrollbars inside the device frame — real phones don't render a
+   persistent scrollbar, so the mockups shouldn't either. Covers the main
+   scroll-area and any in-sheet scroll container; the horizontal chip-scrollers
+   already opt out the same way. Scrolling still works; only the bar is hidden. */
+.phone,
+.phone * {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* legacy Edge/IE */
+}
+.phone ::-webkit-scrollbar { display: none; }  /* WebKit (Chrome/Safari) */
+
 .phone .tab-bar {
   height: 80px;
   background: var(--canvas);
