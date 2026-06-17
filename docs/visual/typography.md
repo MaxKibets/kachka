@@ -32,17 +32,21 @@ Non-numeric meta like `Round 2 of 3 · Rest 90s` — numbers inline in Plex Mono
 
 ### 3.3 Scale (mobile, working values)
 
-| Role | Font | Size | Weight | Use |
-|---|---|---|---|---|
-| Title / screen header | Inter | 17 | 500 | "Push A", screen titles |
-| Section heading | Inter | 16 | 500 | Exercise name |
-| Group heading | Inter | 14 | 500 | "Superset", "Dumbbell row" inside group |
-| Body | Inter | 14 | 400 | Default text |
-| Meta / subtitle | Inter | 12 | 400 | "Working set 3 of 4", subtitles |
-| Caption | Inter | 11 | 400 | Column headers, status meta |
-| Number large | Plex Mono | 17–18 | 500 | Timer, large numeric displays |
-| Number medium | Plex Mono | 15–16 | 400 | Set values (kg, Reps) |
-| Number small | Plex Mono | 12–14 | 400 | Set numbers, prev values, meta numbers |
+| Role | Token | Font | Size | Weight | Use |
+|---|---|---|---|---|---|
+| Title / screen header | `--text-title` | Inter | 17 | 500 | "Push A", screen titles |
+| Section heading | `--text-section` | Inter | 16 | 500 | Exercise name |
+| Group heading | `--text-group` | Inter | 14 | 500 | "Superset", "Dumbbell row" inside group |
+| Body | `--text-body` | Inter | 14 | 400 | Default text |
+| Meta / subtitle | `--text-meta` | Inter | 12 | 400 | "Working set 3 of 4", subtitles |
+| Caption | `--text-caption` | Inter | 11 | 400 | Column headers, status meta |
+| Number large | `--num-lg` | Plex Mono | 18 | 500 | Timer, large numeric displays |
+| Number medium | `--num-md` | Plex Mono | 15 | 400 | Set values (kg, Reps) |
+| Number small | `--num-sm` | Plex Mono | 13 | 400 | Set numbers, prev values, meta numbers |
+
+> Token sizes pin the working ranges above to a single value each (`--num-lg` =
+> 18, `--num-md` = 15, `--num-sm` = 13) so the scale resolves unambiguously. Use
+> the token, never a raw `px` font-size.
 
 OpenType: for Inter we force-enable `tnum` (tabular figures) so that inline numbers in meta rows don't "jump" in width.
 
