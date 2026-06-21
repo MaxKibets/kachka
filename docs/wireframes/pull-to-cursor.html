@@ -24,8 +24,8 @@
 
     .ex-card { background: var(--surface-1); border: 0.5px solid var(--border-subtle); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
     .ex-card.completed { padding: 14px; display: flex; align-items: center; gap: 10px; }
-    .ex-card.completed .check-mini { width: 22px; height: 22px; background: var(--done-circle); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .ex-card.completed .check-mini svg { width: 13px; height: 13px; stroke: var(--done-check); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+    .ex-card.completed .check-mini { width: 22px; height: 22px; background: var(--mallard); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ex-card.completed .check-mini svg { width: 13px; height: 13px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
     .ex-card.completed .ex-name { flex: 1; font-size: 15px; }
     .ex-card.completed .ex-summary { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-secondary); }
 
@@ -52,15 +52,15 @@
     .set-prev { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-tertiary); }
     .set-cell { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 15px; text-align: center; color: var(--text-primary); }
     .set-row.pending .set-cell { color: var(--text-tertiary); }
-    .check-done { width: 24px; height: 24px; background: var(--done-circle); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .check-done svg { width: 14px; height: 14px; stroke: var(--done-check); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
-    .check-pending { width: 24px; height: 24px; border: 1px solid #2A2A2A; border-radius: 50%; }
+    .check-done { width: 24px; height: 24px; background: var(--mallard); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .check-done svg { width: 14px; height: 14px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+    .check-pending { width: 24px; height: 24px; border: 1px solid #2C3833; border-radius: 50%; }
     .set-check { display: flex; align-items: center; justify-content: center; }
 
     .add-set-btn {
       display: flex; align-items: center; justify-content: center; gap: 6px;
       width: calc(100% - 28px); margin: 10px 14px 12px; padding: 8px 12px;
-      background: transparent; border: 0.5px dashed #2A2A2A; border-radius: 10px;
+      background: transparent; border: 0.5px dashed #2C3833; border-radius: 10px;
       color: var(--text-secondary); font-family: var(--font-sans); font-size: 13px;
     }
     .add-set-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -72,7 +72,7 @@
       bottom: 92px;  /* above bottom action bar */
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--surface-1);
-      border: 0.5px solid rgba(255, 122, 64, 0.5);
+      border: 0.5px solid rgba(31, 110, 92, 0.5);
       border-radius: 18px;
       padding: 8px 14px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.35);

@@ -5,45 +5,34 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-/* ---------- Design tokens (mirror ../../visual/color.md — orange-on-black draft) ---------- */
+/* ---------- Design tokens (mirror ../../visual/README.md) ---------- */
 
 :root {
-  /* Surface ladder — neutral near-black (§2.1) */
-  --canvas: #0A0A0A;
-  --surface-1: #141414;
-  --surface-2: #1F1F1F;
-  --surface-3: #2A2A2A;
+  /* Surface ladder */
+  --canvas: #0A0F0E;
+  --surface-1: #131A18;
+  --surface-2: #1C2521;
+  --surface-3: #28332E;
   --border-subtle: rgba(255, 255, 255, 0.06);
   --border-divider: rgba(255, 255, 255, 0.05);
 
-  /* Accent — single vivid orange (§2.2). Legacy --mallard/--amber kept as
-     aliases so existing markup picks up the accent with no structural edits. */
-  --accent: #FF7A40;
-  --accent-dim: #3A2113;
-  --accent-tint: #211408;
-  --mallard: var(--accent);
-  --mallard-dim: var(--accent-dim);
-  --amber: var(--accent);
-  --amber-dim: #D9560F;
+  /* Brand */
+  --mallard: #1F6E5C;
+  --mallard-dim: #163E36;
+  --amber: #F2A53A;
+  --amber-dim: #C9821F;
 
-  /* Set states — done is neutral, orange never touches it (§2.4) */
-  --done-circle: #262626;
-  --done-check: #9A9A9A;
+  /* Text */
+  --text-primary: #F1F5F4;
+  --text-secondary: #8A9A95;
+  --text-tertiary: #5D6B66;
 
-  /* Semantic (§2.4) */
-  --danger: #F5404C;
-
-  /* Text — neutral gray (§2.3) */
-  --text-primary: #F5F5F5;
-  --text-secondary: #8E8E93;
-  --text-tertiary: #5A5A5E;
-
-  /* Category gamut — letter rotation A–E (§2.5) */
-  --letter-a: #5C7B95; /* slate */
-  --letter-b: #C9A14A; /* gold */
-  --letter-c: #8E5A78; /* plum */
-  --letter-d: #5FA86A; /* green */
-  --letter-e: #BC6A4A; /* rust */
+  /* Letter rotation A–E */
+  --letter-a: #5C7B95; /* dusty blue */
+  --letter-b: #C29548; /* ochre */
+  --letter-c: #7B4257; /* plum */
+  --letter-d: #87A07B; /* sage */
+  --letter-e: #B85842; /* rust */
 
   /* Type */
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
