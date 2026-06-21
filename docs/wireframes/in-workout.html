@@ -119,11 +119,11 @@
     .set-row.done { opacity: 0.55; }
     .set-row.active {
       background: var(--accent-tint);
-      border-top: 1px solid var(--accent-a40);
-      border-bottom: 1px solid var(--accent-a40);
+      border-top: 1px solid rgba(255, 122, 64, 0.4);
+      border-bottom: 1px solid rgba(255, 122, 64, 0.4);
       margin-top: -0.5px; /* swallow divider above */
     }
-    .set-row.active + .set-row { border-top: 1px solid var(--accent-a40); margin-top: -1px; }
+    .set-row.active + .set-row { border-top: 1px solid rgba(255, 122, 64, 0.4); margin-top: -1px; }
 
     .set-num {
       font-family: var(--font-mono);
@@ -173,7 +173,7 @@
     }
     .check-pending {
       width: 24px; height: 24px;
-      border: 1px solid var(--surface-3);
+      border: 1px solid #2A2A2A;
       border-radius: 50%;
       background: transparent;
     }
@@ -184,7 +184,7 @@
       margin: 10px 14px 12px;
       padding: 8px 12px;
       background: transparent;
-      border: 0.5px dashed var(--surface-3);
+      border: 0.5px dashed #2A2A2A;
       border-radius: 10px;
       color: var(--text-secondary);
       font-family: var(--font-sans);

@@ -50,8 +50,8 @@
     .set-row.done { opacity: 0.55; }
     .set-row.active {
       background: var(--accent-tint);
-      border-top: 1px solid var(--accent-a40);
-      border-bottom: 1px solid var(--accent-a40);
+      border-top: 1px solid rgba(255, 122, 64, 0.4);
+      border-bottom: 1px solid rgba(255, 122, 64, 0.4);
       margin-top: -0.5px;
     }
     .set-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 14px; color: var(--text-primary); }
@@ -66,12 +66,12 @@
     .check-done { width: 24px; height: 24px; background: var(--done-circle); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     .check-done svg { width: 14px; height: 14px; stroke: var(--done-check); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
     .check-active { width: 26px; height: 26px; border: 1.5px solid var(--amber); border-radius: 50%; }
-    .check-pending { width: 24px; height: 24px; border: 1px solid var(--surface-3); border-radius: 50%; }
+    .check-pending { width: 24px; height: 24px; border: 1px solid #2A2A2A; border-radius: 50%; }
 
     .add-set-btn {
       display: flex; align-items: center; justify-content: center; gap: 6px;
       width: calc(100% - 28px); margin: 10px 14px 12px; padding: 8px 12px;
-      background: transparent; border: 0.5px dashed var(--surface-3); border-radius: 10px;
+      background: transparent; border: 0.5px dashed #2A2A2A; border-radius: 10px;
       color: var(--text-secondary); font-family: var(--font-sans); font-size: 13px;
     }
     .add-set-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -98,7 +98,7 @@
       display: inline-flex; align-items: center; justify-content: center;
       min-width: 16px; height: 16px; padding: 0 4px;
       border-radius: 6px;
-      color: var(--canvas);
+      color: #0A0A0A;
       font-family: var(--font-sans); font-size: 11px; font-weight: 500;
       vertical-align: middle; position: relative; top: -1px;
     }
@@ -134,8 +134,8 @@
     .group-active-wrap {
       margin: 0;
       background: var(--surface-2);
-      border-top: 1px solid var(--accent-a40);
-      border-bottom: 1px solid var(--accent-a40);
+      border-top: 1px solid rgba(255, 122, 64, 0.4);
+      border-bottom: 1px solid rgba(255, 122, 64, 0.4);
       padding: 0;
     }
     .group-active-wrap .set-row.active {
@@ -421,7 +421,7 @@
       <section>
         <h2>Notes</h2>
         <ul>
-          <li>Letter chip A = dusty blue <code>var(--letter-a)</code> per visual §2.5 — <strong>маленький інлайн-чіп на рядку тайтлу</strong> (<code>Superset A · Round 2 of 3</code>), не окрема колонка. Child exercises <strong>без per-row літери</strong> — порядок задає позиція. Крос-реф <code>A1/A2</code> лишається у History + компактних лейблах (rest bar <code>A · Rest</code>, return-to-cursor <code>A · Set 2 · Dumbbell row</code>)</li>
+          <li>Letter chip A = dusty blue <code>#5C7B95</code> per visual §2.5 — <strong>маленький інлайн-чіп на рядку тайтлу</strong> (<code>Superset A · Round 2 of 3</code>), не окрема колонка. Child exercises <strong>без per-row літери</strong> — порядок задає позиція. Крос-реф <code>A1/A2</code> лишається у History + компактних лейблах (rest bar <code>A · Rest</code>, return-to-cursor <code>A · Set 2 · Dumbbell row</code>)</li>
           <li>Group card = surface-1 + 0.5px subtle border з усіх боків. <strong>3px mallard-рейка — лише вздовж вправ</strong>, стартує під хедером (обгортка <code>.group-children</code>), трохи зсуває рядки й відмежовує їх від хедера (per visual §5.3)</li>
           <li>Round indicators (●●○): першa точка зелена-A (round 1 done), друга amber (current round 2), третя приглушена-A (pending). Альтернатива — всі три у letter color з opacity варіаціями. Поки amber для current round щоб корелювало з amber active set</li>
           <li>Bench press показано як collapsed completed card (per spec §5.4) — single row, mallard ✓ + summary</li>

@@ -93,7 +93,6 @@
   --sheet-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
   --grab-handle: rgba(255, 255, 255, 0.16);   /* sheet grab handle */
   --accent-a40: rgba(255, 122, 64, 0.4);      /* active set-row border */
-  --accent-a50: rgba(255, 122, 64, 0.5);      /* accent glow / stronger accent border (rest-timer pulse, pull-to-cursor) */
 
   /* Wireframe page chrome (NOT app tokens — for the page that hosts mockups) */
   --wf-page-bg: #08090A;
