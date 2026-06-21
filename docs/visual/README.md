@@ -4,9 +4,9 @@
 > and the brand/mascot layer. Source of truth for UI implementation. The spec is
 > what happens; this is how it looks.
 
-**Status**: v0 working draft — foundation locked (mood / positioning / brand, §1); palette is a **working draft** (§2, orange-on-black direction) — under review, not final.
+**Status**: v0 working draft — foundation locked (mood / positioning / brand, §1), refinement expected after Today / History / Builder / Profile mockups.
 
-**Version**: v0.4 · visual split into zone files in this directory (`visual/`); this file (`README.md`) — map + §-index. Mood / positioning / brand / tone locked (§1); color palette §2 a working draft — orange-on-black, single vivid accent + neutral done + shared category gamut. **Under review** (owner still evaluating).
+**Version**: v0.2 · visual split into zone files in this directory (`visual/`); this file (`README.md`) — map + §-index. Mood / positioning / brand personality / tone of voice locked (§1).
 
 ---
 
