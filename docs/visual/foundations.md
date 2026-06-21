@@ -77,7 +77,7 @@ The brand lives in:
 - onboarding
 - empty states (Today first launch, History empty, Exercise database empty)
 - About section
-- the orange accent (drake's bill / feet) — keeps the brand visible even when the mascot is not on screen
+- the mallard-rooted palette (keeps the brand visible even when the mascot is not on screen)
 
 The brand does NOT live in working screens: In-workout, Builder, History
 list/detail, Profile body, nav menu, action sheets.

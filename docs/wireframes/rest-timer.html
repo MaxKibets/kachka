@@ -42,9 +42,9 @@
     }
     .set-row.done { opacity: 0.55; }
     .set-row.active {
-      background: var(--accent-tint);
-      border-top: 1px solid var(--accent-a40);
-      border-bottom: 1px solid var(--accent-a40);
+      background: var(--surface-2);
+      border-top: 1px solid rgba(242, 165, 58, 0.4);
+      border-bottom: 1px solid rgba(242, 165, 58, 0.4);
       margin-top: -0.5px;
     }
     .set-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 14px; color: var(--text-primary); }
@@ -56,15 +56,15 @@
     /* Active set: kg/Reps flat (no fill, table size) but amber — the editable-field hint */
     .set-row.active .set-cell { color: var(--amber); }
     .set-check { display: flex; align-items: center; justify-content: center; }
-    .check-done { width: 24px; height: 24px; background: var(--done-circle); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .check-done svg { width: 14px; height: 14px; stroke: var(--done-check); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+    .check-done { width: 24px; height: 24px; background: var(--mallard); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .check-done svg { width: 14px; height: 14px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
     .check-active { width: 26px; height: 26px; border: 1.5px solid var(--amber); border-radius: 50%; }
-    .check-pending { width: 24px; height: 24px; border: 1px solid var(--surface-3); border-radius: 50%; }
+    .check-pending { width: 24px; height: 24px; border: 1px solid #2C3833; border-radius: 50%; }
 
     .add-set-btn {
       display: flex; align-items: center; justify-content: center; gap: 6px;
       width: calc(100% - 28px); margin: 10px 14px 12px; padding: 8px 12px;
-      background: transparent; border: 0.5px dashed var(--surface-3); border-radius: 10px;
+      background: transparent; border: 0.5px dashed #2C3833; border-radius: 10px;
       color: var(--text-secondary); font-family: var(--font-sans); font-size: 13px;
     }
     .add-set-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -73,17 +73,17 @@
        No floating ring — keeps the set list unobstructed and clears the 92px
        slot for the return-to-cursor chip (design-review F3.1). */
     @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 var(--accent-a50); }
-      70% { box-shadow: 0 0 0 7px rgba(255,122,64,0); }
-      100% { box-shadow: 0 0 0 0 rgba(255,122,64,0); }
+      0% { box-shadow: 0 0 0 0 rgba(31,110,92,0.5); }
+      70% { box-shadow: 0 0 0 7px rgba(31,110,92,0); }
+      100% { box-shadow: 0 0 0 0 rgba(31,110,92,0); }
     }
     .iw-action-bar.rest { flex-direction: column; align-items: stretch; gap: 0; padding: 0; }
-    .rest-progress { height: 3px; background: var(--border-subtle); flex-shrink: 0; }
+    .rest-progress { height: 3px; background: rgba(255,255,255,0.06); flex-shrink: 0; }
     .rest-progress .fill { height: 100%; width: 62%; background: var(--mallard); border-radius: 0 2px 2px 0; }
     .rest-main { display: flex; align-items: center; gap: 12px; padding: 10px 14px 18px; }
     .rest-label-time { display: flex; align-items: baseline; gap: 10px; flex: 1; min-width: 0; }
     .rest-ctx { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-    .rest-ctx .haptic-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--mallard); box-shadow: 0 0 0 0 var(--accent-a50); animation: pulse 1.6s ease-out infinite; }
+    .rest-ctx .haptic-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--mallard); box-shadow: 0 0 0 0 rgba(31,110,92,0.5); animation: pulse 1.6s ease-out infinite; }
     .rest-time { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 26px; font-weight: 500; color: var(--text-primary); line-height: 1; }
     .rest-controls { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
     .rest-controls button {
@@ -101,7 +101,7 @@
       padding: 12px 14px 18px;
       display: flex; align-items: center; gap: 12px;
     }
-    .iw-action-bar .iw-progress { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; display: flex; flex-direction: column; line-height: 1.3; }
+    .iw-action-bar .iw-progress { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; }
     .iw-action-bar .iw-progress .num { color: var(--text-primary); }
     .iw-action-bar .cta-primary { flex: 1; }
   </style>
@@ -131,6 +131,7 @@
               <span class="iw-title">Push A</span>
               <span class="iw-pencil"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></span>
             </div>
+            <div class="iw-meta"><span class="num">3</span>/<span class="num">8</span> · <span class="num">12</span> sets · <span class="num">4540</span> kg</div>
           </div>
           <div class="iw-timer-chip">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>

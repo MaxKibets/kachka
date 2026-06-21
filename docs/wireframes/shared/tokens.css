@@ -5,95 +5,38 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-/* ---------- Design tokens (mirror ../../visual/color.md — orange-on-black draft) ---------- */
+/* ---------- Design tokens (mirror ../../visual/README.md) ---------- */
 
 :root {
-  /* Surface ladder — neutral near-black (§2.1) */
-  --canvas: #0A0A0A;
-  --surface-1: #141414;
-  --surface-2: #1F1F1F;
-  --surface-3: #2A2A2A;
+  /* Surface ladder */
+  --canvas: #0A0F0E;
+  --surface-1: #131A18;
+  --surface-2: #1C2521;
+  --surface-3: #28332E;
   --border-subtle: rgba(255, 255, 255, 0.06);
   --border-divider: rgba(255, 255, 255, 0.05);
 
-  /* Accent — single vivid orange (§2.2). Legacy --mallard/--amber kept as
-     aliases so existing markup picks up the accent with no structural edits. */
-  --accent: #FF7A40;
-  --accent-dim: #3A2113;
-  --accent-tint: #211408;
-  --mallard: var(--accent);
-  --mallard-dim: var(--accent-dim);
-  --amber: var(--accent);
-  --amber-dim: #D9560F;
+  /* Brand */
+  --mallard: #1F6E5C;
+  --mallard-dim: #163E36;
+  --amber: #F2A53A;
+  --amber-dim: #C9821F;
 
-  /* Set states — done is neutral, orange never touches it (§2.4) */
-  --done-circle: #262626;
-  --done-check: #9A9A9A;
+  /* Text */
+  --text-primary: #F1F5F4;
+  --text-secondary: #8A9A95;
+  --text-tertiary: #5D6B66;
 
-  /* Semantic (§2.4) */
-  --danger: #F5404C;
-
-  /* Text — neutral gray (§2.3) */
-  --text-primary: #F5F5F5;
-  --text-secondary: #8E8E93;
-  --text-tertiary: #5A5A5E;
-
-  /* Category gamut — letter rotation A–E (§2.5) */
-  --letter-a: #5C7B95; /* slate */
-  --letter-b: #C9A14A; /* gold */
-  --letter-c: #8E5A78; /* plum */
-  --letter-d: #5FA86A; /* green */
-  --letter-e: #BC6A4A; /* rust */
+  /* Letter rotation A–E */
+  --letter-a: #5C7B95; /* dusty blue */
+  --letter-b: #C29548; /* ochre */
+  --letter-c: #7B4257; /* plum */
+  --letter-d: #87A07B; /* sage */
+  --letter-e: #B85842; /* rust */
 
   /* Type */
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
-
-  /* ---------- Type sizes (mirror typography.md §3.3) ---------- */
-  --text-title: 17px;    /* screen header */
-  --text-section: 16px;  /* exercise name */
-  --text-group: 14px;    /* group heading */
-  --text-body: 14px;     /* default body */
-  --text-meta: 12px;     /* subtitle / meta */
-  --text-caption: 11px;  /* column headers, status meta */
-  --num-lg: 18px;        /* timer, large numeric (Plex) */
-  --num-md: 15px;        /* set values kg/Reps (Plex) */
-  --num-sm: 13px;        /* set numbers, prev, meta numbers (Plex) */
-
-  /* ---------- Spacing scale (mirror layout.md §4 — 4px base grid) ---------- */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-
-  /* ---------- Radius scale (mirror layout.md §4) ---------- */
-  --radius-sheet: 18px;    /* sheet top corners (§5.7) — top of the scale, modal surfaces */
-  --radius-card: 14px;     /* exercise / group / profile cards */
-  --radius-button: 12px;   /* primary CTA, large buttons */
-  --radius-chip: 10px;     /* timer chip */
-  --radius-button-sm: 8px; /* secondary buttons */
-  --radius-tag: 6px;       /* letter chip */
-  --radius-full: 9999px;   /* pills; circular ✓ uses 50% directly */
-
-  /* ---------- Text-on-surface pairing (on-X convention) ---------- */
-  --on-accent: var(--canvas);        /* text/icon on an orange fill (CTA) */
-  --on-surface: var(--text-primary); /* text on any neutral surface */
-  --on-danger: #FFFFFF;              /* text on a danger fill (rare) */
-
-  /* ---------- Interactive states ---------- */
-  --accent-pressed: #D9560F;         /* CTA pressed (deeper orange) */
-  --disabled-bg: var(--surface-2);
-  --disabled-text: var(--text-tertiary);
-
-  /* ---------- Alpha layers (recurring rgba, now named) ---------- */
-  --scrim: rgba(0, 0, 0, 0.6);                /* dimmed parent behind a sheet */
-  --sheet-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
-  --grab-handle: rgba(255, 255, 255, 0.16);   /* sheet grab handle */
-  --accent-a40: rgba(255, 122, 64, 0.4);      /* active set-row border */
-  --accent-a50: rgba(255, 122, 64, 0.5);      /* accent glow / stronger accent border (rest-timer pulse, pull-to-cursor) */
 
   /* Wireframe page chrome (NOT app tokens — for the page that hosts mockups) */
   --wf-page-bg: #08090A;

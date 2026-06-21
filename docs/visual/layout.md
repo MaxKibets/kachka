@@ -9,14 +9,8 @@
 ## 4. Layout & density
 
 - Base grid **4px**. Padding/margins are multiples of 4 (4, 8, 12, 16, 20, 24, 32).
-  Spacing tokens (`tokens.css`): `--space-1`…`--space-8` map 1:1 to these values
-  (`--space-1` = 4px, `--space-8` = 32px). Use the token, never a raw px literal.
 - Min touch target — `44×44pt` iOS / `48×48dp` Android (per spec §1: one hand, sweaty).
-- Radius scale: `18` (sheet top corners — modal surfaces, §5.7), `14` (exercise/group cards), `12` (CTA, large buttons), `10` (timer chip), `8` (secondary buttons), `6` (letter chip), `50%` (✓ button).
-  Tokens: `--radius-sheet` / `--radius-card` / `--radius-button` /
-  `--radius-chip` / `--radius-button-sm` / `--radius-tag`; pills use
-  `--radius-full`, the ✓ circle uses `50%` directly. `18` is the top of the
-  scale, reserved for the dismissible sheet family — it reads as elevation.
+- Card radius scale: `14` (exercise/group cards), `12` (CTA, large buttons), `10` (timer chip), `8` (secondary buttons), `6` (letter chip), `50%` (✓ button).
 - Card outline: `0.5px` subtle alpha-white border. **No shadows.**
 
 ### 4.1 In-workout metrics

@@ -28,8 +28,6 @@ UI/UX is **conceptually locked** for v1:
 
 Still to work out: the formal data model; visually — mockups of the other screens (Today / History / Builder / Profile), action sheets, custom numpad, motion, mascot character + empty state illustrations. Technically: exercise database seed list.
 
-**Design tokens & wireframe de-hardcode (in progress).** `wireframes/shared/tokens.css` is the single source of truth: color **plus** named scales for type (`--text-*`/`--num-*`), spacing (`--space-1…8`, 4px grid), radii (`--radius-*`), text-on-surface pairing (`--on-*`), states, and alpha layers. The `visual/` zone files are annotated with token names; `components.md` is synced to the orange palette. Goal: route every wireframe value through `var(--…)` so a redesign can't silently lose spacing/colors. **Phase 1** (complete token set) and **Phase 2** (all wireframe *colors* tokenized) are done. **Phase 3 is next** — see the work plan below. Migration plan, status and open reconciliation decisions live in `visual/open-items.md` §10.1–§10.2.
-
 ## Project documentation
 
 Four md files in the project, they should be read as a single whole:
@@ -174,7 +172,6 @@ Zones remaining to work out in v1:
 
 1. **Data model** — formal schema `Workout → Group | Exercise → Set` with field types and rules (TBD as a separate document; affects the backup JSON format)
 2. **Visual style** — typography, colors (including letter-colors for groups), density, motion, illustrations for empty states
-3. **Wireframe de-hardcode · Phase 3** (in progress) — replace hardcoded spacing / radii / font-sizes in the wireframes with `--space-*` / `--radius-*` / `--text-*` tokens. **Not a global sweep**: the same `px` literal plays different roles (`14px` = font-size *and* padding *and* icon size), so it goes **per-screen**, screenshotted before/after (`?proto=1`). Icon sizes / fixed component dimensions stay a separate axis (not `--space-*`). **`in-workout.html` done — it is the reference screen**: established the snap rule (off-scale spacing → nearest 4-grid step, ties round up) and the convention of preserving + logging wireframe↔spec type discrepancies rather than silently shifting pixels. Mapping table, logged discrepancies and the `layout.md §4.1/§4.2` spec-reconciliation flag: `visual/open-items.md` §10.1. Remaining screens follow the same pattern.
 
 Four technical decisions for v1: local DB (recommended WatermelonDB), Expo vs bare RN, minimum OS versions, exercise database seed list (full catalog except the 7 chip exercises).
 
