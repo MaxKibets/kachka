@@ -24,11 +24,6 @@
 
     /* Cards */
     .ex-card { background: var(--surface-1); border: 0.5px solid var(--border-subtle); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
-    .ex-card.completed { padding: 14px; display: flex; align-items: center; gap: 10px; }
-    .ex-card.completed .check-mini { width: 22px; height: 22px; background: var(--mallard); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .ex-card.completed .check-mini svg { width: 13px; height: 13px; stroke: var(--canvas); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
-    .ex-card.completed .ex-name { flex: 1; font-size: 15px; }
-    .ex-card.completed .ex-summary { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-secondary); }
 
     .ex-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 10px; }
     .ex-name { font-size: 16px; font-weight: 500; color: var(--text-primary); }
@@ -185,7 +180,6 @@
               <span class="iw-title">Push A</span>
               <span class="iw-pencil"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></span>
             </div>
-            <div class="iw-meta"><span class="num">5</span>/<span class="num">9</span> · <span class="num">14</span> sets · <span class="num">5120</span> kg</div>
           </div>
           <div class="iw-timer-chip">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
@@ -196,11 +190,55 @@
 
         <div class="scroll-area" style="padding: 4px 12px 12px;">
 
-          <!-- Bench press completed (collapsed summary) -->
-          <div class="ex-card completed">
-            <div class="check-mini"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div>
-            <div class="ex-name">Bench press</div>
-            <div class="ex-summary"><span class="num">4</span> sets done</div>
+          <!-- Bench press completed — kept expanded (all sets done) -->
+          <div class="ex-card">
+            <div class="ex-header">
+              <div class="ex-name">Bench press</div>
+              <div class="ex-icons">
+                <button class="icon-btn" aria-label="Exercise actions" data-href="set-actions-sheet.html">
+                  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="ex-col-head">
+              <div>SET</div>
+              <div>PREV</div>
+              <div>KG</div>
+              <div>REPS</div>
+              <div></div>
+            </div>
+            <div class="set-row done">
+              <div class="set-num">1</div>
+              <div class="set-prev">70 × 8</div>
+              <div class="set-cell"><span class="num">70.0</span></div>
+              <div class="set-cell"><span class="num">8</span></div>
+              <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
+            </div>
+            <div class="set-row done">
+              <div class="set-num">2</div>
+              <div class="set-prev">72.5 × 8</div>
+              <div class="set-cell"><span class="num">72.5</span></div>
+              <div class="set-cell"><span class="num">8</span></div>
+              <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
+            </div>
+            <div class="set-row done">
+              <div class="set-num">3</div>
+              <div class="set-prev">75 × 8</div>
+              <div class="set-cell"><span class="num">75.0</span></div>
+              <div class="set-cell"><span class="num">8</span></div>
+              <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
+            </div>
+            <div class="set-row done">
+              <div class="set-num">4</div>
+              <div class="set-prev">75 × 6</div>
+              <div class="set-cell"><span class="num">75.0</span></div>
+              <div class="set-cell"><span class="num">7</span></div>
+              <div class="set-check"><div class="check-done"><svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg></div></div>
+            </div>
+            <button class="add-set-btn">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add set
+            </button>
           </div>
 
           <!-- Group A: Dumbbell row + Face pull -->
@@ -366,7 +404,7 @@
         </div>
 
         <div class="iw-action-bar">
-          <div class="iw-progress"><span class="num">5</span> / <span class="num">14</span> sets logged</div>
+          <div class="iw-progress"><span class="num">5</span> / <span class="num">14</span> sets · <span class="num">5120</span> kg</div>
           <button class="cta-primary" data-href="completion-screen.html">
             Hold to finish
             <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
@@ -425,7 +463,7 @@
           <li>Letter chip A = dusty blue <code>#5C7B95</code> per visual §2.5 — <strong>маленький інлайн-чіп на рядку тайтлу</strong> (<code>Superset A · Round 2 of 3</code>), не окрема колонка. Child exercises <strong>без per-row літери</strong> — порядок задає позиція. Крос-реф <code>A1/A2</code> лишається у History + компактних лейблах (rest bar <code>A · Rest</code>, return-to-cursor <code>A · Set 2 · Dumbbell row</code>)</li>
           <li>Group card = surface-1 + 0.5px subtle border з усіх боків. <strong>3px mallard-рейка — лише вздовж вправ</strong>, стартує під хедером (обгортка <code>.group-children</code>), трохи зсуває рядки й відмежовує їх від хедера (per visual §5.3)</li>
           <li>Round indicators (●●○): першa точка зелена-A (round 1 done), друга amber (current round 2), третя приглушена-A (pending). Альтернатива — всі три у letter color з opacity варіаціями. Поки amber для current round щоб корелювало з amber active set</li>
-          <li>Bench press показано як collapsed completed card (per spec §5.4) — single row, mallard ✓ + summary</li>
+          <li>Bench press — виконана вправа, лишається <strong>розгорнутою</strong> (усі сети done, opacity 0.55, mallard ✓ на кожному рядку). Не згортається в one-line summary — щоб історія сетів була видима без зайвого тапу (per spec §5.4)</li>
           <li>Rest <code>90</code>s — інлайн у group meta. На bottom bar під час running rest — окремий dock (TBD у <a href="rest-timer.html">rest-timer.html</a>)</li>
           <li>Bottom-bar <code>Finish</code> = <strong>hold to finish</strong> (press-and-hold, не тап) — як в <a href="in-workout.html">in-workout.html</a>; холд гардить колізію зі слотом <code>Skip</code> при morph rest→idle (per spec §9.1, §5.10)</li>
           <li>Active wrap спрощено: рейка тепер на <code>.group-children</code>, тож активний рядок просто <code>margin: 0</code> (flush до рейки) — компенсаційний <code>padding-left</code> у номера сета більше не потрібен</li>
