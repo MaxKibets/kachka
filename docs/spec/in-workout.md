@@ -11,9 +11,11 @@
 
 | Zone | Behavior |
 |---|---|
-| Top bar | Fixed. Workout name, progress `3 of 5`, session time, close + menu |
+| Top bar | Fixed. **Identity + elapsed only**: workout name (+ edit-pencil), the session timer (elapsed), close + menu. Carries **no workout statistics** — they live in the bottom bar |
 | Scroll list | List of exercises and groups. Scrolls vertically. The active position auto-scrolls into the visible zone |
-| Bottom bar | Fixed. Two modes: `idle` (empty) or `rest` (countdown with context) |
+| Bottom bar | Fixed. Two modes: `idle` (workout stats + `Finish`) or `rest` (countdown with context). The **single home for workout statistics** — `sets done / total · volume kg` (§5.10) |
+
+**Workout statistics live in the bottom bar, not the header.** The top bar previously also carried a meta-row (exercise progress + set count + volume); it was removed so the header stays a calm identity strip — name + elapsed timer — and the bottom bar (`idle` mode) is the one place for live workout stats: `sets done / total · volume kg`. Rationale: one home for the numbers (no duplication or drift between header and bar), a quieter header read at arm's length, and the stats sit by the thumb next to `Finish` where the user already looks when deciding to wrap up. The session timer stays in the header because it is identity-level (how long this session has run), not a per-set logging metric.
 
 ### 5.2 Exercise card
 
@@ -44,7 +46,7 @@ Table columns:
 
 ### 5.4 Completed exercises
 
-A completed exercise collapses to a single-row summary (`Bench press · 3 sets done` + green ✓). It does not disappear, can be expanded back with a tap.
+A completed exercise stays expanded — its full set table remains visible (muted rows + green ✓ per set). It is not collapsed to a one-line summary: the logged history should be readable without an extra tap.
 
 ### 5.5 Editing mid-workout
 
@@ -152,7 +154,7 @@ The rest timer is the bottom bar's `rest` mode (§5.1), not a floating element. 
 - Context label on the left: `Rest` for a standalone exercise, `A · Rest` (letter-colored) for a group (§6.3, §6.6).
 - Inline controls: `−15s` / `+15s` to adjust, `Skip` to advance immediately (§6.6 state machine).
 - When Rest haptic is ON (§12.3) a subtle pulse sits by the label; hidden when OFF.
-- When rest ends or is skipped, the bar returns to `idle` (progress + `Finish workout`). The `idle` bar reclaims the slot the `Skip` control sat in, so `Finish` completes on a **hold**, not a tap (§9.1) — absorbing a stray tap or double-tap that lands just as rest is skipped or expires.
+- When rest ends or is skipped, the bar returns to `idle` — the workout-stats line (`sets done / total · volume kg`, §5.1) + `Finish workout`. The `idle` bar reclaims the slot the `Skip` control sat in, so `Finish` completes on a **hold**, not a tap (§9.1) — absorbing a stray tap or double-tap that lands just as rest is skipped or expires.
 - **Initial duration** comes from `Default rest` in Profile (§12.3, default `90 s`). Supersets use their own per-group rest from the superset config (§6.2) instead. If `Default rest` is `Off`, closing a set does not auto-start a countdown — the bar stays `idle`.
 
 A large floating ring was considered and rejected: it costs ~180px, pushes the set list down, and collides with the return-to-cursor chip (§5.8). The accented bottom bar stays glanceable without a separate floating layer.
