@@ -42,10 +42,10 @@ Everything lives under `docs/`. Root contract: `CLAUDE.md`,
 - **Wireframes** — `docs/wireframes/*.html` (one file = one screen),
   `INDEX.md` (batch checklist + open questions), `flow.md` (Mermaid state
   diagram), `shared/tokens.css`. Naming: `<screen>-<modifier>.html`.
-- **Issues** — `docs/issues/`. `INDEX.md` tables issues by priority
-  (P0/P1/P2/P3) with a Status column (`✅ done`, `⏳ open`, `superseded`).
-  IDs like `F3.1`, `X1`. Per-issue files for P0/P1; `BACKLOG-p2-p3.md` for the
-  rest.
+- **Issues** — `docs/issues/`. Only `INDEX.md` remains (per-issue files and
+  the P2/P3 backlog were retired 2026-07-04, once UI design moved to Claude
+  Design) — it's now a historical table by priority (P0/P1/P2/P3) with a
+  Status column (`✅ done`, `superseded`, `🗑️ dropped`). IDs like `F3.1`, `X1`.
 - **Visual system** — `docs/visual/` (README, foundations, brand). Concrete
   styling zones (color, typography, layout, components, open-items) were
   retired 2026-07-04 — see `docs/CONTEXT.md` for the current visual-reset
