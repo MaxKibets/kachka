@@ -108,6 +108,7 @@
 - [x] Failed reps (0 reps) — allowed, save + green ✓, does not go into volume and PR
 - [x] Auto-scroll pauses on manual scroll; return via a floating "return to current set" chip above the bottom bar (appears when the cursor is outside the viewport, tap → smooth scroll + auto-scroll re-engages). Swipe-down — in v2 as a power-user option
 - [x] Rest timer = the bottom bar's accented `rest` mode (large mono `MM:SS` + full-width progress + inline `−15s/+15s/Skip`), not a floating ring. Coexists with the return-to-cursor chip on separate layers — chip above the bar, rest countdown in the bar (design-review F3.1, spec §5.10)
+- [x] Workout statistics live only in the bottom bar (`idle` mode: `sets done / total · volume kg`); the top bar carries identity + elapsed timer only — no stats. One home for the numbers (no header/bar drift), a quieter header, stats by the thumb next to `Finish` (spec §5.1, §5.10)
 
 **Supersets**
 - [x] Must-have in v1
