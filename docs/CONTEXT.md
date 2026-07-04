@@ -24,9 +24,13 @@ UI/UX is **conceptually locked** for v1:
 - Exercise picker / Database (one component, two modes, 7 muscle groups, custom with soft delete)
 - Profile + Settings (hybrid hub: PREFERENCES / WORKOUT / DATA / About)
 
-**Locked**: technical and product decisions. The program JSON format is also locked at the field level — frozen, returns in v2. Visual system — the foundation is locked (mood, brand, palette, typography, letter rotation, iconography (Lucide), basic component patterns).
+**Locked**: technical and product decisions. The program JSON format is also locked at the field level — frozen, returns in v2.
 
-Still to work out: the formal data model; visually — mockups of the other screens (Today / History / Builder / Profile), action sheets, custom numpad, motion, mascot character + empty state illustrations. Technically: exercise database seed list.
+**Visual system — reopened (2026-06-21).** Brand/product strategy stays locked (positioning "data-dense + characterful", the Kachka mallard mascot, the working-screens-vs-brand-zones split, concise-upbeat tone). Everything below that — palette, typography, the dark-theme-mandatory constraint, component patterns — is UNAPPROVED, despite `visual/*.md` still reading "locked · v0"; treat those files and `wireframes/shared/tokens.css` as reference-only, not constraints. PRs #31→#35 tried an orange-on-black palette + token system and reverted it. Chosen direction now: warm neo-brutalism, dual theme — light: warm cream canvas `#F6EFDC`; dark: warm graphite `#14110D` + off-white ink `#F3ECE0`; one coral accent (`#ED7A52` light / `#D85F38`+`#F0865C` dark); bold geometric-grotesque type; flat color-blocked cards/rows with hairline borders + rounded corners; pill nav + pill buttons; single-accent bar charts. Character now lives in the working UI itself (color-coding, boldness), so the old dark-mandatory + two-mood-split constraints are deliberately overridden. Open: dark color-block rows = deep-solid (Today/History) vs ~14% tinted (dense In-workout); exact palette/type tokens TBD.
+
+Actual UI is being built in "Claude Design", not as in-repo mockups. This project's deliverable is a moodboard (real-app references) + UI-agnostic per-screen prompts (content / data / states / interactions, decoupled from styling) — not pixel mockups or HTML re-skins.
+
+Still to work out: the formal data model; visually — moodboard alignment + UI-agnostic per-screen prompts (Today / History / Builder / Profile, action sheets, custom numpad, motion, mascot character + empty-state illustrations) for the Claude Design handoff. Technically: exercise database seed list.
 
 ## Project documentation
 
@@ -36,7 +40,7 @@ Four md files in the project, they should be read as a single whole:
 |------|---------|--------|
 | `spec/README.md` | UI/UX v1 — map + §-index. Zones in `spec/`: foundations, today, builder, in-workout, supersets, finish, history, exercises, profile, glossary, decisions | Active |
 | `tech/README.md` | Technical and product decisions — platform, storage, units, localization, monetization, distribution | Active |
-| `visual/README.md` | Visual system — map + §-index. Zones in `visual/`: foundations (mood/positioning/brand/tone), color, typography, layout, components, brand (empty states + mascot), open-items | Active · v0 |
+| `visual/README.md` | Visual system — map + §-index. Zones in `visual/`: foundations (mood/positioning/brand/tone), brand (empty states + mascot) | Active · styling zones (color/typography/layout/components/open-items) retired 2026-07-04, see note above; foundations §1 (strategy) still holds |
 | `program-format.md` | Program JSON format for import/export | **Frozen — v2** |
 
 **Before any response — read spec, tech, and visual.** Read the program format only if the request explicitly concerns v2 / sharing / import.
@@ -47,7 +51,7 @@ A shortened list — details in the md files:
 
 **Context and base constraints**
 - User in the gym, sweating, one hand, 5–15s per set, 15–30 cycles per workout. The UI optimizes specifically for this scenario
-- Dark theme mandatory, large touch targets, minimum taps
+- Large touch targets, minimum taps. (Dark theme was mandatory under the original visual lock; superseded by the 2026-06-21 visual reset above — dual theme, light + dark, now chosen.)
 
 **v1 scope**
 - v1 = ad-hoc workouts (build / execute / log to history)
