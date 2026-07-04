@@ -157,7 +157,7 @@ wireframes/
 - ~~**Profile WORKOUT секція — `Default rest`**~~ — RESOLVED (design-review F5.3): локнуто у v1, default `90 s`, action sheet `60/90/120/180 + Off`. Spec §12.3 + in-workout §5.10.
 - ~~**About: Report an issue + Licenses**~~ — RESOLVED (design-review F5.4): обидва рядки зрізано до §12.5 scope (licenses потребують стек → v1.x).
 - ~~**About tagline `Качайся.`**~~ — RESOLVED (design-review F5.4): локалізовано — EN `Get lifting.` / UA `Качайся.`.
-- ~~**Builder row menu обсяг**~~ — RESOLVED (redesign): row menu стало композиційним (`Add note` / `Add to superset` / `Move` / `Remove`); `Edit sets` прибрано — сети тепер налаштовуються в In-workout pending-стані (spec §5.9). Див. `../issues/REDESIGN-builder-inworkout.md`.
+- ~~**Builder row menu обсяг**~~ — RESOLVED (redesign): row menu стало композиційним (`Add note` / `Add to superset` / `Move` / `Remove`); `Edit sets` прибрано — сети тепер налаштовуються в In-workout pending-стані (spec §5.9).
 - **Group active row через negative margin** — production cleanup TBD; production варіант через grid layout без margin tricks.
 - ~~**Floating timer + pull-to-cursor конфлікт**~~ — RESOLVED (design-review F3.1): rest = bottom bar's `rest` mode (accented countdown), не плаваюче коло; chip плаває над баром. Різні шари, без колізії. Spec §5.10 додано.
 - **RPE remove value** через tap selected ще раз — поведінка TBD.
