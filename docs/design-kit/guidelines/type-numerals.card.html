@@ -1,0 +1,13 @@
+<!-- @dsCard group="Type" viewport="700x150" subtitle="Tabular numerals + line-height 1, stat numbers only" name="Numerals" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>*{box-sizing:border-box;}body{margin:0;}</style></head>
+<body data-theme="dark" style="background:var(--bg);font-family:var(--font-sans);padding:20px;color:var(--text);">
+  <div style="display:flex;gap:24px;align-items:center;">
+    <div style="background:var(--surface-2);border-radius:16px;padding:0 18px;height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
+      <div style="font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1;">5120 <span style="font-size:10px;color:var(--text-2);">kg</span></div>
+      <div style="font-size:10px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.07em;">Total</div>
+    </div>
+    <div style="font-family:monospace;font-size:11px;color:var(--text-3);max-width:340px;">font-variant-numeric: tabular-nums + line-height: 1 — the only place line-height is explicitly set. Everywhere else uses the browser default.</div>
+  </div>
+</body></html>

@@ -1,0 +1,27 @@
+:root {
+  /* Scale — 2px step, exactly the values in use across the product */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-5: 10px;
+  --space-6: 12px;
+  --space-7: 14px;
+  --space-8: 16px;
+  --space-9: 18px;
+  --space-10: 22px;
+  --space-11: 24px;
+
+  /* Semantic roles — the same element role always gets the same value */
+  --gap-card-header-to-content: var(--space-6);  /* 12px, icon+title row -> body */
+  --gap-progress-to-content: var(--space-8);     /* 16px, round progress -> first exercise */
+  --gap-button-top: var(--space-5);              /* 10px, Add set/round margin-top */
+  --pad-card: var(--space-8);                    /* 16px, exercise card padding */
+  --pad-screen-header: var(--space-7) var(--space-5); /* 14px 10px */
+  --gap-list: var(--space-5);                    /* 10px, exercise list + header gap */
+  --gap-grid-column: var(--space-3);              /* 6px, set-table column gap */
+  --gap-round-progress: var(--space-2);           /* 4px, between round-progress segments */
+  --pad-bottom-bar: var(--space-7) var(--space-5); /* 14px 10px */
+  --gap-bottom-bar: var(--space-6);               /* 12px */
+  --margin-bottom-bar-top: var(--space-9);        /* 18px */
+}

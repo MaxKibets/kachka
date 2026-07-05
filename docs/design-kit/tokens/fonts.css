@@ -1,0 +1,11 @@
+/* Kachka — type family.
+   Manrope, loaded via Google Fonts' CSS2 endpoint (@import so it travels
+   with styles.css with no HTML <link> needed). This environment can't
+   fetch external binaries to self-host, so there are no local @font-face
+   rules — if self-hosted webfonts are required later, replace this
+   @import with @font-face rules pointing at woff2 files. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap');
+
+:root {
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+}

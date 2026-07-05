@@ -1,0 +1,25 @@
+<!-- @dsCard group="Motion" viewport="700x220" subtitle="Pulse / spin / CTA text-swap — every animation in the product" name="Motion" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>*{box-sizing:border-box;}body{margin:0;}</style></head>
+<body data-theme="dark" style="background:var(--bg);font-family:var(--font-sans);padding:20px;color:var(--text);">
+  <div style="display:flex;gap:32px;align-items:center;">
+    <div style="text-align:center;">
+      <span style="width:14px;height:14px;border-radius:50%;background:var(--accent);display:inline-block;animation:wt-pulse 1.6s ease-in-out infinite;"></span>
+      <div style="margin-top:10px;font-family:monospace;font-size:11px;color:var(--text-3);">wt-pulse<br/>1.6s ease-in-out<br/>opacity 1 ↔ .25</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="position:relative;width:34px;height:34px;margin:0 auto;">
+        <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg, var(--accent), var(--line) 50%, var(--accent) 100%);animation:wt-spin 2.4s linear infinite;"></div>
+        <div style="position:absolute;inset:2px;border-radius:50%;background:var(--surface);border:1px solid var(--line);"></div>
+      </div>
+      <div style="margin-top:10px;font-family:monospace;font-size:11px;color:var(--text-3);">wt-spin<br/>2.4s linear<br/>pending-set ring</div>
+    </div>
+    <div style="text-align:center;max-width:220px;">
+      <div style="font-family:monospace;font-size:11px;color:var(--text-3);">wt-cta-a / wt-cta-b<br/>3.6s ease-in-out, paired<br/>FINISH ⇄ "Hold to" swap (see CTAButton card)</div>
+    </div>
+    <div style="text-align:center;max-width:180px;">
+      <div style="font-family:monospace;font-size:11px;color:var(--text-3);">Static opacity roles:<br/>.4 = active progress fill<br/>.25 = pulse floor (above)</div>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,20 @@
+<!-- @dsCard group="Borders" viewport="700x180" subtitle="One hairline style everywhere, one state exception" name="Borders" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>*{box-sizing:border-box;}body{margin:0;}</style></head>
+<body data-theme="dark" style="background:var(--bg);font-family:var(--font-sans);padding:20px;color:var(--text);">
+  <div style="display:flex;gap:24px;align-items:center;">
+    <div>
+      <div style="width:120px;height:64px;background:var(--surface);border:1px solid var(--line);border-radius:16px;"></div>
+      <div style="margin-top:8px;font-family:monospace;font-size:11px;color:var(--text-3);">1px solid var(--line) — every card, button, divider</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <div style="width:30px;height:30px;border-radius:50%;border:1px solid var(--line);"></div>
+      <span style="font-family:monospace;font-size:11px;color:var(--text-3);">pending set</span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--accent);"></div>
+      <span style="font-family:monospace;font-size:11px;color:var(--text-3);">complete set — filled, no border (exception)</span>
+    </div>
+  </div>
+</body></html>

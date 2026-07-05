@@ -1,0 +1,8 @@
+:root {
+  --radius-xs: 2px;     /* round-progress segments */
+  --radius-sm: 12px;    /* exercise icon chips, "90s rest" pill */
+  --radius-md: 16px;    /* buttons, stat blocks, CTA */
+  --radius-lg: 24px;    /* exercise cards */
+  --radius-sheet: 28px; /* RestBar sheet top corners — sheet-specific, larger than card radius */
+  --radius-full: 50%;   /* every circle: nav/kebab buttons, set markers, pulse dot */
+}

@@ -1,0 +1,9 @@
+:root {
+  --icon-stroke: 2.4;     /* SVG stroke-width, every outline icon */
+  --icon-size-nav: 18px;  /* icons inside 44px nav buttons */
+  --icon-size-md: 16px;   /* icons inside 30px buttons/chips */
+  --icon-size-sm: 14px;   /* timer, add-set/round, CTA, RestBar icons */
+
+  --touch-primary: 44px;   /* primary nav circles — meets touch-target minimum */
+  --touch-secondary: 30px; /* kebab + exercise icon chips + set markers — below minimum, intentional (secondary/non-interactive) */
+}

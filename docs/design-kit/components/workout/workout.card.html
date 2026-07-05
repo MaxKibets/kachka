@@ -1,0 +1,73 @@
+<!-- @dsCard group="Components" viewport="700x780" subtitle="Set table, exercise card (simple + superset), rest divider, rest bar" name="Workout" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--bg);}*{box-sizing:border-box;}</style>
+</head>
+<body data-theme="dark">
+<div id="root"></div>
+<script type="text/babel">
+const { ExerciseCard, SetTable, RestDivider, RestBar, ProgressBar } = window.Kachka;
+
+const Dumbbell = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10"/></svg>;
+const Repeat = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>;
+
+const benchSets = [
+  { set: 'W', previous: '70 × 8', pre: 8, kg: 70, reps: 8, status: 'complete', warmup: true },
+  { set: 2, previous: '72.5 × 8', pre: 8, kg: 72.5, reps: 8, status: 'complete' },
+  { set: 3, previous: '75 × 8', pre: 8, kg: 75, reps: 8, status: 'complete' },
+  { set: 4, previous: '75 × 6', pre: 8, kg: 75, reps: 7, status: 'complete' }
+];
+const rowSets = [1,2,3].map(n => ({ set:n, previous:'22.5 × 10', pre:8, kg:22.5, reps:10, status:'complete' }));
+const pullSets = [1,2,3].map(n => ({ set:n, previous:'15 × 15', pre:8, kg:15, reps:15, status:'complete' }));
+
+function Label({children}) {
+  return <div style={{fontFamily:'monospace', fontSize:11, color:'var(--text-3)', marginBottom:8}}>{children}</div>;
+}
+
+function Demo() {
+  return (
+    <div style={{padding:24, display:'flex', flexDirection:'column', gap:20, fontFamily:'var(--font-sans)', maxWidth:390}}>
+      <div>
+        <Label>ExerciseCard — simple</Label>
+        <ExerciseCard icon={<Dumbbell/>} title="Bench press" addLabel="Add set">
+          <SetTable sets={benchSets} />
+        </ExerciseCard>
+      </div>
+
+      <div>
+        <Label>ExerciseCard — superset (accentIcon + progress + nested bare cards)</Label>
+        <ExerciseCard
+          icon={<Repeat/>} accentIcon
+          title="Superset A"
+          meta={<span>Round 2 <span style={{color:'var(--text-3)'}}>of 3</span></span>}
+          progress={<ProgressBar segments={3} current={2} />}
+          addLabel="Add round"
+        >
+          <ExerciseCard bare icon={<Dumbbell/>} title="Dumbbell row" kebab={false}>
+            <SetTable sets={rowSets} />
+          </ExerciseCard>
+          <RestDivider label="90s rest" />
+          <ExerciseCard bare icon={<Dumbbell/>} title="Face pull" kebab={false}>
+            <SetTable sets={pullSets} />
+          </ExerciseCard>
+        </ExerciseCard>
+      </div>
+
+      <div>
+        <Label>RestBar</Label>
+        <RestBar exerciseLabel="Superset A · Dumbbell row" time="01:24" value={56} />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

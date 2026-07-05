@@ -1,0 +1,43 @@
+<!-- @dsCard group="Components" viewport="700x260" subtitle="Segmented (round) and continuous (countdown) progress" name="Progress" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--bg);}*{box-sizing:border-box;}</style>
+</head>
+<body data-theme="dark">
+<div id="root"></div>
+<script type="text/babel">
+const { ProgressBar } = window.Kachka;
+
+function Label({children}) {
+  return <div style={{fontFamily:'monospace', fontSize:11, color:'var(--text-3)', marginBottom:8}}>{children}</div>;
+}
+
+function Demo() {
+  return (
+    <div style={{padding:24, display:'flex', flexDirection:'column', gap:22, fontFamily:'var(--font-sans)', maxWidth:360}}>
+      <div>
+        <Label>segments=3 current=2 — superset round progress</Label>
+        <ProgressBar segments={3} current={2} />
+      </div>
+      <div>
+        <Label>segments=1 value=56 — RestBar countdown</Label>
+        <ProgressBar value={56} />
+      </div>
+      <div>
+        <Label>segments=1 value=90</Label>
+        <ProgressBar value={90} />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

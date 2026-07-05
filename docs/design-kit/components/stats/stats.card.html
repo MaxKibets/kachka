@@ -1,0 +1,42 @@
+<!-- @dsCard group="Components" viewport="700x220" subtitle="Bottom-bar stat blocks + live session indicator" name="Stats" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--bg);}*{box-sizing:border-box;}</style>
+</head>
+<body data-theme="dark">
+<div id="root"></div>
+<script type="text/babel">
+const { StatBlock, LiveIndicator } = window.Kachka;
+
+function Label({children}) {
+  return <div style={{fontFamily:'monospace', fontSize:11, color:'var(--text-3)', marginBottom:8}}>{children}</div>;
+}
+
+function Demo() {
+  return (
+    <div style={{padding:24, display:'flex', flexDirection:'column', gap:20, fontFamily:'var(--font-sans)'}}>
+      <div>
+        <Label>StatBlock — suffix vs unit</Label>
+        <div style={{display:'flex', gap:10}}>
+          <StatBlock value="5" suffix="/ 14" label="Sets done" />
+          <StatBlock value="5120" unit="kg" label="Total" />
+        </div>
+      </div>
+      <div>
+        <Label>LiveIndicator</Label>
+        <LiveIndicator time="22:08" />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

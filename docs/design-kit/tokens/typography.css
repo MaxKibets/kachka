@@ -1,0 +1,22 @@
+:root {
+  /* Size — 2px step. Every text role maps to exactly one size. */
+  --text-micro: 10px;     /* uppercase micro-labels: table header, bottom-bar captions */
+  --text-body: 14px;      /* primary data: set values, row text, buttons, RestBar labels */
+  --text-title-sm: 16px;  /* exercise / superset names */
+  --text-title: 18px;     /* screen title; also the "—" empty-value placeholder */
+  --text-display: 38px;   /* RestBar countdown clock */
+
+  /* Weight — one weight for the entire product. Hierarchy comes from
+     color and size, never weight. */
+  --weight-all: 700;
+
+  /* Letter-spacing */
+  --tracking-tight: -.01em;   /* titles, large numbers, CTA label */
+  --tracking-tighter: -.02em; /* RestBar countdown clock only */
+  --tracking-wide: .07em;     /* 10px uppercase micro-labels */
+  --tracking-wider: .09em;    /* RestBar "RESTING" label only */
+
+  /* Line-height — browser default everywhere except stat numbers, which
+     need 1 to sit tight against their caption underneath. */
+  --leading-tight: 1;
+}

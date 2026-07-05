@@ -1,0 +1,26 @@
+:root {
+  --duration-pulse: 1.6s;     /* live-timer dot */
+  --duration-spin: 2.4s;      /* pending-set spinner ring */
+  --duration-cta-cycle: 3.6s; /* bottom CTA text swap */
+  --ease-organic: ease-in-out;
+  --ease-linear: linear;
+
+  --opacity-progress-track: 1;    /* upcoming/inactive progress segments (surface-2) */
+  --opacity-progress-fill: .4;    /* filled/active progress — always 40%, never solid */
+  --opacity-pulse-min: .25;       /* pulse keyframe floor */
+}
+
+@keyframes wt-pulse { 0%, 100% { opacity: 1; } 50% { opacity: var(--opacity-pulse-min); } }
+@keyframes wt-spin { to { transform: rotate(360deg); } }
+@keyframes wt-cta-a {
+  0%, 40% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(100%); opacity: 0; }
+  50.1% { transform: translateY(-100%); opacity: 0; }
+  90% { transform: translateY(-100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes wt-cta-b {
+  0%, 40% { transform: translateY(-100%); opacity: 0; }
+  50%, 90% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  [data-theme="dark"]{--surface:#1A1A1A;--surface-2:#262626;--line:rgba(255,255,255,.1);--text:#FFFFFF;--text-2:#9A9A9A;--accent:#F26522;}
+  [data-theme="light"]{--surface:#FFFFFF;--surface-2:#F1EEE9;--line:rgba(0,0,0,.1);--text:#1A1815;--text-2:#7A756C;--accent:#F26522;}
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="width:390px;background:var(--surface,#1A1A1A);border-top:1px solid var(--line,rgba(255,255,255,.1));border-radius:28px 28px 0 0;padding:18px 18px 24px;font-family:Manrope,sans-serif;color:var(--text,#fff);box-shadow:0 -10px 30px rgba(0,0,0,.22);-webkit-font-smoothing:antialiased;">
+
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;">
+    <div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent,#F26522);">Resting</div>
+      <div style="font-size:14px;font-weight:700;color:var(--text-2,#9A9A9A);margin-top:4px;">Superset A · Dumbbell row</div>
+    </div>
+    <div style="font-size:38px;font-weight:700;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--text,#fff);">01:24</div>
+  </div>
+
+  <div style="height:4px;border-radius:2px;background:var(--surface-2,#262626);overflow:hidden;margin-bottom:16px;">
+    <div style="width:56%;height:100%;background:var(--accent,#F26522);opacity:.4;border-radius:2px;"></div>
+  </div>
+
+  <div style="display:flex;gap:10px;">
+    <button style="flex:1;padding:14px 0;border-radius:16px;background:var(--surface-2,#262626);border:1px solid var(--line,rgba(255,255,255,.1));color:var(--text,#fff);font-family:inherit;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>15s
+    </button>
+    <button style="flex:1.5;padding:14px 0;border-radius:16px;background:var(--accent,#F26522);border:none;color:#fff;font-family:inherit;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 8px 18px -6px rgba(242,101,34,.6);">
+      Skip rest
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l8 7-8 7zM18 5v14"/></svg>
+    </button>
+    <button style="flex:1;padding:14px 0;border-radius:16px;background:var(--surface-2,#262626);border:1px solid var(--line,rgba(255,255,255,.1));color:var(--text,#fff);font-family:inherit;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>15s
+    </button>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:210},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;'dark' | 'light'&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;section&quot;:&quot;Theme&quot;}}">class Component extends DCLogic {
+  renderVals() {
+    return {
+      theme: this.props.theme ?? 'dark'
+    };
+  }
+}</script>
+</body>
+</html>

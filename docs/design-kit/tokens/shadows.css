@@ -1,0 +1,4 @@
+:root {
+  --shadow-elevation: 0 -10px 30px rgba(0, 0, 0, .22);          /* bottom bar / RestBar sheet lift */
+  --shadow-accent-glow: 0 8px 20px -6px rgba(242, 101, 34, .6); /* only under accent CTAs */
+}

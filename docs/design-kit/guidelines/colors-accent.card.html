@@ -1,0 +1,32 @@
+<!-- @dsCard group="Colors" viewport="700x210" subtitle="Accent orange, its tints, and the one warmup exception" name="Accent + warmup" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>*{box-sizing:border-box;}body{margin:0;}</style></head>
+<body data-theme="dark" style="background:var(--bg);font-family:var(--font-sans);padding:20px;">
+  <div style="display:flex;gap:14px;">
+    <div style="flex:1;">
+      <div style="height:64px;border-radius:12px;background:var(--accent);"></div>
+      <div style="margin-top:8px;font-family:monospace;font-size:11px;color:var(--text-2);">--accent</div>
+      <div style="font-family:monospace;font-size:10px;color:var(--text-3);">#F26522</div>
+    </div>
+    <div style="flex:1;">
+      <div style="height:64px;border-radius:12px;background:var(--current-tint);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10"/></svg>
+      </div>
+      <div style="margin-top:8px;font-family:monospace;font-size:11px;color:var(--text-2);">--current-tint</div>
+      <div style="font-family:monospace;font-size:10px;color:var(--text-3);">active icon-chip bg</div>
+    </div>
+    <div style="flex:1;">
+      <div style="height:64px;border-radius:12px;background:var(--surface);border:1px solid var(--accent-line);"></div>
+      <div style="margin-top:8px;font-family:monospace;font-size:11px;color:var(--text-2);">--accent-line</div>
+      <div style="font-family:monospace;font-size:10px;color:var(--text-3);">reserved border, unused in audited screens</div>
+    </div>
+    <div style="flex:1;">
+      <div style="height:64px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;">
+        <span style="color:var(--warmup);font-weight:700;font-size:14px;">W</span>
+      </div>
+      <div style="margin-top:8px;font-family:monospace;font-size:11px;color:var(--text-2);">--warmup</div>
+      <div style="font-family:monospace;font-size:10px;color:var(--text-3);">warmup-set label only</div>
+    </div>
+  </div>
+</body></html>

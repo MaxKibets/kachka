@@ -1,0 +1,38 @@
+/* Kachka — color tokens.
+   Dark is the canonical/default theme, declared on :root.
+   Light is an alternate theme — applied via [data-theme="light"] on any
+   ancestor element (screen root, card root, etc).
+   Every component reads these through var(--token) — never a raw hex. */
+
+:root {
+  /* Base palette — the only two raw brand hues in the product */
+  --color-orange: #F26522;
+  --color-amber: #E0A23E;
+
+  /* Semantic — dark (default) */
+  --bg: #0E0E0E;
+  --surface: #1A1A1A;
+  --surface-2: #262626;
+  --line: rgba(255, 255, 255, .1);
+  --text: #FFFFFF;
+  --text-2: #9A9A9A;
+  --text-3: #646464;
+  --accent: var(--color-orange);
+  --current-tint: rgba(242, 101, 34, .14);
+  --accent-line: rgba(242, 101, 34, .4);
+  --warmup: var(--color-amber);
+}
+
+[data-theme="light"] {
+  --bg: #F2F0EC;
+  --surface: #FFFFFF;
+  --surface-2: #F1EEE9;
+  --line: rgba(0, 0, 0, .1);
+  --text: #1A1815;
+  --text-2: #7A756C;
+  --text-3: #ABA69D;
+  --accent: var(--color-orange);
+  --current-tint: rgba(242, 101, 34, .10);
+  --accent-line: rgba(242, 101, 34, .35);
+  --warmup: var(--color-amber);
+}
