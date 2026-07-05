@@ -19,18 +19,18 @@ UI/UX is **conceptually locked** for v1:
 - Today flow (Repeat last / Choose from history / Build from scratch)
 - Workout Builder (pre-workout list + Quick-add chips + supersets)
 - In-workout zone (everything, including editing mid-workout)
-- Ad-hoc supersets with color-coded letter labels
+- Ad-hoc supersets with letter labels (no per-group color, see visual reconciliation note below)
 - History (list + detail without filters/export)
 - Exercise picker / Database (one component, two modes, 7 muscle groups, custom with soft delete)
 - Profile + Settings (hybrid hub: PREFERENCES / WORKOUT / DATA / About)
 
 **Locked**: technical and product decisions. The program JSON format is also locked at the field level — frozen, returns in v2.
 
-**Visual system — reopened (2026-06-21).** Brand/product strategy stays locked (positioning "data-dense + characterful", the Kachka mallard mascot, the working-screens-vs-brand-zones split, concise-upbeat tone). Everything below that — palette, typography, the dark-theme-mandatory constraint, component patterns — is UNAPPROVED, despite `visual/*.md` still reading "locked · v0"; treat those files and `wireframes/shared/tokens.css` as reference-only, not constraints. PRs #31→#35 tried an orange-on-black palette + token system and reverted it. Chosen direction now: warm neo-brutalism, dual theme — light: warm cream canvas `#F6EFDC`; dark: warm graphite `#14110D` + off-white ink `#F3ECE0`; one coral accent (`#ED7A52` light / `#D85F38`+`#F0865C` dark); bold geometric-grotesque type; flat color-blocked cards/rows with hairline borders + rounded corners; pill nav + pill buttons; single-accent bar charts. Character now lives in the working UI itself (color-coding, boldness), so the old dark-mandatory + two-mood-split constraints are deliberately overridden. Open: dark color-block rows = deep-solid (Today/History) vs ~14% tinted (dense In-workout); exact palette/type tokens TBD.
+**Visual system — approved via Claude Design (resolved 2026-07-05).** Brand/product strategy stays locked (positioning "data-dense + characterful", the Kachka mallard mascot, the working-screens-vs-brand-zones split, concise-upbeat tone). The 2026-06-21 "warm neo-brutalism / coral accent" exploration below was superseded before it was built out — the actual UI is now designed and maintained in a **Claude Design project** (`kachka`, see `visual/README.md`), not in-repo. That project has so far built one screen's worth of design system (auditing the In-workout / RestBar screens): dark-first (`#0E0E0E`/`#1A1A1A`, light alt `#F2F0EC`), a single accent orange `#F26522` reserved for completion/live/CTA (no "info" secondary color), amber `#E0A23E` solely for warm-up markers, Manrope at one weight (700) with hierarchy from size/color only, hairline borders (not shadows) on cards, radius climbing 2→12→16→24→28px with prominence. `docs/spec/in-workout.md`, `supersets.md`, and `finish.md` have been reconciled against it (2026-07-05) — treat their current text as canonical over this summary if they ever disagree. Other screens (Today, History, Builder, Profile, action sheets) have **not** been designed in Claude Design yet — don't assume this palette/type/spacing extends to them until that project is extended and reconciled the same way.
 
-Actual UI is being built in "Claude Design", not as in-repo mockups. This project's deliverable is a moodboard (real-app references) + UI-agnostic per-screen prompts (content / data / states / interactions, decoupled from styling) — not pixel mockups or HTML re-skins.
+Actual UI is being built in "Claude Design", not as in-repo mockups. `docs/wireframes/*.html` and `wireframes/shared/tokens.css` are pre-reset artifacts — reference-only, not a styling source.
 
-Still to work out: the formal data model; visually — moodboard alignment + UI-agnostic per-screen prompts (Today / History / Builder / Profile, action sheets, custom numpad, motion, mascot character + empty-state illustrations) for the Claude Design handoff. Technically: exercise database seed list.
+Still to work out: the formal data model; visually — extending the Claude Design project to the remaining screens (Today / History / Builder / Profile, action sheets, custom numpad, motion, mascot character + empty-state illustrations), then reconciling their spec files the same way in-workout/supersets/finish were. Technically: exercise database seed list.
 
 ## Project documentation
 
@@ -80,13 +80,13 @@ A shortened list — details in the md files:
 - Active workout = full editor: add/remove set, add/insert/remove exercise, skip, reorder
 - Skip exercise — soft remove that preserves the structure for clone
 - Failed reps (0 reps) — allowed
-- Rest timer — accented countdown in the bottom bar (not a floating ring); coexists with the pull-to-cursor chip on separate layers
+- Rest timer — a `RestBar` sheet that slides in above the (unchanged) bottom bar, not a floating ring and not a bar mode-switch; coexists with the pull-to-cursor chip on separate layers
 
 **Supersets (must-have in v1)**
 - Only alternating, 2-5 exercises, 2-10 rounds, one rest per group
 - Creation pre-workout (Builder) and mid-workout (Active) with constraint: 0 logged sets in the candidates
 - UI: per-exercise `⋮` → Add to superset → one combined sheet (multi-select partners + rounds + rest), not two-step
-- Color-coded letter labels (A/B/C with rotation)
+- Letter labels only (A/B/C, no per-group color — the design system's single accent doesn't support a rotating group palette)
 - Edit mid-workout: rounds (constrained), rest, add/remove exercise (under the same constraint), ungroup always
 
 **History**
@@ -175,7 +175,7 @@ A shortened list — details in the md files:
 Zones remaining to work out in v1:
 
 1. **Data model** — formal schema `Workout → Group | Exercise → Set` with field types and rules (TBD as a separate document; affects the backup JSON format)
-2. **Visual style** — typography, colors (including letter-colors for groups), density, motion, illustrations for empty states
+2. **Visual style for the remaining screens** — Today / History / Builder / Profile, action sheets, motion, illustrations for empty states — extend the Claude Design project past In-workout/RestBar, then reconcile their spec files the same way (letter-only group labels, no per-group color — decided during the In-workout reconciliation)
 
 Four technical decisions for v1: local DB (recommended WatermelonDB), Expo vs bare RN, minimum OS versions, exercise database seed list (full catalog except the 7 chip exercises).
 

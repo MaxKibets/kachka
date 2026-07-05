@@ -1,6 +1,6 @@
 # Supersets / exercise groups
 
-> Alternating groups: pre/mid-workout creation, color-coded labels, cursor cycling, edit (§6). Part of the Kachka v1 UI/UX spec — full map and §-index: [spec map](README.md).
+> Alternating groups: pre/mid-workout creation, letter labels, cursor cycling, edit (§6). Part of the Kachka v1 UI/UX spec — full map and §-index: [spec map](README.md).
 > Behavior is described here; the visual system lives in `../visual/README.md`.
 
 ---
@@ -57,9 +57,9 @@ Disabled exercises are shown with a reason ("Already started" if there are logge
 
 The sheet dismisses via the leading `×` (cancel/close), swipe-down, or scrim-tap; `Create group` (edit mode: `Save`) is the commit. There is no separate footer `Cancel` — the `×` is the single cancel affordance, consistent with the picker (sheet chrome: visual §5.7). Cancelling mid-edit confirms per §1 if anything was changed.
 
-### 6.3 Color-coded letter labels
+### 6.3 Letter labels (no color-coding)
 
-Each group within a single workout gets a letter and a color. A · color 1, B · color 2, C · color 3. If there are more than 3 groups (rare) — colors repeat rotationally, letters continue.
+Each group within a single workout gets a letter only — A, B, C… continuing alphabetically as more groups are created. **No per-group color.** The design system has exactly one accent hue (orange), reserved for completion/live/CTA — it doesn't support a rotating palette for group identity, and the audited screen never needed to distinguish more than one group at a time. Groups are told apart by letter + the framed card boundary alone.
 
 The label is displayed in Builder, Active workout and History detail:
 
@@ -68,20 +68,13 @@ Superset A · Round 2 of 3
 ●●○ (round indicators)
 ```
 
-The letter is a small inline chip on the header title (`Superset A`, visual §2.5). Inside a **framed** group card (Builder, Active workout, History detail) that title carries the letter, so exercises are listed in order with **no per-row letter**; where a per-row ordinal is shown (e.g. History detail's per-exercise set list, §10.3) it is a plain `1`/`2` — the exercise's position in the round. Repeating the letter on every row would be noise. The combined `A1`/`A2` ordinal (`A1 · Pull-ups`, `A2 · Push-ups`) is the cross-reference notation for **frameless inline references**, where no title anchors the letter — describing cursor cycling (`A1 → A2`) or naming a set in flat prose. Compact UI labels use the short letter-prefix form instead: the rest bar `A · Rest`, the return-to-cursor chip `A · Set 2 · Dumbbell row`.
-
-The color is applied to:
-- Group header background tint
-- Side vertical bar connecting the group's exercises
-- Set indicators in the bottom rest bar (`A · Rest 2:00`)
-
-Specific colors — TBD with the visual style.
+The letter is a small inline chip on the header title (`Superset A`, visual §2.5). Inside a **framed** group card (Builder, Active workout, History detail) that title carries the letter, so exercises are listed in order with **no per-row letter**; where a per-row ordinal is shown (e.g. History detail's per-exercise set list, §10.3) it is a plain `1`/`2` — the exercise's position in the round. Repeating the letter on every row would be noise. The combined `A1`/`A2` ordinal (`A1 · Pull-ups`, `A2 · Push-ups`) is the cross-reference notation for **frameless inline references**, where no title anchors the letter — describing cursor cycling (`A1 → A2`) or naming a set in flat prose. Compact UI labels use the short letter-prefix form instead: the `RestBar` context line (`Superset A · Dumbbell row`), the return-to-cursor chip (`A · Set 2 · Dumbbell row`).
 
 ### 6.4 Group structure in the list
 
 - Header label: `Superset A · round X of Y` (letter = small inline chip, visual §2.5)
 - Round indicator dots: `● ○ ○`
-- Side vertical bar in the group's color connects the group's exercises
+- The framed card boundary is what connects the group's exercises visually — no per-group colored connector (§6.3). If a vertical divider between the group's exercises is wanted later, it uses the same neutral hairline (`--line`) as everything else, not a group color
 - Exercises are shown in order — no per-row letter in the card (the header title carries the group letter). Where a per-row ordinal appears (History detail's per-exercise set list, §10.3) it is a plain `1`/`2`/`3` — position in the round; the combined `A1`/`A2`/`A3` form stays as the cross-reference notation only for frameless inline references and compact labels (§6.3)
 
 ### 6.5 Cursor cycling
@@ -98,7 +91,9 @@ flowchart LR
 
 The cursor jumps within a round without a pause (instant transition between cards A1 → A2). After the last exercise of a round — the rest timer starts. The round counter increases only when all exercises of the round are closed.
 
-### 6.6 Bottom bar state machine
+### 6.6 RestBar visibility state machine
+
+`Idle` = only the persistent bottom bar is showing. `Rest` = the `RestBar` sheet is slid in above it (§5.10) — this is sheet visibility, not a bottom-bar mode.
 
 ```mermaid
 stateDiagram-v2
@@ -111,7 +106,7 @@ stateDiagram-v2
     Rest --> Rest: tap plus 15s
 ```
 
-The rest-timer label shows context: `A · Rest 2:00` for groups (with letter color), `Rest 1:30` for regular exercises.
+The `RestBar` context line shows `Superset A · <current exercise>` for groups, or just the exercise name standalone — no letter color (§6.3).
 
 ### 6.7 Edit mid-workout
 

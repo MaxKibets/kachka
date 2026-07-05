@@ -5,11 +5,14 @@
 > how it looked — see the status note below for what still applies.
 
 **Status**: styling retired (2026-07-04). See `../CONTEXT.md` ("Visual system —
-reopened", 2026-06-21) for the current state: brand/product strategy below
-stays locked, but concrete styling (palette, typography, layout, component
-patterns) is superseded — actual UI design now happens in Claude Design, not
-as in-repo tokens or mockups. Reconciliation of this zone against the Claude
-Design output is still pending.
+approved via Claude Design", resolved 2026-07-05) for the current state:
+brand/product strategy below stays locked, but concrete styling (palette,
+typography, layout, component patterns) is superseded — actual UI design now
+happens in a Claude Design project (`kachka`), not as in-repo tokens or
+mockups. That project has so far designed one screen (In-workout / RestBar);
+`../spec/in-workout.md`, `../spec/supersets.md`, and `../spec/finish.md` were
+reconciled against it on 2026-07-05. Remaining screens (Today, History,
+Builder, Profile) still need to be designed there and reconciled the same way.
 
 **Version**: v0.3 · retired the styling zones (color, typography, layout,
 components, open-items — §2–§7, §10) after the token-system revert (PR
