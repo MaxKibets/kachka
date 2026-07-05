@@ -39,7 +39,7 @@ The completion screen is **full-screen, not a bottom sheet**. Single-step: hold 
 
 - Workout name + date + duration
 - Stats grid (4 cards): `Volume`, `Sets`, `Duration`, `Personal records`
-- The PR card is visually highlighted with an info color — the only motivational accent on the screen
+- The PR card is highlighted with the accent orange (`--accent`) — the same hue used for completion/live/CTA elsewhere, reused here for the screen's one motivational moment; there is no separate "info" color in the design system
 - Workout note (textarea, optional)
 - Exercise summary (collapsible, shows per-exercise sets count and a `◆` marker for a PR; groups with letter labels)
 - Primary button: `Save to history`

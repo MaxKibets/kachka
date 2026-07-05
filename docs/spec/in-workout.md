@@ -13,16 +13,17 @@
 |---|---|
 | Top bar | Fixed. **Identity + elapsed only**: workout name (+ edit-pencil), the session timer (elapsed), close + menu. Carries **no workout statistics** — they live in the bottom bar |
 | Scroll list | List of exercises and groups. Scrolls vertically. The active position auto-scrolls into the visible zone |
-| Bottom bar | Fixed. Two modes: `idle` (workout stats + `Finish`) or `rest` (countdown with context). The **single home for workout statistics** — `sets done / total · volume kg` (§5.10) |
+| Bottom bar | Fixed, **single persistent state** — always workout stats + `Finish` (§5.10). It never changes shape or content |
+| Rest overlay | A separate `RestBar` sheet that slides in **above** the bottom bar while resting, then dismisses — not a mode of the bar itself (§5.10) |
 
-**Workout statistics live in the bottom bar, not the header.** The top bar previously also carried a meta-row (exercise progress + set count + volume); it was removed so the header stays a calm identity strip — name + elapsed timer — and the bottom bar (`idle` mode) is the one place for live workout stats: `sets done / total · volume kg`. Rationale: one home for the numbers (no duplication or drift between header and bar), a quieter header read at arm's length, and the stats sit by the thumb next to `Finish` where the user already looks when deciding to wrap up. The session timer stays in the header because it is identity-level (how long this session has run), not a per-set logging metric.
+**Workout statistics live in the bottom bar, not the header.** The top bar previously also carried a meta-row (exercise progress + set count + volume); it was removed so the header stays a calm identity strip — name + elapsed timer — and the bottom bar is the one place for live workout stats: `sets done / total · volume kg`. Rationale: one home for the numbers (no duplication or drift between header and bar), a quieter header read at arm's length, and the stats sit by the thumb next to `Finish` where the user already looks when deciding to wrap up. The session timer stays in the header because it is identity-level (how long this session has run), not a per-set logging metric.
 
 ### 5.2 Exercise card
 
 Each exercise in the list is a section with:
 
 - Exercise name + `⋯` icon. A `note` icon shows only when the exercise has an author note — filled, and tapping it toggles an inline hint banner (note text + `Edit`) under the name; default collapsed. With no note there is no icon; add via `⋯` → `Add note` or the Builder row menu. Editor: `exercise-note-sheet`. Workout-level author notes (program-format §139) are deferred to v2
-- Set table with columns `№ | prev | kg | reps | ✓`
+- Set table with columns `№ | prev | pre | kg | reps | ✓`
 - `+ add set` button
 
 Table columns:
@@ -31,22 +32,25 @@ Table columns:
 |---|---|
 | `№` | Set number. Tappable — opens the set actions sheet |
 | `prev` | Result of this set from the previous workout (from the clone source or from the most recent performance of this set at all). Not a target, a benchmark of "what to beat". Format `60×5` |
-| `kg` | Current weight. If a target is set in the Builder / clone — shown as ghost text. Otherwise a dash |
-| `reps` | Reps. Same as kg |
+| `pre` | The planned/prescribed reps target for this set, if one was set in the Builder or clone. A dedicated column, not ghost text inside `kg` — hideable per user preference (a set with no target collapses the column). Weight has no equivalent "pre" value: only reps are prescribed ahead of time; weight is chosen live |
+| `kg` | Current weight, typed live. Dash when not yet logged |
+| `reps` | Reps, typed live. Dash when not yet logged |
 | `✓` | Set close checkbox. Tap = save + advance cursor + start rest timer |
 
 ### 5.3 Set states
 
 | State | Visual representation |
 |---|---|
-| Completed | Muted text + green ✓ |
-| Active | Info bg highlight + bold number + editable kg/reps |
-| Next (cued) | Thin info-colored side bar + info-tinted number |
+| Completed | Muted row text + filled accent (orange) ✓ marker |
+| Active | Bold number + editable kg/reps + a spinning-ring animation on the marker (in the `✓` position) — no row background highlight |
+| Next (cued) | Regular muted text, same as pending — no dedicated highlight; distinguished only by being the next unclosed row after the active one |
 | Pending | Regular muted text |
+
+The design system has exactly one accent hue (orange), reserved for completion/live/CTA — there is no separate "info" color for secondary emphasis. Active is marked structurally (bold + editable + marker animation), not by a background tint; cued has no visual marker of its own beyond ordinary reading order.
 
 ### 5.4 Completed exercises
 
-A completed exercise stays expanded — its full set table remains visible (muted rows + green ✓ per set). It is not collapsed to a one-line summary: the logged history should be readable without an extra tap.
+A completed exercise stays expanded — its full set table remains visible (muted rows + accent ✓ per set, §5.3). It is not collapsed to a one-line summary: the logged history should be readable without an extra tap.
 
 ### 5.5 Editing mid-workout
 
@@ -105,17 +109,20 @@ A floating chip above the bottom bar, appears only when the active set is fully 
 │  ... scroll list ...    │
 │                         │
 │      ┌──────────────┐   │
-│      │ ↑ Set 3 of 4 │   │  floating chip, info color
+│      │ ↑ Set 3 of 4 │   │  floating chip, neutral surface
 │      └──────────────┘   │
 ├─────────────────────────┤
-│  A · Rest 1:23          │  bottom bar
+│  RESTING          01:23 │  RestBar sheet (§5.10), shown only while resting
+│  Superset A · Dumbbell  │
+├─────────────────────────┤
+│  5 / 14   5120 kg  ⏻    │  bottom bar — always present, unchanged
 └─────────────────────────┘
 ```
 
 - *Anchor*: above the bottom bar, horizontally centered. Does not block the bottom bar
 - *Arrow icon*: `↑` if the cursor is above the viewport, `↓` if below
 - *Label*: a short reference to the target — `Set 3 of 4` for a standalone exercise; `A · Set 3 of 4` for a superset (group letter prefix)
-- *Color*: info-tint, consistent with the cursor highlight (§5.3) — deliberately not loud
+- *Color*: neutral surface + muted text (same `--surface-2`/`--text-2` treatment as other secondary chips) — no accent hue, deliberately not loud
 - *Tap behavior*: smooth scroll to the active set, the chip hides, auto-scroll active again
 - *Visibility logic*: shown when the active set renders fully outside the viewport (with a small threshold — 1-2 rows beyond the edge are not considered "outside")
 - *Not shown* when the cursor is in the viewport, or when the workout is completed
@@ -148,18 +155,17 @@ This serves both personas: the Planner can lay out the full scheme (sets/reps, o
 
 ### 5.10 Rest timer presentation
 
-The rest timer is the bottom bar's `rest` mode (§5.1), not a floating element. When a set is closed and rest starts:
+The rest timer is a separate **`RestBar` sheet** that slides in *above* the persistent bottom bar (§5.1) — not a floating ring, and not a mode of the bar itself. The bottom bar underneath never changes: it keeps showing `sets done / total · volume kg` + `Finish` the entire time, unobscured except by the sheet sitting above it. When a set is closed and rest starts:
 
-- The bottom bar switches from `idle` to an **accented countdown**: a large mono `MM:SS` number + a thin progress bar spanning the bar's width (mallard, depletes as time elapses).
-- Context label on the left: `Rest` for a standalone exercise, `A · Rest` (letter-colored) for a group (§6.3, §6.6).
-- Inline controls: `−15s` / `+15s` to adjust, `Skip` to advance immediately (§6.6 state machine).
+- The `RestBar` sheet slides in above the bottom bar: a small uppercase `RESTING` label (accent orange) with a context line beneath it — the group + current exercise for a superset (`Superset A · Dumbbell row`), or just the exercise name standalone — and a large `MM:SS` clock to the right. Below that, a thin progress bar (accent orange, 40% opacity, same convention as the segmented round-progress) spans the sheet's width and depletes as time elapses.
+- Inline controls beneath: `−15s` / `Skip rest` / `+15s` — `Skip rest` is the wider, accented center button; the two adjust buttons are neutral.
 - When Rest haptic is ON (§12.3) a subtle pulse sits by the label; hidden when OFF.
-- When rest ends or is skipped, the bar returns to `idle` — the workout-stats line (`sets done / total · volume kg`, §5.1) + `Finish workout`. The `idle` bar reclaims the slot the `Skip` control sat in, so `Finish` completes on a **hold**, not a tap (§9.1) — absorbing a stray tap or double-tap that lands just as rest is skipped or expires.
-- **Initial duration** comes from `Default rest` in Profile (§12.3, default `90 s`). Supersets use their own per-group rest from the superset config (§6.2) instead. If `Default rest` is `Off`, closing a set does not auto-start a countdown — the bar stays `idle`.
+- When rest ends or is skipped, the `RestBar` sheet dismisses, revealing the unchanged bottom bar underneath. `Finish` still completes on a **hold**, not a tap (§9.1) — a deliberate, once-per-workout action, and a safeguard against a stray tap landing during the sheet's dismiss transition.
+- **Initial duration** comes from `Default rest` in Profile (§12.3, default `90 s`). Supersets use their own per-group rest from the superset config (§6.2) instead. If `Default rest` is `Off`, closing a set does not auto-start a countdown — no `RestBar` appears.
 
-A large floating ring was considered and rejected: it costs ~180px, pushes the set list down, and collides with the return-to-cursor chip (§5.8). The accented bottom bar stays glanceable without a separate floating layer.
+A large floating ring was considered and rejected: it costs ~180px, pushes the set list down, and collides with the return-to-cursor chip (§5.8). The `RestBar` sheet stays glanceable without needing a separate floating ring.
 
-**Coexistence with the return-to-cursor chip (§5.8).** The chip floats in the content area *above* the bottom bar; the rest countdown lives *in* the bar. They sit on different layers and never collide — both can be visible at once (resting while scrolled away from the cursor): chip above, rest bar below.
+**Coexistence with the return-to-cursor chip (§5.8).** The chip floats in the content area *above* the bottom bar; the `RestBar` sheet also sits above the bottom bar, higher up still. They sit on different layers and never collide — both can be visible at once (resting while scrolled away from the cursor): chip above the bar, `RestBar` sheet above that.
 
 
 ---

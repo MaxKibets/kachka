@@ -98,24 +98,24 @@
 
 **In-workout**
 - [x] Exercise list — scroll, not carousel
-- [x] Sets with an opt. target — ghost text (from the clone source)
+- [x] Sets with an opt. target — dedicated `pre` column in the set table, not ghost text (from the clone source; spec §5.2)
 - [x] Custom numpad instead of the system keyboard
 - [x] Quick-adjust buttons on the numpad (`±2.5`, `±5`)
 - [x] Tap on a set number → set actions sheet
 - [x] Set actions: set type (`Working` / `Warm-up` segment), RPE 1–10, delete
 - [x] Active workout = full editor: add/remove set, add/insert/remove exercise, reorder
 - [x] Skip exercise — soft remove that preserves the structure for clone
-- [x] Failed reps (0 reps) — allowed, save + green ✓, does not go into volume and PR
+- [x] Failed reps (0 reps) — allowed, save + accent ✓, does not go into volume and PR
 - [x] Auto-scroll pauses on manual scroll; return via a floating "return to current set" chip above the bottom bar (appears when the cursor is outside the viewport, tap → smooth scroll + auto-scroll re-engages). Swipe-down — in v2 as a power-user option
-- [x] Rest timer = the bottom bar's accented `rest` mode (large mono `MM:SS` + full-width progress + inline `−15s/+15s/Skip`), not a floating ring. Coexists with the return-to-cursor chip on separate layers — chip above the bar, rest countdown in the bar (design-review F3.1, spec §5.10)
-- [x] Workout statistics live only in the bottom bar (`idle` mode: `sets done / total · volume kg`); the top bar carries identity + elapsed timer only — no stats. One home for the numbers (no header/bar drift), a quieter header, stats by the thumb next to `Finish` (spec §5.1, §5.10)
+- [x] Rest timer = a separate `RestBar` sheet that slides in above the (unchanged) bottom bar (large `MM:SS` + full-width progress + inline `−15s/Skip rest/+15s`), not a floating ring and not a mode of the bar itself. Coexists with the return-to-cursor chip on separate layers — chip above the bar, `RestBar` sheet above that (design-review F3.1, spec §5.10)
+- [x] Workout statistics live only in the bottom bar (`sets done / total · volume kg`, always shown — the bar has one persistent state); the top bar carries identity + elapsed timer only — no stats. One home for the numbers (no header/bar drift), a quieter header, stats by the thumb next to `Finish` (spec §5.1, §5.10)
 
 **Supersets**
 - [x] Must-have in v1
 - [x] Only alternating, 2-5 exercises, 2-10 rounds, one rest per group
 - [x] Creation pre-workout and mid-workout (with constraint: 0 logged sets in the candidates)
 - [x] Creation UI: per-exercise `⋮` → Add to superset → multi-select picker → config sheet
-- [x] Color-coded letter labels (A/B/C with color rotation)
+- [x] Letter labels (A/B/C), no per-group color — the design system's single accent doesn't support a rotating group palette (spec §6.3)
 - [x] Edit rounds (constrained), rest, add/remove exercise (under the same constraint)
 - [x] Ungroup always possible, logged sets stay bound to their exercises
 - [x] AMRAP / uneven / time-based — in v2
