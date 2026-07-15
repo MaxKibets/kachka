@@ -77,6 +77,8 @@ The letter is a small inline chip on the header title (`Superset A`, visual §2.
 - The framed card boundary is what connects the group's exercises visually — no per-group colored connector (§6.3). If a vertical divider between the group's exercises is wanted later, it uses the same neutral hairline (`--line`) as everything else, not a group color
 - Exercises are shown in order — no per-row letter in the card (the header title carries the group letter). Where a per-row ordinal appears (History detail's per-exercise set list, §10.3) it is a plain `1`/`2`/`3` — position in the round; the combined `A1`/`A2`/`A3` form stays as the cross-reference notation only for frameless inline references and compact labels (§6.3)
 
+**Note icon.** Each child exercise inside a group carries the same note icon + inline note card pattern as a standalone exercise row (Builder §4.4, Active workout §5.2), scoped to that **child exercise's own note** (program-format §6, group-child `notes`). Default expand state follows the same per-screen rule as a standalone exercise row: collapsed by default in Builder, expanded-if-filled/collapsed-if-empty in Active workout. **The group header itself (`Superset A`) does not get its own note icon** — there is no group-level note in this UI.
+
 ### 6.5 Cursor cycling
 
 ```mermaid
