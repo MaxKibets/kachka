@@ -84,7 +84,8 @@ Bodyweight exercises (from the system db `isBodyweight: true`) still hide the kg
 |---|---|
 | Add to superset | Multi-select picker from other standalone exercises → config sheet (rounds, rest) → creates a group. §6 |
 | Remove exercise | Remove the exercise with confirmation |
-| Add note | Per-exercise note — author hint shown in Active workout. Opens a form bottom sheet (shared editor, also reached from the Active-workout note icon). This `⋮` menu dismisses first, so the editor sits over the Builder, not stacked on the menu (§2.5) |
+
+**Note icon.** Each exercise row carries a note icon next to `⋮`, **always visible** regardless of whether the exercise has a note. Tap toggles an inline note card under the row — expand/collapse; **default collapsed**, whether the note has text or not (unlike Active workout, where a filled note defaults expanded — In-workout §5.2). The icon is neutral by default and turns accent only while its card is expanded. The card shows the note text, or a placeholder when empty; tapping it focuses the field directly for inline editing (caret at the end of existing text) — no separate sheet. Saves on blur (autosave). Same field as the Active-workout note icon (`exercise.notes`, program-format §6); a manual toggle does not persist — re-entering the Builder re-applies the collapsed default.
 
 ### 4.5 Group menu `⋮` (in Builder)
 

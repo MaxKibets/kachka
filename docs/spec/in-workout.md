@@ -22,7 +22,7 @@
 
 Each exercise in the list is a section with:
 
-- Exercise name + `⋯` icon. A `note` icon shows only when the exercise has an author note — filled, and tapping it toggles an inline hint banner (note text + `Edit`) under the name; default collapsed. With no note there is no icon; add via `⋯` → `Add note` or the Builder row menu. Editor: `exercise-note-sheet`. Workout-level author notes (program-format §139) are deferred to v2
+- Exercise name + note icon + `⋯` icon. The note icon is **always visible**, regardless of whether the exercise has a note. Tap toggles an inline note card under the name — expand/collapse. The icon is neutral by default and turns accent (orange) only while its card is **expanded** (active state); it does not indicate whether a note has text. Default state on screen entry: **expanded if the note has text, collapsed if empty**; a manual toggle does not persist — re-entering the screen re-applies this rule. The card shows the note text, or a placeholder when empty; tapping the card focuses it directly for inline editing (caret at the end of existing text) — there is no separate editor sheet. Saves on blur (autosave, no explicit `Save` button). Same field as the Builder row's note icon (`exercise.notes`, program-format §6). Workout-level author notes (program-format §139) are deferred to v2
 - Set table with columns `№ | prev | pre | kg | reps | ✓`
 - `+ add set` button
 
@@ -66,7 +66,6 @@ An active workout is a full editor on top of the initial structure.
 | Skip exercise | Per-exercise `⋯` → Skip | Soft variant: the exercise stays in the structure, marked `Skipped` |
 | Reorder | Drag handle on the right edge of the section | The cursor stays on the same set that was active |
 | Add to superset | Per-exercise `⋯` → Add to superset | §6 (with constraint: 0 logged sets in candidates) |
-| Add / Edit note | Per-exercise `⋯` → Add note | Shared note editor sheet (§4.4 · `exercise-note-sheet`); the `⋯` menu dismisses first — editor over the screen, not stacked on the menu (§2.5) |
 | Edit superset | Group `⋯` | §6.7 |
 | Ungroup | Group `⋯` → Ungroup | Always allowed. §6.7 |
 
