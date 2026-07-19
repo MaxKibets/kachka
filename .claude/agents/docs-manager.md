@@ -34,8 +34,12 @@ work routes through you.
 - **File naming:** every in-scope `.md` filename is UPPER-CASE (e.g. `README.md`,
   `INDEX.md`, `API_INTEGRATION.md`), except files whose name starts with `_` (e.g.
   `_pattern.md`) — those stay lowercase as the underscore prefix already marks them as
-  special/meta files. Apply this when creating new files; when you touch an existing
-  non-compliant file for another reason, rename it to match as part of that edit.
+  special/meta files. Content files inside `docs/` subdirectories additionally carry a
+  two-digit ordering prefix `NN_` (`00_`, `01_`, `02_`, …) assigned sequentially in reading
+  order — next free number on creation (e.g. `00_FOUNDATIONS.md`). Standing root-level files
+  (`docs/INDEX.md`, `docs/OPEN_QUESTIONS.md`, `README.md`) and `_pattern.md` files carry no
+  prefix. Apply this when creating new files; when you touch an existing non-compliant file
+  for another reason, rename it to match as part of that edit.
 
 # Pattern files (`_pattern.md`)
 
@@ -69,6 +73,12 @@ approach", no version-change logs, no mentions of superseded decisions — **unl
 
 - (a) the section is explicitly a changelog/history section, or
 - (b) the user explicitly asks for historical context.
+
+The same rule points forward: never enumerate anticipated future files, sections, or features
+that don't exist yet (e.g. an "expected files" roster in a pattern file). Rules describe how
+content is named and structured whenever it gets created — not a forecast of what will be
+created. An illustrative example of a naming format is fine; a list of concrete future
+filenames is not.
 
 When editing a doc and you find stale historical content that violates this rule, remove it as
 part of the edit — don't just leave it sitting next to the current content. When reconciling

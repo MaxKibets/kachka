@@ -18,3 +18,8 @@ without opening the file.
 - `docs/INDEX.md` — this file; the documentation map itself.
 - `docs/OPEN_QUESTIONS.md` — live tracker of unresolved decisions, each linked to the doc
   where the topic is documented.
+
+## `docs/spec/`
+
+- `docs/spec/_pattern.md` — directory pattern: purpose, file naming, and the section
+  skeleton every spec file follows.
