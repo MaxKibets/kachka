@@ -16,3 +16,5 @@ without opening the file.
 ## `docs/`
 
 - `docs/INDEX.md` — this file; the documentation map itself.
+- `docs/OPEN_QUESTIONS.md` — live tracker of unresolved decisions, each linked to the doc
+  where the topic is documented.
