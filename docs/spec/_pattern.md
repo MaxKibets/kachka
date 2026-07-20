@@ -8,7 +8,7 @@ this before creating or restructuring any spec file.
 `docs/spec/` holds the v1 UI/UX behavior spec: one file per product zone, documenting the
 current, decided behavior for that zone — flows, screen structure, rules. The visual system
 (colors, type, spacing, components) is out of scope here; it's maintained in the Claude
-Design project.
+Design project (see `docs/DESIGN.md`).
 
 ## Expected files & naming
 
