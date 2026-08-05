@@ -655,3 +655,83 @@ Remaining work, all blocked or seed-dependent:
 2. **C13** — re-run once the updated `CLAUDE.md` has propagated, so the case
    isolates the scope rule rather than leaning on the table.
 3. **C10, C14** — need a migrated spec in the tree as their seed.
+
+# Cumulative migration — all nine zones, kept
+
+Run in reading order so each zone could reference the ones before it, with no
+rollback between them. This is production work, measured as it went.
+
+Result: `docs/spec/` holds nine zone files plus the pattern, ~1320 lines.
+Reading order in `docs/INDEX.md`: FOUNDATIONS · TODAY · BUILDER · IN_WORKOUT ·
+SUPERSETS · EXERCISES · FINISH · HISTORY · PROFILE.
+
+## Cross-references: 90 numbered, 0 invalid
+
+Every `FILE.md §N.M` in the tree was checked against the actual section headings
+of its target. All 90 resolve. This is the check that isolated cases could never
+run — before the cumulative pass, every cross-reference was either bare or
+pointing at a file that didn't exist.
+
+## Mechanical sweep, all ten files
+
+    wrong diagram orientation   0
+    dead draft paths            0
+    history markers             0
+    flowchart TD diagrams       4
+
+## The finding: reconciliation works, and isolated cases hid it
+
+Coverage for the `description`'s second trigger — "a change elsewhere makes
+existing documentation stale" — was recorded above as zero. It isn't. It fired
+**unprompted on six of the nine migrations**, every time a newly created file
+made an earlier bare reference verifiable:
+
+| Migration | Reconciled |
+|---|---|
+| `today` | 3 refs in FOUNDATIONS → `TODAY.md §2.3` |
+| `builder` | refs in FOUNDATIONS, TODAY → `BUILDER.md §3/§5/§6/§9` |
+| `in-workout` | 6 refs in BUILDER, 2 in FOUNDATIONS |
+| `supersets` | 1 in FOUNDATIONS, 3 in IN_WORKOUT |
+| `finish` | FOUNDATIONS, IN_WORKOUT, SUPERSETS |
+| `exercises` | 3 in FOUNDATIONS |
+| `profile` | 2 in IN_WORKOUT, 1 in FOUNDATIONS |
+
+No case asked for this. It follows from the cross-reference rule (`d4dc8ce`)
+plus the reconcile trigger, and it only becomes visible when state accumulates.
+**Rolling back after every case had been hiding a working half of the agent's
+purpose.** Worth remembering when designing an eval set: isolation buys
+comparability and costs emergent behaviour.
+
+C17 remains unverified, though — this is reconciliation in the easy direction
+(a target appeared, so tighten the pointer). The hard direction, where a change
+*invalidates* existing content, still needs its case.
+
+## Judgement calls the agent made and reported
+
+Not scored, but worth recording — each was flagged rather than slipped in:
+
+- `finish`: the draft's flowchart had two different Finish triggers ("banner",
+  "menu") while its own prose and the already-migrated `IN_WORKOUT.md` establish
+  one hold gesture. Merged into a single node.
+- `history`: "repeat workout from this entry" was listed as deferred in the draft
+  but absent from the confirmed deferred log, so it was stated as current fact
+  (no repeat action; cloning goes via Today) instead of promised for v2.
+- `exercises`: the `←` back arrow in the Add-mode mockup contradicting the "no
+  back arrow" rule two sections up — corrected this time, having been preserved
+  and flagged in the isolated run. Same defect, opposite call, both reported.
+- `profile`: decisions recorded only in the draft's `decisions.md` but belonging
+  to this zone's decided state were folded into its prose, per the pattern's rule
+  that a zone file's own text is the sole record.
+
+## Episode: API overload
+
+Mid-migration the API returned 529 and the safety classifier went down with it,
+blocking agents, shell, and file writes for roughly fifteen minutes. Read-only
+tools kept working. No partial writes survived the failed run — the tree was
+verified consistent via Glob and Read before resuming. Recovery was two waits of
+4 and 10 minutes; retrying immediately does nothing.
+
+## Now unblocked
+
+C10 (`decisions.md` — §16/§17 finally have zone files to dissolve into) and C14
+(draft cleanup, which needs a migrated spec as its premise).

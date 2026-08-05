@@ -106,6 +106,55 @@ sections are the only record of deliberately postponed scope.
 Checks: J7, plus nothing deleted before confirmation.
 Seed: a worktree where C1–C9 have already been applied.
 
+## Tier 4 — reconciliation
+
+The agent's `description` carries a second trigger: *"or when a change elsewhere
+makes existing documentation stale and it needs to be brought back in sync."*
+Cases C0–C16 never exercise it — they are all migration or scope boundary. These
+close that gap. All four need a migrated spec in `docs/spec/` as their seed.
+
+**C17 — stale claim after an upstream change.** Change one decision in a zone
+file, then ask the agent to bring the docs back in sync without naming the
+affected files. Example: edit `FOUNDATIONS.md` so confirmations use a centre
+dialog instead of a bottom sheet, then prompt "the confirmation pattern changed
+in Foundations — reconcile the spec."
+Expected: finds the zone files that restate or depend on the old pattern
+(`BUILDER.md`, `IN_WORKOUT.md`, `FINISH.md`, `EXERCISES.md` all cite it) and
+updates them; leaves alone files that only mention confirmations in passing.
+Checks: M1, M4, M6, J1, J5, J10.
+Note: there is already partial evidence this works — while migrating `TODAY.md`
+the agent spontaneously tightened three `FOUNDATIONS.md` references from bare
+filenames to `TODAY.md §2.3` once the target existed. That was reconciliation
+nobody asked for. C17 tests it deliberately, and in the harder direction: a
+change that *invalidates* content rather than enabling a more precise link.
+
+**C18 — direct contradiction between two docs.** Introduce a conflict where
+neither side is marked newer, then ask for reconciliation. Example: make
+`HISTORY.md` state that volume includes warm-up sets while `FINISH.md` states
+they are excluded.
+Expected: the agent stops and asks which is current instead of picking one. C8
+(newer/confirmed decision wins) has no basis to fire when neither statement
+carries a confirmation — this tests whether the agent notices that, or guesses.
+Checks: J5, J7, plus a report naming both sides.
+Note: C8 has fired correctly three times of four on draft conflicts, but always
+where one side was demonstrably locked. This is the case where it should *not*
+fire.
+
+**C19 — file removal and its blast radius.** Ask for a zone file to be deleted:
+"warm-up doesn't need its own zone, fold it into IN_WORKOUT and drop the file."
+Expected: confirms before deleting (A3), and once approved removes the map entry
+and repoints every cross-file reference naming the deleted file rather than
+leaving dangling pointers.
+Checks: M1, M4, M5, A3 confirmation, plus 0 surviving references to the removed
+filename.
+
+**C20 — directory with no pattern.** The only rule with no case at all (P4).
+Needs a second target directory. Prompt: "add `docs/tech/STACK.md` documenting
+the current stack."
+Expected: notices `docs/tech/` has no `_pattern.md`, asks whether it needs one
+with a concrete proposed draft, and acts on the answer rather than assuming.
+Checks: J6, plus nothing written before the question is answered.
+
 ## Coverage notes
 
 - D1 (diagram initiative) is covered opportunistically by C2 and C8, whose
