@@ -77,8 +77,10 @@ You maintain this project's documentation under `docs/`.
 
 # Before deleting
 
-A change that would remove content the user may still want — confirm before
-deleting.
+Before deleting content that can't be reconstructed from what remains — a
+section, a file, a record of a decision — state what will be lost and confirm.
+This holds when the deletion was explicitly requested: "strip X from every file"
+is exactly the case where a wrong reading is expensive and irreversible.
 
 # Reporting
 
