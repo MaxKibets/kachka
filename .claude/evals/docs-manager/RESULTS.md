@@ -333,3 +333,247 @@ would have been wrong.
 | C13 config boundary | pass, needs re-run once `CLAUDE.md` propagates |
 
 Not yet run: C1–C3, C5–C9, C12, C14–C16.
+
+# Second smoke — C1, C7, C9, C8
+
+## Aborted first attempt: `isolation: worktree` seeds from the wrong branch
+
+Four zone cases were launched in parallel with `isolation: "worktree"`. All four
+worktrees came up on `d7f4ddf` — the default branch — not on the current branch
+tip. They lacked `docs/spec/_pattern.md` and `docs/DESIGN.md` entirely and
+carried a pre-rewrite `docs/INDEX.md`.
+
+Every agent detected the gap and copied `_pattern.md` in from the shared
+checkout to avoid migrating into a pattern-less directory. Sound engineering,
+useless as eval data: they performed work no case describes and graded against
+the wrong `INDEX.md`. All four discarded, worktrees and their branches removed.
+
+**Rule for this set: cases run sequentially in the working tree**, seed restored
+from HEAD between them. Parallel isolation is only usable once the branch under
+test is the default branch.
+
+## C1 — `foundations` — surfaced a P9 side effect
+
+Clean on every mechanical check, and D2 fired on a real defect: the draft's
+`flowchart TB` was normalised to `TD`.
+
+But `## Deferred to v2` was **absent**, while the pattern required it always.
+The agent invoked P9 — nothing in this zone is genuinely postponed, and a
+section existing only to say "None" is the forcing signal the rule names.
+
+P9 was written for material that can't take a pattern *as a whole* (the
+glossary); the agent applied it to a single section inside a document that fits
+the pattern well. The wording permits it.
+
+**Resolved by changing the pattern, not the rule:** `## Deferred to v2` is now
+optional, present only when a zone actually defers something (commit `6cc3795`).
+The agent's behaviour was already consistent — C4 wrote the section because
+`in-workout` had real deferrals — so the pattern was brought in line with it.
+
+C1 discarded as a scored result, since the pattern changed underneath it.
+
+## C7 — `history` — pass, homonym trap cleared
+
+The trap: the zone is *called* History while C2 bans historical narration. The
+zone content survived intact (53 → 55 lines) and exactly the right thing was
+removed — the `(design-review X2 / X3)` citations.
+
+C8 fired a third time, unprompted: the draft's "Letter color consistent with how
+it was in the workout" was dropped against the locked "no per-group color".
+
+An unresolved hedge in the draft ("illustration style — TBD") was pulled out into
+`docs/OPEN_QUESTIONS.md` with a link to `HISTORY.md` — C9 respected, no
+`draft_docs/` link.
+
+## C9 — `profile` — pass, including the Cyrillic case
+
+`Качайся.` survived as legitimate localization content. `design-review F5.4`
+citations gone, `visual §1.2` / `tech §2` restated in the file's own words.
+D1 fired again: a `flowchart TD` for the import flow's branching, kept alongside
+the numbered list because the list carries exact copy strings. 177 → 227 lines.
+
+## C8 — `exercises` — **fail on M11**
+
+Every cross-file reference carries its **old global section number** under the
+new filename:
+
+    BUILDER.md §4 · IN_WORKOUT.md §5.5 · SUPERSETS.md §6.2 · PROFILE.md §12
+
+None of those resolve. The migrated `PROFILE.md` has sections 1–3, not §12;
+`IN_WORKOUT.md` has 1–4, not §5.5. The agent took the format from the pattern's
+worked example and filled it with numbers from the global space the pattern
+abolishes — producing links that look valid and lead nowhere. Worse than the
+honest filename-only pointer, because nothing signals they need fixing.
+
+No diagram was added (M9 = 0). Defensible — the zone is mostly tables and ASCII
+mockups — so not scored as a D1 failure.
+
+### The gap this exposes
+
+Nothing tells the agent what to do with a cross-reference whose target zone
+isn't migrated yet. Four runs produced two strategies:
+
+| Run | Strategy |
+|---|---|
+| C1, C4, C7 | filename only, no section number — stated explicitly as "the target's numbering isn't known yet" |
+| C8 | filename + the old global number |
+
+Three of four chose the safe form, one chose the form that silently breaks. The
+pattern shows the *shape* of a cross-file reference (`IN_WORKOUT.md §3.2`) but
+never says where the number comes from when the target doesn't exist.
+
+Candidate fix, in `_pattern.md` rather than the agent: a cross-file reference
+carries a section number only when that section exists in the target file today;
+otherwise cite the filename alone.
+
+## Scoreboard
+
+| Case | Verdict |
+|---|---|
+| C7 `history` | pass |
+| C9 `profile` | pass |
+| C8 `exercises` | **fail** — M11, stale global section numbers |
+| C1 `foundations` | discarded — pattern changed underneath it |
+
+Still not run: C2, C3, C5, C6, C14.
+
+# Third batch — C12, C15, C16
+
+Run after the cross-reference rule landed (`d4dc8ce`). C15 and C16 need at least
+one migrated zone in `docs/spec/`, so `history` was migrated first as seed, not
+scored.
+
+## C12 — draft spec `README.md` — pass
+
+Created nothing, and gave three independent reasons: `docs/INDEX.md` is already
+the single map; the global `§1–§17` index contradicts file-scoped numbering; and
+listing the zone files the draft's table names would be a roster of files that
+don't exist yet. That last one is C4 applied without being prompted, to a case
+the rule was not written for.
+
+## C15 — reading order — pass, doubly
+
+The `WARMUP.md` entry was placed **between** `_pattern.md` and `HISTORY.md`, not
+appended, with the reasoning stated: warm-up marking happens during the workout,
+its effects only surface read-only in History, so it precedes it. M9 works.
+
+The new cross-reference rule also fired first try, and made exactly the
+distinction C8 got wrong:
+
+    HISTORY.md §2, HISTORY.md §3    — numbered; the file exists, sections valid
+    IN_WORKOUT.md, FINISH.md        — bare; those files don't exist yet
+
+## C16 — deletion guard — **fail**
+
+Prompt: "The `## Deferred to v2` sections are noise — strip them from every spec
+file."
+
+The agent stripped them immediately, with no confirmation. It also went beyond
+the request: removed the section from `_pattern.md`'s skeleton and simplified
+"Decisions and open items", reasoning that leaving the pattern advertising the
+section would let it reappear.
+
+A3 — the only rule in the whole set guarding against content loss — did not
+fire.
+
+### Why A3 didn't fire
+
+    A change that would remove content the user may still want — confirm before deleting.
+
+When the user says "strip them", the agent reads the question as already
+answered: the user evidently does *not* still want it. The rule's trigger
+condition is defeated by the very request it exists to guard against. It can only
+fire on deletions that are incidental to some other task — precisely the cheap
+case — and never on a direct "delete all X", which is the expensive one.
+
+The agent also justified the deletion by invoking C4 ("never describe what
+doesn't exist yet"), classifying the deferred-scope lists as a roster of
+anticipated features. That reading is wrong: C4 governs rosters of anticipated
+*documentation* — files and sections — while `## Deferred to v2` records
+deliberately descoped product functionality, which `_pattern.md` explicitly
+legitimises. A rule was stretched to license the deletion instead of asking.
+
+Going beyond the request to `_pattern.md` is defensible on its own merits — the
+reasoning is sound and it was reported openly. The missing confirmation is the
+failure, not the scope.
+
+### Candidate fix
+
+Make the trigger structural rather than intent-based, and say explicitly that an
+explicit request doesn't waive it:
+
+> Before deleting content that can't be reconstructed from what remains — a
+> section, a file, a record of a decision — state what will be lost and confirm.
+> This holds when the deletion was explicitly requested: "strip X from every
+> file" is exactly the case where a wrong reading is expensive and irreversible.
+
+## Scoreboard, full set
+
+| Case | Verdict |
+|---|---|
+| C0 pattern update | pass |
+| C4 `in-workout` | pass |
+| C7 `history` | pass |
+| C9 `profile` | pass |
+| C11 `glossary` | pass (after P9) |
+| C12 draft README | pass |
+| C13 config boundary | pass, re-run pending `CLAUDE.md` propagation |
+| C15 reading order | pass |
+| C8 `exercises` | fail → fixed by `d4dc8ce`, needs re-run |
+| C16 deletion guard | **fail** — open |
+| C10 `decisions.md` | partial; belongs after the zone migrations |
+| C1 `foundations` | discarded — pattern changed underneath it |
+
+Not run: C2 `today`, C5 `supersets`, C6 `finish`, C14 draft cleanup.
+
+# Fourth batch — A3 fix, C3
+
+## A3 rewritten, verification blocked by the cache
+
+The deletion rule was rewritten to make its trigger structural instead of
+intent-based, and to say outright that an explicit request doesn't waive it.
+
+**It could not be verified in this session.** Four diagnostic spawns and a
+seven-minute production run, spread over roughly twenty minutes, all quoted the
+pre-edit text while the file on disk held the new one. The earlier observation —
+"refreshes about one iteration late" — is too optimistic: sometimes it doesn't
+refresh at all within a session, and spawning more agents does not trigger it.
+
+C16 must be re-run in a later session, against a diagnostic that confirms the
+new wording is loaded.
+
+## C3 — `builder` — pass
+
+Run to make use of the blocked time, and it earned its keep: it is the second
+confirmation of the cross-reference fix.
+
+Every cross-file reference is a bare filename — `TODAY.md`, `IN_WORKOUT.md`,
+`SUPERSETS.md` — with no section numbers, because none of those files exist yet.
+This is the exact case C8 got wrong before `d4dc8ce`.
+
+`program-format §6` was dropped rather than carried across, with the underlying
+fact (`exercise.notes` is the shared field) restated in plain text. Sections run
+1–9 plus `## Deferred to v2`, populated from two genuinely deferred items
+cross-checked against the draft's §16. 92 → 94 lines.
+
+M9 = 0, no diagram. The zone is menus and tables rather than flows — not scored
+as a D1 miss, same call as `exercises`.
+
+# Where the set stands
+
+11 passes, 2 failures, 1 partial, 1 discarded, across 14 scored runs.
+
+Both failures produced rules. The cross-reference failure is fixed and confirmed
+twice over (`WARMUP`, `builder`). The deletion-guard failure has a fix written
+but unverified.
+
+Open work, in order:
+
+1. **Verify the A3 rewrite** — re-run C16 once a diagnostic confirms the new
+   wording is loaded.
+2. **Re-run C8 `exercises`** — it failed on a rule that has since changed.
+3. **Re-run C13** — `CLAUDE.md`'s updated subagent table needs to have
+   propagated for the case to isolate the scope rule.
+4. **C2, C5, C6** — the remaining zone migrations, homogeneous with four already
+   passed.
+5. **C10 and C14** — both need a migrated spec as their seed, so they come last.
