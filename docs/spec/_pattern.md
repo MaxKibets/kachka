@@ -3,21 +3,13 @@
 Pattern file for `docs/spec/`. Every file in this directory follows the rules below; read
 this before creating or restructuring any spec file.
 
-## Purpose
-
-`docs/spec/` holds the v1 UI/UX behavior spec: one file per product zone, documenting the
-current, decided behavior for that zone — flows, screen structure, rules. The visual system
-(colors, type, spacing, components) is out of scope here; it's maintained in the Claude
-Design project (see `docs/DESIGN.md`).
-
 ## Expected files & naming
 
 One file per product zone; add a zone file when a new part of the product needs its own
 spec.
 
-Naming: a two-digit ordering prefix plus the project's UPPER_CASE rule — `NN_NAME.md` (e.g.
-`00_FOUNDATIONS.md`). Numbers are assigned sequentially in reading order starting at `00`; a
-new file takes the next free number. `_pattern.md` itself stays unprefixed.
+Naming: the project's UPPER_CASE rule — `NAME.md` (e.g. `FOUNDATIONS.md`). `_pattern.md`
+itself is the exception to that rule.
 
 ## Zone file skeleton
 
@@ -54,7 +46,7 @@ new file takes the next free number. `_pattern.md` itself stays unprefixed.
 Section numbers are file-scoped — there is no global, cross-file §-numbering space.
 
 - Same-file reference: `§3.2`.
-- Cross-file reference: filename + local section, e.g. `02_IN_WORKOUT.md §3.2`.
+- Cross-file reference: filename + local section, e.g. `IN_WORKOUT.md §3.2`.
 
 ## Decisions and open items
 
@@ -69,7 +61,7 @@ locked-decisions checklist, in the file or anywhere else. Anything else goes els
 Use whichever fits the content; mix freely within a section:
 
 - **Reference tables** — enumerable structure: states, columns, actions.
-- **Mermaid diagrams** (`flowchart TD`) — flows and decision trees.
+- **Mermaid diagrams** — flows and decision trees.
 - **ASCII screen mockups** in fenced code blocks — layout.
 - **Numbered step lists** — procedures.
 - **Bold-led rule bullets** — hard rules.

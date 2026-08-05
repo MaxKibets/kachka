@@ -23,5 +23,4 @@ without opening the file.
 
 ## `docs/spec/`
 
-- [_pattern.md](spec/_pattern.md) — directory pattern: purpose, file naming, and the
-  section skeleton every spec file follows.
+- [_pattern.md](spec/_pattern.md) — the pattern every spec file follows.
