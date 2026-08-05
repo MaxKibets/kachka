@@ -23,8 +23,15 @@ Two tiers: **M** = mechanical (computed from the run's git diff, no LLM),
 | M10 | Pattern skeleton | `# Title`, then a 2-line blockquote; `## 1. Overview` first; `## Deferred to v2` last, unnumbered; numbered sections run `1..N` | P2 |
 | M11 | Cross-file refs rewritten | every `§` ref is local (`§X.Y`, `X` ≤ own section count) or filename-qualified (`NAME.md §X.Y`) | P2 |
 | M12 | Single map | `docs/spec/README.md` does not exist | M1 |
-| M13 | Dead draft paths gone | 0 occurrences of `../visual/`, `visual/README.md`, `../tech/`, `tech §`, `program-format.md`, `../wireframes/` | C1 |
-| M14 | History markers gone | 0 occurrences of `design-review`, `replaces the earlier`, `v0.13`, `previously`, `formerly`, `used to be`, `**Status**:`, `**Version**:` | C2 |
+| M13 | Dead draft paths gone | 0 occurrences of `../visual/`, `visual/README.md`, `visual §`, `../tech/`, `tech §`, `program-format.md`, `../wireframes/` | C1 |
+| M14 | History markers gone | 0 occurrences of `design-review`, `replaces the earlier`, `v0.13`, `formerly`, `used to be`, `**Status**:`, `**Version**:` | C2 |
+
+Both patterns were tightened after false positives. M13 originally matched
+`visual ` followed by any character, which flagged "visual punctuation" and
+"visual collision". M14 originally included `previously`, which flagged
+"previously logged RPE values are kept in the db" — a statement about user data,
+not about project history. Judge check J1 covers what the keyword list cannot:
+narration a grep can't distinguish from ordinary prose.
 
 M11 is the one to watch: the draft carries a global §1–§17 space while the
 pattern mandates file-scoped numbering. Expect this to be the most-violated
