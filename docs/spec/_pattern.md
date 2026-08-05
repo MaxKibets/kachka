@@ -29,7 +29,7 @@ itself is the exception to that rule.
 
 ## N. <Section title>
 
-## Deferred to v2
+## Deferred to v2   <!-- omit unless this zone postpones something past v1 -->
 ```
 
 - **Header blockquote** — two fixed lines: the zone's one-line scope plus a pointer to the
@@ -38,8 +38,9 @@ itself is the exception to that rule.
   is in this zone.
 - **`## 2.` … `## N.`** — the zone's own sections: flows, screen structure, behaviors,
   rules. Titles and count are free per zone.
-- **`## Deferred to v2`** — always last, unnumbered: what this zone deliberately postpones
-  past v1.
+- **`## Deferred to v2`** — optional; when present, always last and unnumbered. Include it
+  only when this zone genuinely postpones something past v1 — a section whose only content
+  would be "None" is noise, so omit it otherwise.
 
 ## Numbering & cross-references
 
