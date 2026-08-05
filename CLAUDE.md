@@ -18,7 +18,7 @@ for which subagent owns which kind of work.
 
 | Agent | Responsibility | When to invoke | Scope boundary |
 |---|---|---|---|
-| `docs-manager` | Sole authority for creating/editing/reconciling all project documentation Markdown (`README.md`, `docs/**`, ADRs, pattern files, the doc map) | Any create/edit/update/delete/reconcile on in-scope docs, or when a change makes existing docs stale | Never touches `CLAUDE.md` or `.claude/**` (Claude Code config — main-loop territory); `draft_docs/**` is read-only raw material for migration, never edited |
+| `docs-manager` | Sole authority for creating/editing/reconciling everything under `docs/` — spec files, pattern files, the doc map | Any create/edit/update/delete/reconcile on files in `docs/`, or when a change elsewhere makes existing docs stale | Scope is `docs/` and nothing outside it — the root `README.md` and `draft_docs/**` included |
 | `git-manager` | Sole authority for git branch creation, commit composition, pushing, and opening PRs (Conventional Commits, `type/short-description` branches); acts without per-action confirmation | Whenever a unit of work (code, docs, or config) is ready to commit and/or turn into a PR | Never merges PRs, never force-pushes, no repo-level admin (branch protection, CI setup) — those stay manual/one-time |
 | `search-manager` | Read-only project search: `docs/INDEX.md` map first, then codebase, then `draft_docs/` as a last-resort draft reference; returns synthesized answers with `file:line` citations | Any exploratory search beyond a single targeted lookup (>2-3 Glob/Grep/Read calls); every `/ask` question | Never edits anything; `draft_docs/` findings are always marked "draft, not confirmed"; doesn't satisfy the caller's own pre-`Edit` `Read` requirement |
 
