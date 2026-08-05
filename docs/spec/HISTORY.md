@@ -90,3 +90,8 @@ The bottom tab bar stays visible. No CTA on this screen — Today already offers
 - **Export** of a single workout or a period, including Markdown for LLM chats.
 - **PR badges** on individual sets in the detail screen — the completion screen's PR detection
   (FINISH.md §4) still applies at save time; only the detail screen's per-set badge is deferred.
+- **Progress charts and trends** — per-exercise progress charts, strength trends, and a PR
+  timeline across workouts. v1's PR detection (FINISH.md §4) surfaces a single PR at save time
+  only; there is no historical trend view.
+- **Streaks and gamification** — streak counters and other motivational rewards derived from
+  workout history.

@@ -150,3 +150,12 @@ First launch:
 
 No welcome screens, no feature tour, no language selection (auto-detect from locale),
 no units selection (kg in MVP). Onboarding is functional, not marketing.
+
+## Deferred to v2
+
+- **Programs** — bundled and custom programs, a program editor, linear progression, and
+  pointer- or calendar-based scheduling, with at most one program active at a time. v1 offers
+  only the three ad-hoc ways to start a workout (§3–§5); a program would be a fourth.
+- **Program import / sharing** — importing a shared program (file picker, conflict resolution,
+  preview), deep linking (`gymtracker://import`), universal links / App Links, and exporting a
+  program. Distinct from the full-data backup import/export already in v1 (PROFILE.md §9–§10).

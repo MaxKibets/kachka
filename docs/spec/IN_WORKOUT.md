@@ -328,3 +328,10 @@ Without cluttering the main flow — readable at a glance.
 - **Replace exercise** — resolved in v1 via Remove + Insert after (§2.5); replacing an exercise
   in place is deferred.
 - **Workout-level author notes** — deferred; only per-exercise notes exist in v1 (§2.2).
+- **Mini-bar / minimize** — collapsing the active workout into a persistent mini-player while
+  browsing other tabs; v1 keeps it a focused flow screen with no mini-player, and Today's
+  in-progress banner covers returning to it instead (FOUNDATIONS.md §3.2).
+- **Wearable companion** — logging sets from an Apple Watch or Wear OS companion app.
+- **Voice input** — logging a set by voice instead of the numpad (§3).
+- **Plate calculator** — converts a target weight into a plate-loading breakdown, alongside the
+  numpad (§3.2).
