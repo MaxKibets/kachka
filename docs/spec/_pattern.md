@@ -47,7 +47,11 @@ itself is the exception to that rule.
 Section numbers are file-scoped — there is no global, cross-file §-numbering space.
 
 - Same-file reference: `§3.2`.
-- Cross-file reference: filename + local section, e.g. `IN_WORKOUT.md §3.2`.
+- Cross-file reference: filename + local section, e.g. `IN_WORKOUT.md §3.2` — only when that
+  section exists in the target file as it stands today. Section numbers are assigned when a
+  file is written, so a number carried over from elsewhere points at nothing while still
+  looking valid. When the target file doesn't exist yet, or its numbering can't be verified,
+  cite the filename alone: `IN_WORKOUT.md`.
 
 ## Decisions and open items
 
