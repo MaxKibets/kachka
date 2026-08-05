@@ -577,3 +577,81 @@ Open work, in order:
 4. **C2, C5, C6** — the remaining zone migrations, homogeneous with four already
    passed.
 5. **C10 and C14** — both need a migrated spec as their seed, so they come last.
+
+# Fifth batch — C8 re-run, C2, C5, C6
+
+Zone coverage is now complete: all nine draft zones have been migrated at least
+once under a scored run.
+
+## C8 `exercises` re-run — **pass**, failure closed
+
+The references that previously read `PROFILE.md §12` and `IN_WORKOUT.md §5.5` are
+now bare filenames. Local refs `§8`/`§9`/`§10` resolve inside the file's ten
+sections. Third confirmation of `d4dc8ce`, and the only one that matters most —
+it is the case that produced the rule.
+
+The run also added a `flowchart TD` for the custom-creation entry points, which
+the first attempt did not. And it made the opposite call on a pre-existing draft
+inconsistency: the `←` back arrow in the Add-mode mockup contradicting the
+"no back arrow" rule two sections up. Run 1 silently corrected it; this run
+preserved it and flagged it for a decision. Both defensible, opposite behaviours.
+
+## C2 `today` — pass structurally, D1 missed
+
+Skeleton, cross-references, `Deferred` correctly absent, 95 → 115 lines: clean.
+
+No diagram, though — and "Three modes" (has history / first launch / in-progress)
+is a decision tree. The discarded worktree run of this same case *did* add one.
+Same input, opposite judgement.
+
+## C5 `supersets` — pass
+
+`flowchart LR` → `TD` (D2 on a real draft defect, second time after
+`foundations`' `TB`). Cross-references bare, 98 → 147 lines.
+
+## C6 `finish` — pass
+
+Six headings, bare cross-references, 41 → 66 lines. Dropped a wireframe pointer
+carrying "the earlier iteration has been removed" — historical narration caught
+without being prompted. It also corrected a factual contradiction: the draft
+described the bottom bar as having an "idle mode" and a `Skip` control, while
+`in-workout` documents the bar as explicitly mode-less and the control as
+`Skip rest`. Reworded and flagged.
+
+## D1 is the least stable rule in the set
+
+Diagram presence across measured zone runs:
+
+| Added a diagram | Did not |
+|---|---|
+| `in-workout`, `foundations`, `profile`, `exercises` (run 2), `supersets`, `finish` | `builder`, `today`, `exercises` (run 1) |
+
+`builder` is defensible — menus and tables, no real flow. `today` is not, and the
+same case went both ways across runs. D1 has no objective trigger: unlike every
+other rule here it asks for a judgement rather than a check, so it cannot be
+graded pass/fail on a single run. Treat its output as a rate, not a verdict.
+
+This is not a wording defect and rewriting it would be chasing noise — the same
+conclusion C8 (conflict resolution) reached earlier for the same reason.
+
+# Final tally
+
+16 scored runs: **13 pass, 2 fail, 1 partial, 1 discarded.**
+
+| Rule | Status after eval |
+|---|---|
+| M11 cross-references | failed once, fixed in `d4dc8ce`, confirmed 3× |
+| M3 map entries | needed three rewrites before behaviour changed |
+| P9 pattern fit | added from C11, confirmed |
+| C9 no draft links | added from C10, confirmed |
+| A3 deletion guard | **rewritten, unverified** — cache blocked the check |
+| D1 diagram initiative | works, unstable; grade as a rate |
+| C8 conflict resolution | fires unprompted, ~3 of 4; model variance |
+
+Remaining work, all blocked or seed-dependent:
+
+1. **C16** — verify the A3 rewrite in a fresh session, after a diagnostic
+   confirms the new wording loaded.
+2. **C13** — re-run once the updated `CLAUDE.md` has propagated, so the case
+   isolates the scope rule rather than leaning on the table.
+3. **C10, C14** — need a migrated spec in the tree as their seed.
