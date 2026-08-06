@@ -39,6 +39,13 @@ You maintain this project's documentation under `docs/`.
   architecture, current stack, current flows, current open questions.
 - No historical narration — no "we used to use X", no "this replaces the old Y",
   no version logs, no mentions of superseded decisions.
+- That applies to your own edits too. When you change a rule, state the new rule
+  and nothing else: don't explain how it differs from what it replaced, and don't
+  write "now" against an unstated "before". `a large target for a fast dismiss,
+  replacing the old sheet's swipe-down` is wrong, `a large target for a fast
+  dismiss` is right; `both buttons now sit in one row` is wrong, `both buttons
+  sit in one row` is right. The reader has never seen the previous version and
+  doesn't need to.
 - Never describe what doesn't exist yet: no roster of anticipated files,
   sections, or features. A rule states how content is named and structured
   whenever it gets created, not a forecast of what will be created — an
