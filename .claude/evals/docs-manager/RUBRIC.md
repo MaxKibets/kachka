@@ -24,7 +24,12 @@ Two tiers: **M** = mechanical (computed from the run's git diff, no LLM),
 | M11 | Cross-file refs rewritten | every `§` ref is local (`§X.Y`, `X` ≤ own section count) or filename-qualified (`NAME.md §X.Y`) | P2 |
 | M12 | Single map | `docs/spec/README.md` does not exist | M1 |
 | M13 | Dead draft paths gone | 0 occurrences of `../visual/`, `visual/README.md`, `visual §`, `../tech/`, `tech §`, `program-format.md`, `../wireframes/` | C1 |
-| M14 | History markers gone | 0 occurrences of `design-review`, `replaces the earlier`, `v0.13`, `formerly`, `used to be`, `**Status**:`, `**Version**:` | C2 |
+| M14 | History markers gone | 0 occurrences of `design-review`, `v0.13`, `formerly`, `used to be`, `**Status**:`, `**Version**:`, or `replac(es\|ing) the (old\|earlier\|previous)` | C2 |
+
+M14 was also widened once: it matched only `replaces the earlier` and so missed
+`replacing the old bottom sheet's swipe-down`, written by the agent itself during
+a reconciliation run. Grep lists catch the phrasings you have already seen; J1
+is what covers the rest.
 
 Both patterns were tightened after false positives. M13 originally matched
 `visual ` followed by any character, which flagged "visual punctuation" and
