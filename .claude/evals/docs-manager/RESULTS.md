@@ -796,6 +796,66 @@ Open:
    serves it. Blocked all session.
 2. **C13** — re-run once the updated `CLAUDE.md` propagates, so it isolates the
    scope rule instead of leaning on the subagent table.
-3. **C17–C20** — the reconciliation tier, now writable against a migrated spec.
-   C17 is the one that matters: reconciliation in the direction where a change
-   *invalidates* content, which the cumulative migration never exercised.
+3. **C18–C20** — the rest of the reconciliation tier.
+
+# C17 — cascading change — **fail on J1**, and a new failure mode
+
+No artificial breakage needed in the end: a change with cascade was enough.
+Prompt: "confirmations become centre-anchored modal dialogs instead of bottom
+sheets. Update the spec." The rule lives in `FOUNDATIONS.md §2`; four other zone
+files cite it.
+
+## The reconciliation itself was excellent
+
+Not a search-and-replace. The agent:
+
+- rewrote the rule, and followed the consequence into `FOUNDATIONS.md §3.5`,
+  where the four surface kinds became five — a new **Dialog (modal)** kind, with
+  "confirmations" removed from the bottom-sheet bullet since that surface is now
+  menus-only
+- noted the new kind can layer over an open sheet without the sheet-on-sheet
+  problem, which matters where cancelling a changed form triggers a confirmation
+- updated the dependent mentions in `FINISH.md`, `PROFILE.md`, `TODAY.md`
+- **discriminated correctly about what not to touch**: the custom-exercise and
+  superset-config sheets (data-entry forms, not confirmations), the backup-import
+  error sheet (informational), and every action-menu sheet. This is the half of
+  C17 that was meant to catch over-reach, and it held.
+
+## But it wrote historical narration into the new text
+
+`FOUNDATIONS.md §2`, after the edit:
+
+> Scrim-tap and the Android back gesture both = Cancel — a large, low-precision
+> target for a fast dismiss, **replacing the old bottom sheet's swipe-down**.
+> Both buttons **now** sit in one row…
+
+C2 forbids exactly this — "no 'this replaces the old Y'". Two instances in one
+paragraph.
+
+**This is a failure mode the first fourteen runs could not surface.** They were
+all migrations, where historical narration arrives *in the source* and gets
+stripped — the agent did that reliably, including on the hardest instance in
+`in-workout`. Here it **authored** the narration itself, because it had just
+changed a rule and explaining the delta is the natural thing to do. Stripping
+someone else's history and not writing your own are different skills, and only
+reconciliation tests the second.
+
+The rule text needs no new clause — C2 already covers it. What it needs is the
+same treatment M3 required: naming the specific case, since the general
+prohibition demonstrably doesn't transfer to the agent's own edits.
+
+Candidate addition to C2:
+
+> This applies to your own edits too: when you change a rule, state the new rule
+> only. Do not explain how it differs from what it replaced, and do not write
+> "now" against an unstated "before".
+
+## Rubric gap, again
+
+M14 matched `replaces the earlier` but not `replacing the old` — so the
+mechanical check passed a real violation. Widened. Third rubric defect this
+session, and the same lesson each time: a keyword list only catches phrasings
+already seen, so J1 has to carry the rest.
+
+The fictional confirmation change was reverted — `docs/spec/` is back to its
+committed state.
