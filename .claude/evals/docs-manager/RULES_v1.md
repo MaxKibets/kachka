@@ -59,7 +59,7 @@ Group C: 7 rules → 3.
 | ~~P1~~ | ~~`_pattern.md` describes the naming convention and the section skeleton~~ | **folded into P4** — a definition, needed only where the agent drafts a new pattern |
 | P2 | A directory that has a `_pattern.md` → follow it exactly | **merged** from v0 P2 + P3 — looking a pattern up and obeying it are one act |
 | P9 | Material that can't honestly take that pattern's skeleton doesn't belong under it — stop and ask instead of forcing it in. An invented `Overview`, or a closing section that exists only to say "None", is the signal that you forced it | **new** — added after C11 forced a glossary into the spec-zone skeleton |
-| P4 | A directory that holds a series of same-shaped documents and no `_pattern.md` → ask whether it needs one, proposing a concrete draft with that directory's naming convention and section skeleton; act on the answer | **merged** from v0 P1 + P4 + P5, **retriggered after C20** |
+| P4 | A directory that holds a series of same-shaped documents and no `_pattern.md` → stop and ask whether it needs one, proposing a concrete draft with that directory's naming convention and section skeleton; the requested file waits for the answer; act on the answer | **merged** from v0 P1 + P4 + P5, **retriggered after C20**; **made blocking after C21** — 2 of 3 runs wrote the file and asked alongside, and a file added ahead of the answer either predates the contract or silently becomes it |
 | P10 | A directory receiving its first file is not a series yet: write the file, invent no pattern, ask nothing — report that the question arises once a second file of the same kind joins it | **new** — added after C20 |
 | P6 | A file that isn't part of a series of same-shaped documents needs no pattern; when editing it, follow its own existing structure | **redefined** from v0 P6 + P7, and absorbs P8 |
 | ~~P8~~ | ~~Standalone from scratch — judgment, confirm if non-trivial~~ | **dropped** — duplicated A2, and A3 covers the risk that mattered |
@@ -159,17 +159,56 @@ own; it was a third place where every rule could drift out of sync with itself.
 | ~~A1~~ | ~~Directory without `_pattern.md` → ask, with a proposed draft~~ | proposed drop — duplicates P4 verbatim |
 | ~~A2~~ | ~~Standalone from scratch, non-trivial structure → confirm~~ | proposed drop — duplicates P8 verbatim |
 | A3 | A change that would delete content the user may still want → confirm before deleting. Content that moves somewhere else intact isn't lost: a fold needs no confirmation, only an accurate report of where it went | keep — the only rule in the whole set guarding against content loss; **the fold clause added after C19** |
-| A4 | Removing a file is `git rm <path>`; `Bash` exists for that one purpose and nothing else. Remove it only once the content has moved or is being dropped with confirmation, and in the same turn drop the map entry and repoint every reference. Never leave an unreferenced file on disk | **new** — added after C19 |
+| A4 | Removing a file is `rm <path>`, and that single command is the whole reason `Bash` exists in the tool list. Remove a file only once the content has moved or is being dropped with confirmation, and in the same turn drop the map entry and repoint every reference. Never leave an unreferenced file on disk | **new** — added after C19; **narrowed to `rm` at the end of session 4** |
+| ~~A5~~ | ~~`Bash` also reads git history when a conflict turns on which statement is newer~~ | **dropped** — see below |
+
+A5 lived for one session. It was written to legalise what the C18 runs already
+did — read git to satisfy C8's "newer wins" — and the C8 regression showed the
+grant was the problem, not its wording: given git, the agent found `git checkout`.
+The rule it was propping up never needed it. Git dates when a line entered a file,
+and a migration commit stamps everything it moved with one date, so it cannot
+answer "which decision is current" — in C18 it returned "silent" both times it was
+consulted and produced a false claim once. C8 now states where "newer" comes from
+(the task, or what the documents mark as decided) and names history as
+non-evidence; C10 catches everything left over, 5 runs for 5.
+
+Group I: 3 rules → 2. `Bash` is `rm` and nothing else.
+
+**And the word `git` left the prompt entirely.** The first pass at removing the
+grant still explained *why* git was the wrong oracle — two paragraphs of it, plus
+a clause in C8 naming commit history as non-evidence. All of it argued against a
+capability the agent no longer has, and naming a tool is how you put it in reach:
+the prompt would have been the only place the agent learned that a repository
+exists. C8 now states its two sources positively and stops there. Nothing in the
+prompt mentions git, and `git-manager` owns that territory unmentioned — the
+subagent table in `CLAUDE.md` is where boundaries between agents belong, not in
+each agent's own prompt.
 
 ## Open items
 
-1. **Four rules are written but unverified** — D/P4 + D/P10 (the series trigger),
-   E/C10 (the conflict else-branch), F/M3's generalisation, I/A3's fold clause and
-   I/A4. All were written after the session-3 runs that motivated them, so none
-   has executed. C18, C19, C20 and the new C21 cover them; the cache check comes
-   first, as always.
+1. **C13 has never run.** The harness classifier refuses to spawn a subagent whose
+   prompt asks it to edit `.claude/agents/*`, so the one case that proves dropping
+   v0's S2/S3 was safe needs an interactive session.
+2. **The `Bash`-narrowing and C8's evidence clause are banked, not verified.** The
+   cache held the previous edition for the rest of session 4. Both need a cache
+   check, then C19 (deletion still works through plain `rm`) and C18 against a
+   deliberately dirty tree (no git reached for at all).
 
 Closed:
+
+- **The whole register is verified except C13.** P4's blocking clause ran 3/3 on
+  C21 and I/A5 ran 2/2 on C18, both in the session that wrote them — the cache
+  refreshed within minutes, which the check caught.
+
+- Everything session 3 left unverified ran clean in session 4: D/P4 and D/P10
+  (C20 3/3, C21 3/3 once the fixture was a real series), E/C10 (C18 3/3, a
+  straight reversal of session 3's fail 3/3), F/M3's generalisation (C20 3/3
+  outside `docs/spec/`), and I/A3's fold clause with I/A4's delete path (C19 —
+  the file left the tree).
+
+- The report duty for P4's negative branch was considered and declined: the agent
+  judges "not a series" correctly and silently, and the report is for what
+  changed.
 
 - I/A3's structural trigger and the E/C2 extension both ran clean 3/3 in session
   3 — the two rules the previous session could not verify.

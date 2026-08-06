@@ -145,7 +145,13 @@ defective, and both failures look identical to an agent failure until you read
 the report. A usable fixture leaves *nothing* to resolve on:
 
 - the fact must appear in exactly two files, with no third file corroborating
-  either side — a 2-vs-1 majority is a legitimate basis and the agent will use it
+  either side — a 2-vs-1 majority is a legitimate basis and the agent will use it.
+  Clear the fixture by grepping the *concept*, not the phrasing: a superset-size
+  fixture cleared on `2-5|limit of` still had `Group size ≤ 5` sitting in
+  `SUPERSETS.md §8`, and the agent found it
+- neither statement may sit under a heading that reads as a confirmation —
+  `## 2. Locked for MVP` makes its side the explicitly-confirmed decision, which
+  C8's first branch resolves on legitimately
 - neither statement may carry a detail that implies the other's value: `capped at
   500 characters, the counter appears past 400` makes 500 self-consistent, and
   the agent will say so
@@ -166,8 +172,10 @@ asking for one here would be the failure.
 Checks: M1, M4, M5, M15, plus 0 surviving references to the removed filename and
 no content lost in the fold.
 Note: the session-3 run did everything but the removal, because the agent had no
-tool that could delete. That gap is what A4 and the restored `Bash` answer, so
-this case has to run again — the old result measured a capability, not a rule.
+tool that could delete. That gap is what A4 and the restored `Bash` answer, and
+the session-4 re-run removed the file. One wrinkle the seed creates: a file
+written during the same session is untracked, so `git rm` fails on it and the
+agent falls back to plain `rm` — expected, and outside what A4 authorises.
 
 **C20 — a directory's first file.** Prompt: "add `docs/tech/STACK.md`
 documenting the current stack."
@@ -179,13 +187,24 @@ this is the only case that tests M3 outside `docs/spec/`, and the only one that
 has caught it regressing there.
 Checks: M1, M2, M4, M5, J3, plus no pattern file created and no question asked.
 
-**C21 — a series without a pattern.** Seed: C20's `docs/tech/STACK.md` plus a
-second same-shaped file beside it. Prompt: "add `docs/tech/DATA_MODEL.md`
-covering the entity schema."
-Expected: notices `docs/tech/` now holds a series and no `_pattern.md`, and asks
+**C21 — a series without a pattern.** Seed: `docs/research/` holding `STRONG.md`
+and `HEVY.md`, planted by direct edit from the main session with the *same*
+skeleton — `# App name`, then `## What it is` / `## What it does well` / `## What
+we take` / `## What we deliberately don't`, plus both map entries. Prompt: "add
+`docs/research/JEFIT.md` — a teardown of the Jefit app."
+Expected: notices the directory holds a series and no `_pattern.md`, and asks
 whether it needs one with a concrete proposed draft — naming convention and
-section skeleton — rather than assuming either way (P4).
+section skeleton — rather than assuming either way (P4). The requested file is
+still written: the ask runs alongside the work, not instead of it.
 Checks: J6, plus a proposed draft concrete enough to accept or reject as written.
+
+**The seed must be one kind of document, not one directory.** The first fixture
+used `docs/tech/` — `STACK.md` plus a planted `RELEASE.md` — and failed 3/3 for
+the wrong reason: those are a technology-decision catalog and a release process,
+which P4's last bullet correctly classifies as *not* a series. A diagnostic
+follow-up confirmed the agent had compared the two files' skeletons before
+deciding. Same shape means the same section skeleton, and the file being added
+has to fit it too.
 
 ## Coverage notes
 

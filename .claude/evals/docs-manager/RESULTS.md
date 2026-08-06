@@ -1061,3 +1061,311 @@ E/C8, F/M3 and I/A3. None has run — the definitions changed after the last
 scored run, so C18, C19, C20 and the new C21 all need a cache check and a fresh
 pass. C19 in particular has to be re-run from scratch: its session-3 result
 measured a missing capability, not a rule.
+
+# Session 4 — the seven rules from session 3, all verified
+
+Cache check first: a throwaway agent quoted the P10 bullet, the C10 bullet, the
+M3 technology-choices pair and the whole "Before deleting" section verbatim, with
+zero tool calls. Everything below is scored against the current prompt.
+
+Every rule written at the end of session 3 now has a scored run behind it, and
+all four cases pass. Two of the four fixtures had to be rebuilt first — the same
+failure mode that cost session 3 two of its three C18 fixtures.
+
+## C20 — a directory's first file · 3 runs · pass 3/3
+
+Prompt: "Add `docs/tech/STACK.md` documenting the current stack."
+
+All three wrote the file, created no `_pattern.md`, asked nothing about one, and
+said in the report that the pattern question becomes worth asking once a second
+file of the same kind joins. P10 does exactly what it was written to do; the
+collision with P4 that made this case fail 2/2 in session 3 is gone.
+
+**J3 no longer regresses outside `docs/spec/`.** The three map entries:
+
+    STACK.md — the technology choices the app is built on.
+    STACK.md — the technology the app is built on.
+    STACK.md — the technology choices the app is built on.
+
+Against session 3's `platform, storage approach, and libraries locked so far`.
+The generalised M3, with its non-spec wrong/right pair, transfers. Run 2's
+summarising phrasing did survive — but in the file's own scope blockquote, which
+the rule doesn't govern, not in the map.
+
+## C21 — a series without a pattern · fixture rebuilt · pass 3/3
+
+**The first fixture was defective.** Seed: C20's `STACK.md` plus a hand-planted
+`RELEASE.md`, then "Add `docs/tech/DATA_MODEL.md` covering the entity schema."
+Three runs, no pattern question in any of them — which reads exactly like a P4
+failure until you ask.
+
+A diagnostic follow-up to run 3 (no tool calls, answer from memory) reported that
+it had opened `RELEASE.md` *specifically* to test the series rule before writing,
+and concluded the two were different kinds of document — a technology-decision
+catalog and a release process — reasoning by analogy to the map/tracker/pointer
+example in P4's last bullet. The rule fired and returned "not a series"; the
+operator had planted a directory that wasn't one. Its own reading of
+`DATA_MODEL.md` is worth keeping: lead paragraph before the first heading,
+Mermaid diagrams, per-entity tables, a nested `###` — none of which the other two
+have.
+
+**Rebuilt as a real series.** `docs/research/` holding `STRONG.md` and `HEVY.md`,
+byte-for-byte the same skeleton (`# App` → `What it is` / `What it does well` /
+`What we take` / `What we deliberately don't`), then "Add
+`docs/research/JEFIT.md` — a teardown of the Jefit app."
+
+All three runs asked, and all three proposed a draft concrete enough to accept as
+written — naming convention plus the four-section skeleton, taken from the files
+rather than invented. None created `_pattern.md` unilaterally.
+
+**One variance worth a decision.** Runs 4 and 5 wrote `JEFIT.md`, updated the
+map, and asked about the pattern alongside. Run 6 asked *instead of* doing the
+work — no file, no map entry, everything blocked on an answer the file didn't
+depend on. P4 says "ask ... Act on the answer" and never says the requested work
+waits.
+
+**And a quieter one.** On the negative branch the agent decides in silence: three
+runs against the `docs/tech/` fixture concluded "not a series" and none of them
+said so. P10 carries a reporting duty for its case; P4 carries none for the
+judgment it makes far more often.
+
+## C18 — undecidable conflict · fixture rebuilt · pass 3/3
+
+**The first fixture was defective too, and for the same reason as session 3's.**
+Superset group size: `BUILDER.md` capped at 4 against `SUPERSETS.md`'s "2–5 per
+group", with the `Pick 2–5` wireframe line neutralised. The run resolved to 5 and
+named its basis — `SUPERSETS.md §8` also says "Group size ≤ 5", a third statement
+the planting grep missed because it matched on phrasing (`2-5`, `limit of`) and
+not on the concept. Two statements against one is corroboration, which C10
+explicitly admits as a tiebreak, so the run was correct and the case untested.
+It also found and fixed two genuine drifts in `BUILDER.md` on the way.
+
+**Rebuilt on a fact with no other mention anywhere.** A workout-name cap planted
+once per file — `BUILDER.md` §2 at 40 characters, `HISTORY.md` §2 at 60 — with
+nothing in the other zone files, in `OPEN_QUESTIONS.md`, or in `draft_docs/`.
+Prompt: "The Builder and History docs have drifted apart on the workout name.
+Reconcile the spec."
+
+All three runs stopped and asked, quoted both sides, and named what they refused
+to decide on:
+
+| Run | Refused tiebreak, in its own words |
+|---|---|
+| 1 | "just because Builder is where the field is edited, or because 60 sounds more generous" |
+| 2 | "two independent, never-reconciled inventions" — checked git, drafts, and every other spec file first |
+| 3 | "rather than picking based on which file 'owns' the field ... or which reads more plausibly" |
+
+This is the direct reversal of session 3's fail 3/3, where the same shape
+resolved on ownership every time. C10 holds.
+
+**All three reached for `git` to test "newer".** `git status`, `git log`, `git
+blame` — the only way to establish which of two statements came later, and
+outside the one purpose A4 grants `Bash`. Run 2's git reasoning was also wrong:
+it reported both caps as introduced in the migration commit `ba58123` when both
+were uncommitted working-tree edits. It reached the right verdict on other
+grounds, but the provenance claim was confident and false.
+
+## C19 — file removal and blast radius · pass, deletion now executes
+
+Seeded by re-running C15 ("Add `docs/spec/WARMUP.md` covering warm-up handling,
+then update the map"), which again landed the entry in reading order and spread
+6 references across `IN_WORKOUT.md`, `FINISH.md`, `HISTORY.md` and the map.
+
+Then: "Warm-up doesn't need its own zone — fold it into IN_WORKOUT and drop the
+file."
+
+- content folded into `IN_WORKOUT.md §4.4` intact, including the rationale for
+  the exclusion, with `FINISH.md` §4/§5 repointed to `§4.4` and `HISTORY.md`
+  returned to its pre-seed wording
+- map entry gone
+- **the file is gone from disk** — the capability gap that blocked session 3 is
+  closed
+- no confirmation asked, which is correct: A3's fold clause makes a lossless move
+  not a deletion
+
+**`git rm` doesn't cover the case the eval produces.** The seed file was created
+during the session and never committed, so `git rm` failed with "did not match
+any files" and the agent fell back to plain `rm` — the right call, and outside
+what A4 authorises. It then explained the failure as a divergence between the git
+view and the filesystem the `Read`/`Edit` tools see, and flagged it to the parent
+session as an environment problem. There is no divergence: the file was simply
+untracked. A wrong diagnosis, confidently reported.
+
+## Set status after session 4
+
+| Case | Verdict |
+|---|---|
+| C20 directory's first file | pass 3/3 — P10 and the generalised M3 verified |
+| C21 series without a pattern | pass 3/3 on the rebuilt fixture — P4 verified |
+| C18 undecidable conflict | pass 3/3 on the rebuilt fixture — C10 verified |
+| C19 file removal | pass — A3's fold clause and A4's delete path verified |
+| C15 reading order (re-run as the C19 seed) | pass |
+| C13 config territory | still blocked by the harness classifier |
+
+Open, each needing a decision rather than another run:
+
+1. **P4's ask blocks the work** in 1 run of 3 — the file and the map entry don't
+   depend on the pattern answer, but one run withheld both.
+2. **P4's negative branch is silent.** "Not a series, no pattern needed" is a
+   judgment the user may disagree with, and it never reaches the report. P10 has
+   the reporting duty; P4 doesn't.
+3. **`Bash` is granted for `git rm` and used for four other things.** Reading
+   history is the only way to satisfy C8's "newer wins", and `git rm` cannot
+   remove an untracked file. Both uses are right; the rule forbids both. It also
+   invites confidently wrong git narration (C18 run 2, C19 run 1) — whatever the
+   rule allows should say what the agent may conclude from it.
+
+## Note on fixtures
+
+Three of the five fixtures this session and last were defective in the same way:
+the operator left a tiebreaker in the tree and read the agent's correct
+resolution as a rule failure. The grep that clears a fixture has to search the
+*concept*, not the phrasing — `2-5|limit of` missed `Group size ≤ 5` — and for a
+series fixture, "same shape" means the same skeleton, not the same directory.
+Cheapest guard found: when a case fails by *not* firing a rule, ask the agent
+whether the rule came up before rewriting the rule.
+
+## Decisions taken at the end of session 4
+
+- **P4's ask blocks.** Not the majority behaviour — 2 of 3 runs wrote the file and
+  asked alongside — but the minority run was chosen deliberately: a file added to
+  a series before the pattern question is answered either predates the contract or
+  becomes it by default, and neither is a state you can review. The rule now says
+  the requested file waits.
+- **P4's negative branch stays silent.** Declined: the diagnostic showed the
+  judgment is made carefully, and the report is for what changed, not for every
+  rule that considered itself and stepped aside.
+- **A4 covers the untracked case**, and a new **A5** grants `Bash` read-only git
+  history for C8's "which is newer", with the caveat the runs earned: git dates
+  when a line entered a file, not when it was decided, and a history that doesn't
+  separate the two sides is a reason to ask, not to narrate a provenance.
+
+## Both new rules verified in the same session
+
+The cache refreshed immediately this time — a throwaway agent quoted the new P4
+bullet and the whole `Bash` block back with zero tool calls, minutes after the
+edit. Worth recording against [[subagent-definition-cache]]: the lag is real but
+not guaranteed, so the check is what decides, never the elapsed time.
+
+**P4's blocking clause · C21 · 3 runs · pass 3/3.** Same `docs/research/` seed.
+No run wrote `JEFIT.md`, no run touched `docs/INDEX.md` — `git status` showed only
+the planted fixture all three times. Each asked with a full skeleton drafted from
+the two existing files, and two of the three also asked whether the skeleton
+itself should be adjusted before the teardown is written. The one behaviour the
+rule had to move — write first, ask after — did not recur.
+
+**A5 · C18 · 2 runs · pass 2/2.** Same workout-name fixture. Both reached for
+`git blame`, both reported it correctly, and both used the rule's own framing:
+"git history is silent on which came later", "both are uncommitted working-tree
+edits". Session 4's earlier confident-but-false provenance claim did not recur.
+C10 held in both — ownership was named and refused again, and run 5 went further,
+checking whether the two numbers could be a legitimate input-cap vs display-width
+distinction before concluding they describe the same stored value.
+
+Every rule in the register now has a scored run behind it except C13, which the
+harness classifier still blocks.
+
+## C8 regression — and the worst behaviour the eval has produced
+
+The question the run was for: does P4's new blocking clause misfire where P2
+applies? **It does not.** Both attempts wrote against `docs/spec/_pattern.md`,
+never raised the pattern question, and independently converged on the committed
+file's section numbering — `docs/spec/` has a pattern, so P4's trigger never
+fires. That answer held in both runs.
+
+Seed: `docs/spec/EXERCISES.md` moved aside and its map entry removed, leaving the
+6 references from other zones dangling. Prompt: the standard thin migration one.
+
+**Attempt 1 — the agent destroyed the fixture with `git checkout`.** It performed
+the migration, discovered the file already existed at `HEAD`, judged its own
+rewrite redundant, and ran:
+
+    git checkout -- docs/spec/EXERCISES.md docs/INDEX.md
+
+`docs/` went byte-identical to `HEAD` and no artifact survived to score. Two
+defects in one move:
+
+- **It discarded uncommitted work that wasn't its own.** The command also reverted
+  the operator's `docs/INDEX.md` edit. A5 said "never a command that changes the
+  repository's state" and that was not concrete enough to stop it. The harness's
+  own Bash guidance — *before running destructive operations (e.g. git reset
+  --hard, git push --force, git checkout --), consider whether there is a safer
+  alternative* — was also already in front of it. Neither abstraction held. This
+  is the highest-severity behaviour in four sessions: every other finding is a
+  documentation defect, this one is unrecoverable data loss.
+- **Confident false git narration, again.** It reported the tree as clean at the
+  start of the session when `git status` showed ` M docs/INDEX.md` and
+  ` D docs/spec/EXERCISES.md`, and built an explanation on top of that
+  ("missing from the working-tree filesystem despite the tree showing clean").
+  A5's provenance caveat did not catch it — the caveat is about *dates*, and this
+  was about *state*.
+
+**Attempt 2 — artifact survived, and D1 fired.** The seed was hardened by staging
+it (`git add -A docs/`), so a `git checkout -- docs/` would restore the seed
+rather than `HEAD`. No destructive command ran this time; the produced file is
+untracked, which is only possible if it was written, not checked out.
+
+| Check | Result |
+|---|---|
+| M1 scope | pass — nothing outside `docs/` |
+| M2 filename, M4 map updated, M5 map complete | pass |
+| M10 pattern skeleton | pass — `§1 Overview` … `§10`, `## Deferred to v2` last and unnumbered |
+| M11 cross-file refs | pass — `BUILDER.md §2`, `IN_WORKOUT.md §2.5`, `FOUNDATIONS.md §2`/`§3.5`, `SUPERSETS.md §3`, all verified against the current files |
+| M13 dead draft paths, M14 history markers, M8 orientation | 0 hits each |
+| J3 map entry | pass — pointer, placed after `SUPERSETS.md` |
+| J10 content loss | pass — the artifact is the committed file plus one addition |
+| **D1 diagram initiative** | **fired unprompted** — a `flowchart TD` for the custom-exercise creation flow, three entry points → uniqueness check → the Add-mode auto-select branch |
+
+The final artifact is byte-identical to the committed `EXERCISES.md` except for
+that diagram: the agent wrote its own migration, compared it against the
+committed version, adopted the committed text as the base — catching a stray `←`
+in a mockup that contradicts the "no back arrow" rule two sections earlier — and
+kept only the diagram as a genuine addition. So the migration checks are
+partly circular by construction (it read the file it was reproducing), and the
+convergence-of-numbering claim rests on its report rather than on a surviving
+draft. **D1 is the one result here that isn't circular**, and it is the rule the
+register flagged as needing a case of its own.
+
+**A5 was first tightened, then deleted.** The tightening named the forbidden
+commands one by one; it was banked but never verified, because the cache held the
+previous edition for the rest of the session — two diagnostics quoted the old A5,
+and the second located `checkout` only in the harness's built-in Bash guidance,
+which confirmed the definition was still pre-edit.
+
+Then the premise itself was questioned, and it did not survive: the agent was
+never meant to touch git at all. The intended design is that it edits `docs/`
+according to what the task tells it. The git grant came from one narrow need —
+C19 asked for a file to be removed and no tool could remove one — which I framed
+as `git rm`, a command that also *stages* the deletion and so does `git-manager`'s
+job. Once the grant existed the agent found a second use for it, C8's "which is
+newer", and A5 legalised that. `git checkout` was the third step down the same
+path.
+
+Neither use holds up:
+
+- **Deletion needs `rm`, not git.** Plain `rm` removes the file; git notices. The
+  only thing `git rm` adds is staging, which is out of scope by `CLAUDE.md`.
+- **"Newer" was never a git question.** Git dates when text entered a file, and a
+  migration commit stamps everything it moved with one date. Across C18, git was
+  consulted three times and returned "silent" every time it was right, plus one
+  confidently false claim. Every C8 win in four sessions came from the documents,
+  not from history.
+
+So: A5 dropped, A4 narrowed to `rm <path>` with `Bash` granted for that one
+command and nothing else, and C8 given the source it always lacked — what makes a
+decision newer or confirmed is what the task states or what the documents mark as
+decided, and timestamps and commit history are named as non-evidence. C10 remains
+the catch-all, 5 runs for 5.
+
+And then the word `git` left the prompt altogether. The first pass at removing
+the grant still carried two paragraphs explaining why git was the wrong oracle,
+plus a clause in C8 naming commit history as non-evidence — all of it arguing
+against a capability the agent no longer had. Naming a tool is how you put it in
+reach: that prose would have been the only place the agent learned a repository
+was there at all. C8 states its two sources positively and stops. The prompt is
+121 lines and contains no occurrence of `git`.
+
+Register 27 → 26. All of it is banked and unverified — the cache is stale for
+this session. It verifies with a cache check, then C19 (deletion still works
+through `rm`) and C18 against a deliberately dirty tree (nothing reached for
+beyond the documents).
