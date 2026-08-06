@@ -5,7 +5,7 @@ Running register of the rule set being rebuilt. v0 = the current
 reviewed still hold their v0 content. IDs keep their v0 numbers for
 traceability, so gaps in the numbering are expected.
 
-Status: **all groups reviewed. 47 rules → 20.** Assembled candidate:
+Status: **all groups reviewed. 47 rules → 26.** Assembled candidate:
 `DOCS_MANAGER_v1.md` (not yet installed — `.claude/agents/docs-manager.md` still
 holds v0 so it can serve as the eval baseline).
 
@@ -59,11 +59,19 @@ Group C: 7 rules → 3.
 | ~~P1~~ | ~~`_pattern.md` describes the naming convention and the section skeleton~~ | **folded into P4** — a definition, needed only where the agent drafts a new pattern |
 | P2 | A directory that has a `_pattern.md` → follow it exactly | **merged** from v0 P2 + P3 — looking a pattern up and obeying it are one act |
 | P9 | Material that can't honestly take that pattern's skeleton doesn't belong under it — stop and ask instead of forcing it in. An invented `Overview`, or a closing section that exists only to say "None", is the signal that you forced it | **new** — added after C11 forced a glossary into the spec-zone skeleton |
-| P4 | A directory that has none → ask whether it needs one, proposing a concrete draft with that directory's naming convention and section skeleton; act on the answer | **merged** from v0 P1 + P4 + P5 |
+| P4 | A directory that holds a series of same-shaped documents and no `_pattern.md` → ask whether it needs one, proposing a concrete draft with that directory's naming convention and section skeleton; act on the answer | **merged** from v0 P1 + P4 + P5, **retriggered after C20** |
+| P10 | A directory receiving its first file is not a series yet: write the file, invent no pattern, ask nothing — report that the question arises once a second file of the same kind joins it | **new** — added after C20 |
 | P6 | A file that isn't part of a series of same-shaped documents needs no pattern; when editing it, follow its own existing structure | **redefined** from v0 P6 + P7, and absorbs P8 |
 | ~~P8~~ | ~~Standalone from scratch — judgment, confirm if non-trivial~~ | **dropped** — duplicated A2, and A3 covers the risk that mattered |
 
-Group D: 8 rules → 3.
+Group D: 8 rules → 5.
+
+P4 and P6 contradicted each other for two sessions without either being wrong on
+its own: P4 said "directory without a pattern → ask", P6 said "a file outside a
+series needs no pattern", and every new directory starts as one file outside a
+series. C20 hit it twice, and both runs chose P6 and defended the choice. P4 now
+keys on the series rather than on the directory, and P10 names the case the
+collision lived in.
 
 The v0 definition of "standalone" was *a file with no siblings*, which broke
 under the narrowed scope: `docs/` root holds three files side by side, so by the
@@ -84,10 +92,17 @@ yet.
 | ~~C3~~ | ~~Exceptions: an explicit changelog/history section, or the user asks for history~~ | **dropped** |
 | C4 | Never describe what doesn't exist yet — no roster of anticipated files, sections, or features. A rule states how content is named and structured whenever it gets created, not a forecast of what will be created; an illustrative format example is fine, a list of concrete future filenames is not | **merged** from v0 C4 + C5 + C6 |
 | ~~C7~~ | ~~Stale historical content found during an edit is removed as part of that edit~~ | **dropped** — same opportunistic-fix pattern as N2/N7 |
-| C8 | On conflicting docs the newer/confirmed decision wins; remove the superseded statement rather than annotating both | v0 |
+| C8 | On conflicting docs the newer/confirmed decision wins; remove the superseded statement rather than annotating both, and report what made it the winner | v0, **extended after C18** |
+| C10 | When neither side is newer, confirmed, nor corroborated elsewhere in `docs/` — stop and ask which is current, quoting both. Not on file ownership, not on which value appears more often, not on plausibility: those name the authoritative file, never the decision. Carries the wrong-move example | **new** — added after C18 |
 | C9 | Never link to `draft_docs/` from content you write — state the fact in your own words instead of pointing at where you found it | **new** — narrow restoration of v0's S6 after C10 wrote dangling links into `OPEN_QUESTIONS.md` |
 
-Group E: 8 rules → 5.
+Group E: 8 rules → 6.
+
+C8 was a rule with a precondition and no else-branch. C18 seeded a conflict where
+neither statement was newer or confirmed, so the precondition never held — and
+rather than stop, the agent manufactured a criterion of its own (the file that
+defines a field outranks the file that renders it). Reasonable, and unrelated to
+which value the user actually chose. C10 is that else-branch.
 
 C9 is the one draft-related rule that had to survive the S4–S7 cull. The others
 described how to *treat* `draft_docs/`; this one constrains what goes into
@@ -101,7 +116,7 @@ becomes vacuous rather than wrong.
 | M1 | Maintain a single documentation map at `docs/INDEX.md` | **simplified** — create-if-missing clause dropped |
 | M2 | The map lists every documentation directory and file with a one-line purpose | v0 |
 | M9 | The map carries reading order: entries are listed in reading order, and a new file goes to its place in that order rather than being appended at the end | **new** — replaces the ordering that `NN_` used to encode |
-| M3 | `docs/INDEX.md` is a map, not a summary: each entry is one short sentence stating what the file is *for* — never its content, structure, decisions, or rationale. Listing a file's sections is summarizing: `directory pattern: file naming and the section skeleton` is wrong, `the pattern every spec file follows` is right. Holds for entries that already exist — when an edit forces you to reword an entry, that entry was a summary: rewrite it as a pointer instead of patching the wording | **merged** from v0 M3 + M4 + M5 + M6, then rewritten twice under eval |
+| M3 | `docs/INDEX.md` is a map, not a summary: each entry is one short sentence stating what the file is *for* — never its content, structure, decisions, or rationale. Listing a file's sections is summarizing, in every directory rather than only the spec one; carries a spec-shaped and a non-spec wrong/right pair. Holds for entries that already exist — when an edit forces you to reword an entry, that entry was a summary: rewrite it as a pointer instead of patching the wording. A file that gains content keeps its purpose: don't append the new topic to its entry | **merged** from v0 M3 + M4 + M5 + M6, rewritten twice under eval, **generalised after C20** |
 | M7 | Update `docs/INDEX.md` in the same turn whenever the set of documentation files changes, or a file's purpose changes — not when its content changes | **merged** from v0 M7 + M8 |
 
 Group F: 8 rules → 5.
@@ -143,16 +158,21 @@ own; it was a third place where every rule could drift out of sync with itself.
 |---|---|---|
 | ~~A1~~ | ~~Directory without `_pattern.md` → ask, with a proposed draft~~ | proposed drop — duplicates P4 verbatim |
 | ~~A2~~ | ~~Standalone from scratch, non-trivial structure → confirm~~ | proposed drop — duplicates P8 verbatim |
-| A3 | A change that would delete content the user may still want → confirm before deleting | keep — the only rule in the whole set guarding against content loss |
+| A3 | A change that would delete content the user may still want → confirm before deleting. Content that moves somewhere else intact isn't lost: a fold needs no confirmation, only an accurate report of where it went | keep — the only rule in the whole set guarding against content loss; **the fold clause added after C19** |
+| A4 | Removing a file is `git rm <path>`; `Bash` exists for that one purpose and nothing else. Remove it only once the content has moved or is being dropped with confirmation, and in the same turn drop the map entry and repoint every reference. Never leave an unreferenced file on disk | **new** — added after C19 |
 
 ## Open items
 
-1. **Two rules are written but unverified** — I/A3 (structural deletion trigger)
-   and the E/C2 extension. Both were edited late in the session, and the
-   agent-definition cache served the pre-edit text from then on, so neither has
-   run. C16 verifies A3; C17 verifies the C2 extension.
+1. **Four rules are written but unverified** — D/P4 + D/P10 (the series trigger),
+   E/C10 (the conflict else-branch), F/M3's generalisation, I/A3's fold clause and
+   I/A4. All were written after the session-3 runs that motivated them, so none
+   has executed. C18, C19, C20 and the new C21 cover them; the cache check comes
+   first, as always.
 
 Closed:
+
+- I/A3's structural trigger and the E/C2 extension both ran clean 3/3 in session
+  3 — the two rules the previous session could not verify.
 
 - `docs/spec/_pattern.md` was rebuilt for the new rules: `NN_` prefix gone,
   `## Purpose` gone, the `flowchart TD` line removed from Content devices,
@@ -169,15 +189,21 @@ Closed:
 
 ## Tally so far
 
-v0: 47 rules → v1: 23.
+v0: 47 rules → v1: 26.
 
-A 2→0 · B 7→1 · C 7→3 · D 8→4 · E 8→5 · F 8→5 · G 3→3 · H 5→1 · I 3→1
+A 2→0 · B 7→1 · C 7→3 · D 8→5 · E 8→6 · F 8→5 · G 3→3 · H 5→1 · I 3→2
 
-Five rules were changed by eval rather than by the review pass: F/M3 (rewritten
-twice before behaviour moved), D/P9 and E/C9 (added after smoke runs exposed
-gaps), I/A3 (trigger made structural), E/C2 (extended to the agent's own edits).
-Two of them restore something the review had cut — the cull went one step past
-the line in exactly two places out of 26.
+Nine rules were changed by eval rather than by the review pass: F/M3 (rewritten
+twice before behaviour moved, then generalised beyond spec entries), D/P9 and
+E/C9 (added after smoke runs exposed gaps), I/A3 (trigger made structural, then
+given a fold clause), E/C2 (extended to the agent's own edits), and four written
+in session 3 — D/P4 + D/P10, E/C10, I/A4. Two of them restore something the
+review had cut; the rest close cases no rule had named.
+
+The set has grown for three sessions running, and every addition has the same
+shape: a rule that was right in general met a case it did not name. The count is
+not the metric — 47 unreviewed rules and 26 case-driven ones are different kinds
+of object.
 
 One pattern runs through all five: **the abstract statement of a rule was never
 what changed behaviour.** M3 started working once it carried a wrong/right pair;
@@ -185,4 +211,9 @@ P9 once it named the tell ("a section that exists only to say None"); C2 once it
 showed the exact sentence shape to avoid. Generalisation and worked example are
 not interchangeable here — the example is what transfers.
 
-Tools: `Bash` dropped, leaving Read / Write / Edit / Glob / Grep.
+Tools: Read / Write / Edit / Glob / Grep / Bash. `Bash` was dropped in the v1
+review as having no use once scope was `docs/`, and restored after C19 for the
+one use the review missed: nothing else in the tool set can remove a file, so
+without it the agent could fold a file's content away, repoint every reference,
+drop its map entry — and still leave the empty file sitting there. A4 is what
+keeps the restoration narrow.

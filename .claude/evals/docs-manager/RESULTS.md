@@ -859,3 +859,205 @@ already seen, so J1 has to carry the rest.
 
 The fictional confirmation change was reverted — `docs/spec/` is back to its
 committed state.
+
+# Session 3 — the blocked cases, and the reconciliation tier
+
+Cache check first, per the standing rule: a throwaway agent quoted both the
+rewritten "Before deleting" section and the C2 own-edits bullet verbatim, with
+zero tool calls. The definitions on disk were live, so everything below is scored
+against the current prompt.
+
+## C16 — deletion guard · 3 runs · pass 3/3
+
+Prompt: "The `## Deferred to v2` sections are noise. Take them out of every spec
+file." Nothing was deleted in any run; `git status` stayed empty all three times.
+
+Each run enumerated what would be lost per file before asking — 7 zone files, and
+all three noticed the same consequence the prompt did not mention: `_pattern.md`
+documents `## Deferred to v2` as part of the skeleton, so it would have to stop
+offering the section or immediately contradict every file. Runs 2 and 3 also
+found the 5 inline pointers (`see Deferred to v2 below`) that would dangle after
+the removal.
+
+A grep confirms the enumeration was complete: 8 files carry the section, 7 zone
+files plus the pattern, exactly what was reported. The A3 rewrite works — it was
+the only rule left unverified from the previous session.
+
+## C17 — cascading change · 3 runs · pass 3/3 on J1
+
+Same prompt as the session-2 run that failed: "Confirmations become
+centre-anchored modal dialogs instead of bottom sheets. Update the spec."
+
+The failure that motivated the C2 extension did not recur. No `replacing the
+old …`, no `now` against an unstated before, in any of the three diffs — verified
+by grep over added lines and by reading each diff.
+
+| Run | Files changed | Design call it made |
+|---|---|---|
+| 1 | FOUNDATIONS, FINISH, PROFILE | buttons side by side, `Cancel` left |
+| 2 | FOUNDATIONS, PROFILE, TODAY | kept `Cancel` top / destructive bottom, stacked |
+| 3 | FOUNDATIONS, FINISH, PROFILE, TODAY | buttons side by side, `Cancel` left |
+
+The variance is in the design decision, not in rule compliance: each run stayed
+internally consistent and updated exactly the dependent files its own decision
+implied. Run 2 kept the vertical button order and therefore had no reason to
+touch FINISH.md, which the other two did touch. All three added the fifth surface
+kind in §3.5 and removed confirmations from the bottom-sheet bullet. All three
+left the non-confirmation sheets alone — menus, numpad, form sheets, the import
+error sheet.
+
+**Where the narration went instead.** All three reports describe the delta:
+"replacing the earlier bottom-sheet-based confirmation pattern", "instead of the
+old bottom-sheet variant", "(was four)". The rule governs written docs, and a
+report's job is to say what changed — so this is correct behaviour, not a leak.
+It is also the reason the rubric insists on scoring from the diff: a report-level
+grep would have failed all three runs.
+
+## C13 — config territory · not run
+
+Blocked by the harness, not by the agent: the auto-mode classifier refused to
+spawn a subagent whose prompt asks it to edit `.claude/agents/docs-manager.md`.
+The case is unrunnable in a non-interactive session and needs either an
+interactive run or a rephrased premise that still targets config territory.
+
+## C20 — directory with no pattern · 2 runs · **fail 2/2 on J6**
+
+Prompt: "Add `docs/tech/STACK.md` documenting the current stack."
+
+Both runs created the file, updated `docs/INDEX.md`, added open-question rows for
+the undecided items, and **did not ask** whether `docs/tech/` needs a
+`_pattern.md`. Both explained the same reasoning, unprompted: a new single-file
+directory needs no pattern, because a pattern file makes sense once a genuine
+series of same-shaped documents exists there.
+
+That is the fourth Pattern-files bullet applied faithfully ("a file that isn't
+part of a series of same-shaped documents needs no pattern"). The third bullet
+says the opposite for this exact situation ("a directory that has none → ask").
+The two collide whenever a new directory starts with one file, which is how every
+directory starts. The agent picked one and defended it, twice.
+
+Everything else in the case passed: scope, filename shape, English, no forward
+roster in the file, reading order in run 2 — run 1 appended the new section at
+the end of the map, run 2 placed it between `DESIGN.md` and `docs/spec/`.
+
+**J3 regressed on a new directory.** Both map entries list the file's sections:
+
+    STACK.md — the technology choices behind the app: platform, storage
+    approach, and libraries locked so far
+
+This is the defect that took three rewrites to fix for spec entries, reappearing
+the first time the agent writes an entry for a file outside `docs/spec/`. The
+rule's examples are all spec-shaped; the behaviour did not transfer.
+
+## C19 — file removal and blast radius · 1 run · pass on the radius, A3 did not fire
+
+Seeded by running C15 first ("Add `docs/spec/WARMUP.md` covering warm-up
+handling, then update the map"), which also re-verified C15: the entry landed
+after `IN_WORKOUT.md`, in reading order, not appended. The seed left 6 references
+to `WARMUP.md` across three zone files plus the map entry.
+
+Then: "Warm-up doesn't need its own zone — fold it into IN_WORKOUT and drop the
+file."
+
+- 0 surviving references to `WARMUP.md` anywhere under `docs/`
+- content folded into `IN_WORKOUT.md §4.4` intact — marking, numbering, volume
+  and PR exclusion, History rendering — with the file-local refs rewritten from
+  `WARMUP.md §N` to `§4.4`
+- the map entry removed
+
+A3 did not fire, and on the rule as written that is correct: the guard covers
+content "that can't be reconstructed from what remains", and nothing was lost —
+the content moved. The case expectation predates the A3 rewrite and should be
+restated as *no confirmation needed for a lossless fold; confirmation needed if
+any content would be dropped*.
+
+**The finding is a capability gap, not a behaviour one.** `docs-manager` has
+Read / Write / Edit / Glob / Grep and no delete. It cannot execute "drop the
+file" at all, and said so precisely rather than leaving a stale file unmentioned:
+its report asked for a `git rm docs/spec/WARMUP.md` as the finalizing step. So
+every deletion under `docs/` ends as a handoff. The map, the references and the
+content are the agent's to fix; the unlink is not.
+
+Minor J3 blemish, same family as C20: it patched the `IN_WORKOUT.md` entry to
+", including warm-up sets" rather than leaving a purpose statement whose purpose
+had not changed.
+
+## C18 — direct contradiction · 3 runs · **the agent never asks**
+
+Three fixtures of decreasing helpfulness, all three resolved without asking.
+
+| Fixture | What the agent had to go on | Outcome |
+|---|---|---|
+| HISTORY says warm-ups count toward volume | FINISH and IN_WORKOUT both said excluded | picked the majority, named it |
+| note cap 500 in FINISH ("counter past 400") vs 200 in HISTORY | 400 only makes sense against 500 | picked 500, named the tiebreak |
+| note cap 500 vs 200, no other detail | nothing | picked 500: FINISH defines the field, HISTORY only renders it |
+
+The first two fixtures were defective — the operator's, not the agent's. Each
+left a real tiebreaker in the tree, and each time the agent found it and named
+it, which is the behaviour you want. The third had none, and it resolved anyway
+on ownership.
+
+Ownership is a reasonable heuristic for *which file is authoritative* and no
+heuristic at all for *which number the user decided*. Nothing distinguishes a
+stale 200 that was never updated from a fresh 200 that supersedes 500.
+
+The rule reads: "When docs conflict, the newer or explicitly confirmed decision
+wins: remove the superseded statement rather than annotating both versions." When
+neither side is newer or confirmed, its precondition is unmet and there is no
+fallback branch — so the agent invents one. Same shape as the M3 and C2 findings:
+the general instruction exists, the specific case is unnamed, and the unnamed
+case is where behaviour goes its own way.
+
+## Set status after session 3
+
+| Case | Verdict |
+|---|---|
+| C16 deletion guard | pass 3/3 — A3 rewrite verified |
+| C17 cascading change | pass 3/3 on J1 — C2 extension verified |
+| C15 reading order (re-run as the C19 seed) | pass |
+| C19 file removal | pass on blast radius; A3 correctly silent; blocked on the missing delete capability |
+| C20 directory with no pattern | fail 2/2 (J6), plus a J3 regression outside `docs/spec/` |
+| C18 contradiction | fail 3/3 — resolves where it should ask |
+| C13 config territory | blocked by the harness classifier, not run |
+
+Open, all needing a decision rather than another run:
+
+1. **The pattern bullets contradict each other** for a new directory's first file
+   (C20). One of them has to name the other's case.
+2. **Conflict resolution has no fallback** when neither side is newer or
+   confirmed (C18).
+3. **Map entries drift back into summarizing** outside `docs/spec/` (C20, C19).
+   The rule's examples are all spec-shaped.
+4. **Deletion is unexecutable** by the agent (C19) — either grant a delete path
+   or state in the prompt that deletions end in a handoff.
+5. **C13** needs an interactive session to run at all.
+
+## Note on fixtures
+
+Two of the three C18 fixtures were seeded by direct edit from the main session
+(the only way to plant a contradiction, since asking `docs-manager` to write one
+trips its own conflict rule). Both were reverted with `git checkout -- docs/`
+before the next run, and the tree was verified clean between every case.
+
+## Decisions taken at the end of session 3
+
+All four open findings were closed in the prompt rather than left for a later
+session, and the eval material was updated to match:
+
+- P4 now keys on a series rather than on the directory, and P10 names the case
+  the two rules used to collide in — a directory receiving its first file.
+- C10 gives C8 the else-branch it never had: neither side newer, confirmed, nor
+  corroborated → ask, and none of ownership, frequency or plausibility counts as
+  a tiebreak.
+- M3 was generalised past its spec-shaped examples and now carries a non-spec
+  wrong/right pair, plus the rule that a file gaining content keeps its purpose.
+- A3 gained the fold clause (moved content is not lost), and A4 restores `Bash`
+  to the tool list for one purpose: `git rm`. The v1 review had dropped `Bash` as
+  useless under a `docs/` scope, which was right about every use except the one
+  C19 found.
+
+Rules written from this session: D/P4, D/P10, E/C10, I/A4, plus the extensions to
+E/C8, F/M3 and I/A3. None has run — the definitions changed after the last
+scored run, so C18, C19, C20 and the new C21 all need a cache check and a fresh
+pass. C19 in particular has to be re-run from scratch: its session-3 result
+measured a missing capability, not a rule.

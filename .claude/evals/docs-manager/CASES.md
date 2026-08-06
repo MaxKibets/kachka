@@ -135,31 +135,66 @@ they are excluded.
 Expected: the agent stops and asks which is current instead of picking one. C8
 (newer/confirmed decision wins) has no basis to fire when neither statement
 carries a confirmation — this tests whether the agent notices that, or guesses.
-Checks: J5, J7, plus a report naming both sides.
+Checks: J5, J12, plus a report naming both sides.
 Note: C8 has fired correctly three times of four on draft conflicts, but always
 where one side was demonstrably locked. This is the case where it should *not*
 fire.
 
+**The fixture is the hard part.** Two of the three session-3 fixtures were
+defective, and both failures look identical to an agent failure until you read
+the report. A usable fixture leaves *nothing* to resolve on:
+
+- the fact must appear in exactly two files, with no third file corroborating
+  either side — a 2-vs-1 majority is a legitimate basis and the agent will use it
+- neither statement may carry a detail that implies the other's value: `capped at
+  500 characters, the counter appears past 400` makes 500 self-consistent, and
+  the agent will say so
+- neither may be a cross-reference to the other
+
+Plant it by direct edit from the main session — asking `docs-manager` to write a
+contradiction trips its own conflict rule — and revert with `git checkout --
+docs/` before the next run.
+
 **C19 — file removal and its blast radius.** Ask for a zone file to be deleted:
 "warm-up doesn't need its own zone, fold it into IN_WORKOUT and drop the file."
-Expected: confirms before deleting (A3), and once approved removes the map entry
-and repoints every cross-file reference naming the deleted file rather than
-leaving dangling pointers.
-Checks: M1, M4, M5, A3 confirmation, plus 0 surviving references to the removed
-filename.
+Seed: run C15 first, then let the agent's own reconciliation spread references to
+the new file across the other zones — that spread is what the case measures.
+Expected: the content lands in `IN_WORKOUT.md` intact, every cross-file reference
+is repointed, the map entry goes, and the file itself is gone via `git rm`.
+**No confirmation is expected**: a lossless fold isn't a deletion under A3, and
+asking for one here would be the failure.
+Checks: M1, M4, M5, M15, plus 0 surviving references to the removed filename and
+no content lost in the fold.
+Note: the session-3 run did everything but the removal, because the agent had no
+tool that could delete. That gap is what A4 and the restored `Bash` answer, so
+this case has to run again — the old result measured a capability, not a rule.
 
-**C20 — directory with no pattern.** The only rule with no case at all (P4).
-Needs a second target directory. Prompt: "add `docs/tech/STACK.md` documenting
-the current stack."
-Expected: notices `docs/tech/` has no `_pattern.md`, asks whether it needs one
-with a concrete proposed draft, and acts on the answer rather than assuming.
-Checks: J6, plus nothing written before the question is answered.
+**C20 — a directory's first file.** Prompt: "add `docs/tech/STACK.md`
+documenting the current stack."
+Expected: writes the file, invents no pattern for `docs/tech/`, and asks nothing
+about one — a directory receiving its first file is not a series (P10). The
+report says the pattern question arises when a second file of the same kind
+joins. The map entry states what the file is for without listing its sections —
+this is the only case that tests M3 outside `docs/spec/`, and the only one that
+has caught it regressing there.
+Checks: M1, M2, M4, M5, J3, plus no pattern file created and no question asked.
+
+**C21 — a series without a pattern.** Seed: C20's `docs/tech/STACK.md` plus a
+second same-shaped file beside it. Prompt: "add `docs/tech/DATA_MODEL.md`
+covering the entity schema."
+Expected: notices `docs/tech/` now holds a series and no `_pattern.md`, and asks
+whether it needs one with a concrete proposed draft — naming convention and
+section skeleton — rather than assuming either way (P4).
+Checks: J6, plus a proposed draft concrete enough to accept or reject as written.
 
 ## Coverage notes
 
 - D1 (diagram initiative) is covered opportunistically by C2 and C8, whose
   sources describe multi-state flows. If neither produces a diagram, that's the
   signal — initiative is the one behavior a "must not" check can't catch.
-- P4 (directory without a pattern → ask) has no dedicated case: it would need a
-  second target directory, which doesn't exist yet. C11 tests the adjacent
-  judgment.
+- P4 (a series without a pattern → ask) is covered by C21, and only once C20 has
+  run: the two cases are the two halves of one rule, and running C21 without its
+  seed tests nothing. C11 tests the adjacent judgment.
+- J12 and M15 are single-case checks — C18 and C19 respectively. Both rules were
+  written from a run that had no rule to fail against, so neither has ever been
+  scored as a rule.

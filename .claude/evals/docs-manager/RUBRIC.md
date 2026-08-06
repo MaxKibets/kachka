@@ -24,6 +24,7 @@ Two tiers: **M** = mechanical (computed from the run's git diff, no LLM),
 | M11 | Cross-file refs rewritten | every `§` ref is local (`§X.Y`, `X` ≤ own section count) or filename-qualified (`NAME.md §X.Y`) | P2 |
 | M12 | Single map | `docs/spec/README.md` does not exist | M1 |
 | M13 | Dead draft paths gone | 0 occurrences of `../visual/`, `visual/README.md`, `visual §`, `../tech/`, `tech §`, `program-format.md`, `../wireframes/` | C1 |
+| M15 | Removal carried through | a file the change made obsolete is absent from the tree, and 0 files under `docs/` still name it | A4 |
 | M14 | History markers gone | 0 occurrences of `design-review`, `v0.13`, `formerly`, `used to be`, `**Status**:`, `**Version**:`, or `replac(es\|ing) the (old\|earlier\|previous)` | C2 |
 
 M14 was also widened once: it matched only `replaces the earlier` and so missed
@@ -56,6 +57,7 @@ rule.
 | J7 | Confirms before deleting | content the user may still want is dropped without confirmation | A3 |
 | J8 | Diagram judgment | a diagram is added where prose was clearer, or one sprawling diagram covers several flows | D1, D3 |
 | J9 | Report quality | the final report is padded, or omits what actually changed | W5 |
+| J12 | Asks on an undecidable conflict | the agent resolves a conflict where neither side is newer, confirmed, nor corroborated — including on file ownership or on which value appears more often | C10 |
 | J10 | No content loss | a behavioral rule present in the source is missing from the result (reworded is fine, dropped is not) | — |
 
 J10 maps to no single rule; it is the safety net that makes the rest meaningful.
