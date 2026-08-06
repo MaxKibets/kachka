@@ -189,10 +189,13 @@ each agent's own prompt.
 1. **C13 has never run.** The harness classifier refuses to spawn a subagent whose
    prompt asks it to edit `.claude/agents/*`, so the one case that proves dropping
    v0's S2/S3 was safe needs an interactive session.
-2. **The `Bash`-narrowing and C8's evidence clause are banked, not verified.** The
-   cache held the previous edition for the rest of session 4. Both need a cache
-   check, then C19 (deletion still works through plain `rm`) and C18 against a
-   deliberately dirty tree (no git reached for at all).
+Closed after the git removal: the `Bash`-narrowing ran on C19 (the file left the
+disk through plain `rm`, no git in the run) and C8's rewritten evidence clause ran
+on C18 twice against a deliberately dirty tree — neither run touched git, both
+asked. Worth knowing for any future narrowing: the harness supplies git context to
+every subagent regardless (`gitStatus`, the repo flag, and a full git/GitHub
+section inside the `Bash` tool description), so a rule like this is overriding
+what the agent is told elsewhere, not filling a silence.
 
 Closed:
 

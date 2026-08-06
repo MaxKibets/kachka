@@ -1365,7 +1365,35 @@ reach: that prose would have been the only place the agent learned a repository
 was there at all. C8 states its two sources positively and stops. The prompt is
 121 lines and contains no occurrence of `git`.
 
-Register 27 → 26. All of it is banked and unverified — the cache is stale for
-this session. It verifies with a cache check, then C19 (deletion still works
-through `rm`) and C18 against a deliberately dirty tree (nothing reached for
-beyond the documents).
+Register 27 → 26.
+
+## Verified after the git removal
+
+The cache refreshed once the prompt was committed, and the diagnostic returned
+something worth keeping: **the prompt is not the only place the agent hears about
+git.** Asked whether its instructions mention it, the agent found `Is directory a
+git repo: Yes`, a `gitStatus` block and `Git user` in the harness-supplied
+context, plus an "extensive git/GitHub section" in the `Bash` tool's own
+description — a commit workflow, a safety protocol, PR instructions. It then said
+its role instructions narrow `Bash` to one use and that this supersedes the
+generic tool documentation. So the narrowing sentence works *against* a standing
+counter-pressure rather than in a vacuum, which is exactly why it needed a run
+rather than a bank.
+
+**C18 · dirty tree · 2 runs · pass 2/2.** Same workout-name fixture, planted as
+uncommitted edits over a clean tree — the state that produced the false
+provenance claim two sessions running. Neither run reached for git at all. Both
+looked where the rewritten C8 points them: the other spec files, and
+`OPEN_QUESTIONS.md`, and `draft_docs/`. Run 7 named the trap it was avoiding —
+*"input cap can't logically be less than display cap" is exactly the kind of
+plausibility reasoning I'm told not to use* — and both stopped and asked. Losing
+git cost the rule nothing.
+
+**C19 · pass.** Re-seeded with C15, which again placed the entry in reading order
+and spread the references. The fold landed in `IN_WORKOUT.md §4.4`, `FINISH.md`
+and `HISTORY.md` were repointed, the map entry went, 0 references survived, and
+`docs/spec/WARMUP.md` left the disk — through plain `rm`, with no git anywhere in
+the run. No confirmation was asked, which A3's fold clause makes correct.
+
+That closes every rule in the register except C13, which still needs an
+interactive session.
