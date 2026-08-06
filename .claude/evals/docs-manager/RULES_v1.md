@@ -80,7 +80,7 @@ yet.
 | ID | Rule | Status |
 |---|---|---|
 | C1 | Documentation describes ONLY the current, decided state | v0 |
-| C2 | No historical narration: "we used to use X", "this replaces the old Y", version logs, mentions of superseded decisions | v0 |
+| C2 | No historical narration: "we used to use X", "this replaces the old Y", version logs, mentions of superseded decisions. **Applies to your own edits**: when changing a rule, state the new rule only — no delta against what it replaced, no "now" against an unstated "before". Carries wrong/right example pairs | v0, **extended after C17** |
 | ~~C3~~ | ~~Exceptions: an explicit changelog/history section, or the user asks for history~~ | **dropped** |
 | C4 | Never describe what doesn't exist yet — no roster of anticipated files, sections, or features. A rule states how content is named and structured whenever it gets created, not a forecast of what will be created; an illustrative format example is fine, a list of concrete future filenames is not | **merged** from v0 C4 + C5 + C6 |
 | ~~C7~~ | ~~Stale historical content found during an edit is removed as part of that edit~~ | **dropped** — same opportunistic-fix pattern as N2/N7 |
@@ -147,17 +147,19 @@ own; it was a third place where every rule could drift out of sync with itself.
 
 ## Open items
 
-1. **`docs/spec/_pattern.md` breaks** — it is built on the `NN_` prefix: the
-   naming section, the `00_FOUNDATIONS.md` example, and the cross-file reference
-   format `02_IN_WORKOUT.md §3.2`. It also opens with a `## Purpose` section, and
-   carries a "Content devices" section — neither is covered by the new P1. The
-   `flowchart TD` line inside "Content devices" is now confirmed for removal
-   (D2 owns it); the fate of the rest of that section is still open.
-2. **Eval set needs rework** — RUBRIC M4/M5 and case C15 are built entirely on
-   the `NN_` prefix. Two checks are also missing: D1 (diagram initiative) and M9
-   (reading order in the map).
+1. **Two rules are written but unverified** — I/A3 (structural deletion trigger)
+   and the E/C2 extension. Both were edited late in the session, and the
+   agent-definition cache served the pre-edit text from then on, so neither has
+   run. C16 verifies A3; C17 verifies the C2 extension.
 
 Closed:
+
+- `docs/spec/_pattern.md` was rebuilt for the new rules: `NN_` prefix gone,
+  `## Purpose` gone, the `flowchart TD` line removed from Content devices,
+  `## Deferred to v2` made optional, and the cross-reference rule now states
+  where the section number comes from.
+- Eval set reworked: `NN_`-based checks dropped, checks added for reading order
+  and diagram initiative, and a reconciliation tier (C17–C20) written.
 
 - Root `README.md` is out of scope — the agent owns `docs/` only, and no rule is
   written for it. The file itself stays in the repo.
@@ -171,9 +173,16 @@ v0: 47 rules → v1: 23.
 
 A 2→0 · B 7→1 · C 7→3 · D 8→4 · E 8→5 · F 8→5 · G 3→3 · H 5→1 · I 3→1
 
-Three rules came from eval rather than from the review pass: F/M3 was rewritten
-twice before it changed behaviour, D/P9 and E/C9 were added after smoke runs
-exposed gaps. Two of the three restore something the review had cut — evidence
-that the cull went one step past the line in exactly two places out of 26.
+Five rules were changed by eval rather than by the review pass: F/M3 (rewritten
+twice before behaviour moved), D/P9 and E/C9 (added after smoke runs exposed
+gaps), I/A3 (trigger made structural), E/C2 (extended to the agent's own edits).
+Two of them restore something the review had cut — the cull went one step past
+the line in exactly two places out of 26.
+
+One pattern runs through all five: **the abstract statement of a rule was never
+what changed behaviour.** M3 started working once it carried a wrong/right pair;
+P9 once it named the tell ("a section that exists only to say None"); C2 once it
+showed the exact sentence shape to avoid. Generalisation and worked example are
+not interchangeable here — the example is what transfers.
 
 Tools: `Bash` dropped, leaving Read / Write / Edit / Glob / Grep.
