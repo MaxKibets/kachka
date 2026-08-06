@@ -1397,3 +1397,33 @@ the run. No confirmation was asked, which A3's fold clause makes correct.
 
 That closes every rule in the register except C13, which still needs an
 interactive session.
+
+# v1 closed
+
+The rebuild is done. 47 rules to 26, installed, and every one of them carries a
+scored run — which is the only claim worth making about a prompt.
+
+**What stays open, deliberately.** C13 never ran: the harness classifier refuses
+to spawn a subagent whose prompt asks it to edit `.claude/agents/*`, and it needs
+an interactive session. The risk it leaves is narrow. The scope rule it tests
+also carries M1 — zero changed paths outside `docs/` — computed on every run of
+every case across four sessions, never once violated. What C13 would add is the
+directly-targeted refusal, and that the agent *says* it refused.
+
+Two other thin spots, named so nobody reads the table as more than it is. W5
+(report quality) is in the register but was never a real test — J9 never failed
+and never had the chance. D1 (diagram initiative) has one non-circular
+observation, the diagram the C8 re-run added unprompted, plus several incidental
+firings; it has no case of its own, and the register flagged that from the start:
+initiative is the one behaviour a rubric of prohibitions cannot catch.
+
+**Why close now rather than at 100%.** The set stopped paying. C16 and C17 both
+returned 3/3 with nothing new, and every finding in the last two sessions came
+from a case that did not exist before, or from a fixture rebuilt to be harder.
+The next run of an old case buys nothing; the next new case might buy a lot.
+
+**What the material is for now.** It is a regression suite. The cost of skipping
+it is on record: A5 was a reasonable-looking rule, written in response to real
+behaviour, and it failed on its first scored run by producing a `git checkout`
+that destroyed uncommitted work. Reading a rule and believing it will work is not
+the same as watching it run.

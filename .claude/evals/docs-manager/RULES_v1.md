@@ -1,13 +1,19 @@
-# docs-manager rules — v1 rewrite (work in progress)
+# docs-manager rules — v1
 
-Running register of the rule set being rebuilt. v0 = the current
-`.claude/agents/docs-manager.md`. Groups are reviewed in order; groups not yet
-reviewed still hold their v0 content. IDs keep their v0 numbers for
-traceability, so gaps in the numbering are expected.
+Register of the rule set. IDs keep their v0 numbers for traceability, so gaps in
+the numbering are expected.
 
-Status: **all groups reviewed. 47 rules → 26.** Assembled candidate:
-`DOCS_MANAGER_v1.md` (not yet installed — `.claude/agents/docs-manager.md` still
-holds v0 so it can serve as the eval baseline).
+Status: **v1 closed. 47 rules → 26**, installed in
+`.claude/agents/docs-manager.md`. Every rule has a scored run behind it except
+C13, left as a known tail — the harness classifier blocks it from running
+non-interactively.
+
+From here this directory is a regression suite, not an exercise. Any change to
+the prompt goes through the same loop: a cache check that the edit is live (see
+the session-3 and session-4 notes in `RESULTS.md` — a plausible-looking edit
+went in and failed on its first run), then the case that covers the change,
+three times where the check is a judgment. New behaviour needs a new case; the
+existing set stopped producing findings from repetition two sessions ago.
 
 ## A. Role and monopoly — REVIEWED
 
