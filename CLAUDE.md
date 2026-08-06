@@ -25,5 +25,6 @@ for which subagent owns which kind of work.
 New subagents must be added to this table (name, responsibility, invocation trigger, scope
 boundary) in the same change that introduces them.
 
-`CLAUDE.md` and `.claude/**` are Claude Code configuration — maintained in the main session
-with explicit user approval, out of scope for all subagents.
+`CLAUDE.md` and `.claude/**` are Claude Code configuration — authored in the main session
+with explicit user approval, out of scope for all subagents to **edit**. Committing them is
+`git-manager`'s job like any other path in the repo.
